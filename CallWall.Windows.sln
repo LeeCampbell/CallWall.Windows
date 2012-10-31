@@ -1,7 +1,24 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall", "src\CallWall\CallWall.csproj", "{06D674A4-36F1-4FAB-B23C-FD4D0A0B7E57}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D4A3BB64-3266-43BD-B256-8AC98BFF4CE7}"
+	ProjectSection(SolutionItems) = preProject
+		CallWall.Windows.build = CallWall.Windows.build
+	EndProjectSection
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{06D674A4-36F1-4FAB-B23C-FD4D0A0B7E57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06D674A4-36F1-4FAB-B23C-FD4D0A0B7E57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06D674A4-36F1-4FAB-B23C-FD4D0A0B7E57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06D674A4-36F1-4FAB-B23C-FD4D0A0B7E57}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
