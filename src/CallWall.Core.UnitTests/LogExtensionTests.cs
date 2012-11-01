@@ -1,10 +1,9 @@
 ﻿using System;
 using NUnit.Framework;
 
-
+// ReSharper disable InconsistentNaming
 namespace CallWall.Core.UnitTests
 {
-
     public abstract class Given_an_ILoggerInstance
     {
         private Given_an_ILoggerInstance()
@@ -240,9 +239,10 @@ namespace CallWall.Core.UnitTests
                 Exception = exception;
             }
 
-            public LogLevel? Level { get; set; }
-            public string Message { get; set; }
-            public Exception Exception { get; set; }
+            public LogLevel? Level { get; private set; }
+            public string Message { get; private set; }
+            public Exception Exception { get; private set; }
         }
     }
 }
+// ReSharper restore InconsistentNaming
