@@ -47,6 +47,7 @@
              Properties="Configuration=$(Configuration)" >
     </MSBuild>
   </Target>
+  
   <Target Name="Publish" DependsOnTargets="Clean; Version">
     <MSBuild Projects=".\src\CallWall\CallWall.csproj"
              Targets="Publish"
