@@ -111,6 +111,8 @@ namespace CallWall
             var stackTrace = new StackTrace();
             var method = stackTrace.GetFrame(1).GetMethod();
             var type = method.DeclaringType;
+            var typeName = string.Empty;
+            if (type != null) typeName = type.Name;
             string parenth = "()";
             var parameterDefinitions = method.GetParameters();
             if (parameterDefinitions.Length > 0)
@@ -121,13 +123,12 @@ namespace CallWall
                 }
                 else
                 {
-                    var values = string.Join(",", args);
+                    var values = string.Join(", ", args);
                     parenth = string.Format(CultureInfo.CurrentCulture, "({0})", values);
                 }
             }
 
-            logger.Debug(null, "{0}.{1}{2}", type.Name, method.Name, parenth);
+            logger.Debug("{0}.{1}{2}", typeName, method.Name, parenth);
         }
-
     }
 }
