@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using NUnit.Framework;
 
 // ReSharper disable InconsistentNaming
@@ -260,7 +261,6 @@ namespace CallWall.Core.UnitTests
             [Test]
             public void Should_log_arguments()
             {
-                
                 var arg1 = "A";
                 var arg2 = new DateTime(2001, 12, 31, 13, 45, 27);
                 var expected = string.Format("SampleLogConsumer.Action({0}, {1})", arg1, arg2);
@@ -273,7 +273,6 @@ namespace CallWall.Core.UnitTests
             [Test]
             public void Should_log_placeholder_when_args_not_provided()
             {
-
                 var arg1 = "A";
                 var arg2 = new DateTime(2001, 12, 31, 13, 45, 27);
                 var expected = string.Format("SampleLogConsumer.ActionNoArgsLogged(...)");
@@ -300,7 +299,7 @@ namespace CallWall.Core.UnitTests
         }
     }
 
-    internal sealed class SampleLogConsumer
+    public sealed class SampleLogConsumer
     {
         private readonly ILogger _logger;
 
@@ -309,16 +308,18 @@ namespace CallWall.Core.UnitTests
             _logger = logger;
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public void NoArgAction()
         {
             _logger.MethodEntry();
         }
-
+        
         public void Action(string s, DateTime dateTime)
         {
             _logger.MethodEntry(s, dateTime);
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public void ActionNoArgsLogged(string s, DateTime dateTime)
         {
             _logger.MethodEntry();

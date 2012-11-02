@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
 namespace CallWall
@@ -105,6 +106,13 @@ namespace CallWall
             logger.Verbose(null, format, args);
         }
 
+        /// <summary>
+        /// Logs the entry to a method as a string like "MyType.MyMethod(1, ABC)". 
+        /// Ensure the method being logged is not in-lined by the compiler/jitter with the
+        /// [MethodImpl(MethodImplOptions.NoInlining)] attribute.
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="args"></param>
         public static void MethodEntry(this ILogger logger, params object[] args)
         {
             if (logger == null) throw new ArgumentNullException("logger");

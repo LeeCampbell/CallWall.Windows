@@ -15,6 +15,10 @@
     <Projects Include=".\src\CallWall\CallWall.csproj"/>
     <Projects Include=".\src\CallWall.Core.UnitTests\CallWall.Core.UnitTests.csproj"/>
   </ItemGroup>
+  <ItemGroup>
+    <TestAssemblys Include=".\bin\Tests\*.*Tests.dll" />
+  </ItemGroup>
+  
   
   <Import Project=".\tools\MSBuild.Community.Tasks.Targets" />
   
@@ -43,11 +47,16 @@
                   AssemblyCopyright="Copyright © Campbell Consultancy London Ltd 2012"
                 />
   </Target>
-  <Target Name="Build" DependsOnTargets="Clean; Version">
+  <Target Name="Build" DependsOnTargets="VS; Clean; Version">
     <MSBuild Projects="@(Projects)"
              Properties="Configuration=$(Configuration)" >
     </MSBuild>
   </Target>
+  
+  <!--Target Name="UnitTest" DependsOnTargets="Build">
+	<NUnit Assemblies="@(TestAssemblies)"
+	       ToolPath=""/>
+  </Target-->
   
   <Target Name="Publish" DependsOnTargets="Clean; Version">
     <MSBuild Projects=".\src\CallWall\CallWall.csproj"
