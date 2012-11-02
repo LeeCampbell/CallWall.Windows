@@ -16,7 +16,7 @@
     <Projects Include=".\src\CallWall.Core.UnitTests\CallWall.Core.UnitTests.csproj"/>
   </ItemGroup>
   <ItemGroup>
-    <TestAssemblys Include=".\bin\Tests\*.*Tests.dll" />
+    <TestAssemblies Include=".\bin\Tests\*.*Tests.dll" />
   </ItemGroup>
   
   
@@ -28,10 +28,6 @@
     <Configuration>Release</Configuration>
   </PropertyGroup>
   <!-- User targets -->
-  <Target Name="VS">
-    <Message Text="***********$(VS80COMNTOOLS)***********" />
-    <Message Text="***********$(VS90COMNTOOLS)***********" />
-  </Target>
   <Target Name="Clean">
     <RemoveDir Directories="$(OutputDirectory)"
          Condition="Exists($(OutputDirectory))">
@@ -47,7 +43,7 @@
                   AssemblyCopyright="Copyright © Campbell Consultancy London Ltd 2012"
                 />
   </Target>
-  <Target Name="Build" DependsOnTargets="VS; Clean; Version">
+  <Target Name="Build" DependsOnTargets="Clean; Version">
     <MSBuild Projects="@(Projects)"
              Properties="Configuration=$(Configuration)" >
     </MSBuild>
