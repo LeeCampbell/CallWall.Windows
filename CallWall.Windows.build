@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <Projects Include=".\src\CallWall\CallWall.csproj"/>
+    <Projects Include=".\src\CallWall.Core.UnitTests\CallWall.Core.UnitTests.csproj"/>
   </ItemGroup>
   
   <Import Project=".\tools\MSBuild.Community.Tasks.Targets" />
