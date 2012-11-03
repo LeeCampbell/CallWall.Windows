@@ -4,18 +4,19 @@ namespace CallWall
 {
     public interface ISchedulerProvider
     {
-        //IDispatcherScheduler Dispatcher { get; }
+        /// <summary>
+        /// Provides asynchronous scheduling without introducing concurrency. In Client applications this will generally use the dispatcher
+        /// </summary>
+        IScheduler Async { get; }
 
-        IScheduler Async { get; } 
+        /// <summary>
+        /// Provides concurrent scheduling. Will use the thread pool or the task pool if available.
+        /// </summary>
+        IScheduler Concurrent { get; }      //Default for Concurrency
 
-        IScheduler LongRunning { get; }   //Only Long running stuff
-
-        IScheduler Concurrent { get; }  //Default for Concurrency
+        /// <summary>
+        /// Provides concurrent scheduling for long running tasks. Will use a new thread or a long running task if available.
+        /// </summary>
+        IScheduler LongRunning { get; }
     }
-
-    //public interface IDispatcherScheduler : IScheduler
-    //{
-    //    void Schedule(Action action, DispatcherPriority dispatcherPriority);
-    //    void Invoke(Action action);
-    //}
 }
