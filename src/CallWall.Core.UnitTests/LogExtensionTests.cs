@@ -313,7 +313,8 @@ namespace CallWall.Core.UnitTests
         {
             _logger.MethodEntry();
         }
-        
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public void Action(string s, DateTime dateTime)
         {
             _logger.MethodEntry(s, dateTime);
