@@ -12,7 +12,3 @@ EXIT /B 0
 :ERROR
 ECHO "Build failed."
 EXIT /B 1 
-
-
-    <!--add key="AssemblyReferenceResolveMode" value="StrongName" /-->
-	<add key="AssemblyReferenceResolveMode" value="StrongNameIgnoringVersion" />
