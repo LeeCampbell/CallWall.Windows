@@ -1,6 +1,7 @@
-using NUnit.Framework;
 using log4net;
+using NUnit.Framework;
 
+// ReSharper disable InconsistentNaming
 namespace CallWall.Core.UnitTests
 {
     public abstract class Given_a_constructed_Logfactory
@@ -14,6 +15,7 @@ namespace CallWall.Core.UnitTests
         public virtual void SetUp()
         {
             _loggerFactory = new LoggerFactory();
+            
         }
 
         [TestFixture]
@@ -36,3 +38,4 @@ namespace CallWall.Core.UnitTests
         }
     }
 }
+// ReSharper restore InconsistentNaming

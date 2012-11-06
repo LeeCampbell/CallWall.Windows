@@ -1,8 +1,7 @@
+using JetBrains.Annotations;
 using System;
 using System.Diagnostics;
 using System.Globalization;
-using System.Runtime.CompilerServices;
-using JetBrains.Annotations;
 
 namespace CallWall
 {
@@ -92,6 +91,13 @@ namespace CallWall
             logger.Trace(null, format, args);
         }
 
+        /// <summary>
+        /// Logs messages as Verbose, the lowest level.
+        /// </summary>
+        /// <param name="logger">The instance of a logger to log with</param>
+        /// <param name="exception">The related <see cref="Exception"/> for the message</param>
+        /// <param name="format">The message as a string format</param>
+        /// <param name="args">The arguments for the message</param>
         [StringFormatMethod("format")]
         public static void Verbose(this ILogger logger, Exception exception, string format, params object[] args)
         {
