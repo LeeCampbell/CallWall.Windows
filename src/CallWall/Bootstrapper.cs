@@ -39,12 +39,12 @@ namespace CallWall
         {
             base.ConfigureModuleCatalog();
 
-            //var hostModuleType = typeof(HostModule);
-            //ModuleCatalog.AddModule(new ModuleInfo
-            //{
-            //    ModuleName = hostModuleType.Name,
-            //    ModuleType = hostModuleType.AssemblyQualifiedName,
-            //});
+            var hostModuleType = typeof(HostModule);
+            ModuleCatalog.AddModule(new ModuleInfo
+            {
+                ModuleName = hostModuleType.Name,
+                ModuleType = hostModuleType.AssemblyQualifiedName,
+            });
         }
 
         protected override void ConfigureContainer()
@@ -76,12 +76,11 @@ namespace CallWall
 
         protected override DependencyObject CreateShell()
         {
-            //var shell = new MainWindow();
+            var shell = new MainWindow();
 
-            //Application.Current.MainWindow = shell;
-            //shell.Show();
-            //return shell;
-            return null;
+            Application.Current.MainWindow = shell;
+            shell.Show();
+            return shell;
         }
 
         protected override void InitializeShell()
@@ -99,5 +98,4 @@ namespace CallWall
             Container.Dispose();
         }
     }
-
 }
