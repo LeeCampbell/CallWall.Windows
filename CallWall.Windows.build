@@ -4,23 +4,16 @@
   <!-- User defined properties-->
   <PropertyGroup>
     <MSBuildCommunityTasksPath>.\</MSBuildCommunityTasksPath>
-    <!--<Major Condition="'$(Major)'==''">1</Major>
-    <Minor Condition="'$(Minor)'==''">0</Minor>
-    <Build Condition="'$(Build)'==''">0</Build>
-    <Revision Condition="'$(Revision)'==''">0</Revision>-->
     <BuildVersion Condition="'$(BuildVersion)'==''">0.0.0.1</BuildVersion>
     <Configuration Condition="'$(Configuration)'==''">Release</Configuration>
   </PropertyGroup>
 
   <ItemGroup>
     <Projects Include=".\src\CallWall\CallWall.csproj"/>
+    <Projects Include=".\src\CallWall.UnitTests\CallWall.UnitTests.csproj"/>
     <Projects Include=".\src\CallWall.Core.UnitTests\CallWall.Core.UnitTests.csproj"/>
   </ItemGroup>
-  <ItemGroup>
-    <TestAssemblies Include=".\bin\Tests\*.*Tests.dll" />
-  </ItemGroup>
-
-
+  
   <Import Project=".\tools\MSBuild.Community.Tasks.Targets" />
 
   <!-- Replace MySolutionName with the name of your solution and MyCompany with the name of you default namespace prefix (if any)-->
@@ -50,11 +43,6 @@
     </MSBuild>
   </Target>
 
-  <!--Target Name="UnitTest" DependsOnTargets="Build">
-	<NUnit Assemblies="@(TestAssemblies)"
-	       ToolPath=""/>
-  </Target-->
-
   <Target Name="Publish" DependsOnTargets="Clean; Version">
     <MSBuild Projects=".\src\CallWall\CallWall.csproj"
              Targets="Publish"
@@ -64,24 +52,9 @@
       <!--Also appears that no Publish.htm file is prduced from the command line so check this out next.... http://wallism.wordpress.com/2009/12/08/clickonce-creating-publish-page-from-msbuild/ -->
     </MSBuild>
   </Target>
-  <!--Target Name="AllTests" DependsOnTargets="UnitTests; IntegrationTests">
-    <RemoveDir Directories="$(ReportOutputDirectory)"
-         Condition="Exists($(ReportOutputDirectory))">
-    </RemoveDir>
-  </Target>
-  <Target Name="UnitTests" DependsOnTargets="Build">
-    <MakeDir Directories="$(ReportOutputDirectory)"/>
-    <Exec Command='"$(VS90COMNTOOLS)..\IDE\mstest.exe" $(UnitTests) /runconfig:..\LocalTestRun.testrunconfig  /resultsfile:"$(ReportOutputDirectory)\UnitTestResults.trx"'  />
-  </Target>
-  <Target Name="IntegrationTests" DependsOnTargets="Build">
-    <MakeDir Directories="$(ReportOutputDirectory)"/>
-    <Exec Command='"$(VS90COMNTOOLS)..\IDE\mstest.exe" $(IntegrationTests) /runconfig:..\LocalTestRun.testrunconfig  /resultsfile:"$(ReportOutputDirectory)\IntegrationTestResults.trx"' />
-  </Target-->
-
   <!--
 Delete **\*.CodeAnalysisLog.xml
 Delete **\*.lastcodeanalysissucceeded
 Delete **\*.xml
-
 -->
 </Project>

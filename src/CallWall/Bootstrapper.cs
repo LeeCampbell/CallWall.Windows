@@ -1,14 +1,13 @@
-﻿using System;
-using System.Threading;
-using System.Windows;
-using CallWall.PrismExtensions;
+﻿using CallWall.PrismExtensions;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.UnityExtensions;
 using Microsoft.Practices.Unity;
+using System;
+using System.Threading;
+using System.Windows;
 
 namespace CallWall
 {
-
     public sealed class Bootstrapper : UnityBootstrapper, IDisposable
     {
         private readonly LoggerFactory _loggerFactory;

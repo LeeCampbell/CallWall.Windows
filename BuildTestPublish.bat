@@ -3,7 +3,7 @@
 MSBuild CallWall.Windows.build
 IF %ERRORLEVEL% NEQ 0 GOTO :ERROR
 
-NUnit-console .\bin\Test\CallWall.Core.UnitTests.dll
+NUnit-console .\bin\Test\CallWall.UnitTests.dll .\bin\Test\CallWall.Core.UnitTests.dll
 
 
 EXIT /B 0
