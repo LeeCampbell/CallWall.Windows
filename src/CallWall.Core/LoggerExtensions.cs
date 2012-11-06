@@ -5,6 +5,9 @@ using System.Globalization;
 
 namespace CallWall
 {
+    /// <summary>
+    /// Extensions methods to the <see cref="ILogger"/> interface.
+    /// </summary>
     public static class LoggerExtensions
     {
         /// <summary>
@@ -156,7 +159,6 @@ namespace CallWall
             var formattedMessage = string.Format(CultureInfo.CurrentCulture, format, args);
             logger.Write(LogLevel.Trace, formattedMessage, exception);
         }
-        
         /// <summary>
         /// Logs a message as Trace, the second lowest level.
         /// </summary>
@@ -184,7 +186,6 @@ namespace CallWall
             var formattedMessage = string.Format(CultureInfo.CurrentCulture, format, args);
             logger.Write(LogLevel.Verbose, formattedMessage, exception);
         }
-
         /// <summary>
         /// Logs a message as Verbose, the lowest level.
         /// </summary>
