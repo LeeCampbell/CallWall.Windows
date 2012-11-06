@@ -134,7 +134,6 @@
     <Compile Include="PrismExtensions\GenericSupportExtension.cs" />
     <Compile Include="PrismExtensions\IWindow.cs" />
     <Compile Include="PrismExtensions\LazyResolveBuildPlanPolicy.cs" />
-    <Compile Include="PrismExtensions\LazySupportExtension.cs" />
     <Compile Include="PrismExtensions\RegionPopupBehaviors.cs" />
     <Compile Include="PrismExtensions\WindowDialogActivationBehavior.cs" />
     <Compile Include="PrismExtensions\WindowWrapper.cs" />
