@@ -128,6 +128,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PrismExtensions\DialogActivationBehavior.cs" />
+    <Compile Include="PrismExtensions\EnumerableResolutionStrategy.cs" />
+    <Compile Include="PrismExtensions\GenericSupportExtension.cs" />
+    <Compile Include="PrismExtensions\IWindow.cs" />
+    <Compile Include="PrismExtensions\LazyResolveBuildPlanPolicy.cs" />
+    <Compile Include="PrismExtensions\LazySupportExtension.cs" />
+    <Compile Include="PrismExtensions\RegionPopupBehaviors.cs" />
+    <Compile Include="PrismExtensions\WindowDialogActivationBehavior.cs" />
+    <Compile Include="PrismExtensions\WindowWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

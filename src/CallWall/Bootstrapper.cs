@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
+using CallWall.PrismExtensions;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.UnityExtensions;
 using Microsoft.Practices.Unity;
@@ -54,8 +51,8 @@ namespace CallWall
         protected override void ConfigureContainer()
         {
             base.ConfigureContainer();
-            //Container.AddNewExtension<GenericSupportExtension>();
-            //Container.RegisterInstance<ILoggerFactory>(_loggerFactory);
+            Container.AddNewExtension<GenericSupportExtension>();
+            Container.RegisterInstance<ILoggerFactory>(_loggerFactory);
         }
 
         protected override void ConfigureServiceLocator()
