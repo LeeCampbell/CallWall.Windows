@@ -98,14 +98,20 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AuthorizationStatus.cs" />
+    <Compile Include="IConnectivityConfigurator.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="ILoggerFactory.cs" />
+    <Compile Include="IProvider.cs" />
+    <Compile Include="IProviderDescription.cs" />
+    <Compile Include="IResourceScope.cs" />
     <Compile Include="ISchedulerProvider.cs" />
     <Compile Include="Log4NetLogger.cs" />
     <Compile Include="LoggerExtensions.cs" />
     <Compile Include="LoggerFactory.cs" />
     <Compile Include="LogLevel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegionNames.cs" />
     <Compile Include="ResharperAnnotations.cs" />
     <Compile Include="SchedulerProvider.cs" />
   </ItemGroup>

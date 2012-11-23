@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{ED891D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.UnitTests", "src\CallWall.UnitTests\CallWall.UnitTests.csproj", "{578B0A79-92AC-49EE-A8D8-014F98AEEAA7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.Google", "src\CallWall.Google\CallWall.Google.csproj", "{62351821-7438-4898-987E-8DEBAB0D66EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{578B0A79-92AC-49EE-A8D8-014F98AEEAA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{578B0A79-92AC-49EE-A8D8-014F98AEEAA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{578B0A79-92AC-49EE-A8D8-014F98AEEAA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62351821-7438-4898-987E-8DEBAB0D66EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62351821-7438-4898-987E-8DEBAB0D66EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62351821-7438-4898-987E-8DEBAB0D66EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62351821-7438-4898-987E-8DEBAB0D66EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

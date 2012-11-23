@@ -29,10 +29,7 @@ namespace CallWall
 
         protected override IModuleCatalog CreateModuleCatalog()
         {
-            return new DirectoryModuleCatalog
-            {
-                ModulePath = "Modules",
-            };
+            return new ModuleCatalog();
         }
 
         protected override void ConfigureModuleCatalog()
@@ -44,6 +41,12 @@ namespace CallWall
             {
                 ModuleName = hostModuleType.Name,
                 ModuleType = hostModuleType.AssemblyQualifiedName,
+            });
+            var welcomeModuleType = typeof(Welcome.WelcomeModule);
+            ModuleCatalog.AddModule(new ModuleInfo
+            {
+                ModuleName = welcomeModuleType.Name,
+                ModuleType = welcomeModuleType.AssemblyQualifiedName,
             });
         }
 

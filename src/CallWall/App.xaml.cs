@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
 namespace CallWall
 {
@@ -13,5 +7,18 @@ namespace CallWall
     /// </summary>
     public partial class App : Application
     {
+        private readonly Bootstrapper _bootstrapper = new Bootstrapper();
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            _bootstrapper.Run();
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            _bootstrapper.Dispose();
+            base.OnExit(e);
+        }
     }
 }

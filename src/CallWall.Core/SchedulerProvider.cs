@@ -14,11 +14,6 @@ namespace CallWall
         {
             get { return _dispatcherScheduler; }
         }
-        
-        //public IScheduler Concurrent
-        //{
-        //    get { return DispatcherScheduler.Current; }
-        //}
 
         public IScheduler LongRunning
         {
