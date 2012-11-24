@@ -242,11 +242,11 @@
                                 <vsm:VisualState x:Name="Expanded">
                                     <Storyboard>
                                         <DoubleAnimation BeginTime="00:00:00" Duration="00:00:00.3" Storyboard.TargetName="icon" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" To="90" />
-                                        <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="ExpandedBackground" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)">
+                                        <!--<ColorAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="ExpandedBackground" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)">
                                             <SplineColorKeyFrame KeyTime="00:00:00" Value="#FFBADDE9" />
-                                        </ColorAnimationUsingKeyFrames>
+                                        </ColorAnimationUsingKeyFrames>-->
                                         <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="ExpandedBackground" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0.5" />
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0.1" />
                                         </DoubleAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </vsm:VisualState>
@@ -309,8 +309,8 @@
                         </vsm:VisualStateManager.VisualStateGroups>
                         <Border x:Name="background" Background="{TemplateBinding Background}" CornerRadius="1,1,1,1">
                             <Grid>
-                                <Border Height="Auto" Margin="0,0,0,0" x:Name="ExpandedBackground" VerticalAlignment="Stretch" Opacity="0" Background="#FFBADDE9" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="1,1,1,1" />
-                                <Border Height="Auto" Margin="0,0,0,0" x:Name="MouseOverBackground" VerticalAlignment="Stretch" Opacity="0" Background="#FFBDBDBD" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="1,1,1,1" />
+                                <Border x:Name="ExpandedBackground" Height="Auto" Margin="0,0,0,0" VerticalAlignment="Stretch" Opacity="0" Background="#FFFFFF" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="1,1,1,1" />
+                                <Border x:Name="MouseOverBackground" Height="Auto" Margin="0,0,0,0"  VerticalAlignment="Stretch" Opacity="0" Background="#FFBDBDBD" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="1,1,1,1" />
                                 <Grid Background="Transparent">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" x:Name="cd0" />
@@ -340,7 +340,11 @@
                                             </Path.RenderTransform>
                                         </Path>
                                     </Grid>
-                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="6,6,6,0" x:Name="header" Grid.Column="1" Grid.Row="0" Grid.RowSpan="1" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" />
+                                    <ContentPresenter x:Name="header" 
+                                                      Grid.Column="1" Grid.Row="0" Grid.RowSpan="1" 
+                                                      Margin="6,6,6,0" 
+                                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                      Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" />
                                 </Grid>
                             </Grid>
                         </Border>
@@ -351,6 +355,8 @@
         </Setter>
     </Style>
 
+    <Style x:Key="DefaultAccordionButtonStyle" TargetType="layoutPrimitivesToolkit:AccordionButton" BasedOn="{StaticResource {x:Type layoutPrimitivesToolkit:AccordionButton}}"/>
+    
     <!--  layoutPrimitivesToolkit:ExpandableContentControl  -->
     <Style TargetType="layoutPrimitivesToolkit:ExpandableContentControl">
         <Setter Property="IsEnabled" Value="true" />
@@ -430,6 +436,7 @@
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
         <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="AccordionButtonStyle" Value="{StaticResource DefaultAccordionButtonStyle}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="layoutToolkit:AccordionItem">

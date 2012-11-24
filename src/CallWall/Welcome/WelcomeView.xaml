@@ -29,7 +29,7 @@
                              BorderThickness="0"
                              SelectionSequence="Simultaneous"
                              SelectionMode="One">
-        <layoutToolkit:AccordionItem Header="Step 1" Background="#804080" >
+        <layoutToolkit:AccordionItem Header="Step 1" Background="#806080" >
             <DockPanel >
                 <StackPanel DockPanel.Dock="Top">
                     <TextBlock Style="{DynamicResource TitleTextStyle}">Welcome to CallWall</TextBlock>
@@ -39,11 +39,15 @@
                 <ToggleButton>Next</ToggleButton>
             </DockPanel>
         </layoutToolkit:AccordionItem>
-        <layoutToolkit:AccordionItem Header="Step 2" Background="#802080">
-            <TextBlock>Connection Settings</TextBlock>
+        <layoutToolkit:AccordionItem Header="Step 2" Background="#804080">
+            <TextBlock Text="Connectivity"/>
         </layoutToolkit:AccordionItem>
-        <layoutToolkit:AccordionItem Header="Step 3" Background="#800080">
-            <TextBlock>Providers Settings</TextBlock>
+        <layoutToolkit:AccordionItem Header="Step 3" Background="#802080">
+            <TextBlock Text="Providers"/>
         </layoutToolkit:AccordionItem>
+        <layoutToolkit:AccordionItem Header="Step 4" Background="#800080">
+            <TextBlock Text="Test page"/>
+        </layoutToolkit:AccordionItem>
+
     </layoutToolkit:Accordion>
 </UserControl>

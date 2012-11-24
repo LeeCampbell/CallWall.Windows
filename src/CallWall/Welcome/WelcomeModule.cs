@@ -25,6 +25,12 @@ namespace CallWall.Welcome
             var welcomeView = _container.Resolve<WelcomeView>();
             _regionManager.AddToRegion("ModalRegion", welcomeView);
 
+            //Create a sub region manger
+            //Load the IConnectivitySettingsView and the IProviderSettingsView into the Step Region (ItemsControl that is the accordion?)
+            //When the I*SettingsView.Done/Closed/Exit event is raised, then move to the next view. If the last view, then show the test screen.
+            //The Test screen will explain that for a test we will emulate what a call from your own number would be like.
+            //Invoke the Incoming event with the current user' data
+
         }
     }
 }
