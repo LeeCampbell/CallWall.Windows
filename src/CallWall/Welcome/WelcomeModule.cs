@@ -19,7 +19,6 @@ namespace CallWall.Welcome
 
             var welcomeController = _container.Resolve<IWelcomeController>();
             welcomeController.Start();
-            //TODO: Should dispose of the welcomeController? THere are no resources, so GC can really just cean up here...
         }
     }
 }

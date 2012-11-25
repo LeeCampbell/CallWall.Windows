@@ -36,25 +36,9 @@ namespace CallWall
         {
             base.ConfigureModuleCatalog();
 
-            var hostModuleType = typeof(HostModule);
-            ModuleCatalog.AddModule(new ModuleInfo
-            {
-                ModuleName = hostModuleType.Name,
-                ModuleType = hostModuleType.AssemblyQualifiedName,
-            });
-            var settingModuleType = typeof(Settings.SettingsModule);
-            ModuleCatalog.AddModule(new ModuleInfo
-            {
-                ModuleName = settingModuleType.Name,
-                ModuleType = settingModuleType.AssemblyQualifiedName,
-            });
-
-            var welcomeModuleType = typeof(Welcome.WelcomeModule);
-            ModuleCatalog.AddModule(new ModuleInfo
-            {
-                ModuleName = welcomeModuleType.Name,
-                ModuleType = welcomeModuleType.AssemblyQualifiedName,
-            });
+            ModuleCatalog.Add<HostModule>();
+            ModuleCatalog.Add<Settings.SettingsModule>();
+            ModuleCatalog.Add<Welcome.WelcomeModule>();
         }
 
         protected override void ConfigureContainer()

@@ -2,7 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:layoutToolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Layout.Toolkit" 
-             Width="800" Height="400"
+             xmlns:cal="clr-namespace:Microsoft.Practices.Prism.Regions;assembly=Microsoft.Practices.Prism"
+             xmlns:CallWall="clr-namespace:CallWall" Width="800" Height="400"
              Foreground="White">
     <Control.Resources>
         <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
@@ -40,10 +41,10 @@
             </DockPanel>
         </layoutToolkit:AccordionItem>
         <layoutToolkit:AccordionItem Header="Step 2" Background="#804080">
-            <TextBlock Text="Connectivity"/>
+            <ContentControl cal:RegionManager.RegionName="{x:Static CallWall:ShellRegionNames.ConnectivitySettingsRegion}"/>
         </layoutToolkit:AccordionItem>
         <layoutToolkit:AccordionItem Header="Step 3" Background="#802080">
-            <TextBlock Text="Providers"/>
+            <ContentControl cal:RegionManager.RegionName="{x:Static CallWall:ShellRegionNames.ProvidersSettingsRegion}"/>
         </layoutToolkit:AccordionItem>
         <layoutToolkit:AccordionItem Header="Step 4" Background="#800080">
             <TextBlock Text="Test page"/>

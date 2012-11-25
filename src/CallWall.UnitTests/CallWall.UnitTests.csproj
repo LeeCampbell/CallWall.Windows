@@ -84,6 +84,8 @@
   <ItemGroup>
     <Compile Include="HostModuleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegionManagerStub.cs" />
+    <Compile Include="Settings\SettingsModuleFixture.cs" />
     <Compile Include="Welcome\WelcomeControllerFixture.cs" />
     <Compile Include="Welcome\WelcomeModuleFixture.cs" />
   </ItemGroup>

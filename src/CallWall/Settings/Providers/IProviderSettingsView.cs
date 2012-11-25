@@ -2,6 +2,6 @@
 {
     public interface IProviderSettingsView
     {
-        ProviderSettingsViewModel ViewModel { get; }
+        IProviderSettingsViewModel ViewModel { get; }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using CallWall.Welcome;
-using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;

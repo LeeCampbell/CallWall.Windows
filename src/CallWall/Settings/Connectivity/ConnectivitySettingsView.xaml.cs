@@ -7,9 +7,9 @@ namespace CallWall.Settings.Connectivity
     /// </summary>
     public partial class ConnectivitySettingsView : UserControl, IConnectivitySettingsView
     {
-        private readonly ConnectivitySettingsViewModel _viewModel;
+        private readonly IConnectivitySettingsViewModel _viewModel;
 
-        public ConnectivitySettingsView(ConnectivitySettingsViewModel viewModel)
+        public ConnectivitySettingsView(IConnectivitySettingsViewModel viewModel)
         {
             _viewModel = viewModel;
             InitializeComponent();
@@ -17,7 +17,7 @@ namespace CallWall.Settings.Connectivity
 
         #region Implementation of IConnectivitySettingsView
 
-        public ConnectivitySettingsViewModel ViewModel
+        public IConnectivitySettingsViewModel ViewModel
         {
             get { return _viewModel; }
         }

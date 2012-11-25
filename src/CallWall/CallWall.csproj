@@ -119,13 +119,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="PrismExtensions\ModuleCatalogExtensions.cs" />
     <Compile Include="Settings\Bluetooth\BluetoothConnectivityConfigurator.cs" />
+    <Compile Include="Settings\Connectivity\ConnectivitySettingsModel.cs" />
     <Compile Include="Settings\Connectivity\ConnectivitySettingsView.xaml.cs">
       <DependentUpon>ConnectivitySettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\Connectivity\ConnectivitySettingsViewModel.cs" />
+    <Compile Include="Settings\Connectivity\IConnectivitySettingsModel.cs" />
     <Compile Include="Settings\Connectivity\IConnectivitySettingsView.cs" />
+    <Compile Include="Settings\Connectivity\IConnectivitySettingsViewModel.cs" />
+    <Compile Include="Settings\Providers\IProviderSettingsModel.cs" />
     <Compile Include="Settings\Providers\IProviderSettingsView.cs" />
+    <Compile Include="Settings\Providers\IProviderSettingsViewModel.cs" />
     <Compile Include="Settings\Providers\ProviderSettingsView.xaml.cs">
       <DependentUpon>ProviderSettingsView.xaml</DependentUpon>
     </Compile>
@@ -136,6 +142,7 @@
     </Compile>
     <Compile Include="Settings\SettingsViewModel.cs" />
     <Compile Include="Settings\SubView.cs" />
+    <Compile Include="ShellRegionNames.cs" />
     <Compile Include="Welcome\IWelcomeController.cs" />
     <Compile Include="Welcome\IWelcomeView.cs" />
     <Compile Include="Welcome\WelcomeController.cs" />

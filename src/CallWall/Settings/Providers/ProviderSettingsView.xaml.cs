@@ -7,9 +7,9 @@ namespace CallWall.Settings.Providers
     /// </summary>
     public partial class ProviderSettingsView : UserControl, IProviderSettingsView
     {
-        private ProviderSettingsViewModel _viewModel;
+        private readonly IProviderSettingsViewModel _viewModel;
 
-        public ProviderSettingsView(ProviderSettingsViewModel viewModel)
+        public ProviderSettingsView(IProviderSettingsViewModel viewModel)
         {
             _viewModel = viewModel;
             InitializeComponent();
@@ -17,7 +17,7 @@ namespace CallWall.Settings.Providers
 
         #region Implementation of IProviderSettingsView
 
-        public ProviderSettingsViewModel ViewModel
+        public IProviderSettingsViewModel ViewModel
         {
             get { return _viewModel; }
         }

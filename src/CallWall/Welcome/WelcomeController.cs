@@ -34,8 +34,10 @@ namespace CallWall.Welcome
                 //When the I*SettingsView.Done/Closed/Exit event is raised, then move to the next view. If the last view, then show the test screen.
                 //The Test screen will explain that for a test we will emulate what a call from your own number would be like.
                 //Invoke the Incoming event with the current user' data
-                
-                _regionManager.AddToRegion("ModalRegion", _welcomeView);    
+
+                _regionManager.AddToRegion(RegionNames.Modal, _welcomeView);
+                _regionManager.AddToRegion(ShellRegionNames.ConnectivitySettingsRegion, _connectivitySettingsView);
+                _regionManager.AddToRegion(ShellRegionNames.ProvidersSettingsRegion, _providerSettingsView);
             }
         }
 

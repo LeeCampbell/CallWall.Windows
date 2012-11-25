@@ -1,7 +1,4 @@
-﻿using System.Text;
-using System.Threading.Tasks;
-using CallWall.Welcome;
-using Microsoft.Practices.Prism.Modularity;
+﻿using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Unity;
 
 namespace CallWall.Settings
@@ -17,7 +14,11 @@ namespace CallWall.Settings
 
         public void Initialize()
         {
+            _container.RegisterType<Connectivity.IConnectivitySettingsModel, Connectivity.ConnectivitySettingsModel>(new TransientLifetimeManager());
+            _container.RegisterType<Connectivity.IConnectivitySettingsViewModel, Connectivity.ConnectivitySettingsViewModel>(new TransientLifetimeManager());
             _container.RegisterType<Connectivity.IConnectivitySettingsView, Connectivity.ConnectivitySettingsView>(new TransientLifetimeManager());
+            _container.RegisterType<Providers.IProviderSettingsModel, Providers.ProviderSettingsModel>(new TransientLifetimeManager());
+            _container.RegisterType<Providers.IProviderSettingsViewModel, Providers.ProviderSettingsViewModel>(new TransientLifetimeManager());
             _container.RegisterType<Providers.IProviderSettingsView, Providers.ProviderSettingsView>(new TransientLifetimeManager());
         }
     }

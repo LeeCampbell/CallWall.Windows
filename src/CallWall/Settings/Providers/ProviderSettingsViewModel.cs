@@ -1,10 +1,17 @@
 namespace CallWall.Settings.Providers
 {
-    public class ProviderSettingsViewModel
+    public sealed class ProviderSettingsViewModel : IProviderSettingsViewModel
     {
+        private readonly IProviderSettingsModel _providerSettingsModel;
+
+        public ProviderSettingsViewModel(IProviderSettingsModel providerSettingsModel)
+        {
+            _providerSettingsModel = providerSettingsModel;
+        }
+
         public bool RequiresSetup
         {
-            get { return true; }
+            get { return _providerSettingsModel.RequiresSetup; }
         }
     }
 }

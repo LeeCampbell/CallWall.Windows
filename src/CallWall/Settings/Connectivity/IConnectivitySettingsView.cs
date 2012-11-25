@@ -2,6 +2,6 @@
 {
     public interface IConnectivitySettingsView
     {
-        ConnectivitySettingsViewModel ViewModel { get; }
+        IConnectivitySettingsViewModel ViewModel { get; }
     }
 }

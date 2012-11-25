@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:cal="clr-namespace:Microsoft.Practices.Prism.Regions;assembly=Microsoft.Practices.Prism"
-        Title="MainWindow"
+        xmlns:CallWall="clr-namespace:CallWall;assembly=CallWall.Core" Title="MainWindow"
         WindowState="Maximized"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -11,6 +11,6 @@
         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource TitleTextStyle}" Margin="120,80">
             Call Wall
         </TextBlock>
-        <ContentControl cal:RegionManager.RegionName="ModalRegion"/>
+        <ContentControl cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.Modal}"/>
     </Grid>
 </Window>

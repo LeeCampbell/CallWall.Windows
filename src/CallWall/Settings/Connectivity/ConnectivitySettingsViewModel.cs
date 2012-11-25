@@ -1,10 +1,17 @@
 namespace CallWall.Settings.Connectivity
 {
-    public class ConnectivitySettingsViewModel
+    public sealed class ConnectivitySettingsViewModel : IConnectivitySettingsViewModel
     {
+        private readonly IConnectivitySettingsModel _connectivitySettingsModel;
+
+        public ConnectivitySettingsViewModel(IConnectivitySettingsModel connectivitySettingsModel)
+        {
+            _connectivitySettingsModel = connectivitySettingsModel;
+        }
+
         public bool RequiresSetup
         {
-            get { return true; }
+            get { return _connectivitySettingsModel.RequiresSetup; }
         }
     }
 }
