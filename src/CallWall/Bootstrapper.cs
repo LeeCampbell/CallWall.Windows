@@ -42,6 +42,13 @@ namespace CallWall
                 ModuleName = hostModuleType.Name,
                 ModuleType = hostModuleType.AssemblyQualifiedName,
             });
+            var settingModuleType = typeof(Settings.SettingsModule);
+            ModuleCatalog.AddModule(new ModuleInfo
+            {
+                ModuleName = settingModuleType.Name,
+                ModuleType = settingModuleType.AssemblyQualifiedName,
+            });
+
             var welcomeModuleType = typeof(Welcome.WelcomeModule);
             ModuleCatalog.AddModule(new ModuleInfo
             {

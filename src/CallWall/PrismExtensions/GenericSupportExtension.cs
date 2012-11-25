@@ -21,8 +21,6 @@ namespace CallWall.PrismExtensions
             // Lazy<T> policy
             Context.Policies.Set<IBuildPlanPolicy>(
                 new LazyResolveBuildPlanPolicy(), typeof(Lazy<>));
-
-            //TODO: Potentially could add Func<T> policy for anon factories
         }
     }
 }

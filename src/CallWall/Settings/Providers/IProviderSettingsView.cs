@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CallWall.Settings.Providers
+﻿namespace CallWall.Settings.Providers
 {
     public interface IProviderSettingsView
     {
+        ProviderSettingsViewModel ViewModel { get; }
     }
 }

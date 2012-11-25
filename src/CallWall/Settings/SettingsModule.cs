@@ -1,18 +1,24 @@
 ﻿using System.Text;
 using System.Threading.Tasks;
+using CallWall.Welcome;
+using Microsoft.Practices.Prism.Modularity;
+using Microsoft.Practices.Unity;
 
 namespace CallWall.Settings
 {
-    public sealed class SettingsModule
+    public sealed class SettingsModule : IModule
     {
-        public SettingsModule()
-        {
+        private readonly IUnityContainer _container;
 
+        public SettingsModule(IUnityContainer container)
+        {
+            _container = container;
         }
 
-        public void ShowSettings()
+        public void Initialize()
         {
-
+            _container.RegisterType<Connectivity.IConnectivitySettingsView, Connectivity.ConnectivitySettingsView>(new TransientLifetimeManager());
+            _container.RegisterType<Providers.IProviderSettingsView, Providers.ProviderSettingsView>(new TransientLifetimeManager());
         }
     }
 

@@ -120,14 +120,25 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Settings\Bluetooth\BluetoothConnectivityConfigurator.cs" />
+    <Compile Include="Settings\Connectivity\ConnectivitySettingsView.xaml.cs">
+      <DependentUpon>ConnectivitySettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Connectivity\ConnectivitySettingsViewModel.cs" />
     <Compile Include="Settings\Connectivity\IConnectivitySettingsView.cs" />
     <Compile Include="Settings\Providers\IProviderSettingsView.cs" />
+    <Compile Include="Settings\Providers\ProviderSettingsView.xaml.cs">
+      <DependentUpon>ProviderSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Providers\ProviderSettingsViewModel.cs" />
     <Compile Include="Settings\SettingsModule.cs" />
     <Compile Include="Settings\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\SettingsViewModel.cs" />
     <Compile Include="Settings\SubView.cs" />
+    <Compile Include="Welcome\IWelcomeController.cs" />
+    <Compile Include="Welcome\IWelcomeView.cs" />
+    <Compile Include="Welcome\WelcomeController.cs" />
     <Compile Include="Welcome\WelcomeModule.cs" />
     <Compile Include="Welcome\WelcomeView.xaml.cs">
       <DependentUpon>WelcomeView.xaml</DependentUpon>
@@ -149,6 +160,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Settings\Connectivity\ConnectivitySettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\Providers\ProviderSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Settings\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

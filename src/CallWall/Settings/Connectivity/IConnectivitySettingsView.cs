@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CallWall.Settings.Connectivity
+﻿namespace CallWall.Settings.Connectivity
 {
     public interface IConnectivitySettingsView
     {
+        ConnectivitySettingsViewModel ViewModel { get; }
     }
 }
