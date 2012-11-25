@@ -119,7 +119,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="PrismExtensions\AccordionItemsSourceSyncBehavior.cs" />
     <Compile Include="PrismExtensions\ModuleCatalogExtensions.cs" />
+    <Compile Include="PrismExtensions\AccordionRegionAdapter.cs" />
     <Compile Include="Settings\Bluetooth\BluetoothConnectivityConfigurator.cs" />
     <Compile Include="Settings\Connectivity\ConnectivitySettingsModel.cs" />
     <Compile Include="Settings\Connectivity\ConnectivitySettingsView.xaml.cs">
@@ -144,9 +146,15 @@
     <Compile Include="Settings\SubView.cs" />
     <Compile Include="ShellRegionNames.cs" />
     <Compile Include="Welcome\IWelcomeController.cs" />
+    <Compile Include="Welcome\IWelcomeStep1.cs" />
     <Compile Include="Welcome\IWelcomeView.cs" />
     <Compile Include="Welcome\WelcomeController.cs" />
     <Compile Include="Welcome\WelcomeModule.cs" />
+    <Compile Include="Welcome\WelcomeSettingStepBackgroundConverter.cs" />
+    <Compile Include="Welcome\WelcomeSettingStepHeaderConverter.cs" />
+    <Compile Include="Welcome\WelcomeStep1View.xaml.cs">
+      <DependentUpon>WelcomeStep1View.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Welcome\WelcomeView.xaml.cs">
       <DependentUpon>WelcomeView.xaml</DependentUpon>
     </Compile>
@@ -184,6 +192,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\WpfToolkit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Welcome\WelcomeStep1View.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

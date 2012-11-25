@@ -3,21 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:layoutToolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Layout.Toolkit" 
              xmlns:cal="clr-namespace:Microsoft.Practices.Prism.Regions;assembly=Microsoft.Practices.Prism"
-             xmlns:CallWall="clr-namespace:CallWall" Width="800" Height="400"
+             xmlns:CallWall="clr-namespace:CallWall" xmlns:Welcome="clr-namespace:CallWall.Welcome" Width="800" Height="400"
              Foreground="White">
     <Control.Resources>
-        <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
-            <Setter Property="HorizontalAlignment" Value="Right"/>
-            <Setter Property="VerticalAlignment" Value="Bottom"/>
-            <Setter Property="Width" Value="120"/>
-            <Setter Property="Height" Value="30"/>
-            <Setter Property="Background" Value="LightBlue"/>
-            <Setter Property="BorderBrush" Value="LightGray"/>
-            <Setter Property="Foreground" Value="Black"/>
-        </Style>
+        <Welcome:WelcomeSettingStepHeaderConverter x:Key="stepHeaderConverter"/>
+        <Welcome:WelcomeSettingStepBackgroundConverter x:Key="stepBackgroundConverter"/>
         <Style TargetType="layoutToolkit:AccordionItem" BasedOn="{StaticResource {x:Type layoutToolkit:AccordionItem}}">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Header" Value="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource stepHeaderConverter}}"/>
+            <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource stepBackgroundConverter}}"/>
         </Style>
     </Control.Resources>
     <!--TODO: Localise the text-->
@@ -29,26 +24,6 @@
                              HorizontalContentAlignment="Stretch"
                              BorderThickness="0"
                              SelectionSequence="Simultaneous"
-                             SelectionMode="One">
-        <layoutToolkit:AccordionItem Header="Step 1" Background="#806080" >
-            <DockPanel >
-                <StackPanel DockPanel.Dock="Top">
-                    <TextBlock Style="{DynamicResource TitleTextStyle}">Welcome to CallWall</TextBlock>
-                    <TextBlock>First we need to set up how you want to pair your Phone to your PC.</TextBlock>
-                    <TextBlock>Then we need to set up where you want to source your data from</TextBlock>
-                </StackPanel>
-                <ToggleButton>Next</ToggleButton>
-            </DockPanel>
-        </layoutToolkit:AccordionItem>
-        <layoutToolkit:AccordionItem Header="Step 2" Background="#804080">
-            <ContentControl cal:RegionManager.RegionName="{x:Static CallWall:ShellRegionNames.ConnectivitySettingsRegion}"/>
-        </layoutToolkit:AccordionItem>
-        <layoutToolkit:AccordionItem Header="Step 3" Background="#802080">
-            <ContentControl cal:RegionManager.RegionName="{x:Static CallWall:ShellRegionNames.ProvidersSettingsRegion}"/>
-        </layoutToolkit:AccordionItem>
-        <layoutToolkit:AccordionItem Header="Step 4" Background="#800080">
-            <TextBlock Text="Test page"/>
-        </layoutToolkit:AccordionItem>
-
-    </layoutToolkit:Accordion>
+                             SelectionMode="One"
+                             cal:RegionManager.RegionName="{x:Static CallWall:ShellRegionNames.WelcomeSettingsRegion}" />
 </UserControl>

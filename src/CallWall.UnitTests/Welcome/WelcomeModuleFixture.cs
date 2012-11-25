@@ -35,15 +35,21 @@ namespace CallWall.UnitTests.Welcome
             }
 
             [Test]
+            public void Should_register_WelcomeController_to_container()
+            {
+                _containerMock.Verify(c => c.RegisterType(typeof(IWelcomeController), typeof(WelcomeController), (string)null, It.IsAny<TransientLifetimeManager>()));
+            }
+
+            [Test]
             public void Should_register_WelcomeView_to_container()
             {
                 _containerMock.Verify(c => c.RegisterType(typeof(IWelcomeView), typeof(WelcomeView), (string)null, It.IsAny<TransientLifetimeManager>()));
             }
 
             [Test]
-            public void Should_register_WelcomeController_to_container()
+            public void Should_register_WelcomeStep1View_to_container()
             {
-                _containerMock.Verify(c => c.RegisterType(typeof(IWelcomeController), typeof(WelcomeController), (string)null, It.IsAny<TransientLifetimeManager>()));
+                _containerMock.Verify(c => c.RegisterType(typeof(IWelcomeStep1View), typeof(WelcomeStep1View), (string)null, It.IsAny<TransientLifetimeManager>()));
             }
 
             [Test]

@@ -1,6 +1,8 @@
 ﻿using CallWall.PrismExtensions;
 using Microsoft.Practices.Prism.Modularity;
+using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Prism.UnityExtensions;
+using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using System;
 using System.Threading;
@@ -55,7 +57,9 @@ namespace CallWall
 
         protected override Microsoft.Practices.Prism.Regions.RegionAdapterMappings ConfigureRegionAdapterMappings()
         {
-            return base.ConfigureRegionAdapterMappings();
+            var baseMappings = base.ConfigureRegionAdapterMappings();
+            baseMappings.RegisterMapping(typeof(System.Windows.Controls.Accordion), ServiceLocator.Current.GetInstance<AccordionRegionAdapter>());
+            return baseMappings;
         }
 
         protected override Microsoft.Practices.Prism.Regions.IRegionBehaviorFactory ConfigureDefaultRegionBehaviors()

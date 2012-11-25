@@ -1,4 +1,5 @@
-﻿using CallWall.Settings.Connectivity;
+﻿using System;
+using CallWall.Settings.Connectivity;
 using CallWall.Settings.Providers;
 using CallWall.Welcome;
 using Microsoft.Practices.Prism.Regions;
@@ -19,8 +20,7 @@ namespace CallWall.UnitTests.Welcome
         private Mock<IConnectivitySettingsViewModel> _connectivitySettingsVMMock;
         private Mock<IProviderSettingsView> _providerSettingsViewMock;
         private Mock<IConnectivitySettingsView> _connectivitySettingsViewMock;
-        private Mock<IRegion> _connectivitySettingsRegion;
-        private Mock<IRegion> _providersSettingsRegion;
+        private Mock<IRegion> _welcomeSettingsRegion;
 
         private Given_a_started_WelcomeController()
         { }
@@ -30,8 +30,7 @@ namespace CallWall.UnitTests.Welcome
         {
             _regionManagerStub = new RegionManagerStub();
             _modalRegion = _regionManagerStub.CreateAndAddMock(RegionNames.Modal);
-            _connectivitySettingsRegion = _regionManagerStub.CreateAndAddMock(ShellRegionNames.ConnectivitySettingsRegion);
-            _providersSettingsRegion = _regionManagerStub.CreateAndAddMock(ShellRegionNames.ProvidersSettingsRegion);
+            _welcomeSettingsRegion = _regionManagerStub.CreateAndAddMock(ShellRegionNames.WelcomeSettingsRegion);
 
             _welcomeViewMock = new Mock<IWelcomeView>();
 
@@ -45,6 +44,7 @@ namespace CallWall.UnitTests.Welcome
 
             _welcomeController = new WelcomeController(_regionManagerStub,
                 _welcomeViewMock.Object,
+                new Mock<IWelcomeStep1View>().Object,
                 _connectivitySettingsViewMock.Object,
                 _providerSettingsViewMock.Object);
         }
@@ -81,15 +81,15 @@ namespace CallWall.UnitTests.Welcome
             }
 
             [Test]
-            public void Should_show_Connectivity_settings_view_in_inactive_Connectivity_region()
+            public void Should_show_Connectivity_settings_view_in_inactive_WelcomeSettingsRegion_region()
             {
-                _connectivitySettingsRegion.Verify(r => r.Add(_connectivitySettingsViewMock.Object), Times.Once());
+                _welcomeSettingsRegion.Verify(r => r.Add(_connectivitySettingsViewMock.Object), Times.Once());
             }
 
             [Test]
-            public void Should_show_Provider_settings_view_in_inactive_Provider_region()
+            public void Should_show_Provider_settings_view_in_inactive_WelcomeSettingsRegion_region()
             {
-                _providersSettingsRegion.Verify(r => r.Add(_providerSettingsViewMock.Object), Times.Once());
+                _welcomeSettingsRegion.Verify(r => r.Add(_providerSettingsViewMock.Object), Times.Once());
             }
         }
 
@@ -113,18 +113,63 @@ namespace CallWall.UnitTests.Welcome
 
     public abstract class Given_the_WelcomeModule_is_showing_the_WelcomeView
     {
+        #region Setup
+        private WelcomeController _welcomeController;
+        private RegionManagerStub _regionManagerStub;
+        private Mock<IWelcomeView> _welcomeViewMock;
+        private Mock<IRegion> _modalRegion;
+        private Mock<IProviderSettingsViewModel> _providerSettingsVMMock;
+        private Mock<IConnectivitySettingsViewModel> _connectivitySettingsVMMock;
+        private Mock<IProviderSettingsView> _providerSettingsViewMock;
+        private Mock<IConnectivitySettingsView> _connectivitySettingsViewMock;
+        private Mock<IRegion> _welcomeSettingsRegion;
+
         private Given_the_WelcomeModule_is_showing_the_WelcomeView()
         { }
 
+        [SetUp]
+        public virtual void SetUp()
+        {
+            _regionManagerStub = new RegionManagerStub();
+            _modalRegion = _regionManagerStub.CreateAndAddMock(RegionNames.Modal);
+            _welcomeSettingsRegion = _regionManagerStub.CreateAndAddMock(ShellRegionNames.WelcomeSettingsRegion);
 
+            _welcomeViewMock = new Mock<IWelcomeView>();
+
+            _connectivitySettingsVMMock = new Mock<IConnectivitySettingsViewModel>();
+            _connectivitySettingsViewMock = new Mock<IConnectivitySettingsView>();
+            _connectivitySettingsViewMock.Setup(v => v.ViewModel).Returns(_connectivitySettingsVMMock.Object);
+
+            _providerSettingsVMMock = new Mock<IProviderSettingsViewModel>();
+            _providerSettingsViewMock = new Mock<IProviderSettingsView>();
+            _providerSettingsViewMock.Setup(v => v.ViewModel).Returns(_providerSettingsVMMock.Object);
+
+            _welcomeController = new WelcomeController(_regionManagerStub,
+                _welcomeViewMock.Object,
+                new Mock<IWelcomeStep1View>().Object,
+                _connectivitySettingsViewMock.Object,
+                _providerSettingsViewMock.Object);
+
+            _connectivitySettingsVMMock.SetupGet(vm => vm.RequiresSetup).Returns(true);
+            _providerSettingsVMMock.SetupGet(vm => vm.RequiresSetup).Returns(true);
+
+            _welcomeController.Start();
+        }
+        #endregion
 
         [TestFixture]
         public class When_the_Connectivity_settings_view_is_closed : Given_the_WelcomeModule_is_showing_the_WelcomeView
         {
+            public override void SetUp()
+            {
+                base.SetUp();
+                _connectivitySettingsVMMock.Raise(vm => vm.Closed += (sender, args) => { }, EventArgs.Empty);
+            }
+
             [Test]
             public void Should_activate_the_Provider_settings_view()
             {
-                Assert.Inconclusive();
+                _welcomeSettingsRegion.Verify(r => r.Activate(_providerSettingsViewMock.Object), Times.Once());
             }
         }
 

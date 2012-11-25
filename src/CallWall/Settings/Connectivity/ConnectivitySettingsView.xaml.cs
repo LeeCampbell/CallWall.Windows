@@ -11,7 +11,7 @@ namespace CallWall.Settings.Connectivity
 
         public ConnectivitySettingsView(IConnectivitySettingsViewModel viewModel)
         {
-            _viewModel = viewModel;
+            DataContext = _viewModel = viewModel;
             InitializeComponent();
         }
 
