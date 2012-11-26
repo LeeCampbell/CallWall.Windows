@@ -11,10 +11,7 @@ namespace CallWall.Welcome
         {
             var accoridion = value as AccordionItem;
             if (accoridion == null) return string.Empty;
-            var accordionDataContext = accoridion.DataContext;
-
-            var parent = accoridion.FindParent<Accordion>();
-            var index = parent.Items.IndexOf(accordionDataContext);
+            var index = accoridion.IndexInParent<Accordion>();
             return string.Format("Step {0}", index + 1);
         }
 

@@ -9,7 +9,7 @@ using NUnit.Framework;
 // ReSharper disable InconsistentNaming
 namespace CallWall.UnitTests.Welcome
 {
-    public abstract class Given_a_started_WelcomeController
+    public abstract class Given_a_constructed_WelcomeController
     {
         #region Setup
         private WelcomeController _welcomeController;
@@ -21,8 +21,10 @@ namespace CallWall.UnitTests.Welcome
         private Mock<IProviderSettingsView> _providerSettingsViewMock;
         private Mock<IConnectivitySettingsView> _connectivitySettingsViewMock;
         private Mock<IRegion> _welcomeSettingsRegion;
+        private Mock<IWelcomeStep1View> _welcomeStep1ViewMock;
+        private Mock<IDemoView> _demoViewMock;
 
-        private Given_a_started_WelcomeController()
+        private Given_a_constructed_WelcomeController()
         { }
 
         [SetUp]
@@ -42,16 +44,19 @@ namespace CallWall.UnitTests.Welcome
             _providerSettingsViewMock = new Mock<IProviderSettingsView>();
             _providerSettingsViewMock.Setup(v => v.ViewModel).Returns(_providerSettingsVMMock.Object);
 
+            _welcomeStep1ViewMock = new Mock<IWelcomeStep1View>();
+            _demoViewMock = new Mock<IDemoView>();
+
             _welcomeController = new WelcomeController(_regionManagerStub,
                 _welcomeViewMock.Object,
-                new Mock<IWelcomeStep1View>().Object,
+                _welcomeStep1ViewMock.Object,
                 _connectivitySettingsViewMock.Object,
                 _providerSettingsViewMock.Object, 
-                new Mock<IDemoView>().Object);
+                _demoViewMock.Object);
         }
         #endregion
 
-        public abstract class When_user_has_not_been_set_up : Given_a_started_WelcomeController
+        public abstract class When_user_has_not_been_set_up : Given_a_constructed_WelcomeController
         {
             [TestFixture]
             public sealed class With_Connectivity_requiring_setup : When_user_has_not_been_set_up
@@ -95,7 +100,7 @@ namespace CallWall.UnitTests.Welcome
         }
 
         [TestFixture]
-        public class When_user_has_been_set_up : Given_a_started_WelcomeController
+        public class When_user_has_been_set_up : Given_a_constructed_WelcomeController
         {
             public override void SetUp()
             {
@@ -110,119 +115,85 @@ namespace CallWall.UnitTests.Welcome
                 _modalRegion.Verify(r => r.Add(_welcomeViewMock.Object), Times.Never());
             }
         }
-    }
 
-    public abstract class Given_the_WelcomeModule_is_showing_the_WelcomeView
-    {
-        #region Setup
-        private WelcomeController _welcomeController;
-        private RegionManagerStub _regionManagerStub;
-        private Mock<IWelcomeView> _welcomeViewMock;
-        private Mock<IRegion> _modalRegion;
-        private Mock<IProviderSettingsViewModel> _providerSettingsVMMock;
-        private Mock<IConnectivitySettingsViewModel> _connectivitySettingsVMMock;
-        private Mock<IProviderSettingsView> _providerSettingsViewMock;
-        private Mock<IConnectivitySettingsView> _connectivitySettingsViewMock;
-        private Mock<IRegion> _welcomeSettingsRegion;
-        private Mock<IWelcomeStep1View> _welcomeStep1ViewMock;
-        private Mock<IDemoView> _demoViewMock;
-
-        private Given_the_WelcomeModule_is_showing_the_WelcomeView()
-        { }
-
-        [SetUp]
-        public virtual void SetUp()
+        public abstract class With_the_WelcomeModule_is_showing_the_WelcomeView : Given_a_constructed_WelcomeController
         {
-            _regionManagerStub = new RegionManagerStub();
-            _modalRegion = _regionManagerStub.CreateAndAddMock(RegionNames.Modal);
-            _welcomeSettingsRegion = _regionManagerStub.CreateAndAddMock(ShellRegionNames.WelcomeSettingsRegion);
+            #region Setup
+            
+            private With_the_WelcomeModule_is_showing_the_WelcomeView()
+            { }
 
-            _welcomeViewMock = new Mock<IWelcomeView>();
-
-            _connectivitySettingsVMMock = new Mock<IConnectivitySettingsViewModel>();
-            _connectivitySettingsViewMock = new Mock<IConnectivitySettingsView>();
-            _connectivitySettingsViewMock.Setup(v => v.ViewModel).Returns(_connectivitySettingsVMMock.Object);
-
-            _providerSettingsVMMock = new Mock<IProviderSettingsViewModel>();
-            _providerSettingsViewMock = new Mock<IProviderSettingsView>();
-            _providerSettingsViewMock.Setup(v => v.ViewModel).Returns(_providerSettingsVMMock.Object);
-
-            _welcomeStep1ViewMock = new Mock<IWelcomeStep1View>();
-            _demoViewMock = new Mock<IDemoView>();
-            _welcomeController = new WelcomeController(_regionManagerStub,
-                _welcomeViewMock.Object,
-                _welcomeStep1ViewMock.Object,
-                _connectivitySettingsViewMock.Object,
-                _providerSettingsViewMock.Object,
-                _demoViewMock.Object);
-
-            _connectivitySettingsVMMock.SetupGet(vm => vm.RequiresSetup).Returns(true);
-            _providerSettingsVMMock.SetupGet(vm => vm.RequiresSetup).Returns(true);
-
-            _welcomeController.Start();
-        }
-        #endregion
-
-        [TestFixture]
-        public class When_the_WelcomeStep1_view_is_closed : Given_the_WelcomeModule_is_showing_the_WelcomeView
-        {
             public override void SetUp()
             {
                 base.SetUp();
-                _welcomeStep1ViewMock.Raise(vm => vm.NextView += (sender, args) => { }, EventArgs.Empty);
+
+                _connectivitySettingsVMMock.SetupGet(vm => vm.RequiresSetup).Returns(true);
+                _providerSettingsVMMock.SetupGet(vm => vm.RequiresSetup).Returns(true);
+                _welcomeController.Start();
+            }
+            #endregion
+
+            [TestFixture]
+            public class When_the_WelcomeStep1_view_is_closed : With_the_WelcomeModule_is_showing_the_WelcomeView
+            {
+                public override void SetUp()
+                {
+                    base.SetUp();
+                    _welcomeStep1ViewMock.Raise(vm => vm.NextView += (sender, args) => { }, EventArgs.Empty);
+                }
+
+                [Test]
+                public void Should_activate_the_Connectivity_settings_view()
+                {
+                    _welcomeSettingsRegion.Verify(r => r.Activate(_connectivitySettingsViewMock.Object), Times.Once());
+                }
             }
 
-            [Test]
-            public void Should_activate_the_Connectivity_settings_view()
+            [TestFixture]
+            public class When_the_Connectivity_settings_view_is_closed : With_the_WelcomeModule_is_showing_the_WelcomeView
             {
-                _welcomeSettingsRegion.Verify(r => r.Activate(_connectivitySettingsViewMock.Object), Times.Once());
-            }
-        }
+                public override void SetUp()
+                {
+                    base.SetUp();
+                    _connectivitySettingsVMMock.Raise(vm => vm.Closed += (sender, args) => { }, EventArgs.Empty);
+                }
 
-        [TestFixture]
-        public class When_the_Connectivity_settings_view_is_closed : Given_the_WelcomeModule_is_showing_the_WelcomeView
-        {
-            public override void SetUp()
-            {
-                base.SetUp();
-                _connectivitySettingsVMMock.Raise(vm => vm.Closed += (sender, args) => { }, EventArgs.Empty);
+                [Test]
+                public void Should_activate_the_Provider_settings_view()
+                {
+                    _welcomeSettingsRegion.Verify(r => r.Activate(_providerSettingsViewMock.Object), Times.Once());
+                }
             }
+            [TestFixture]
+            public class When_the_Provider_settings_view_is_closed : With_the_WelcomeModule_is_showing_the_WelcomeView
+            {
+                public override void SetUp()
+                {
+                    base.SetUp();
+                    _providerSettingsVMMock.Raise(vm => vm.Closed += (sender, args) => { }, EventArgs.Empty);
+                }
 
-            [Test]
-            public void Should_activate_the_Provider_settings_view()
-            {
-                _welcomeSettingsRegion.Verify(r => r.Activate(_providerSettingsViewMock.Object), Times.Once());
-            }
-        }
-        [TestFixture]
-        public class When_the_Provider_settings_view_is_closed : Given_the_WelcomeModule_is_showing_the_WelcomeView
-        {
-            public override void SetUp()
-            {
-                base.SetUp();
-                _providerSettingsVMMock.Raise(vm => vm.Closed += (sender, args) => { }, EventArgs.Empty);
-            }
-
-            [Test]
-            public void Should_activate_the_DemoDisplay_view()
-            {
-                _welcomeSettingsRegion.Verify(r => r.Activate(_demoViewMock.Object), Times.Once());
-            }
-        }
-
-        [TestFixture]
-        public class When_the_SampleDisplay_view_is_closed
-        {
-            [Test]
-            public void Should_close_WelcomeView()
-            {
-                Assert.Inconclusive();
+                [Test]
+                public void Should_activate_the_DemoDisplay_view()
+                {
+                    _welcomeSettingsRegion.Verify(r => r.Activate(_demoViewMock.Object), Times.Once());
+                }
             }
 
-            [Test]
-            public void Should_dispose_child_RegionManager()
+            [TestFixture]
+            public class When_the_SampleDisplay_view_is_closed : With_the_WelcomeModule_is_showing_the_WelcomeView
             {
-                Assert.Inconclusive();
+                [Test]
+                public void Should_close_WelcomeView()
+                {
+                    Assert.Inconclusive();
+                }
+
+                [Test]
+                public void Should_dispose_child_RegionManager()
+                {
+                    Assert.Inconclusive();
+                }
             }
         }
     }

@@ -1,4 +1,5 @@
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace CallWall
@@ -15,6 +16,27 @@ namespace CallWall
                 parent = element as T;
             }
             return parent;
+        }
+
+        public static int IndexInParent<TParent>(this FrameworkContentElement item)
+            where TParent : ItemsControl
+        {
+            if (item == null) return -1;
+            return IndexInParent<TParent>(item, item.DataContext);
+        }
+
+        public static int IndexInParent<TParent>(this FrameworkElement item)
+            where TParent : ItemsControl
+        {
+            if (item == null) return -1;
+            return IndexInParent<TParent>(item, item.DataContext);
+        }
+
+        private static int IndexInParent<TParent>(DependencyObject item, object dataContext)
+            where TParent : ItemsControl
+        {
+            var parent = item.FindParent<TParent>();
+            return parent.Items.IndexOf(dataContext);
         }
     }
 }
