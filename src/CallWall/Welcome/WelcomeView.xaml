@@ -11,6 +11,7 @@
         <Style TargetType="layoutToolkit:AccordionItem" BasedOn="{StaticResource {x:Type layoutToolkit:AccordionItem}}">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="10"/>
             <Setter Property="Header" Value="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource stepHeaderConverter}}"/>
             <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource stepBackgroundConverter}}"/>
         </Style>

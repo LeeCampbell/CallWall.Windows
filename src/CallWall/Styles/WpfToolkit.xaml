@@ -440,7 +440,8 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="layoutToolkit:AccordionItem">
-                    <Grid Background="{TemplateBinding Background}"  HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
+                    <Grid Background="{TemplateBinding Background}"  
+                          HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
                         <vsm:VisualStateManager.VisualStateGroups>
                             <!-- CommonState -->
                             <vsm:VisualStateGroup x:Name="CommonStates">
@@ -691,7 +692,9 @@
                                 </vsm:VisualState>
                             </vsm:VisualStateGroup>
                         </vsm:VisualStateManager.VisualStateGroups>
-                        <Border x:Name="Background" Padding="{TemplateBinding Padding}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="1,1,1,1">
+                        <Border x:Name="Background" 
+                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="1,1,1,1">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" x:Name="rd0" />
@@ -702,8 +705,43 @@
                                     <ColumnDefinition Width="Auto" x:Name="cd1" />
                                 </Grid.ColumnDefinitions>
 
-                                <layoutPrimitivesToolkit:AccordionButton Name="ExpanderButton" Style="{TemplateBinding AccordionButtonStyle}" Content="{TemplateBinding Header}" ContentTemplate="{TemplateBinding HeaderTemplate}" IsChecked="{TemplateBinding IsSelected}" IsTabStop="True" Grid.Row="0" Padding="0,0,0,0" Margin="0,0,0,0" FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}" FontStretch="{TemplateBinding FontStretch}" FontStyle="{TemplateBinding FontStyle}" FontWeight="{TemplateBinding FontWeight}" Foreground="{TemplateBinding Foreground}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}" Background="{TemplateBinding Background}" />
-                                <layoutPrimitivesToolkit:ExpandableContentControl Name="ExpandSite" Grid.Row="1" IsTabStop="False" Percentage="0" RevealMode="{TemplateBinding ExpandDirection}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" Margin="0,0,0,0" Style="{TemplateBinding ExpandableContentControlStyle}" FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}" FontStretch="{TemplateBinding FontStretch}" FontStyle="{TemplateBinding FontStyle}" FontWeight="{TemplateBinding FontWeight}" Foreground="{TemplateBinding Foreground}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}" />
+                                <layoutPrimitivesToolkit:AccordionButton x:Name="ExpanderButton" 
+                                                                         Grid.Row="0" Padding="0,0,0,0" Margin="0,0,0,0" 
+                                                                         Content="{TemplateBinding Header}" 
+                                                                         ContentTemplate="{TemplateBinding HeaderTemplate}" 
+                                                                         IsChecked="{TemplateBinding IsSelected}" 
+                                                                         IsTabStop="True" 
+                                                                         FontFamily="{TemplateBinding FontFamily}" 
+                                                                         FontSize="{TemplateBinding FontSize}" 
+                                                                         FontStretch="{TemplateBinding FontStretch}" 
+                                                                         FontStyle="{TemplateBinding FontStyle}" 
+                                                                         FontWeight="{TemplateBinding FontWeight}" 
+                                                                         Foreground="{TemplateBinding Foreground}" 
+                                                                         Background="{TemplateBinding Background}" 
+                                                                         HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                                         VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" 
+                                                                         HorizontalAlignment="{TemplateBinding HorizontalAlignment}" 
+                                                                         VerticalAlignment="{TemplateBinding VerticalAlignment}" 
+                                                                         Style="{TemplateBinding AccordionButtonStyle}" />
+                                
+                                <layoutPrimitivesToolkit:ExpandableContentControl x:Name="ExpandSite" 
+                                                                                  Grid.Row="1" Margin="{TemplateBinding Padding}" 
+                                                                                  IsTabStop="False" 
+                                                                                  Percentage="0"
+                                                                                  RevealMode="{TemplateBinding ExpandDirection}" 
+                                                                                  Content="{TemplateBinding Content}" 
+                                                                                  ContentTemplate="{TemplateBinding ContentTemplate}" 
+                                                                                  FontFamily="{TemplateBinding FontFamily}" 
+                                                                                  FontSize="{TemplateBinding FontSize}" 
+                                                                                  FontStretch="{TemplateBinding FontStretch}" 
+                                                                                  FontStyle="{TemplateBinding FontStyle}"
+                                                                                  FontWeight="{TemplateBinding FontWeight}" 
+                                                                                  Foreground="{TemplateBinding Foreground}"
+                                                                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" 
+                                                                                  HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                                                                  VerticalAlignment="{TemplateBinding VerticalAlignment}" 
+                                                                                  Style="{TemplateBinding ExpandableContentControlStyle}" />
                             </Grid>
                         </Border>
                     </Grid>
