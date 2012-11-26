@@ -17,6 +17,7 @@ namespace CallWall.Welcome
             _container.RegisterType<IWelcomeController, WelcomeController>(new TransientLifetimeManager());
             _container.RegisterType<IWelcomeView, WelcomeView>(new TransientLifetimeManager());
             _container.RegisterType<IWelcomeStep1View, WelcomeStep1View>(new TransientLifetimeManager());
+            _container.RegisterType<IDemoView, DemoView>(new TransientLifetimeManager());
 
             var welcomeController = _container.Resolve<IWelcomeController>();
             welcomeController.Start();

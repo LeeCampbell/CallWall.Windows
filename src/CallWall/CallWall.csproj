@@ -145,6 +145,10 @@
     <Compile Include="Settings\SettingsViewModel.cs" />
     <Compile Include="Settings\SubView.cs" />
     <Compile Include="ShellRegionNames.cs" />
+    <Compile Include="Welcome\DemoView.xaml.cs">
+      <DependentUpon>DemoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Welcome\IDemoView.cs" />
     <Compile Include="Welcome\IWelcomeController.cs" />
     <Compile Include="Welcome\IWelcomeStep1.cs" />
     <Compile Include="Welcome\IWelcomeView.cs" />
@@ -192,6 +196,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\WpfToolkit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Welcome\DemoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

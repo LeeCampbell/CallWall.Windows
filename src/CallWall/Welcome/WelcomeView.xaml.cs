@@ -1,11 +1,9 @@
-﻿using System.Windows.Controls;
-
-namespace CallWall.Welcome
+﻿namespace CallWall.Welcome
 {
     /// <summary>
     /// Interaction logic for WelcomeView.xaml
     /// </summary>
-    public partial class WelcomeView : UserControl, IWelcomeView
+    public partial class WelcomeView : IWelcomeView
     {
         public WelcomeView()
         {

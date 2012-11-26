@@ -53,6 +53,12 @@ namespace CallWall.UnitTests.Welcome
             }
 
             [Test]
+            public void Should_register_DemoView_to_container()
+            {
+                _containerMock.Verify(c => c.RegisterType(typeof(IDemoView), typeof(DemoView), (string)null, It.IsAny<TransientLifetimeManager>()));
+            }
+
+            [Test]
             public void Should_Start_an_instance_of_WelcomeContoller()
             {
                 _welcomeControllerMock.Verify(wc => wc.Start(), Times.Once());

@@ -6,7 +6,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Control.Resources>
-        <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
+        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="VerticalAlignment" Value="Bottom"/>
             <Setter Property="Width" Value="120"/>
@@ -16,12 +16,13 @@
             <Setter Property="Foreground" Value="Black"/>
         </Style>
     </Control.Resources>
+
     <DockPanel >
         <StackPanel DockPanel.Dock="Top">
             <TextBlock Style="{DynamicResource TitleTextStyle}">Welcome to CallWall</TextBlock>
             <TextBlock>First we need to set up how you want to pair your Phone to your PC.</TextBlock>
             <TextBlock>Then we need to set up where you want to source your data from</TextBlock>
         </StackPanel>
-        <ToggleButton>Next</ToggleButton>
+        <Button Command="{Binding NextStepCommand}">Next</Button>
     </DockPanel>
 </UserControl>

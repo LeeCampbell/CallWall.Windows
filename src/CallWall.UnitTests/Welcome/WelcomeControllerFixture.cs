@@ -46,7 +46,8 @@ namespace CallWall.UnitTests.Welcome
                 _welcomeViewMock.Object,
                 new Mock<IWelcomeStep1View>().Object,
                 _connectivitySettingsViewMock.Object,
-                _providerSettingsViewMock.Object);
+                _providerSettingsViewMock.Object, 
+                new Mock<IDemoView>().Object);
         }
         #endregion
 
@@ -123,6 +124,8 @@ namespace CallWall.UnitTests.Welcome
         private Mock<IProviderSettingsView> _providerSettingsViewMock;
         private Mock<IConnectivitySettingsView> _connectivitySettingsViewMock;
         private Mock<IRegion> _welcomeSettingsRegion;
+        private Mock<IWelcomeStep1View> _welcomeStep1ViewMock;
+        private Mock<IDemoView> _demoViewMock;
 
         private Given_the_WelcomeModule_is_showing_the_WelcomeView()
         { }
@@ -144,11 +147,14 @@ namespace CallWall.UnitTests.Welcome
             _providerSettingsViewMock = new Mock<IProviderSettingsView>();
             _providerSettingsViewMock.Setup(v => v.ViewModel).Returns(_providerSettingsVMMock.Object);
 
+            _welcomeStep1ViewMock = new Mock<IWelcomeStep1View>();
+            _demoViewMock = new Mock<IDemoView>();
             _welcomeController = new WelcomeController(_regionManagerStub,
                 _welcomeViewMock.Object,
-                new Mock<IWelcomeStep1View>().Object,
+                _welcomeStep1ViewMock.Object,
                 _connectivitySettingsViewMock.Object,
-                _providerSettingsViewMock.Object);
+                _providerSettingsViewMock.Object,
+                _demoViewMock.Object);
 
             _connectivitySettingsVMMock.SetupGet(vm => vm.RequiresSetup).Returns(true);
             _providerSettingsVMMock.SetupGet(vm => vm.RequiresSetup).Returns(true);
@@ -156,6 +162,22 @@ namespace CallWall.UnitTests.Welcome
             _welcomeController.Start();
         }
         #endregion
+
+        [TestFixture]
+        public class When_the_WelcomeStep1_view_is_closed : Given_the_WelcomeModule_is_showing_the_WelcomeView
+        {
+            public override void SetUp()
+            {
+                base.SetUp();
+                _welcomeStep1ViewMock.Raise(vm => vm.NextView += (sender, args) => { }, EventArgs.Empty);
+            }
+
+            [Test]
+            public void Should_activate_the_Connectivity_settings_view()
+            {
+                _welcomeSettingsRegion.Verify(r => r.Activate(_connectivitySettingsViewMock.Object), Times.Once());
+            }
+        }
 
         [TestFixture]
         public class When_the_Connectivity_settings_view_is_closed : Given_the_WelcomeModule_is_showing_the_WelcomeView
@@ -172,14 +194,19 @@ namespace CallWall.UnitTests.Welcome
                 _welcomeSettingsRegion.Verify(r => r.Activate(_providerSettingsViewMock.Object), Times.Once());
             }
         }
-
         [TestFixture]
-        public class When_the_Provider_settings_view_is_closed
+        public class When_the_Provider_settings_view_is_closed : Given_the_WelcomeModule_is_showing_the_WelcomeView
         {
-            [Test]
-            public void Should_activate_the_SampleDisplay_view()
+            public override void SetUp()
             {
-                Assert.Inconclusive();
+                base.SetUp();
+                _providerSettingsVMMock.Raise(vm => vm.Closed += (sender, args) => { }, EventArgs.Empty);
+            }
+
+            [Test]
+            public void Should_activate_the_DemoDisplay_view()
+            {
+                _welcomeSettingsRegion.Verify(r => r.Activate(_demoViewMock.Object), Times.Once());
             }
         }
 
