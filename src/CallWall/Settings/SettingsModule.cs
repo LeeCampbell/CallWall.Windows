@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Prism.Modularity;
+﻿using CallWall.Settings.Accounts;
+using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Unity;
 
 namespace CallWall.Settings
@@ -17,9 +18,9 @@ namespace CallWall.Settings
             _container.RegisterType<Connectivity.IConnectivitySettingsModel, Connectivity.ConnectivitySettingsModel>(new TransientLifetimeManager());
             _container.RegisterType<Connectivity.IConnectivitySettingsViewModel, Connectivity.ConnectivitySettingsViewModel>(new TransientLifetimeManager());
             _container.RegisterType<Connectivity.IConnectivitySettingsView, Connectivity.ConnectivitySettingsView>(new TransientLifetimeManager());
-            _container.RegisterType<Providers.IProviderSettingsModel, Providers.ProviderSettingsModel>(new TransientLifetimeManager());
-            _container.RegisterType<Providers.IProviderSettingsViewModel, Providers.ProviderSettingsViewModel>(new TransientLifetimeManager());
-            _container.RegisterType<Providers.IProviderSettingsView, Providers.ProviderSettingsView>(new TransientLifetimeManager());
+            _container.RegisterType<IAccountSettingsModel, AccountSettingsModel>(new TransientLifetimeManager());
+            _container.RegisterType<IAccountSettingsViewModel, AccountSettingsViewModel>(new TransientLifetimeManager());
+            _container.RegisterType<IAccountSettingsView, AccountSettingsView>(new TransientLifetimeManager());
         }
     }
 

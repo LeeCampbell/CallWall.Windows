@@ -1,22 +1,22 @@
 using System;
 using Microsoft.Practices.Prism.Commands;
 
-namespace CallWall.Settings.Providers
+namespace CallWall.Settings.Accounts
 {
-    public sealed class ProviderSettingsViewModel : IProviderSettingsViewModel
+    public sealed class AccountSettingsViewModel : IAccountSettingsViewModel
     {
-        private readonly IProviderSettingsModel _providerSettingsModel;
+        private readonly IAccountSettingsModel _accountSettingsModel;
         private readonly DelegateCommand _closeCommand;
 
-        public ProviderSettingsViewModel(IProviderSettingsModel providerSettingsModel)
+        public AccountSettingsViewModel(IAccountSettingsModel accountSettingsModel)
         {
-            _providerSettingsModel = providerSettingsModel;
+            _accountSettingsModel = accountSettingsModel;
             _closeCommand = new DelegateCommand(OnClosed);
         }
 
         public bool RequiresSetup
         {
-            get { return _providerSettingsModel.RequiresSetup; }
+            get { return _accountSettingsModel.RequiresSetup; }
         }
 
         public DelegateCommand CloseCommand

@@ -1,6 +1,6 @@
 ﻿using System;
+using CallWall.Settings.Accounts;
 using CallWall.Settings.Connectivity;
-using CallWall.Settings.Providers;
 using CallWall.Welcome;
 using Microsoft.Practices.Prism.Regions;
 using Moq;
@@ -16,9 +16,9 @@ namespace CallWall.UnitTests.Welcome
         private RegionManagerStub _regionManagerStub;
         private Mock<IWelcomeView> _welcomeViewMock;
         private Mock<IRegion> _modalRegion;
-        private Mock<IProviderSettingsViewModel> _providerSettingsVMMock;
+        private Mock<IAccountSettingsViewModel> _providerSettingsVMMock;
         private Mock<IConnectivitySettingsViewModel> _connectivitySettingsVMMock;
-        private Mock<IProviderSettingsView> _providerSettingsViewMock;
+        private Mock<IAccountSettingsView> _providerSettingsViewMock;
         private Mock<IConnectivitySettingsView> _connectivitySettingsViewMock;
         private Mock<IRegion> _welcomeSettingsRegion;
         private Mock<IWelcomeStep1View> _welcomeStep1ViewMock;
@@ -40,8 +40,8 @@ namespace CallWall.UnitTests.Welcome
             _connectivitySettingsViewMock = new Mock<IConnectivitySettingsView>();
             _connectivitySettingsViewMock.Setup(v => v.ViewModel).Returns(_connectivitySettingsVMMock.Object);
 
-            _providerSettingsVMMock = new Mock<IProviderSettingsViewModel>();
-            _providerSettingsViewMock = new Mock<IProviderSettingsView>();
+            _providerSettingsVMMock = new Mock<IAccountSettingsViewModel>();
+            _providerSettingsViewMock = new Mock<IAccountSettingsView>();
             _providerSettingsViewMock.Setup(v => v.ViewModel).Returns(_providerSettingsVMMock.Object);
 
             _welcomeStep1ViewMock = new Mock<IWelcomeStep1View>();

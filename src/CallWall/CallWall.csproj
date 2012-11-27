@@ -131,13 +131,13 @@
     <Compile Include="Settings\Connectivity\IConnectivitySettingsModel.cs" />
     <Compile Include="Settings\Connectivity\IConnectivitySettingsView.cs" />
     <Compile Include="Settings\Connectivity\IConnectivitySettingsViewModel.cs" />
-    <Compile Include="Settings\Providers\IProviderSettingsModel.cs" />
-    <Compile Include="Settings\Providers\IProviderSettingsView.cs" />
-    <Compile Include="Settings\Providers\IProviderSettingsViewModel.cs" />
-    <Compile Include="Settings\Providers\ProviderSettingsView.xaml.cs">
-      <DependentUpon>ProviderSettingsView.xaml</DependentUpon>
+    <Compile Include="Settings\Accounts\IAccountSettingsModel.cs" />
+    <Compile Include="Settings\Accounts\IAccountSettingsView.cs" />
+    <Compile Include="Settings\Accounts\IAccountSettingsViewModel.cs" />
+    <Compile Include="Settings\Accounts\AccountSettingsView.xaml.cs">
+      <DependentUpon>AccountSettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Settings\Providers\ProviderSettingsViewModel.cs" />
+    <Compile Include="Settings\Accounts\AccountSettingsViewModel.cs" />
     <Compile Include="Settings\SettingsModule.cs" />
     <Compile Include="Settings\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
@@ -183,7 +183,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Settings\Providers\ProviderSettingsView.xaml">
+    <Page Include="Settings\Accounts\AccountSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

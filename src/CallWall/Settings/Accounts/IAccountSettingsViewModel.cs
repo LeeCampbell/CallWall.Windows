@@ -1,8 +1,8 @@
 using System;
 
-namespace CallWall.Settings.Providers
+namespace CallWall.Settings.Accounts
 {
-    public interface IProviderSettingsViewModel
+    public interface IAccountSettingsViewModel
     {
         bool RequiresSetup { get; }
         event EventHandler Closed;

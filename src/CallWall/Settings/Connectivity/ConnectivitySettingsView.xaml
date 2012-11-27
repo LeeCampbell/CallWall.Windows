@@ -17,7 +17,13 @@
         </Style>
     </Control.Resources>
     <DockPanel>
-        <TextBlock DockPanel.Dock="Top" Text="Connectivity Settings"/>
-        <Button Command="{Binding CloseCommand}" Content="Done"/>
+        <Button DockPanel.Dock="Bottom" Command="{Binding CloseCommand}" Content="Done"/>
+        
+        <ScrollViewer>
+            <TextBlock DockPanel.Dock="Top" Text="Connectivity Settings"/>
+            <!--TODO: Put the conectivity items here -->
+        </ScrollViewer>
+        
+        
     </DockPanel>
 </UserControl>
