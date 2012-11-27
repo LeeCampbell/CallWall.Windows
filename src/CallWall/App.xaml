@@ -5,6 +5,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/Text.xaml"/>
+                <ResourceDictionary Source="Styles/Button.xaml"/>
                 <ResourceDictionary Source="Styles/WpfToolkit.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

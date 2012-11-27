@@ -5,7 +5,28 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <TextBlock TextWrapping="Wrap">Now that you are set up we will run an example of what you would see when a call is recieved, but with your information.</TextBlock>
-    </Grid>
+    <DockPanel>
+        <Grid DockPanel.Dock="Bottom" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Command="{Binding CloseCommand}" Content="Skip"/>
+            <TextBox Grid.Column="1" Text="+44 7 827743025" Width="200" HorizontalAlignment="Right" TextAlignment="Right" Margin="10,0" />
+            <Button Grid.Column="2" Command="{Binding CloseCommand}" Content="Try me"/>
+        </Grid>
+        
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock Text="Try me"
+                       VerticalAlignment="Top"
+                       Style="{DynamicResource TitleTextStyle}" />
+
+                <TextBlock TextWrapping="Wrap">Now that you are set up we will run an example of what you would see when a call is recieved, but with your information.</TextBlock>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
 </UserControl>
