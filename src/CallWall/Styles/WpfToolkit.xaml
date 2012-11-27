@@ -313,14 +313,14 @@
                                 <Border x:Name="MouseOverBackground" Height="Auto" Margin="0,0,0,0"  VerticalAlignment="Stretch" Opacity="0" Background="#FFBDBDBD" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="1,1,1,1" />
                                 <Grid Background="Transparent">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" x:Name="cd0" />
-                                        <ColumnDefinition Width="Auto" x:Name="cd1" />
+                                        <ColumnDefinition x:Name="cd0" Width="Auto" />
+                                        <ColumnDefinition x:Name="cd1" Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" x:Name="rd0" />
-                                        <RowDefinition Height="Auto" x:Name="rd1" />
+                                        <RowDefinition x:Name="rd0" Height="Auto" />
+                                        <RowDefinition x:Name="rd1" Height="Auto"  />
                                     </Grid.RowDefinitions>
-                                    <Grid Height="19" HorizontalAlignment="Center" x:Name="icon" VerticalAlignment="Center" Width="19" RenderTransformOrigin="0.5,0.5" Grid.Column="0" Grid.Row="0">
+                                    <Grid x:Name="icon" Height="19" HorizontalAlignment="Center" VerticalAlignment="Center" Width="19" RenderTransformOrigin="0.5,0.5" Grid.Column="0" Grid.Row="0">
                                         <Grid.RenderTransform>
                                             <TransformGroup>
                                                 <ScaleTransform />
@@ -329,7 +329,13 @@
                                                 <TranslateTransform />
                                             </TransformGroup>
                                         </Grid.RenderTransform>
-                                        <Path Height="Auto" HorizontalAlignment="Center" Margin="0,0,0,0" x:Name="arrow" VerticalAlignment="Center" Width="Auto" RenderTransformOrigin="0.5,0.5" Stroke="#666" StrokeThickness="2" Data="M 1,1.5 L 4.5,5 L 8,1.5">
+                                        <Path  x:Name="arrow" 
+                                               Height="Auto" Width="Auto"  
+                                               Margin="0,0,0,0" 
+                                               HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                               Stroke="#666" StrokeThickness="2" 
+                                               RenderTransformOrigin="0.5,0.5" 
+                                               Data="M 1,1.5 L 4.5,5 L 8,1.5">
                                             <Path.RenderTransform>
                                                 <TransformGroup>
                                                     <ScaleTransform />
@@ -356,7 +362,7 @@
     </Style>
 
     <Style x:Key="DefaultAccordionButtonStyle" TargetType="layoutPrimitivesToolkit:AccordionButton" BasedOn="{StaticResource {x:Type layoutPrimitivesToolkit:AccordionButton}}"/>
-    
+
     <!--  layoutPrimitivesToolkit:ExpandableContentControl  -->
     <Style TargetType="layoutPrimitivesToolkit:ExpandableContentControl">
         <Setter Property="IsEnabled" Value="true" />
@@ -369,7 +375,12 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="layoutPrimitivesToolkit:ExpandableContentControl">
-                    <ContentPresenter x:Name="ContentSite" Cursor="{TemplateBinding Cursor}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="0" ContentTemplate="{TemplateBinding ContentTemplate}" />
+                    <ContentPresenter x:Name="ContentSite" 
+                                      ContentTemplate="{TemplateBinding ContentTemplate}" 
+                                      Margin="0" 
+                                      Cursor="{TemplateBinding Cursor}" 
+                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -697,12 +708,12 @@
                                 CornerRadius="1,1,1,1">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" x:Name="rd0" />
-                                    <RowDefinition Height="Auto" x:Name="rd1" />
+                                    <RowDefinition x:Name="rd0" Height="Auto"/>
+                                    <RowDefinition x:Name="rd1" Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" x:Name="cd0" />
-                                    <ColumnDefinition Width="Auto" x:Name="cd1" />
+                                    <ColumnDefinition x:Name="cd0" Width="Auto" />
+                                    <ColumnDefinition x:Name="cd1" Width="Auto" />
                                 </Grid.ColumnDefinitions>
 
                                 <layoutPrimitivesToolkit:AccordionButton x:Name="ExpanderButton" 
@@ -723,14 +734,12 @@
                                                                          HorizontalAlignment="{TemplateBinding HorizontalAlignment}" 
                                                                          VerticalAlignment="{TemplateBinding VerticalAlignment}" 
                                                                          Style="{TemplateBinding AccordionButtonStyle}" />
-                                
+
                                 <layoutPrimitivesToolkit:ExpandableContentControl x:Name="ExpandSite" 
-                                                                                  Grid.Row="1" Margin="{TemplateBinding Padding}" 
+                                                                                  Grid.Row="1" 
                                                                                   IsTabStop="False" 
                                                                                   Percentage="0"
                                                                                   RevealMode="{TemplateBinding ExpandDirection}" 
-                                                                                  Content="{TemplateBinding Content}" 
-                                                                                  ContentTemplate="{TemplateBinding ContentTemplate}" 
                                                                                   FontFamily="{TemplateBinding FontFamily}" 
                                                                                   FontSize="{TemplateBinding FontSize}" 
                                                                                   FontStretch="{TemplateBinding FontStretch}" 
@@ -741,7 +750,11 @@
                                                                                   VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" 
                                                                                   HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                                                                                   VerticalAlignment="{TemplateBinding VerticalAlignment}" 
-                                                                                  Style="{TemplateBinding ExpandableContentControlStyle}" />
+                                                                                  Style="{TemplateBinding ExpandableContentControlStyle}">
+                                    <ContentPresenter Margin="{TemplateBinding Padding}"
+                                                      Content="{TemplateBinding Content}" 
+                                                      ContentTemplate="{TemplateBinding ContentTemplate}" />
+                                </layoutPrimitivesToolkit:ExpandableContentControl>
                             </Grid>
                         </Border>
                     </Grid>
@@ -764,11 +777,15 @@
                             <vsm:VisualStateGroup x:Name="PresentationStates">
                                 <vsm:VisualState x:Name="DefaultTransition">
                                     <Storyboard>
-                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="CurrentContentPresentationSite" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" 
+                                                                       Storyboard.TargetName="CurrentContentPresentationSite" 
+                                                                       Storyboard.TargetProperty="(UIElement.Opacity)">
                                             <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" />
                                             <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="1" />
                                         </DoubleAnimationUsingKeyFrames>
-                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PreviousContentPresentationSite" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" 
+                                                                       Storyboard.TargetName="PreviousContentPresentationSite" 
+                                                                       Storyboard.TargetProperty="(UIElement.Opacity)">
                                             <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1" />
                                             <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0" />
                                         </DoubleAnimationUsingKeyFrames>
@@ -776,7 +793,9 @@
                                 </vsm:VisualState>
                                 <vsm:VisualState x:Name="Normal">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PreviousContentPresentationSite" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                        <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" 
+                                                                       Storyboard.TargetName="PreviousContentPresentationSite" 
+                                                                       Storyboard.TargetProperty="(UIElement.Visibility)">
                                             <DiscreteObjectKeyFrame KeyTime="00:00:00">
                                                 <DiscreteObjectKeyFrame.Value>
                                                     <Visibility>Collapsed</Visibility>
@@ -788,22 +807,30 @@
 
                                 <vsm:VisualState x:Name="UpTransition">
                                     <Storyboard>
-                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="CurrentContentPresentationSite" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" 
+                                                                       Storyboard.TargetName="CurrentContentPresentationSite" 
+                                                                       Storyboard.TargetProperty="(UIElement.Opacity)">
                                             <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" />
                                             <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="1" />
                                         </DoubleAnimationUsingKeyFrames>
 
-                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="CurrentContentPresentationSite" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" 
+                                                                       Storyboard.TargetName="CurrentContentPresentationSite" 
+                                                                       Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
                                             <SplineDoubleKeyFrame KeyTime="00:00:00" Value="30" />
                                             <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0" />
                                         </DoubleAnimationUsingKeyFrames>
 
-                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PreviousContentPresentationSite" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" 
+                                                                       Storyboard.TargetName="PreviousContentPresentationSite" 
+                                                                       Storyboard.TargetProperty="(UIElement.Opacity)">
                                             <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1" />
                                             <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0" />
                                         </DoubleAnimationUsingKeyFrames>
 
-                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PreviousContentPresentationSite" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" 
+                                                                       Storyboard.TargetName="PreviousContentPresentationSite" 
+                                                                       Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
                                             <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" />
                                             <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="-30" />
                                         </DoubleAnimationUsingKeyFrames>
@@ -812,22 +839,30 @@
 
                                 <vsm:VisualState x:Name="DownTransition">
                                     <Storyboard>
-                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="CurrentContentPresentationSite" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" 
+                                                                       Storyboard.TargetName="CurrentContentPresentationSite" 
+                                                                       Storyboard.TargetProperty="(UIElement.Opacity)">
                                             <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" />
                                             <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="1" />
                                         </DoubleAnimationUsingKeyFrames>
 
-                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="CurrentContentPresentationSite" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" 
+                                                                       Storyboard.TargetName="CurrentContentPresentationSite" 
+                                                                       Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
                                             <SplineDoubleKeyFrame KeyTime="00:00:00" Value="-40" />
                                             <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0" />
                                         </DoubleAnimationUsingKeyFrames>
 
-                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PreviousContentPresentationSite" Storyboard.TargetProperty="(UIElement.Opacity)">
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" 
+                                                                       Storyboard.TargetName="PreviousContentPresentationSite" 
+                                                                       Storyboard.TargetProperty="(UIElement.Opacity)">
                                             <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1" />
                                             <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0" />
                                         </DoubleAnimationUsingKeyFrames>
 
-                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PreviousContentPresentationSite" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" 
+                                                                       Storyboard.TargetName="PreviousContentPresentationSite" 
+                                                                       Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
                                             <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" />
                                             <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="40" />
                                         </DoubleAnimationUsingKeyFrames>
@@ -838,7 +873,11 @@
                         </vsm:VisualStateManager.VisualStateGroups>
                         <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2">
                             <Grid>
-                                <ContentPresenter x:Name="PreviousContentPresentationSite" Content="{x:Null}" ContentTemplate="{TemplateBinding ContentTemplate}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                <ContentPresenter x:Name="PreviousContentPresentationSite" 
+                                                  Content="{x:Null}" 
+                                                  ContentTemplate="{TemplateBinding ContentTemplate}" 
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                                     <ContentPresenter.RenderTransform>
                                         <TransformGroup>
                                             <ScaleTransform />
@@ -849,7 +888,11 @@
                                     </ContentPresenter.RenderTransform>
                                 </ContentPresenter>
 
-                                <ContentPresenter x:Name="CurrentContentPresentationSite" Content="{x:Null}" ContentTemplate="{TemplateBinding ContentTemplate}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                <ContentPresenter x:Name="CurrentContentPresentationSite" 
+                                                  Content="{x:Null}" 
+                                                  ContentTemplate="{TemplateBinding ContentTemplate}" 
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                                     <ContentPresenter.RenderTransform>
                                         <TransformGroup>
                                             <ScaleTransform />
