@@ -4,7 +4,6 @@
         <Setter Property="FontFamily" Value="Segoe"/>
         <Setter Property="FontWeight" Value="300"/>
         <Setter Property="FontSize" Value="14"/>
-        <!--<Setter Property="Foreground" Value="#ffffff"/>-->
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="TextAlignment" Value="Left"/>

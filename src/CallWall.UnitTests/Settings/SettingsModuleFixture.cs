@@ -54,17 +54,17 @@ namespace CallWall.UnitTests.Settings
             }
 
             [Test]
-            public void Should_register_ProviderSettingsView_to_container()
+            public void Should_register_AccountSettingsView_to_container()
             {
                 _containerMock.Verify(c => c.RegisterType(typeof(IAccountSettingsView), typeof(AccountSettingsView), (string)null, It.IsAny<TransientLifetimeManager>()));
             }
             [Test]
-            public void Should_register_ProviderSettingsViewModel_to_container()
+            public void Should_register_AccountSettingsViewModel_to_container()
             {
                 _containerMock.Verify(c => c.RegisterType(typeof(IAccountSettingsViewModel), typeof(AccountSettingsViewModel), (string)null, It.IsAny<TransientLifetimeManager>()));
             }
             [Test]
-            public void Should_register_ProviderSettingsModel_to_container()
+            public void Should_register_AccountSettingsModel_to_container()
             {
                 _containerMock.Verify(c => c.RegisterType(typeof(IAccountSettingsModel), typeof(AccountSettingsModel), (string)null, It.IsAny<TransientLifetimeManager>()));
             }

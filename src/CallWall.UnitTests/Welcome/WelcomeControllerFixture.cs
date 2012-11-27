@@ -16,9 +16,9 @@ namespace CallWall.UnitTests.Welcome
         private RegionManagerStub _regionManagerStub;
         private Mock<IWelcomeView> _welcomeViewMock;
         private Mock<IRegion> _modalRegion;
-        private Mock<IAccountSettingsViewModel> _providerSettingsVMMock;
+        private Mock<IAccountSettingsViewModel> _accountSettingsVMMock;
         private Mock<IConnectivitySettingsViewModel> _connectivitySettingsVMMock;
-        private Mock<IAccountSettingsView> _providerSettingsViewMock;
+        private Mock<IAccountSettingsView> _accountSettingsViewMock;
         private Mock<IConnectivitySettingsView> _connectivitySettingsViewMock;
         private Mock<IRegion> _welcomeSettingsRegion;
         private Mock<IWelcomeStep1View> _welcomeStep1ViewMock;
@@ -40,9 +40,9 @@ namespace CallWall.UnitTests.Welcome
             _connectivitySettingsViewMock = new Mock<IConnectivitySettingsView>();
             _connectivitySettingsViewMock.Setup(v => v.ViewModel).Returns(_connectivitySettingsVMMock.Object);
 
-            _providerSettingsVMMock = new Mock<IAccountSettingsViewModel>();
-            _providerSettingsViewMock = new Mock<IAccountSettingsView>();
-            _providerSettingsViewMock.Setup(v => v.ViewModel).Returns(_providerSettingsVMMock.Object);
+            _accountSettingsVMMock = new Mock<IAccountSettingsViewModel>();
+            _accountSettingsViewMock = new Mock<IAccountSettingsView>();
+            _accountSettingsViewMock.Setup(v => v.ViewModel).Returns(_accountSettingsVMMock.Object);
 
             _welcomeStep1ViewMock = new Mock<IWelcomeStep1View>();
             _demoViewMock = new Mock<IDemoView>();
@@ -51,7 +51,7 @@ namespace CallWall.UnitTests.Welcome
                 _welcomeViewMock.Object,
                 _welcomeStep1ViewMock.Object,
                 _connectivitySettingsViewMock.Object,
-                _providerSettingsViewMock.Object, 
+                _accountSettingsViewMock.Object, 
                 _demoViewMock.Object);
         }
         #endregion
@@ -70,12 +70,12 @@ namespace CallWall.UnitTests.Welcome
             }
 
             [TestFixture]
-            public sealed class With_Providers_requiring_setup : When_user_has_not_been_set_up
+            public sealed class With_Accounts_requiring_setup : When_user_has_not_been_set_up
             {
                 public override void SetUp()
                 {
                     base.SetUp();
-                    _providerSettingsVMMock.SetupGet(vm => vm.RequiresSetup).Returns(true);
+                    _accountSettingsVMMock.SetupGet(vm => vm.RequiresSetup).Returns(true);
                     _welcomeController.Start();
                 }
             }
@@ -95,7 +95,7 @@ namespace CallWall.UnitTests.Welcome
             [Test]
             public void Should_show_Provider_settings_view_in_inactive_WelcomeSettingsRegion_region()
             {
-                _welcomeSettingsRegion.Verify(r => r.Add(_providerSettingsViewMock.Object), Times.Once());
+                _welcomeSettingsRegion.Verify(r => r.Add(_accountSettingsViewMock.Object), Times.Once());
             }
         }
 
@@ -106,7 +106,7 @@ namespace CallWall.UnitTests.Welcome
             {
                 base.SetUp();
                 _connectivitySettingsVMMock.SetupGet(vm => vm.RequiresSetup).Returns(false);
-                _providerSettingsVMMock.SetupGet(vm => vm.RequiresSetup).Returns(false);
+                _accountSettingsVMMock.SetupGet(vm => vm.RequiresSetup).Returns(false);
             }
 
             [Test]
@@ -128,7 +128,7 @@ namespace CallWall.UnitTests.Welcome
                 base.SetUp();
 
                 _connectivitySettingsVMMock.SetupGet(vm => vm.RequiresSetup).Returns(true);
-                _providerSettingsVMMock.SetupGet(vm => vm.RequiresSetup).Returns(true);
+                _accountSettingsVMMock.SetupGet(vm => vm.RequiresSetup).Returns(true);
                 _welcomeController.Start();
             }
             #endregion
@@ -161,7 +161,7 @@ namespace CallWall.UnitTests.Welcome
                 [Test]
                 public void Should_activate_the_Provider_settings_view()
                 {
-                    _welcomeSettingsRegion.Verify(r => r.Activate(_providerSettingsViewMock.Object), Times.Once());
+                    _welcomeSettingsRegion.Verify(r => r.Activate(_accountSettingsViewMock.Object), Times.Once());
                 }
             }
             [TestFixture]
@@ -170,7 +170,7 @@ namespace CallWall.UnitTests.Welcome
                 public override void SetUp()
                 {
                     base.SetUp();
-                    _providerSettingsVMMock.Raise(vm => vm.Closed += (sender, args) => { }, EventArgs.Empty);
+                    _accountSettingsVMMock.Raise(vm => vm.Closed += (sender, args) => { }, EventArgs.Empty);
                 }
 
                 [Test]

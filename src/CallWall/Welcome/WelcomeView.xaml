@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:layoutToolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Layout.Toolkit" 
              xmlns:cal="clr-namespace:Microsoft.Practices.Prism.Regions;assembly=Microsoft.Practices.Prism"
-             xmlns:CallWall="clr-namespace:CallWall" xmlns:Welcome="clr-namespace:CallWall.Welcome" Width="800" Height="400"
+             xmlns:CallWall="clr-namespace:CallWall" 
+             xmlns:Welcome="clr-namespace:CallWall.Welcome" 
+             Width="800" Height="400"
              Foreground="White">
     <Control.Resources>
         <Welcome:WelcomeSettingStepHeaderConverter x:Key="stepHeaderConverter"/>

@@ -24,7 +24,7 @@ namespace CallWall
     }
 
     //TODO: Create a WelcomeModule. Shows welcome screens and tips on how to use the application
-    //TODO: Create a SettingsModule. Handles the setting of Providers and Pairing of devices (USB, Bluetooth, WiFiDirect, Cloud)
+    //TODO: Create a SettingsModule. Handles the setting of Accounts and Pairing of devices (USB, Bluetooth, WiFiDirect, Cloud)
     //TODO: Create an IncomingCallModule. The key functionality. Listens, aggregates and presents.
     //Can we load the Providers on the BG thread to make start up as fast as possible? WPF has such a slow start up time!
 }

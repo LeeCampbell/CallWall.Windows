@@ -27,11 +27,11 @@ namespace CallWall.Settings
 
     //SettingsModel
     //  IE<IConnectionSetting> ConnectionSettings
-    //  IE<IProvderSetting> ProviderSettings
+    //  IE<IProvderSetting> AccountSettings
 
     //SettingsViewModel
     //  IE<SubView> ConnectionSettings
-    //  IE<SubView> ProviderSettings
+    //  IE<SubView> AccountSettings
 
     //SubView
     //  string Name
