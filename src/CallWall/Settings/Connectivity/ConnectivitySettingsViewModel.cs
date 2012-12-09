@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.Practices.Prism.Commands;
 
 namespace CallWall.Settings.Connectivity
@@ -17,6 +18,11 @@ namespace CallWall.Settings.Connectivity
         public bool RequiresSetup
         {
             get { return _connectivitySettingsModel.RequiresSetup; }
+        }
+
+        public IEnumerable<IConnectivityConfigurator> ConnectivityConfigurators
+        {
+            get { return _connectivitySettingsModel.ConnectivityConfigurators; }
         }
 
         public DelegateCommand CloseCommand

@@ -16,7 +16,6 @@
   
   <Import Project=".\tools\MSBuild.Community.Tasks.Targets" />
 
-  <!-- Replace MySolutionName with the name of your solution and MyCompany with the name of you default namespace prefix (if any)-->
   <PropertyGroup>
     <OutputDirectory>.\bin\$(Configuration)</OutputDirectory>
     <Configuration>Release</Configuration>

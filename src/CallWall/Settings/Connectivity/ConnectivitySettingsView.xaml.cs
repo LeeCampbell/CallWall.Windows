@@ -1,11 +1,9 @@
-﻿using System.Windows.Controls;
-
-namespace CallWall.Settings.Connectivity
+﻿namespace CallWall.Settings.Connectivity
 {
     /// <summary>
     /// Interaction logic for ConnectivitySettingsView.xaml
     /// </summary>
-    public partial class ConnectivitySettingsView : UserControl, IConnectivitySettingsView
+    public partial class ConnectivitySettingsView : IConnectivitySettingsView
     {
         private readonly IConnectivitySettingsViewModel _viewModel;
 
@@ -15,13 +13,9 @@ namespace CallWall.Settings.Connectivity
             InitializeComponent();
         }
 
-        #region Implementation of IConnectivitySettingsView
-
         public IConnectivitySettingsViewModel ViewModel
         {
             get { return _viewModel; }
         }
-
-        #endregion
     }
 }

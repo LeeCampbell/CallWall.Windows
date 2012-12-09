@@ -1,16 +1,291 @@
 ﻿<UserControl x:Class="CallWall.Settings.Connectivity.ConnectivitySettingsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:CallWall="clr-namespace:CallWall;assembly=CallWall.Core">
+    <Control.Resources>
+        <CallWall:GrayScaleConverter x:Key="grayScaleConverter"/>
+        <Style x:Key="ExpanderStyle1" TargetType="{x:Type Expander}">
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="21,5,5,5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Expander}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" CornerRadius="3" SnapsToDevicePixels="True">
+                            <DockPanel>
+                                <ToggleButton x:Name="HeaderSite" 
+                                              ContentTemplate="{TemplateBinding HeaderTemplate}" 
+                                              Content="{TemplateBinding Header}" 
+                                              DockPanel.Dock="Top" 
+                                              Foreground="{TemplateBinding Foreground}" 
+                                              FontWeight="{TemplateBinding FontWeight}" FontStyle="{TemplateBinding FontStyle}" FontStretch="{TemplateBinding FontStretch}" FontSize="{TemplateBinding FontSize}" FontFamily="{TemplateBinding FontFamily}" 
+                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
+                                              Margin="1" Padding="0" 
+                                              MinWidth="0" MinHeight="0">
+                                    <ToggleButton.FocusVisualStyle>
+                                        <Style>
+                                            <Setter Property="Control.Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate>
+                                                        <Border>
+                                                            <Rectangle Margin="0" SnapsToDevicePixels="True" Stroke="Black" StrokeThickness="1" StrokeDashArray="1 2"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ToggleButton.FocusVisualStyle>
+                                    <ToggleButton.Style>
+                                        <Style TargetType="{x:Type ToggleButton}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                                        <Border Padding="{TemplateBinding Padding}">
+                                                            <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                                              Content="{TemplateBinding Content}" 
+                                                                              ContentStringFormat="{TemplateBinding ContentStringFormat}" 
+                                                                              HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                                              Margin="4,0,0,0" 
+                                                                              RecognizesAccessKey="True" SnapsToDevicePixels="True" />
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ToggleButton.Style>
+                                </ToggleButton>
+                                <ContentPresenter x:Name="ExpandSite" 
+                                                  ContentTemplate="{TemplateBinding ContentTemplate}" 
+                                                  Content="{TemplateBinding Content}" 
+                                                  ContentStringFormat="{TemplateBinding ContentStringFormat}" 
+                                                  DockPanel.Dock="Bottom" 
+                                                  Focusable="False" 
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                  Margin="{TemplateBinding Padding}" 
+                                                  Visibility="Collapsed"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </DockPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsExpanded" Value="True">
+                                <Setter Property="Visibility" TargetName="ExpandSite" Value="Visible"/>
+                            </Trigger>
+                            <Trigger Property="ExpandDirection" Value="Right">
+                                <Setter Property="DockPanel.Dock" TargetName="ExpandSite" Value="Right"/>
+                                <Setter Property="DockPanel.Dock" TargetName="HeaderSite" Value="Left"/>
+                                <Setter Property="Style" TargetName="HeaderSite">
+                                    <Setter.Value>
+                                        <Style TargetType="{x:Type ToggleButton}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                                        <Border Padding="{TemplateBinding Padding}">
+                                                            <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" HorizontalAlignment="Center" Margin="0,4,0,0" Grid.Row="1" RecognizesAccessKey="True" SnapsToDevicePixels="True" VerticalAlignment="Top"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="ExpandDirection" Value="Up">
+                                <Setter Property="DockPanel.Dock" TargetName="ExpandSite" Value="Top"/>
+                                <Setter Property="DockPanel.Dock" TargetName="HeaderSite" Value="Bottom"/>
+                                <Setter Property="Style" TargetName="HeaderSite">
+                                    <Setter.Value>
+                                        <Style TargetType="{x:Type ToggleButton}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                                        <Border Padding="{TemplateBinding Padding}">
+                                                            <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Grid.Column="1" ContentStringFormat="{TemplateBinding ContentStringFormat}" HorizontalAlignment="Left" Margin="4,0,0,0" RecognizesAccessKey="True" SnapsToDevicePixels="True" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="ExpandDirection" Value="Left">
+                                <Setter Property="DockPanel.Dock" TargetName="ExpandSite" Value="Left"/>
+                                <Setter Property="DockPanel.Dock" TargetName="HeaderSite" Value="Right"/>
+                                <Setter Property="Style" TargetName="HeaderSite">
+                                    <Setter.Value>
+                                        <Style TargetType="{x:Type ToggleButton}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                                        <Border Padding="{TemplateBinding Padding}">
+                                                            <Grid Background="Transparent" SnapsToDevicePixels="False">
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition Height="19"/>
+                                                                    <RowDefinition Height="*"/>
+                                                                </Grid.RowDefinitions>
+                                                                <Grid>
+                                                                    <Grid.LayoutTransform>
+                                                                        <TransformGroup>
+                                                                            <RotateTransform Angle="90"/>
+                                                                        </TransformGroup>
+                                                                    </Grid.LayoutTransform>
+                                                                    <Ellipse x:Name="circle" Fill="White" HorizontalAlignment="Center" Height="19" Stroke="#FF333333" VerticalAlignment="Center" Width="19"/>
+                                                                    <Path x:Name="arrow" Data="M1,1.5L4.5,5 8,1.5" HorizontalAlignment="Center" SnapsToDevicePixels="False" Stroke="#FF333333" StrokeThickness="2" VerticalAlignment="Center"/>
+                                                                </Grid>
+                                                                <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" HorizontalAlignment="Center" Margin="0,4,0,0" Grid.Row="1" RecognizesAccessKey="True" SnapsToDevicePixels="True" VerticalAlignment="Top"/>
+                                                            </Grid>
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsChecked" Value="True">
+                                                                <Setter Property="Data" TargetName="arrow" Value="M1,4.5L4.5,1 8,4.5"/>
+                                                            </Trigger>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter Property="Stroke" TargetName="circle" Value="#FF5593FF"/>
+                                                                <Setter Property="Fill" TargetName="circle" Value="#FFF3F9FF"/>
+                                                                <Setter Property="Stroke" TargetName="arrow" Value="Black"/>
+                                                            </Trigger>
+                                                            <Trigger Property="IsPressed" Value="True">
+                                                                <Setter Property="Stroke" TargetName="circle" Value="#FF3C77DD"/>
+                                                                <Setter Property="StrokeThickness" TargetName="circle" Value="1.5"/>
+                                                                <Setter Property="Fill" TargetName="circle" Value="#FFD9ECFF"/>
+                                                                <Setter Property="Stroke" TargetName="arrow" Value="Black"/>
+                                                            </Trigger>
+                                                            <Trigger Property="IsEnabled" Value="False">
+                                                                <Setter Property="Stroke" TargetName="circle" Value="#FFBCBCBC"/>
+                                                                <Setter Property="Fill" TargetName="circle" Value="#FFE6E6E6"/>
+                                                                <Setter Property="Stroke" TargetName="arrow" Value="#FF707070"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Control.Resources>
     <DockPanel>
         <Button DockPanel.Dock="Bottom" Command="{Binding CloseCommand}" Content="Done"/>
-        
+
+
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap">
+                <Run FontSize="48">Connect</Run>
+                <Run >Select how you want to recieve the incoming call notification from your mobile</Run>
+        </TextBlock>
+
+
         <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <TextBlock Text="Connectivity Settings"
-                       VerticalAlignment="Top"
-                       Style="{DynamicResource TitleTextStyle}" />
-            <!--TODO: Put the connectivity items here -->
+            <ItemsControl ItemsSource="{Binding ConnectivityConfigurators}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Expander Content="{Binding View}" 
+                                  Style="{StaticResource ExpanderStyle1}">
+                            <Expander.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Stretch="Uniform" StretchDirection="Both" Height="40">
+                                        <Image.Style>
+                                            <Style TargetType="Image">
+                                                <Setter Property="Source" Value="{Binding Image, Converter={StaticResource grayScaleConverter}}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Expander}, Path=IsExpanded}" Value="True">
+                                                        <Setter Property="Source" Value="{Binding Image}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel}, Path=IsMouseOver}" Value="True">
+                                                        <Setter Property="Source" Value="{Binding Image}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
+                                    <TextBlock Text="{Binding Name}">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock" BasedOn="{StaticResource Heading1Style}">
+                                                <Setter Property="Foreground" Value="Gray"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Expander}, Path=IsExpanded}" Value="True">
+                                                        <Setter Property="Foreground" Value="White"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel}, Path=IsMouseOver}" Value="True">
+                                                        <Setter Property="Foreground" Value="White"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Expander.Header>
+                        </Expander>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <!--<StackPanel>
+                <Expander>
+                    <Expander.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="C:\Users\Lee\Documents\GitHub\CallWall.Windows\src\CallWall\Images\Bluetooth_72x72.png" Stretch="Uniform" StretchDirection="Both" Height="40"/>
+                            <TextBlock Style="{DynamicResource Heading1Style}">Bluetooth</TextBlock>
+                        </StackPanel>
+                    </Expander.Header>
+                    <StackPanel>
+                        <TextBlock TextWrapping="Wrap">
+                            Bluetooth is common radio technology that allows devices to transfer information within a radius of up to 10 meters (32 feet). 
+                            There are no data costs for using Bluetooth and will convieniently only activate CallWall if the paired phone is nearby. 
+                            Bluetooth will need to be enabled on both the phone and this client PC.
+                        </TextBlock>
+                        <Label>Turn on bluetooth</Label>
+                        <Label>Pair with device</Label>
+                        <Label>Test connection</Label>
+                    </StackPanel>
+                </Expander>
+                <Expander>
+                    <Expander.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="C:\Users\Lee\Documents\GitHub\CallWall.Windows\src\CallWall\Images\Wifi_140x98.png" Stretch="Uniform" StretchDirection="Both" Width="40"/>
+                            <TextBlock Style="{DynamicResource Heading1Style}">WiFi-Direct</TextBlock>
+                        </StackPanel>
+                    </Expander.Header>
+                    <StackPanel>
+                        <TextBlock TextWrapping="Wrap">
+                            WiFi-Direct is a modern radio technology that allows devices to transfer information within a radius of up to 100 meters (300 feet). 
+                            There are no data costs for using WiFi-Direct however few devices support it.
+                            Wifi will need to be enabled on both the phone and this client PC.
+                        </TextBlock>
+                        <Label>Turn on Wifi</Label>
+                        <Label>Pair with device</Label>
+                        <Label>Test connection</Label>
+                    </StackPanel>
+                </Expander>
+                <Expander>
+                    <Expander.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="C:\Users\Lee\Documents\GitHub\CallWall.Windows\src\CallWall\Images\Cloud_204x204.jpg" Stretch="Uniform" StretchDirection="Both" Width="40"/>
+                            <TextBlock Style="{DynamicResource Heading1Style}">Cloud</TextBlock>
+                        </StackPanel>
+                    </Expander.Header>
+                    <StackPanel>
+                        <TextBlock TextWrapping="Wrap">
+                            Using the data services available on your phone, the incoming call notification can be routed via the internet and pushed to the client PC.
+                            Both the phone and client PC will need access to the internet. Data charges may apply.
+                        </TextBlock>
+                        <Label>Turn on Wifi</Label>
+                        <Label>Pair with device</Label>
+                        <Label>Test connection</Label>
+                    </StackPanel>
+                </Expander>
+            </StackPanel>-->
         </ScrollViewer>
-        
-        
     </DockPanel>
 </UserControl>

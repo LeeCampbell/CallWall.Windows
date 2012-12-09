@@ -12,7 +12,7 @@ namespace CallWall
         }
         public IScheduler Concurrent
         {
-            get { return _dispatcherScheduler; }
+            get { return ThreadPoolScheduler.Instance; }
         }
 
         public IScheduler LongRunning
@@ -22,7 +22,7 @@ namespace CallWall
 
         public IScheduler Async
         {
-            get { return ThreadPoolScheduler.Instance; }
+            get { return _dispatcherScheduler; }
         }
     }
 }

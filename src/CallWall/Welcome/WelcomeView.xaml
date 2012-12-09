@@ -14,8 +14,16 @@
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Padding" Value="10"/>
-            <Setter Property="Header" Value="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource stepHeaderConverter}}"/>
             <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource stepBackgroundConverter}}"/>
+            <Setter Property="Header" Value="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource stepHeaderConverter}}"/>
+            <Setter Property="HeaderTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" FontSize="42" VerticalAlignment="Bottom"/>
+                    </DataTemplate>
+                    
+                </Setter.Value>
+            </Setter>
         </Style>
     </Control.Resources>
     <!--TODO: Localise the text-->

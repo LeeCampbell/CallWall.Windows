@@ -5,6 +5,7 @@ namespace CallWall.Settings.Bluetooth
 {
     public sealed class BluetoothConnectivityConfigurator : IConnectivityConfigurator
     {
+        private readonly IBluetoothSetupView _view;
         private bool _isEnabled;
         private static readonly Uri _image;
 
@@ -14,14 +15,13 @@ namespace CallWall.Settings.Bluetooth
             {
                 UriParser.Register(new GenericUriParser(GenericUriParserOptions.GenericAuthority), "pack", -1);
             }
-            _image = new Uri("pack://application:,,,/CallWall;component/Settings.Bluetooth/Bluetooth_64x64.png");
+            _image = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth_72x72.png");
         }
 
-        public BluetoothConnectivityConfigurator()
+        public BluetoothConnectivityConfigurator(IBluetoothSetupView view)
         {
-            
+            _view = view;
         }
-
 
         #region Implementation of IConnectivityConfigurator
 
@@ -39,6 +39,11 @@ namespace CallWall.Settings.Bluetooth
         public Uri Image
         {
             get { return _image; }
+        }
+
+        public object View
+        {
+            get { return _view; }
         }
 
         #endregion

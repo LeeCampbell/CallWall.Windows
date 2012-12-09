@@ -221,7 +221,7 @@
                                             <DiscreteObjectKeyFrame KeyTime="0">
                                                 <DiscreteObjectKeyFrame.Value>
                                                     <TransformGroup>
-                                                        <RotateTransform Angle="-90" />
+                                                        <!--<RotateTransform Angle="-90" />-->
                                                     </TransformGroup>
                                                 </DiscreteObjectKeyFrame.Value>
                                             </DiscreteObjectKeyFrame>
