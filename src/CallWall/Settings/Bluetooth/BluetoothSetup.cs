@@ -1,10 +1,6 @@
 using System;
-using System.Collections.ObjectModel;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
-using InTheHand.Net;
-using InTheHand.Net.Bluetooth;
 using InTheHand.Net.Sockets;
 
 namespace CallWall.Settings.Bluetooth
@@ -15,11 +11,12 @@ namespace CallWall.Settings.Bluetooth
         //private static readonly Guid CallMeServiceId = new Guid("00001105-0000-1000-8000-00805F9B34FB");  //Std generic id
         private static readonly Guid CallMeServiceId = new Guid("fa87c0d0-afac-11de-8a39-0800200c9a66"); //Bluetooth chat id
 
-        public BluetoothSetup()
-        {
-        }
+        private readonly IBluetoothDeviceFactory _bluetoothDeviceFactory;
 
-        #region Implementation of IBluetoothSetup
+        public BluetoothSetup(IBluetoothDeviceFactory bluetoothDeviceFactory)
+        {
+            _bluetoothDeviceFactory = bluetoothDeviceFactory;
+        }
 
         public IObservable<BluetoothDevice> SearchForDevices()
         {
@@ -30,11 +27,7 @@ namespace CallWall.Settings.Bluetooth
                     var devices = btClient.DiscoverDevices();
                     foreach (var bluetoothDeviceInfo in devices)
                     {
-                        var deviceType = BluetoothDeviceType.Create(bluetoothDeviceInfo.ClassOfDevice.Device);
-                        var signalStrength = bluetoothDeviceInfo.Rssi;  //Implies connected?
-                        var isRemembered = bluetoothDeviceInfo.Remembered;  //If signalStrength is 0, then assume it is remembered?
-                        Console.WriteLine("{0} strength = {1}", bluetoothDeviceInfo.DeviceName, signalStrength);
-                        var btd = new BluetoothDevice(bluetoothDeviceInfo.DeviceName, deviceType, bluetoothDeviceInfo.DeviceAddress);
+                        var btd = _bluetoothDeviceFactory.Create(bluetoothDeviceInfo);
                         o.OnNext(btd);
                     }
                     o.OnCompleted();
@@ -43,9 +36,5 @@ namespace CallWall.Settings.Bluetooth
                 }
             });
         }
-
-       
-
-        #endregion
     }
 }

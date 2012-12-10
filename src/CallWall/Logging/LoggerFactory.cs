@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace CallWall
+namespace CallWall.Logging
 {
     public sealed class LoggerFactory : ILoggerFactory
     {

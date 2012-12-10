@@ -1,9 +1,9 @@
+﻿using System;
+using Microsoft.Practices.Prism.Logging;
 using log4net;
 using log4net.Core;
-using Microsoft.Practices.Prism.Logging;
-using System;
 
-namespace CallWall
+namespace CallWall.Logging
 {
     /// <summary>
     /// Implementation of the CallWall <see cref="ILogger"/> interface and Prism <see cref="ILoggerFacade"/> interface.

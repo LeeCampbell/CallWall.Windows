@@ -1,4 +1,5 @@
-﻿using CallWall.PrismExtensions;
+﻿using CallWall.Logging;
+using CallWall.PrismExtensions;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Prism.UnityExtensions;

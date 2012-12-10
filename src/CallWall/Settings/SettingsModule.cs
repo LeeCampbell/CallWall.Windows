@@ -23,6 +23,7 @@ namespace CallWall.Settings
             _container.RegisterType<IAccountSettingsViewModel, AccountSettingsViewModel>(new TransientLifetimeManager());
             _container.RegisterType<IAccountSettingsView, AccountSettingsView>(new TransientLifetimeManager());
             _container.RegisterType<IBluetoothSetup, BluetoothSetup>(new TransientLifetimeManager());
+            _container.RegisterType<IBluetoothDeviceFactory, BluetoothDeviceFactory>(new TransientLifetimeManager());
             _container.RegisterType<IBluetoothSetupView, BluetoothSetupView>(new TransientLifetimeManager());
         }
     }

@@ -55,6 +55,10 @@
     <Reference Include="InTheHand.Net.Personal, Version=3.5.605.0, Culture=neutral, PublicKeyToken=ea38caa273134499, processorArchitecture=MSIL">
       <HintPath>..\..\packages\32feet.NET.3.5.0.0\lib\net\InTheHand.Net.Personal.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Expression.Interactions">
       <HintPath>..\..\packages\Prism.4.1.0.0\lib\NET40\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
@@ -122,6 +126,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Logging\Log4NetLogger.cs" />
+    <Compile Include="Logging\LoggerFactory.cs" />
     <Compile Include="PrismExtensions\AccordionItemsSourceSyncBehavior.cs" />
     <Compile Include="PrismExtensions\ModuleCatalogExtensions.cs" />
     <Compile Include="PrismExtensions\AccordionRegionAdapter.cs" />
@@ -133,6 +139,7 @@
       <DependentUpon>BluetoothSetupView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\Bluetooth\BluetoothSetupViewModel.cs" />
+    <Compile Include="Settings\Bluetooth\IBluetoothDeviceFactory.cs" />
     <Compile Include="Settings\Bluetooth\IBluetoothSetup.cs" />
     <Compile Include="Settings\Bluetooth\IBluetoothSetupView.cs" />
     <Compile Include="Settings\Bluetooth\ViewModelStatus.cs" />
@@ -318,6 +325,7 @@
     <Resource Include="Images\Bluetooth\Phone.png" />
     <Resource Include="Images\Bluetooth\Speaker.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

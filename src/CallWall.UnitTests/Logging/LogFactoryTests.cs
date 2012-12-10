@@ -1,8 +1,9 @@
-using log4net;
+using CallWall.Logging;
 using NUnit.Framework;
+using log4net;
 
 // ReSharper disable InconsistentNaming
-namespace CallWall.Core.UnitTests
+namespace CallWall.UnitTests.Logging
 {
     public abstract class Given_a_constructed_Logfactory
     {

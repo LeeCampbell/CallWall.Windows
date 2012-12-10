@@ -36,4 +36,6 @@ using System.Windows;
     // app, or any theme specific resource dictionaries)
 )]
 
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
+
 //Versioning etc is generated into the shared version file SharedAssemblyInfo.cs
