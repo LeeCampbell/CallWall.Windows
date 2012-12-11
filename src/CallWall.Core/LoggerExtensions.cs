@@ -1,3 +1,5 @@
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using JetBrains.Annotations;
 using System;
 using System.Diagnostics;
@@ -250,6 +252,23 @@ namespace CallWall
             }
 
             logger.Debug("{0}.{1}{2}", typeName, method.Name, parenth);
+        }
+
+        public static IObservable<T> Log<T>(this IObservable<T> source, ILogger logger, string name)
+        {
+            return Observable.Create<T>(
+                o =>
+                {
+                    logger.Debug("{0}.Subscribe()", name);
+                    var subscription = source
+                        .Do(
+                            i => logger.Debug("{0}.OnNext({1})", name, i),
+                            ex => logger.Debug("{0}.OnError({1})", name, ex),
+                            () => logger.Debug("{0}.OnCompleted()", name))
+                        .Subscribe(o);
+                    var disposal = Disposable.Create(() => logger.Debug("{0}.Dispose()", name));
+                    return new CompositeDisposable(subscription, disposal);
+                });
         }
     }
 }

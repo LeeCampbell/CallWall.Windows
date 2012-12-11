@@ -131,16 +131,15 @@
     <Compile Include="PrismExtensions\AccordionItemsSourceSyncBehavior.cs" />
     <Compile Include="PrismExtensions\ModuleCatalogExtensions.cs" />
     <Compile Include="PrismExtensions\AccordionRegionAdapter.cs" />
+    <Compile Include="Services\BluetoothService.cs" />
+    <Compile Include="Services\IBluetoothService.cs" />
     <Compile Include="Settings\Bluetooth\BluetoothConnectivityConfigurator.cs" />
     <Compile Include="Settings\Bluetooth\BluetoothDevice.cs" />
     <Compile Include="Settings\Bluetooth\BluetoothDeviceType.cs" />
-    <Compile Include="Settings\Bluetooth\BluetoothSetup.cs" />
     <Compile Include="Settings\Bluetooth\BluetoothSetupView.xaml.cs">
       <DependentUpon>BluetoothSetupView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\Bluetooth\BluetoothSetupViewModel.cs" />
-    <Compile Include="Settings\Bluetooth\IBluetoothDeviceFactory.cs" />
-    <Compile Include="Settings\Bluetooth\IBluetoothSetup.cs" />
     <Compile Include="Settings\Bluetooth\IBluetoothSetupView.cs" />
     <Compile Include="Settings\Bluetooth\ViewModelStatus.cs" />
     <Compile Include="Settings\Connectivity\ConnectivitySettingsModel.cs" />

@@ -31,6 +31,7 @@
                             <ColumnDefinition Width="48"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="28"/>
@@ -44,9 +45,19 @@
                                    MaxWidth="42" MaxHeight="42" Stretch="Uniform" StretchDirection="Both"
                                    VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </Border>
+                        <ProgressBar Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="1"
+                                     IsIndeterminate="True"
+                                     Height="2" Margin="3,0"
+                                     VerticalAlignment="Bottom"
+                                     Visibility="{Binding Status.IsProcessing, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                         <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Name}" FontSize="18" VerticalAlignment="Bottom"/>
                         <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding DeviceType.Name}" VerticalAlignment="Top"/>
-                        <Button Grid.Column="2" Grid.RowSpan="2" Command="{Binding PairDeviceCommand}" VerticalAlignment="Center">Pair</Button>
+                        <Button Grid.Column="2" Grid.RowSpan="2" VerticalAlignment="Center" 
+                                Style="{DynamicResource SettingButton}"
+                                Command="{Binding PairDeviceCommand}">Pair</Button>
+                        <Button Grid.Column="3" Grid.RowSpan="2" VerticalAlignment="Center"
+                                Style="{DynamicResource SettingButton}"
+                                Command="{Binding RemoveDeviceCommand}">Remove</Button>
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Reactive.Linq;
+using CallWall.Services;
 using JetBrains.Annotations;
 using Microsoft.Practices.Prism.Commands;
 
@@ -15,7 +16,7 @@ namespace CallWall.Settings.Bluetooth
     //  Test a connection (i.e. validate that CallWall is installed on the paired device)
     public sealed class BluetoothSetupViewModel : INotifyPropertyChanged
     {
-        private readonly IBluetoothSetup _bluetoothSetup;
+        private readonly IBluetoothService _bluetoothService;
         private readonly ISchedulerProvider _schedulerProvider;
         private readonly ObservableCollection<BluetoothDevice> _devices = new ObservableCollection<BluetoothDevice>();
         private readonly ReadOnlyObservableCollection<BluetoothDevice> _roDevices;
@@ -24,9 +25,9 @@ namespace CallWall.Settings.Bluetooth
         private readonly DelegateCommand _searchForDevicesCommandCommand;
         private ViewModelStatus _status = ViewModelStatus.Idle;
 
-        public BluetoothSetupViewModel(IBluetoothSetup bluetoothSetup, ISchedulerProvider schedulerProvider)
+        public BluetoothSetupViewModel(IBluetoothService bluetoothService, ISchedulerProvider schedulerProvider)
         {
-            _bluetoothSetup = bluetoothSetup;
+            _bluetoothService = bluetoothService;
             _schedulerProvider = schedulerProvider;
             _roDevices = new ReadOnlyObservableCollection<BluetoothDevice>(_devices);
             _enableBluetoothCommand = new DelegateCommand(EnableBluetooth);
@@ -64,7 +65,7 @@ namespace CallWall.Settings.Bluetooth
         {
             _devices.Clear();
             Status = ViewModelStatus.Processing;
-            _bluetoothSetup.SearchForDevices()
+            _bluetoothService.SearchForDevices()
                 .SubscribeOn(_schedulerProvider.Concurrent)
                 .ObserveOn(_schedulerProvider.Async)
                 .Subscribe(

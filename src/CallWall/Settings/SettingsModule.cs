@@ -1,4 +1,5 @@
-﻿using CallWall.Settings.Accounts;
+﻿using CallWall.Services;
+using CallWall.Settings.Accounts;
 using CallWall.Settings.Bluetooth;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Unity;
@@ -22,8 +23,7 @@ namespace CallWall.Settings
             _container.RegisterType<IAccountSettingsModel, AccountSettingsModel>(new TransientLifetimeManager());
             _container.RegisterType<IAccountSettingsViewModel, AccountSettingsViewModel>(new TransientLifetimeManager());
             _container.RegisterType<IAccountSettingsView, AccountSettingsView>(new TransientLifetimeManager());
-            _container.RegisterType<IBluetoothSetup, BluetoothSetup>(new TransientLifetimeManager());
-            _container.RegisterType<IBluetoothDeviceFactory, BluetoothDeviceFactory>(new TransientLifetimeManager());
+            _container.RegisterType<IBluetoothService, BluetoothService>(new TransientLifetimeManager());
             _container.RegisterType<IBluetoothSetupView, BluetoothSetupView>(new TransientLifetimeManager());
         }
     }

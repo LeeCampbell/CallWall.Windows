@@ -1,13 +1,13 @@
 ﻿using CallWall.Logging;
 using CallWall.PrismExtensions;
 using Microsoft.Practices.Prism.Modularity;
-using Microsoft.Practices.Prism.Regions;
 using Microsoft.Practices.Prism.UnityExtensions;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using System;
 using System.Threading;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace CallWall
 {
@@ -51,11 +51,6 @@ namespace CallWall
             Container.RegisterInstance<ILoggerFactory>(_loggerFactory);
         }
 
-        protected override void ConfigureServiceLocator()
-        {
-            base.ConfigureServiceLocator();
-        }
-
         protected override Microsoft.Practices.Prism.Regions.RegionAdapterMappings ConfigureRegionAdapterMappings()
         {
             var baseMappings = base.ConfigureRegionAdapterMappings();
@@ -63,15 +58,30 @@ namespace CallWall
             return baseMappings;
         }
 
-        protected override Microsoft.Practices.Prism.Regions.IRegionBehaviorFactory ConfigureDefaultRegionBehaviors()
-        {
-            return base.ConfigureDefaultRegionBehaviors();
-        }
+        //protected override void ConfigureServiceLocator()
+        //{
+        //    base.ConfigureServiceLocator();
+        //}
 
-        protected override void RegisterFrameworkExceptionTypes()
-        {
-            base.RegisterFrameworkExceptionTypes();
-        }
+        //protected override Microsoft.Practices.Prism.Regions.IRegionBehaviorFactory ConfigureDefaultRegionBehaviors()
+        //{
+        //    return base.ConfigureDefaultRegionBehaviors();
+        //}
+
+        //protected override void RegisterFrameworkExceptionTypes()
+        //{
+        //    base.RegisterFrameworkExceptionTypes();
+        //}
+
+        //protected override void InitializeShell()
+        //{
+        //    base.InitializeShell();
+        //}
+
+        //protected override void InitializeModules()
+        //{
+        //    base.InitializeModules();
+        //}
 
         protected override DependencyObject CreateShell()
         {
@@ -82,19 +92,22 @@ namespace CallWall
             return shell;
         }
 
-        protected override void InitializeShell()
+        public void LogFailure(string source, DispatcherUnhandledExceptionEventArgs args)
         {
-            base.InitializeShell();
+            _logger.Fatal(args.Exception, "An unhandled exception occurred on the Dispatcher. args.Handled={0}", args.Handled);
         }
 
-        protected override void InitializeModules()
+        public void LogFailure(string source, UnhandledExceptionEventArgs args)
         {
-            base.InitializeModules();
+            _logger.Fatal("An unhandled exception occurred on the Dispatcher. args.IsTerminating={0}\r\nargs.ExceptionObject={1}", args.IsTerminating, args.ExceptionObject);
         }
 
         public void Dispose()
         {
+            _logger.Debug("Bootstrapper disposing");
             Container.Dispose();
+            _logger.Debug("Container disposed");
+            _logger.Info("Application shutting down");
         }
     }
 }

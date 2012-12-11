@@ -99,6 +99,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AuthorizationStatus.cs" />
+    <Compile Include="BooleanToInvisibilityConverter.cs" />
     <Compile Include="GrayScaleConverter.cs" />
     <Compile Include="IConnectivityConfigurator.cs" />
     <Compile Include="ILogger.cs" />
