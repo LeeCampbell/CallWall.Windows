@@ -20,12 +20,15 @@
     <OutputDirectory>.\bin\$(Configuration)</OutputDirectory>
     <Configuration>Release</Configuration>
   </PropertyGroup>
+  
+  
   <!-- User targets -->
   <Target Name="Clean">
     <RemoveDir Directories="$(OutputDirectory)"
          Condition="Exists($(OutputDirectory))">
     </RemoveDir>
   </Target>
+  
   <Target Name="Version">
     <AssemblyInfo CodeLanguage="CS"
                   OutputFile=".\src\SharedAssemblyInfo.cs"
@@ -36,19 +39,31 @@
                   AssemblyCopyright="Copyright © Campbell Consultancy London Ltd 2012"
                 />
   </Target>
-  <Target Name="Build" DependsOnTargets="Clean; Version">
+  
+  <Target Name="Compile" DependsOnTargets="Clean; Version">
     <MSBuild Projects="@(Projects)"
              Properties="Configuration=$(Configuration)" >
     </MSBuild>
   </Target>
+  
+  <Target Name="Compress" DependsOnTargets="Compile">
+	<ItemGroup>
+      <FilesToDelete Include=".\bin\$(Configuration)\**\*.xml"/>
+    </ItemGroup>            
+    <Delete Files="@(FilesToDelete)" />
+  </Target>
 
-  <Target Name="Publish" DependsOnTargets="Clean; Version">
-    <MSBuild Projects=".\src\CallWall\CallWall.csproj"
+  <Target Name="Build" DependsOnTargets="Clean; Version; Compile; Compress">
+  </Target>
+
+  
+  <Target Name="Publish" DependsOnTargets="Build">
+	<MSBuild Projects=".\src\CallWall\CallWall.csproj"
              Targets="Publish"
              Properties="Configuration=$(Configuration);ApplicationVersion=$(BuildVersion);PublisherName=Campbell Consultancy London Ltd;ProductName=CallWall" >
       <!--NOTE: PublishUrl property is ignore from command line. Will always be $(OutputDirectory)\app.publish\-->
       <!--http://stackoverflow.com/questions/2130985/problems-using-msbuild-using-command-line-for-publish-click-once-->
-      <!--Also appears that no Publish.htm file is prduced from the command line so check this out next.... http://wallism.wordpress.com/2009/12/08/clickonce-creating-publish-page-from-msbuild/ -->
+      <!--Also appears that no Publish.htm file is produced from the command line so check this out next.... http://wallism.wordpress.com/2009/12/08/clickonce-creating-publish-page-from-msbuild/ -->
     </MSBuild>
   </Target>
   <!--
