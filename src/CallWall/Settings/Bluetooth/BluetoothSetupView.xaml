@@ -15,14 +15,32 @@
         </CollectionViewSource>
     </Control.Resources>
     <StackPanel>
-        <DockPanel>
-            <Button DockPanel.Dock="Right" Command="{Binding SearchForDevicesCommand}">Search</Button>
-            <TextBlock TextWrapping="Wrap">
-                Bluetooth is common radio technology that allows devices to transfer information within a radius of up to 10 meters (32 feet). 
-                There are no data costs for using Bluetooth and will convieniently only activate CallWall if the paired phone is nearby. 
-                Bluetooth will need to be enabled on both the phone and this client PC.
-            </TextBlock>
-        </DockPanel>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="2"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Button x:Name="ScanButton" 
+                    Grid.Column="1" Grid.Row="0"
+                    Command="{Binding SearchForDevicesCommand}" 
+                    ToolTip="Scan for discoverable devices">Scan</Button>
+
+            <ProgressBar Grid.Column="1" Grid.Row="2" 
+                         IsIndeterminate="True"
+                         Height="2" 
+                         Width="{Binding ElementName=ScanButton, Path=ActualWidth}"
+                         Margin="{Binding ElementName=ScanButton, Path=Margin}"
+                         VerticalAlignment="Bottom"
+                         HorizontalAlignment="Right"
+                         Visibility="{Binding Status.IsProcessing, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        </Grid>
+
         <ItemsControl ItemsSource="{Binding Source={StaticResource sortedDevices}}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type Bluetooth:BluetoothDevice}">

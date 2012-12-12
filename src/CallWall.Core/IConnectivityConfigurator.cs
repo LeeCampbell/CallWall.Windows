@@ -8,6 +8,7 @@ namespace CallWall
         bool IsEnabled { get; set; }//?
         string Name { get; }
         Uri Image { get; }
+        string Description { get; }
         object View { get; }
     }
 }
