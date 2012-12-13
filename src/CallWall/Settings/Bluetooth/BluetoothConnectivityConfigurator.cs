@@ -28,7 +28,14 @@ namespace CallWall.Settings.Bluetooth
         public bool IsEnabled
         {
             get { return _isEnabled; }
-            set { _isEnabled = value; }
+            set
+            {
+                if (_isEnabled != value)
+                {
+                    _isEnabled = value;
+                    OnPropertyChanged("IsEnabled");
+                }
+            }
         }
 
         public string Name
@@ -57,6 +64,12 @@ namespace CallWall.Settings.Bluetooth
         #region Implementation of INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         #endregion
     }
