@@ -8,7 +8,7 @@ using Microsoft.Practices.Prism.Commands;
 
 namespace CallWall.Settings.Bluetooth
 {
-    public sealed class BluetoothDevice : INotifyPropertyChanged
+    public sealed class BluetoothDevice : IBluetoothDevice
     {
         private readonly BluetoothDeviceInfo _deviceInfo;
         private readonly IBluetoothService _bluetoothService;

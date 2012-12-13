@@ -18,8 +18,8 @@ namespace CallWall.Settings.Bluetooth
     {
         private readonly IBluetoothService _bluetoothService;
         private readonly ISchedulerProvider _schedulerProvider;
-        private readonly ObservableCollection<BluetoothDevice> _devices = new ObservableCollection<BluetoothDevice>();
-        private readonly ReadOnlyObservableCollection<BluetoothDevice> _roDevices;
+        private readonly ObservableCollection<IBluetoothDevice> _devices = new ObservableCollection<IBluetoothDevice>();
+        private readonly ReadOnlyObservableCollection<IBluetoothDevice> _roDevices;
 
         private readonly DelegateCommand _enableBluetoothCommand;
         private readonly DelegateCommand _searchForDevicesCommandCommand;
@@ -29,12 +29,12 @@ namespace CallWall.Settings.Bluetooth
         {
             _bluetoothService = bluetoothService;
             _schedulerProvider = schedulerProvider;
-            _roDevices = new ReadOnlyObservableCollection<BluetoothDevice>(_devices);
+            _roDevices = new ReadOnlyObservableCollection<IBluetoothDevice>(_devices);
             _enableBluetoothCommand = new DelegateCommand(EnableBluetooth);
             _searchForDevicesCommandCommand = new DelegateCommand(SearchForDevices, () => !Status.IsProcessing);
         }
 
-        public ReadOnlyObservableCollection<BluetoothDevice> Devices
+        public ReadOnlyObservableCollection<IBluetoothDevice> Devices
         {
             get { return _roDevices; }
         }
@@ -87,6 +87,5 @@ namespace CallWall.Settings.Bluetooth
         }
 
         #endregion
-
     }
 }

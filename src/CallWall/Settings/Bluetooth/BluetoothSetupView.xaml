@@ -7,6 +7,7 @@
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase" 
              mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="480">
     <Control.Resources>
+        <!--TODO: Add a Checkbox to show/hide only Phones -->
         <CollectionViewSource x:Key="sortedDevices" Source="{Binding Devices}">
             <CollectionViewSource.SortDescriptions>
                 <scm:SortDescription PropertyName="IsValid" Direction="Descending" />

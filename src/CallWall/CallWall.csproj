@@ -140,6 +140,7 @@
       <DependentUpon>BluetoothSetupView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\Bluetooth\BluetoothSetupViewModel.cs" />
+    <Compile Include="Settings\Bluetooth\IBluetoothDevice.cs" />
     <Compile Include="Settings\Bluetooth\IBluetoothSetupView.cs" />
     <Compile Include="Settings\Bluetooth\ViewModelStatus.cs" />
     <Compile Include="Settings\Connectivity\ConnectivitySettingsModel.cs" />

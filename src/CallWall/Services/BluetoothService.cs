@@ -23,7 +23,7 @@ namespace CallWall.Services
             _logger = loggerFactory.CreateLogger();
         }
 
-        public IObservable<BluetoothDevice> SearchForDevices()
+        public IObservable<IBluetoothDevice> SearchForDevices()
         {
             return Observable.Create<BluetoothDevice>(
                 o =>
