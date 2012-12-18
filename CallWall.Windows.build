@@ -49,13 +49,17 @@
   <Target Name="Compress" DependsOnTargets="Compile">
 	<ItemGroup>
       <FilesToDelete Include=".\bin\$(Configuration)\**\*.xml"/>
+      <!--
+      Delete **\*.CodeAnalysisLog.xml
+      Delete **\*.lastcodeanalysissucceeded
+      Delete **\*.xml
+      -->
     </ItemGroup>            
     <Delete Files="@(FilesToDelete)" />
   </Target>
 
   <Target Name="Build" DependsOnTargets="Clean; Version; Compile; Compress">
   </Target>
-
   
   <Target Name="Publish" DependsOnTargets="Build">
 	<MSBuild Projects=".\src\CallWall\CallWall.csproj"
@@ -66,9 +70,5 @@
       <!--Also appears that no Publish.htm file is produced from the command line so check this out next.... http://wallism.wordpress.com/2009/12/08/clickonce-creating-publish-page-from-msbuild/ -->
     </MSBuild>
   </Target>
-  <!--
-Delete **\*.CodeAnalysisLog.xml
-Delete **\*.lastcodeanalysissucceeded
-Delete **\*.xml
--->
+  
 </Project>

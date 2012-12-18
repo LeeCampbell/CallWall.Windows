@@ -21,7 +21,6 @@ namespace CallWall.Settings.Bluetooth
         private readonly ObservableCollection<IBluetoothDevice> _devices = new ObservableCollection<IBluetoothDevice>();
         private readonly ReadOnlyObservableCollection<IBluetoothDevice> _roDevices;
 
-        private readonly DelegateCommand _enableBluetoothCommand;
         private readonly DelegateCommand _searchForDevicesCommandCommand;
         private ViewModelStatus _status = ViewModelStatus.Idle;
 
@@ -30,7 +29,6 @@ namespace CallWall.Settings.Bluetooth
             _bluetoothService = bluetoothService;
             _schedulerProvider = schedulerProvider;
             _roDevices = new ReadOnlyObservableCollection<IBluetoothDevice>(_devices);
-            _enableBluetoothCommand = new DelegateCommand(EnableBluetooth);
             _searchForDevicesCommandCommand = new DelegateCommand(SearchForDevices, () => !Status.IsProcessing);
         }
 
@@ -53,13 +51,7 @@ namespace CallWall.Settings.Bluetooth
             }
         }
 
-        public DelegateCommand EnableBluetoothCommand { get { return _enableBluetoothCommand; } }
         public DelegateCommand SearchForDevicesCommand { get { return _searchForDevicesCommandCommand; } }
-
-        private void EnableBluetooth()
-        {
-            throw new System.NotImplementedException();
-        }
 
         private void SearchForDevices()
         {
@@ -73,7 +65,6 @@ namespace CallWall.Settings.Bluetooth
                     ex => { Status = ViewModelStatus.Error(ex.Message); },
                     () => { Status = ViewModelStatus.Idle; });
         }
-
 
         #region INotifyPropertyChanged implementation
 

@@ -7,7 +7,7 @@ namespace CallWall.Settings.Bluetooth
     {
         string Name { get; }
         BluetoothDeviceType DeviceType { get; }
-        ViewModelStatus Status { get; set; }
+        ViewModelStatus Status { get; }
         DelegateCommand PairDeviceCommand { get; }
         DelegateCommand RemoveDeviceCommand { get; }
     }

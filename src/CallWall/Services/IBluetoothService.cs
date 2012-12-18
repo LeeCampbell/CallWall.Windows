@@ -1,6 +1,5 @@
 ﻿using System;
 using CallWall.Settings.Bluetooth;
-using InTheHand.Net.Sockets;
 
 namespace CallWall.Services
 {
@@ -8,7 +7,7 @@ namespace CallWall.Services
     {
         IObservable<IBluetoothDevice> SearchForDevices();
 
-        IObservable<bool> PairDevice(BluetoothDeviceInfo device);
-        IObservable<bool> RemoveDevice(BluetoothDeviceInfo device);
+        IObservable<bool> PairDevice(IBluetoothDeviceInfo device);
+        IObservable<bool> RemoveDevice(IBluetoothDeviceInfo device);
     }
 }

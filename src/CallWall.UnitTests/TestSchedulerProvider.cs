@@ -1,7 +1,7 @@
 using System.Reactive.Concurrency;
 using Microsoft.Reactive.Testing;
 
-namespace CallWall.UnitTests.Settings
+namespace CallWall.UnitTests
 {
     public sealed class TestSchedulerProvider : ISchedulerProvider
     {

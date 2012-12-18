@@ -133,6 +133,7 @@
     <Compile Include="PrismExtensions\AccordionRegionAdapter.cs" />
     <Compile Include="Services\BluetoothService.cs" />
     <Compile Include="Services\IBluetoothService.cs" />
+    <Compile Include="Services\WrappedBluetoothInfo.cs" />
     <Compile Include="Settings\Bluetooth\BluetoothConnectivityConfigurator.cs" />
     <Compile Include="Settings\Bluetooth\BluetoothDevice.cs" />
     <Compile Include="Settings\Bluetooth\BluetoothDeviceType.cs" />
@@ -141,6 +142,7 @@
     </Compile>
     <Compile Include="Settings\Bluetooth\BluetoothSetupViewModel.cs" />
     <Compile Include="Settings\Bluetooth\IBluetoothDevice.cs" />
+    <Compile Include="Settings\Bluetooth\IBluetoothDeviceInfo.cs" />
     <Compile Include="Settings\Bluetooth\IBluetoothSetupView.cs" />
     <Compile Include="Settings\Bluetooth\ViewModelStatus.cs" />
     <Compile Include="Settings\Connectivity\ConnectivitySettingsModel.cs" />

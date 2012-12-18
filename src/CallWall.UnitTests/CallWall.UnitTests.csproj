@@ -37,6 +37,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="InTheHand.Net.Personal, Version=3.5.605.0, Culture=neutral, PublicKeyToken=ea38caa273134499, processorArchitecture=MSIL" />
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
@@ -110,9 +111,10 @@
     <Compile Include="Logging\LogFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegionManagerStub.cs" />
+    <Compile Include="Settings\BluetoothDeviceFixture.cs" />
     <Compile Include="Settings\BluetoothSetupViewModelFixture.cs" />
     <Compile Include="Settings\SettingsModuleFixture.cs" />
-    <Compile Include="Settings\TestSchedulerProvider.cs" />
+    <Compile Include="TestSchedulerProvider.cs" />
     <Compile Include="Welcome\WelcomeControllerFixture.cs" />
     <Compile Include="Welcome\WelcomeModuleFixture.cs" />
   </ItemGroup>

@@ -2,7 +2,6 @@ using System;
 using System.ComponentModel;
 using System.Reactive.Linq;
 using CallWall.Services;
-using InTheHand.Net.Sockets;
 using JetBrains.Annotations;
 using Microsoft.Practices.Prism.Commands;
 
@@ -10,22 +9,20 @@ namespace CallWall.Settings.Bluetooth
 {
     public sealed class BluetoothDevice : IBluetoothDevice
     {
-        private readonly BluetoothDeviceInfo _deviceInfo;
+        private readonly IBluetoothDeviceInfo _deviceInfo;
         private readonly IBluetoothService _bluetoothService;
         private readonly ISchedulerProvider _schedulerProvider;
-        private readonly BluetoothDeviceType _deviceType;
         private readonly DelegateCommand _pairDeviceCommand;
         private readonly DelegateCommand _removeDeviceCommand;
         private ViewModelStatus _status = ViewModelStatus.Idle;
 
-        public BluetoothDevice(BluetoothDeviceInfo deviceInfo, IBluetoothService bluetoothService, ISchedulerProvider schedulerProvider)
+        public BluetoothDevice(IBluetoothDeviceInfo deviceInfo, IBluetoothService bluetoothService, ISchedulerProvider schedulerProvider)
         {
             _deviceInfo = deviceInfo;
             _bluetoothService = bluetoothService;
             _schedulerProvider = schedulerProvider;
-            _deviceType = BluetoothDeviceType.Create(deviceInfo.ClassOfDevice.Device);
-            _pairDeviceCommand = new DelegateCommand(PairDevice, () => !Status.IsProcessing && !_deviceInfo.Authenticated);
-            _removeDeviceCommand = new DelegateCommand(RemoveDevice, () => !Status.IsProcessing && _deviceInfo.Authenticated);
+            _pairDeviceCommand = new DelegateCommand(PairDevice, () => !Status.IsProcessing && !_deviceInfo.IsAuthenticated);
+            _removeDeviceCommand = new DelegateCommand(RemoveDevice, () => !Status.IsProcessing && _deviceInfo.IsAuthenticated);
         }
 
         public string Name
@@ -35,13 +32,13 @@ namespace CallWall.Settings.Bluetooth
 
         public BluetoothDeviceType DeviceType
         {
-            get { return _deviceType; }
+            get { return _deviceInfo.DeviceType; }
         }
 
         public ViewModelStatus Status
         {
             get { return _status; }
-            set
+            private set
             {
                 if (_status != value)
                 {

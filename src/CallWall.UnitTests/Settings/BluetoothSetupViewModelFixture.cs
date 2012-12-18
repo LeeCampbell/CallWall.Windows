@@ -14,7 +14,6 @@ using NUnit.Framework;
 // ReSharper disable InconsistentNaming
 namespace CallWall.UnitTests.Settings
 {
-
     public abstract class Given_a_constructed_BluetoothSetupViewModel
     {
         private Given_a_constructed_BluetoothSetupViewModel()
@@ -89,14 +88,15 @@ namespace CallWall.UnitTests.Settings
             [Test]
             public void Should_set_status_to_errored_if_search_fails()
             {
-                _bluetoothServiceMock.Setup(bs => bs.SearchForDevices()).Returns(Observable.Throw<IBluetoothDevice>(new Exception()));
+                var expectedMessage = "The ship went down!";
+                _bluetoothServiceMock.Setup(bs => bs.SearchForDevices()).Returns(Observable.Throw<IBluetoothDevice>(new Exception(expectedMessage)));
 
                 _viewModel.SearchForDevicesCommand.Execute();
                 _testSchedulerProvider.Concurrent.Start();
                 _testSchedulerProvider.Async.Start();
 
                 Assert.IsTrue(_viewModel.Status.HasError);
-                Assert.IsNotNullOrEmpty(_viewModel.Status.ErrorMessage);
+                Assert.AreEqual(expectedMessage, _viewModel.Status.ErrorMessage);
             }
 
             [Test]

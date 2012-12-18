@@ -2,6 +2,7 @@ using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using CallWall.Settings.Bluetooth;
+using InTheHand.Net;
 using InTheHand.Net.Bluetooth;
 using InTheHand.Net.Sockets;
 
@@ -25,7 +26,7 @@ namespace CallWall.Services
 
         public IObservable<IBluetoothDevice> SearchForDevices()
         {
-            return Observable.Create<BluetoothDevice>(
+            return Observable.Create<IBluetoothDevice>(
                 o =>
                 {
                     using (var btClient = new BluetoothClient())
@@ -45,27 +46,28 @@ namespace CallWall.Services
                 .Log(_logger, "SearchForDevices()");
         }
 
-        public IObservable<bool> PairDevice(BluetoothDeviceInfo device)
+        public IObservable<bool> PairDevice(IBluetoothDeviceInfo device)
         {
             return Observable.Create<bool>(observer =>
                 {
-                    _logger.Info("Request to pair Bluetooth device {0} ({1})", device.DeviceName, device.ClassOfDevice.Device);
+                    _logger.Info("Request to pair Bluetooth device {0} ({1})", device.DeviceName, device.DeviceType);
                     try
                     {
-                        var successful = BluetoothSecurity.PairRequest(device.DeviceAddress, Pin);
+                        var btAddress = new BluetoothAddress(device.DeviceAddress);
+                        var successful = BluetoothSecurity.PairRequest(btAddress, Pin);
                         _logger.Info("Request to pair Bluetooth device '{0}' ({1}) was {2}successful",
                             device.DeviceName,
-                            device.ClassOfDevice.Device,
+                            device.DeviceType,
                             successful ? string.Empty : "un");
 
-                        _logger.Debug("Refreshing Bluetooth device '{0}' ({1}) state", device.DeviceName, device.ClassOfDevice.Device);
+                        _logger.Debug("Refreshing Bluetooth device '{0}' ({1}) state", device.DeviceName, device.DeviceType);
 
                         device.Refresh();
 
                         _logger.Debug("Bluetooth device '{0}' ({1}) is {2} connected",
                                 device.DeviceName,
-                                device.ClassOfDevice.Device,
-                                device.Connected ? "now" : "not");
+                                device.DeviceType,
+                                device.IsConnected ? "now" : "not");
 
                         observer.OnNext(successful);
                         observer.OnCompleted();
@@ -74,7 +76,7 @@ namespace CallWall.Services
                     {
                         _logger.Warn(ex, "Request to pair Bluetooth device '{0}' ({1}) caused an error",
                            device.DeviceName,
-                           device.ClassOfDevice.Device);
+                           device.DeviceType);
                         observer.OnNext(false);
                         observer.OnCompleted();
                     }
@@ -83,26 +85,27 @@ namespace CallWall.Services
                 });
         }
 
-        public IObservable<bool> RemoveDevice(BluetoothDeviceInfo device)
+        public IObservable<bool> RemoveDevice(IBluetoothDeviceInfo device)
         {
             return Observable.Create<bool>(observer =>
             {
-                _logger.Info("Request to remove Bluetooth device {0} ({1})", device.DeviceName, device.ClassOfDevice.Device);
+                _logger.Info("Request to remove Bluetooth device {0} ({1})", device.DeviceName, device.DeviceType);
                 try
                 {
-                    var successful = BluetoothSecurity.RemoveDevice(device.DeviceAddress);
+                    var btAddress = new BluetoothAddress(device.DeviceAddress);
+                    var successful = BluetoothSecurity.RemoveDevice(btAddress);
                     _logger.Info("Request to remove Bluetooth device '{0}' ({1}) was {2}successful",
                             device.DeviceName,
-                            device.ClassOfDevice.Device,
+                            device.DeviceType,
                             successful ? string.Empty : "un");
-                    _logger.Debug("Refreshing Bluetooth device '{0}' ({1}) state", device.DeviceName, device.ClassOfDevice.Device);
+                    _logger.Debug("Refreshing Bluetooth device '{0}' ({1}) state", device.DeviceName, device.DeviceType);
 
                     device.Refresh();
 
                     _logger.Debug("Bluetooth device '{0}' ({1}) is {2} connected",
                             device.DeviceName,
-                            device.ClassOfDevice.Device,
-                            device.Connected ? "now" : "not");
+                            device.DeviceType,
+                            device.IsConnected ? "now" : "not");
                     observer.OnNext(successful);
                     observer.OnCompleted();
                 }
@@ -110,7 +113,7 @@ namespace CallWall.Services
                 {
                     _logger.Warn(ex, "Request to remove Bluetooth device '{0}' ({1}) caused an error",
                             device.DeviceName,
-                            device.ClassOfDevice.Device);
+                            device.DeviceType);
                     observer.OnNext(false);
                     observer.OnCompleted();
                 }
@@ -122,7 +125,8 @@ namespace CallWall.Services
 
         private BluetoothDevice Create(BluetoothDeviceInfo btDeviceInfo)
         {
-            return new BluetoothDevice(btDeviceInfo, this, _schedulerProvider);
+            var btInfo = new WrappedBluetoothInfo(btDeviceInfo);
+            return new BluetoothDevice(btInfo, this, _schedulerProvider);
         }
     }
 }
