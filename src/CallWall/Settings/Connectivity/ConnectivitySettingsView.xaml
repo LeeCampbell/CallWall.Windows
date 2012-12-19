@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:CallWall="clr-namespace:CallWall;assembly=CallWall.Core">
     <Control.Resources>
-        <CallWall:GrayScaleConverter x:Key="grayScaleConverter"/>
+        <CallWall:GrayscaleConverter x:Key="grayScaleConverter"/>
         <Style x:Key="ExpanderStyle1" TargetType="{x:Type Expander}">
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
             <Setter Property="Background" Value="Transparent"/>
