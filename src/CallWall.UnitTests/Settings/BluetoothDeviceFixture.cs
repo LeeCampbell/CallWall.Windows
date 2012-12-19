@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Reactive;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CallWall.Services;
 using CallWall.Settings.Bluetooth;
 using InTheHand.Net.Bluetooth;
+using Microsoft.Reactive.Testing;
 using Moq;
 using NUnit.Framework;
 
 // ReSharper disable InconsistentNaming
 namespace CallWall.UnitTests.Settings
 {
-
     public abstract class Given_a_constructed_BluetoothDevice
     {
         private Given_a_constructed_BluetoothDevice()
@@ -26,7 +22,6 @@ namespace CallWall.UnitTests.Settings
 
         private const string _expectedName = "My Bt device";
         private readonly byte[] _expectedAddress = new byte[] { 1, 2, 3, 4, 5, 6 };
-
 
         [SetUp]
         public virtual void Setup()
@@ -63,10 +58,6 @@ namespace CallWall.UnitTests.Settings
             Assert.AreEqual(expectedDeviceType, _sut.DeviceType);
         }
 
-        //TODO Add Test for removing bluetooth device
-        //TODO Add Test for pairing bluetooth device
-
-
         public abstract class When_device_is_in_an_idle_state : Given_a_constructed_BluetoothDevice
         {
             private When_device_is_in_an_idle_state()
@@ -99,8 +90,6 @@ namespace CallWall.UnitTests.Settings
                 {
                     Assert.IsTrue(_sut.RemoveDeviceCommand.CanExecute());
                 }
-
-                
             }
 
             [TestFixture]
@@ -170,7 +159,161 @@ namespace CallWall.UnitTests.Settings
 
                 Assert.IsFalse(_sut.RemoveDeviceCommand.CanExecute());
             }
+        }
 
+        
+        [TestFixture]
+        public sealed class When_device_is_removed : Given_a_constructed_BluetoothDevice
+        {
+            private ITestableObservable<bool> _removeDeviceResult;
+
+            public override void Setup()
+            {
+                base.Setup();
+
+                _bluetoothDeviceInfoMock.Setup(bdi => bdi.IsAuthenticated).Returns(true);
+                _removeDeviceResult = _testSchedulerProvider.Concurrent.CreateColdObservable(
+                    new Recorded<Notification<bool>>(1, Notification.CreateOnNext(true)),
+                    new Recorded<Notification<bool>>(1, Notification.CreateOnCompleted<bool>())
+                    );
+                _bluetoothServiceMock.Setup(bs => bs.RemoveDevice(_bluetoothDeviceInfoMock.Object))
+                                     .Returns(_removeDeviceResult);
+            }
+
+            [Test]
+            public void Should_set_status_to_processing()
+            {
+                var changeCount = 0;
+                _sut.PropertyChanged += (s, e) => { if (e.PropertyName == "Status") changeCount++; };
+                
+                _sut.RemoveDeviceCommand.Execute();
+                
+                Assert.IsTrue(_sut.Status.IsProcessing);
+                Assert.AreEqual(1, changeCount);
+            }
+
+            [Test]
+            public void Should_pass_deviceInfo_to_bluetoothService()
+            {
+                _sut.RemoveDeviceCommand.Execute();
+
+                _bluetoothServiceMock.Verify(bs=>bs.RemoveDevice(_bluetoothDeviceInfoMock.Object), Times.Once());
+            }
+
+            [Test]
+            public void Should_call_bluetoothService_concurrently()
+            {
+                _sut.RemoveDeviceCommand.Execute();
+                Assert.AreEqual(0, _removeDeviceResult.Subscriptions.Count);
+
+                _testSchedulerProvider.Concurrent.AdvanceBy(1);//Process the subscription
+
+                Assert.AreEqual(1, _removeDeviceResult.Subscriptions.Count);
+            }
+
+            [Test]
+            public void Should_refresh_commands_on_completion()
+            {
+                _sut.RemoveDeviceCommand.Execute();
+                _testSchedulerProvider.Concurrent.AdvanceBy(2);
+
+                var changeCount = 0;
+                _sut.RemoveDeviceCommand.CanExecuteChanged += (s, e) => { changeCount++; };
+                _testSchedulerProvider.Async.AdvanceBy(1);
+
+                Assert.AreEqual(1, changeCount);
+            }
+
+            [Test]
+            public void Should_set_status_to_Idle_on_completion()
+            {
+                _sut.RemoveDeviceCommand.Execute();
+                _testSchedulerProvider.Concurrent.AdvanceBy(2);
+
+                var statusChangeCount = 0;
+                _sut.PropertyChanged += (s, e) => { if (e.PropertyName == "Status") statusChangeCount++; };
+                _testSchedulerProvider.Async.AdvanceBy(1);
+
+                Assert.IsFalse(_sut.Status.IsProcessing);
+                Assert.AreEqual(1, statusChangeCount);
+            }
+        }
+
+        [TestFixture]
+        public sealed class When_device_is_paired : Given_a_constructed_BluetoothDevice
+        {
+            private ITestableObservable<bool> _pairDeviceResult;
+
+            public override void Setup()
+            {
+                base.Setup();
+
+                _bluetoothDeviceInfoMock.Setup(bdi => bdi.IsAuthenticated).Returns(false);
+                _pairDeviceResult = _testSchedulerProvider.Concurrent.CreateColdObservable(
+                    new Recorded<Notification<bool>>(1, Notification.CreateOnNext(true)),
+                    new Recorded<Notification<bool>>(1, Notification.CreateOnCompleted<bool>())
+                    );
+                _bluetoothServiceMock.Setup(bs => bs.PairDevice(_bluetoothDeviceInfoMock.Object))
+                                     .Returns(_pairDeviceResult);
+            }
+
+            [Test]
+            public void Should_set_status_to_processing()
+            {
+                var changeCount = 0;
+                _sut.PropertyChanged += (s, e) => { if (e.PropertyName == "Status") changeCount++; };
+
+                _sut.PairDeviceCommand.Execute();
+
+                Assert.IsTrue(_sut.Status.IsProcessing);
+                Assert.AreEqual(1, changeCount);
+            }
+
+            [Test]
+            public void Should_pass_deviceInfo_to_bluetoothService()
+            {
+                _sut.PairDeviceCommand.Execute();
+
+                _bluetoothServiceMock.Verify(bs => bs.PairDevice(_bluetoothDeviceInfoMock.Object), Times.Once());
+            }
+
+            [Test]
+            public void Should_call_bluetoothService_concurrently()
+            {
+                _sut.PairDeviceCommand.Execute();
+                Assert.AreEqual(0, _pairDeviceResult.Subscriptions.Count);
+
+                _testSchedulerProvider.Concurrent.AdvanceBy(1);//Process the subscription
+
+                Assert.AreEqual(1, _pairDeviceResult.Subscriptions.Count);
+            }
+
+            [Test]
+            public void Should_refresh_commands_on_completion()
+            {
+                _sut.PairDeviceCommand.Execute();
+                _testSchedulerProvider.Concurrent.AdvanceBy(2);
+
+                var changeCount = 0;
+                _sut.PairDeviceCommand.CanExecuteChanged += (s, e) => { changeCount++; };
+                _testSchedulerProvider.Async.AdvanceBy(1);
+
+                Assert.AreEqual(1, changeCount);
+            }
+
+            [Test]
+            public void Should_set_status_to_Idle_on_completion()
+            {
+                _sut.PairDeviceCommand.Execute();
+                _testSchedulerProvider.Concurrent.AdvanceBy(2);
+
+                var statusChangeCount = 0;
+                _sut.PropertyChanged += (s, e) => { if (e.PropertyName == "Status") statusChangeCount++; };
+                _testSchedulerProvider.Async.AdvanceBy(1);
+
+                Assert.IsFalse(_sut.Status.IsProcessing);
+                Assert.AreEqual(1, statusChangeCount);
+            }
         }
     }
 }
