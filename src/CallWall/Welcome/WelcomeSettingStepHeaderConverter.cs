@@ -16,9 +16,9 @@ namespace CallWall.Welcome
             return string.Format("{0}", index + 1);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }
