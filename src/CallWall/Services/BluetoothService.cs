@@ -123,6 +123,11 @@ namespace CallWall.Services
             });
         }
 
+        public IObservable<bool> TestDeviceConnection(IBluetoothDeviceInfo device)
+        {
+            throw new NotImplementedException();
+        }
+
         private BluetoothDevice Create(BluetoothDeviceInfo btDeviceInfo)
         {
             var btInfo = new WrappedBluetoothInfo(btDeviceInfo);

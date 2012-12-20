@@ -9,5 +9,6 @@ namespace CallWall.Services
 
         IObservable<bool> PairDevice(IBluetoothDeviceInfo device);
         IObservable<bool> RemoveDevice(IBluetoothDeviceInfo device);
+        IObservable<bool> TestDeviceConnection(IBluetoothDeviceInfo device);
     }
 }

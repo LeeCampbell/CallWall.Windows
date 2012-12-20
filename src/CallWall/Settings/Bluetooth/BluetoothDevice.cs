@@ -16,6 +16,8 @@ namespace CallWall.Settings.Bluetooth
         private readonly DelegateCommand _removeDeviceCommand;
         private ViewModelStatus _status = ViewModelStatus.Idle;
 
+        private DelegateCommand _testDeviceCommand;
+
         public BluetoothDevice(IBluetoothDeviceInfo deviceInfo, IBluetoothService bluetoothService, ISchedulerProvider schedulerProvider)
         {
             _deviceInfo = deviceInfo;
@@ -56,6 +58,11 @@ namespace CallWall.Settings.Bluetooth
         public DelegateCommand RemoveDeviceCommand
         {
             get { return _removeDeviceCommand; }
+        }
+
+        public DelegateCommand TestDeviceCommand
+        {
+            get { return _testDeviceCommand; }
         }
 
         private void PairDevice()

@@ -90,6 +90,14 @@ namespace CallWall.UnitTests.Settings
                 {
                     Assert.IsTrue(_sut.RemoveDeviceCommand.CanExecute());
                 }
+
+                [Test, Ignore]
+                public void Should_be_able_to_test_the_device_connection()
+                {
+                    Assert.IsTrue(_sut.TestDeviceCommand.CanExecute());
+                }
+
+
             }
 
             [TestFixture]
@@ -112,6 +120,13 @@ namespace CallWall.UnitTests.Settings
                 {
                     Assert.IsFalse(_sut.RemoveDeviceCommand.CanExecute());
                 }
+
+
+                [Test, Ignore]
+                public void Should_not_be_able_to_test_the_device_connection()
+                {
+                    Assert.IsFalse(_sut.TestDeviceCommand.CanExecute());
+                }
             }
         }
 
@@ -133,7 +148,7 @@ namespace CallWall.UnitTests.Settings
             public void Should_not_be_able_to_pair_the_device(bool isAuthenticated)
             {
                 _bluetoothDeviceInfoMock.Setup(btd => btd.IsAuthenticated).Returns(isAuthenticated);
-                if(isAuthenticated)
+                if (isAuthenticated)
                     _sut.PairDeviceCommand.Execute();
                 else
                     _sut.RemoveDeviceCommand.Execute();
@@ -161,7 +176,7 @@ namespace CallWall.UnitTests.Settings
             }
         }
 
-        
+
         [TestFixture]
         public sealed class When_device_is_removed : Given_a_constructed_BluetoothDevice
         {
@@ -185,9 +200,9 @@ namespace CallWall.UnitTests.Settings
             {
                 var changeCount = 0;
                 _sut.PropertyChanged += (s, e) => { if (e.PropertyName == "Status") changeCount++; };
-                
+
                 _sut.RemoveDeviceCommand.Execute();
-                
+
                 Assert.IsTrue(_sut.Status.IsProcessing);
                 Assert.AreEqual(1, changeCount);
             }
@@ -197,7 +212,7 @@ namespace CallWall.UnitTests.Settings
             {
                 _sut.RemoveDeviceCommand.Execute();
 
-                _bluetoothServiceMock.Verify(bs=>bs.RemoveDevice(_bluetoothDeviceInfoMock.Object), Times.Once());
+                _bluetoothServiceMock.Verify(bs => bs.RemoveDevice(_bluetoothDeviceInfoMock.Object), Times.Once());
             }
 
             [Test]
@@ -313,6 +328,39 @@ namespace CallWall.UnitTests.Settings
 
                 Assert.IsFalse(_sut.Status.IsProcessing);
                 Assert.AreEqual(1, statusChangeCount);
+            }
+        }
+
+        [TestFixture, Ignore]
+        public sealed class When_testing_device_connection : Given_a_constructed_BluetoothDevice
+        {
+            public override void Setup()
+            {
+                base.Setup(); 
+                _sut.TestDeviceCommand.Execute();
+            }
+
+            [Test]
+            public void When_testing_device_connection_should_pass_DeviceInfo_to_BluetoothService()
+            {
+                _bluetoothServiceMock.Verify(bs => bs.TestDeviceConnection(_bluetoothDeviceInfoMock.Object), Times.Once());
+            }
+
+            [Test]
+            public void Should_subscribe_to_device_connection_result_concurrently()
+            {
+                Assert.Inconclusive("Test not yet implemented");
+            }
+
+            [Test]
+            public void Should_do_somthing_when_test_works()
+            {
+                Assert.Inconclusive("Test not yet implemented");
+            }
+            [Test]
+            public void Should_do_somthing_when_test_fails()
+            {
+                Assert.Inconclusive("Test not yet implemented");
             }
         }
     }

@@ -10,5 +10,6 @@ namespace CallWall.Settings.Bluetooth
         ViewModelStatus Status { get; }
         DelegateCommand PairDeviceCommand { get; }
         DelegateCommand RemoveDeviceCommand { get; }
+        DelegateCommand TestDeviceCommand { get; }
     }
 }
