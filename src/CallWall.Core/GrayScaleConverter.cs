@@ -5,7 +5,7 @@ using System.Windows.Media.Imaging;
 
 namespace CallWall
 {
-    public sealed class GrayScaleConverter : IValueConverter
+    public sealed class GrayscaleConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {

@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
+using Moq;
 using NUnit.Framework;
 
 // ReSharper disable InconsistentNaming
@@ -279,8 +282,84 @@ namespace CallWall.Core.UnitTests
 
                 var model = new SampleLogConsumer(_logger);
                 model.ActionNoArgsLogged(arg1, arg2);
-                
+
                 Assert.AreEqual(expected, _logger.Message);
+            }
+        }
+
+        [TestFixture]
+        public sealed class When_logging_ObservableSequences : Given_an_ILoggerInstance
+        {
+            private string _logName;
+            private Mock<ILogger> _loggerMock;
+            public override void SetUp()
+            {
+                base.SetUp();
+                _logName = "My sequence";
+                _loggerMock = new Mock<ILogger>();
+            }
+
+            [Test]
+            public void Should_log_subscription()
+            {
+                Observable.Never<Unit>()
+                    .Log(_logger, _logName)
+                    .Subscribe();
+
+                Assert.AreEqual(LogLevel.Debug, _logger.Level);
+                Assert.AreEqual(string.Format("{0}.Subscribe()", _logName), _logger.Message);
+                Assert.IsNull(_logger.Exception);
+            }
+
+            [Test]
+            public void Should_log_OnNext()
+            {
+                var value = 1;
+                Observable.Return(value)
+                    .Concat(Observable.Never<int>())
+                    .Log(_logger, _logName)
+                    .Subscribe();
+
+                Assert.AreEqual(LogLevel.Debug, _logger.Level);
+                Assert.AreEqual(string.Format("{0}.OnNext({1})", _logName, value), _logger.Message);
+                Assert.IsNull(_logger.Exception);
+            }
+
+            [Test]
+            public void Should_log_OnError()
+            {
+                var ex = new Exception("Message");
+                var expectedMessage = string.Format("{0}.OnError({1})", _logName, ex);
+
+                Observable.Throw<int>(ex)
+                    .Log(_loggerMock.Object, _logName)
+                    .Subscribe(i => { }, e => { });
+
+                _loggerMock.Verify(l => l.Write(LogLevel.Debug, expectedMessage, null), Times.Once());
+            }
+
+            [Test]
+            public void Should_log_OnCompleted()
+            {
+                var expectedMessage = string.Format("{0}.OnCompleted()", _logName);
+                Observable.Empty<int>()
+                    .Log(_loggerMock.Object, _logName)
+                    .Subscribe();
+
+                _loggerMock.Verify(l => l.Write(LogLevel.Debug, expectedMessage, null), Times.Once());
+            }
+
+            [Test]
+            public void Should_log_Disposal_of_subscription()
+            {
+                Observable.Never<int>()
+                    .Log(_logger, _logName)
+                    .Subscribe()
+                    .Dispose();
+
+                Assert.AreEqual(LogLevel.Debug, _logger.Level);
+                Assert.AreEqual(string.Format("{0}.Dispose()", _logName), _logger.Message);
+                Assert.IsNull(_logger.Exception);
             }
         }
 
