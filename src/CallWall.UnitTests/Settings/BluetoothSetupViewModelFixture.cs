@@ -17,7 +17,8 @@ namespace CallWall.UnitTests.Settings
     public abstract class Given_a_constructed_BluetoothSetupViewModel
     {
         private Given_a_constructed_BluetoothSetupViewModel()
-        { }
+        {
+        }
 
         private BluetoothSetupViewModel _viewModel;
         private Mock<IBluetoothService> _bluetoothServiceMock;
@@ -31,6 +32,17 @@ namespace CallWall.UnitTests.Settings
             _viewModel = new BluetoothSetupViewModel(_bluetoothServiceMock.Object, _testSchedulerProvider);
         }
 
+        protected ITestableObservable<IBluetoothDevice> CreateSequenceOfThreeOneTickApart()
+        {
+            var sequence = _testSchedulerProvider.Concurrent.CreateColdObservable(
+                new Recorded<Notification<IBluetoothDevice>>(1, Notification.CreateOnNext(new Mock<IBluetoothDevice>().Object)),
+                new Recorded<Notification<IBluetoothDevice>>(2, Notification.CreateOnNext(new Mock<IBluetoothDevice>().Object)),
+                new Recorded<Notification<IBluetoothDevice>>(3, Notification.CreateOnNext(new Mock<IBluetoothDevice>().Object)),
+                new Recorded<Notification<IBluetoothDevice>>(4, Notification.CreateOnCompleted<IBluetoothDevice>())
+                );
+            return sequence;
+        }
+
         [TestFixture]
         public sealed class When_scanning_for_devices : Given_a_constructed_BluetoothSetupViewModel
         {
@@ -40,94 +52,6 @@ namespace CallWall.UnitTests.Settings
                 _bluetoothServiceMock.Setup(bs => bs.SearchForDevices()).Returns(Observable.Never<IBluetoothDevice>());
                 _viewModel.SearchForDevicesCommand.Execute();
                 Assert.IsTrue(_viewModel.Status.IsProcessing);
-            }
-
-            [Test]
-            public void Should_set_status_to_idle_when_search_is_complete()
-            {
-                _bluetoothServiceMock.Setup(bs => bs.SearchForDevices()).Returns(Observable.Empty<IBluetoothDevice>());
-                _viewModel.SearchForDevicesCommand.Execute();
-                _testSchedulerProvider.Concurrent.AdvanceBy(1);
-                _testSchedulerProvider.Async.AdvanceBy(1);
-                Assert.IsFalse(_viewModel.Status.IsProcessing);
-            }
-
-            [Test]
-            public void Should_perform_search_concurrently()
-            {
-                var sequence = _testSchedulerProvider.Concurrent.CreateColdObservable<IBluetoothDevice>();
-                _bluetoothServiceMock.Setup(bs => bs.SearchForDevices()).Returns(sequence);
-                _viewModel.SearchForDevicesCommand.Execute();
-
-                Assert.AreEqual(0, sequence.Subscriptions.Count);
-
-                _testSchedulerProvider.Concurrent.AdvanceBy(1);
-
-                Assert.AreEqual(1, sequence.Subscriptions.Count);
-            }
-
-            [Test]
-            public void Should_update_Devices_with_search_results_on_UIThread()
-            {
-                var sequence = CreateSequenceOfThreeOneTickApart();
-
-                _bluetoothServiceMock.Setup(bs => bs.SearchForDevices()).Returns(sequence);
-                _viewModel.SearchForDevicesCommand.Execute();
-                _testSchedulerProvider.Concurrent.AdvanceBy(5);//1xSubscribe, 3xOnNext, 1xOnCompleted
-                for (int i = 0; i < 3; i++)
-                {
-                    Assert.AreEqual(i, _viewModel.Devices.Count);
-                    _testSchedulerProvider.Async.AdvanceBy(1);    
-                }
-                Assert.AreEqual(3, _viewModel.Devices.Count);
-                Assert.IsTrue(_viewModel.Status.IsProcessing);
-                _testSchedulerProvider.Async.AdvanceBy(1);
-                Assert.IsFalse(_viewModel.Status.IsProcessing);
-            }
-
-            [Test]
-            public void Should_set_status_to_errored_if_search_fails()
-            {
-                var expectedMessage = "The ship went down!";
-                _bluetoothServiceMock.Setup(bs => bs.SearchForDevices()).Returns(Observable.Throw<IBluetoothDevice>(new Exception(expectedMessage)));
-
-                _viewModel.SearchForDevicesCommand.Execute();
-                _testSchedulerProvider.Concurrent.Start();
-                _testSchedulerProvider.Async.Start();
-
-                Assert.IsTrue(_viewModel.Status.HasError);
-                Assert.AreEqual(expectedMessage, _viewModel.Status.ErrorMessage);
-            }
-
-            [Test]
-            public void Should_not_allow_scanning_while_already_scanning()
-            {
-                _bluetoothServiceMock.Setup(bs => bs.SearchForDevices()).Returns(Observable.Never<IBluetoothDevice>());
-                _viewModel.SearchForDevicesCommand.Execute();
-
-                Assert.IsFalse(_viewModel.SearchForDevicesCommand.CanExecute());
-            }
-
-            [Test]
-            public void Should_allow_scanning_when_scan_complete()
-            {
-                _bluetoothServiceMock.Setup(bs => bs.SearchForDevices()).Returns(Observable.Empty<IBluetoothDevice>());
-                _viewModel.SearchForDevicesCommand.Execute();
-
-                _testSchedulerProvider.Concurrent.AdvanceBy(1);
-                _testSchedulerProvider.Async.AdvanceBy(1);
-                Assert.IsTrue(_viewModel.SearchForDevicesCommand.CanExecute());
-            }
-
-            [Test]
-            public void Should_allow_scanning_when_scan_errors()
-            {
-                _bluetoothServiceMock.Setup(bs => bs.SearchForDevices()).Returns(Observable.Throw<IBluetoothDevice>(new Exception()));
-                _viewModel.SearchForDevicesCommand.Execute();
-
-                _testSchedulerProvider.Concurrent.AdvanceBy(1);
-                _testSchedulerProvider.Async.AdvanceBy(1);
-                Assert.IsTrue(_viewModel.SearchForDevicesCommand.CanExecute());
             }
 
             [Test]
@@ -148,18 +72,87 @@ namespace CallWall.UnitTests.Settings
                 Assert.AreEqual(0, _viewModel.Devices.Count);
             }
 
-            private ITestableObservable<IBluetoothDevice> CreateSequenceOfThreeOneTickApart()
+            [Test]
+            public void Should_perform_search_concurrently()
             {
-                var sequence = _testSchedulerProvider.Concurrent.CreateColdObservable(
-                    new Recorded<Notification<IBluetoothDevice>>(1, Notification.CreateOnNext(new Mock<IBluetoothDevice>().Object)),
-                    new Recorded<Notification<IBluetoothDevice>>(2, Notification.CreateOnNext(new Mock<IBluetoothDevice>().Object)),
-                    new Recorded<Notification<IBluetoothDevice>>(3, Notification.CreateOnNext(new Mock<IBluetoothDevice>().Object)),
-                    new Recorded<Notification<IBluetoothDevice>>(4, Notification.CreateOnCompleted<IBluetoothDevice>())
-                    );
-                return sequence;
+                var sequence = _testSchedulerProvider.Concurrent.CreateColdObservable<IBluetoothDevice>();
+                _bluetoothServiceMock.Setup(bs => bs.SearchForDevices()).Returns(sequence);
+                _viewModel.SearchForDevicesCommand.Execute();
+
+                Assert.AreEqual(0, sequence.Subscriptions.Count);
+
+                _testSchedulerProvider.Concurrent.AdvanceBy(1);
+
+                Assert.AreEqual(1, sequence.Subscriptions.Count);
+            }
+
+            [Test]
+            public void Should_not_allow_scanning_while_already_scanning()
+            {
+                _bluetoothServiceMock.Setup(bs => bs.SearchForDevices()).Returns(Observable.Never<IBluetoothDevice>());
+                _viewModel.SearchForDevicesCommand.Execute();
+
+                Assert.IsFalse(_viewModel.SearchForDevicesCommand.CanExecute());
             }
         }
 
+        public abstract class When_scanning_for_devices_finishes : Given_a_constructed_BluetoothSetupViewModel
+        {
+            [TestFixture]
+            public sealed class With_success : When_scanning_for_devices_finishes
+            {
+                public override void SetUp()
+                {
+                    base.SetUp();
+                    var sequence = CreateSequenceOfThreeOneTickApart();
+                    _bluetoothServiceMock.Setup(bs => bs.SearchForDevices()).Returns(sequence);
+                    _viewModel.SearchForDevicesCommand.Execute();
+                    _testSchedulerProvider.Concurrent.AdvanceBy(5); //1xSubscribe, 3xOnNext, 1xOnCompleted
+                    _testSchedulerProvider.Async.AdvanceBy(5);
+                }
+
+                [Test]
+                public void Should_update_Devices_with_search_results_on_UIThread()
+                {
+                    Assert.AreEqual(3, _viewModel.Devices.Count);
+                }
+            }
+
+            [TestFixture]
+            public sealed class With_failure : When_scanning_for_devices_finishes
+            {
+                private const string _expectedMessage = "The ship went down!";
+
+                public override void SetUp()
+                {
+                    base.SetUp();
+                    _bluetoothServiceMock.Setup(bs => bs.SearchForDevices()).Returns(
+                        Observable.Throw<IBluetoothDevice>(new Exception(_expectedMessage)));
+                    _viewModel.SearchForDevicesCommand.Execute();
+                    _testSchedulerProvider.Concurrent.AdvanceBy(1);
+                    _testSchedulerProvider.Async.AdvanceBy(1);
+                }
+
+                [Test]
+                public void Should_set_status_to_errored()
+                {
+                    Assert.IsTrue(_viewModel.Status.HasError);
+                    Assert.AreEqual(_expectedMessage, _viewModel.Status.ErrorMessage);
+                }
+            }
+
+            [Test]
+            public void Should_set_status_IsProcessing_to_false()
+            {
+                Assert.IsFalse(_viewModel.Status.IsProcessing);
+            }
+
+            [Test]
+            public void Should_allow_scanning_again()
+            {
+                Assert.IsTrue(_viewModel.SearchForDevicesCommand.CanExecute());
+            }
+        }
     }
 }
 // ReSharper restore InconsistentNaming

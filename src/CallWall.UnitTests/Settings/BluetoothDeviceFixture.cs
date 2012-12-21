@@ -143,9 +143,7 @@ namespace CallWall.UnitTests.Settings
                     .Returns(Observable.Never<bool>());
             }
 
-            [TestCase(false)]
-            [TestCase(true)]
-            public void Should_not_be_able_to_pair_the_device(bool isAuthenticated)
+            private void SetToProcessing(bool isAuthenticated)
             {
                 _bluetoothDeviceInfoMock.Setup(btd => btd.IsAuthenticated).Returns(isAuthenticated);
                 if (isAuthenticated)
@@ -155,7 +153,13 @@ namespace CallWall.UnitTests.Settings
 
                 Assume.That(_sut.Status.IsProcessing, Is.True);
                 Assume.That(_sut.Status.HasError, Is.False);
+            }
 
+            [TestCase(false)]
+            [TestCase(true)]
+            public void Should_not_be_able_to_pair_the_device(bool isAuthenticated)
+            {
+                SetToProcessing(isAuthenticated);
                 Assert.IsFalse(_sut.PairDeviceCommand.CanExecute());
             }
 
@@ -163,19 +167,18 @@ namespace CallWall.UnitTests.Settings
             [TestCase(true)]
             public void Should_not_be_able_to_remove_the_devicebool(bool isAuthenticated)
             {
-                _bluetoothDeviceInfoMock.Setup(btd => btd.IsAuthenticated).Returns(isAuthenticated);
-                if (isAuthenticated)
-                    _sut.PairDeviceCommand.Execute();
-                else
-                    _sut.RemoveDeviceCommand.Execute();
-
-                Assume.That(_sut.Status.IsProcessing, Is.True);
-                Assume.That(_sut.Status.HasError, Is.False);
-
+                SetToProcessing(isAuthenticated);
                 Assert.IsFalse(_sut.RemoveDeviceCommand.CanExecute());
             }
         }
 
+        protected ITestableObservable<T> CreateSingleValueColdObservable<T>(T value)
+        {
+            return _testSchedulerProvider.Concurrent.CreateColdObservable(
+                new Recorded<Notification<T>>(1, Notification.CreateOnNext(value)),
+                new Recorded<Notification<T>>(1, Notification.CreateOnCompleted<T>())
+                );
+        }
 
         [TestFixture]
         public sealed class When_device_is_removed : Given_a_constructed_BluetoothDevice
@@ -187,10 +190,7 @@ namespace CallWall.UnitTests.Settings
                 base.Setup();
 
                 _bluetoothDeviceInfoMock.Setup(bdi => bdi.IsAuthenticated).Returns(true);
-                _removeDeviceResult = _testSchedulerProvider.Concurrent.CreateColdObservable(
-                    new Recorded<Notification<bool>>(1, Notification.CreateOnNext(true)),
-                    new Recorded<Notification<bool>>(1, Notification.CreateOnCompleted<bool>())
-                    );
+                _removeDeviceResult = CreateSingleValueColdObservable(true);
                 _bluetoothServiceMock.Setup(bs => bs.RemoveDevice(_bluetoothDeviceInfoMock.Object))
                                      .Returns(_removeDeviceResult);
             }
@@ -264,10 +264,7 @@ namespace CallWall.UnitTests.Settings
                 base.Setup();
 
                 _bluetoothDeviceInfoMock.Setup(bdi => bdi.IsAuthenticated).Returns(false);
-                _pairDeviceResult = _testSchedulerProvider.Concurrent.CreateColdObservable(
-                    new Recorded<Notification<bool>>(1, Notification.CreateOnNext(true)),
-                    new Recorded<Notification<bool>>(1, Notification.CreateOnCompleted<bool>())
-                    );
+                _pairDeviceResult = CreateSingleValueColdObservable(true);
                 _bluetoothServiceMock.Setup(bs => bs.PairDevice(_bluetoothDeviceInfoMock.Object))
                                      .Returns(_pairDeviceResult);
             }

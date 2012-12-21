@@ -287,79 +287,98 @@ namespace CallWall.Core.UnitTests
             }
         }
 
-        [TestFixture]
-        public sealed class When_logging_ObservableSequences : Given_an_ILoggerInstance
+
+        public abstract class When_logging_ObservableSequences : Given_an_ILoggerInstance
         {
             private string _logName;
             private Mock<ILogger> _loggerMock;
+            private IDisposable _subscription;
+
             public override void SetUp()
             {
                 base.SetUp();
                 _logName = "My sequence";
                 _loggerMock = new Mock<ILogger>();
+
+                _subscription = Sequence.Log(_loggerMock.Object, _logName)
+                        .Subscribe(i => { }, ex => { });    //Swallow exceptions.
             }
 
-            [Test]
-            public void Should_log_subscription()
-            {
-                Observable.Never<Unit>()
-                    .Log(_logger, _logName)
-                    .Subscribe();
-
-                Assert.AreEqual(LogLevel.Debug, _logger.Level);
-                Assert.AreEqual(string.Format("{0}.Subscribe()", _logName), _logger.Message);
-                Assert.IsNull(_logger.Exception);
-            }
+            protected abstract IObservable<int> Sequence { get; }
+            protected abstract string ExpectedMessage { get; }
 
             [Test]
-            public void Should_log_OnNext()
+            public void Should_log_as_debug()
             {
-                var value = 1;
-                Observable.Return(value)
-                    .Concat(Observable.Never<int>())
-                    .Log(_logger, _logName)
-                    .Subscribe();
-
-                Assert.AreEqual(LogLevel.Debug, _logger.Level);
-                Assert.AreEqual(string.Format("{0}.OnNext({1})", _logName, value), _logger.Message);
-                Assert.IsNull(_logger.Exception);
-            }
-
-            [Test]
-            public void Should_log_OnError()
-            {
-                var ex = new Exception("Message");
-                var expectedMessage = string.Format("{0}.OnError({1})", _logName, ex);
-
-                Observable.Throw<int>(ex)
-                    .Log(_loggerMock.Object, _logName)
-                    .Subscribe(i => { }, e => { });
-
-                _loggerMock.Verify(l => l.Write(LogLevel.Debug, expectedMessage, null), Times.Once());
-            }
-
-            [Test]
-            public void Should_log_OnCompleted()
-            {
-                var expectedMessage = string.Format("{0}.OnCompleted()", _logName);
-                Observable.Empty<int>()
-                    .Log(_loggerMock.Object, _logName)
-                    .Subscribe();
-
-                _loggerMock.Verify(l => l.Write(LogLevel.Debug, expectedMessage, null), Times.Once());
+                _loggerMock.Verify(l => l.Write(LogLevel.Debug, ExpectedMessage, null), Times.Once());
             }
 
             [Test]
             public void Should_log_Disposal_of_subscription()
             {
-                Observable.Never<int>()
-                    .Log(_logger, _logName)
-                    .Subscribe()
-                    .Dispose();
+                _subscription.Dispose();
 
-                Assert.AreEqual(LogLevel.Debug, _logger.Level);
-                Assert.AreEqual(string.Format("{0}.Dispose()", _logName), _logger.Message);
-                Assert.IsNull(_logger.Exception);
+                _loggerMock.Verify(l => l.Write(LogLevel.Debug, string.Format("{0}.Dispose()", _logName), null), Times.Once());
+            }
+
+            [TestFixture]
+            public sealed class When_logging_Subscription : When_logging_ObservableSequences
+            {
+                protected override IObservable<int> Sequence
+                {
+                    get { return Observable.Never<int>(); }
+                }
+
+                protected override string ExpectedMessage
+                {
+                    get { return string.Format("{0}.Subscribe()", _logName); }
+                }
+            }
+
+            [TestFixture]
+            public sealed class When_logging_OnNext : When_logging_ObservableSequences
+            {
+                private const int _value = 1;
+
+                protected override IObservable<int> Sequence
+                {
+                    get { return Observable.Return(_value).Concat(Observable.Never<int>()); }
+                }
+
+                protected override string ExpectedMessage
+                {
+                    get { return string.Format("{0}.OnNext({1})", _logName, _value); }
+                }
+            }
+
+            [TestFixture]
+            public sealed class When_logging_OnError : When_logging_ObservableSequences
+            {
+                private static readonly Exception _ex = new Exception("Message");
+
+                protected override IObservable<int> Sequence
+                {
+                    get { return Observable.Throw<int>(_ex); }
+                }
+
+                protected override string ExpectedMessage
+                {
+                    get { return string.Format("{0}.OnError({1})", _logName, _ex); }
+                }
+            }
+
+            [TestFixture]
+            public sealed class When_logging_OnCompleted : When_logging_ObservableSequences
+            {
+                protected override IObservable<int> Sequence
+                {
+                    get { return Observable.Empty<int>(); }
+                }
+
+                protected override string ExpectedMessage
+                {
+                    get { return string.Format("{0}.OnCompleted()", _logName); }
+                }
             }
         }
 
