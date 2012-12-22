@@ -1,4 +1,6 @@
-﻿using System.Reactive;
+﻿using System;
+using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
 using CallWall.Services;
 using CallWall.Settings.Bluetooth;
@@ -44,18 +46,18 @@ namespace CallWall.UnitTests.Settings
             Assert.AreEqual(_expectedName, _sut.Name);
         }
 
-        //TODO: Figure out what the NUnit enum parameter generator is -LC
-        [TestCase(DeviceClass.SmartPhone)]
-        [TestCase(DeviceClass.Phone)]
-        [TestCase(DeviceClass.CellPhone)]
-        [TestCase(DeviceClass.Computer)]
-        [TestCase(DeviceClass.LaptopComputer)]
-        public void Should_return_underlying_DeviceType(DeviceClass deviceClass)
+        [TestFixture]
+        public sealed class When_Accessing_DeviceType : Given_a_constructed_BluetoothDevice
         {
-            var expectedDeviceType = BluetoothDeviceType.Create(deviceClass);
-            _bluetoothDeviceInfoMock.Setup(bt => bt.DeviceType).Returns(expectedDeviceType);
+            [Test]
+            public void Should_return_result_from_factory(
+                [AllEnumValues(typeof(DeviceClass))] DeviceClass deviceClass)
+            {
+                var expectedDeviceType = BluetoothDeviceType.Create(deviceClass);
+                _bluetoothDeviceInfoMock.Setup(bt => bt.DeviceType).Returns(expectedDeviceType);
 
-            Assert.AreEqual(expectedDeviceType, _sut.DeviceType);
+                Assert.AreEqual(expectedDeviceType, _sut.DeviceType);
+            }
         }
 
         public abstract class When_device_is_in_an_idle_state : Given_a_constructed_BluetoothDevice
@@ -359,6 +361,18 @@ namespace CallWall.UnitTests.Settings
             {
                 Assert.Inconclusive("Test not yet implemented");
             }
+        }
+    }
+
+    public class AllEnumValuesAttribute : ValuesAttribute
+    {
+        public AllEnumValuesAttribute(Type enumType)
+        {
+            if (enumType.IsEnum == false)
+            {
+                throw new InvalidOperationException(string.Format("{0} must be an enum type", enumType.Name));
+            }
+            data = Enum.GetValues(enumType).Cast<object>().ToArray();
         }
     }
 }
