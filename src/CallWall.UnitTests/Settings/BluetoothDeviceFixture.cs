@@ -40,17 +40,17 @@ namespace CallWall.UnitTests.Settings
             _bluetoothDeviceInfoMock.Setup(bt => bt.DeviceName).Returns(_expectedName);
         }
 
-        [Test]
-        public void Should_return_underlying_DeviceName()
-        {
-            Assert.AreEqual(_expectedName, _sut.Name);
-        }
-
         [TestFixture]
-        public sealed class When_Accessing_DeviceType : Given_a_constructed_BluetoothDevice
+        public sealed class When_accessing_readonly_properties : Given_a_constructed_BluetoothDevice
         {
             [Test]
-            public void Should_return_result_from_factory(
+            public void Should_return_underlying_DeviceName()
+            {
+                Assert.AreEqual(_expectedName, _sut.Name);
+            }
+
+            [Test]
+            public void Should_return_tranlated_DeviceType_from_factory(
                 [AllEnumValues(typeof(DeviceClass))] DeviceClass deviceClass)
             {
                 var expectedDeviceType = BluetoothDeviceType.Create(deviceClass);
@@ -98,8 +98,6 @@ namespace CallWall.UnitTests.Settings
                 {
                     Assert.IsTrue(_sut.TestDeviceCommand.CanExecute());
                 }
-
-
             }
 
             [TestFixture]
@@ -122,7 +120,6 @@ namespace CallWall.UnitTests.Settings
                 {
                     Assert.IsFalse(_sut.RemoveDeviceCommand.CanExecute());
                 }
-
 
                 [Test, Ignore]
                 public void Should_not_be_able_to_test_the_device_connection()
