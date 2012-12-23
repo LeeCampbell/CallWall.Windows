@@ -141,6 +141,34 @@ namespace CallWall.UnitTests.Settings
                 }
             }
 
+            [TestFixture]
+            public sealed class With_zero_results : When_scanning_for_devices_finishes
+            {
+                private const string _expectedMessage = "No devices were found. Ensure that Bluetooth is enabled on both your phone and your computer, and that the device is in range. You may also have to enable Bluetooth discovery on your phone.";
+
+                public override void SetUp()
+                {
+                    base.SetUp();
+                    _bluetoothServiceMock.Setup(bs => bs.SearchForDevices()).Returns(
+                        Observable.Empty<IBluetoothDevice>());
+                    _viewModel.SearchForDevicesCommand.Execute();
+                    _testSchedulerProvider.Concurrent.AdvanceBy(1);
+                    _testSchedulerProvider.Async.AdvanceBy(1);
+                }
+
+                [Test]
+                public void Should_set_status_to_errored()
+                {
+                    Assert.IsTrue(_viewModel.Status.HasError);
+                }
+
+                [Test]
+                public void Should_set_status_error_message()
+                {
+                    Assert.AreEqual(_expectedMessage, _viewModel.Status.ErrorMessage);
+                }
+            }
+
             [Test]
             public void Should_set_status_IsProcessing_to_false()
             {

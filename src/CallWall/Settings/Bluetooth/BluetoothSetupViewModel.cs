@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Reactive.Linq;
 using CallWall.Services;
 using JetBrains.Annotations;
@@ -63,7 +64,14 @@ namespace CallWall.Settings.Bluetooth
                 .Subscribe(
                     device => _devices.Add(device),
                     ex => { Status = ViewModelStatus.Error(ex.Message); },
-                    () => { Status = ViewModelStatus.Idle; });
+                    () =>
+                        {
+                            Status = _devices.Any() 
+                                ? ViewModelStatus.Idle 
+                                //TODO: Convert error message to Localised string.
+                                : ViewModelStatus.Error("No devices were found. Ensure that Bluetooth is enabled on both your phone and your computer, and that the device is in range. You may also have to enable Bluetooth discovery on your phone.");
+                            
+                        });
         }
 
         #region INotifyPropertyChanged implementation

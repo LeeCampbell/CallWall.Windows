@@ -64,13 +64,15 @@
                                    MaxWidth="42" MaxHeight="42" Stretch="Uniform" StretchDirection="Both"
                                    VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </Border>
+                        
+                        <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Name}" FontSize="18" VerticalAlignment="Bottom"/>
+                        <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding DeviceType.Name}" VerticalAlignment="Top"/>
+
                         <ProgressBar Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="1"
                                      IsIndeterminate="True"
                                      Height="2" Margin="3,0"
                                      VerticalAlignment="Bottom"
-                                     Visibility="{Binding Status.IsProcessing, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                        <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Name}" FontSize="18" VerticalAlignment="Bottom"/>
-                        <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding DeviceType.Name}" VerticalAlignment="Top"/>
+                                     Visibility="{Binding Status.IsPairing, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                         <Button Grid.Column="2" Grid.RowSpan="2" VerticalAlignment="Center" 
                                 Style="{DynamicResource SettingButton}"
                                 Command="{Binding PairDeviceCommand}">Pair</Button>
@@ -81,5 +83,10 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+        <TextBlock Text="{Binding Status.ErrorMessage}"
+                   Visibility="{Binding Status.HasError, Converter={StaticResource BooleanToVisibilityConverter}}"
+                   TextWrapping="Wrap" 
+                   Margin="10"
+                   Style="{StaticResource ErrorTextStyle}"/>
     </StackPanel>
 </UserControl>

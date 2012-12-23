@@ -7,6 +7,6 @@
             <TextBlock>First we need to set up how you want to pair your Phone to your PC.</TextBlock>
             <TextBlock>Then we need to set up where you want to source your data from</TextBlock>
         </StackPanel>
-        <Button Command="{Binding NextStepCommand}">Next</Button>
+        <Button Command="{Binding NextStepCommand}" IsDefault="True">Next</Button>
     </DockPanel>
 </UserControl>

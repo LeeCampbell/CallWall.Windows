@@ -178,7 +178,7 @@
         </Style>
     </Control.Resources>
     <DockPanel>
-        <Button DockPanel.Dock="Bottom" Command="{Binding CloseCommand}" Content="Done"/>
+        <Button DockPanel.Dock="Bottom" Command="{Binding CloseCommand}" IsDefault="True" Content="Done"/>
 
 
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap">

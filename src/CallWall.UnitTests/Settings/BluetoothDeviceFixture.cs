@@ -40,6 +40,14 @@ namespace CallWall.UnitTests.Settings
             _bluetoothDeviceInfoMock.Setup(bt => bt.DeviceName).Returns(_expectedName);
         }
 
+        protected ITestableObservable<T> CreateSingleValueColdObservable<T>(T value)
+        {
+            return _testSchedulerProvider.Concurrent.CreateColdObservable(
+                new Recorded<Notification<T>>(1, Notification.CreateOnNext(value)),
+                new Recorded<Notification<T>>(1, Notification.CreateOnCompleted<T>())
+                );
+        }
+
         [TestFixture]
         public sealed class When_accessing_readonly_properties : Given_a_constructed_BluetoothDevice
         {
@@ -92,12 +100,6 @@ namespace CallWall.UnitTests.Settings
                 {
                     Assert.IsTrue(_sut.RemoveDeviceCommand.CanExecute());
                 }
-
-                [Test, Ignore]
-                public void Should_be_able_to_test_the_device_connection()
-                {
-                    Assert.IsTrue(_sut.TestDeviceCommand.CanExecute());
-                }
             }
 
             [TestFixture]
@@ -119,12 +121,6 @@ namespace CallWall.UnitTests.Settings
                 public void Should_not_be_able_to_remove_the_device()
                 {
                     Assert.IsFalse(_sut.RemoveDeviceCommand.CanExecute());
-                }
-
-                [Test, Ignore]
-                public void Should_not_be_able_to_test_the_device_connection()
-                {
-                    Assert.IsFalse(_sut.TestDeviceCommand.CanExecute());
                 }
             }
         }
@@ -169,14 +165,6 @@ namespace CallWall.UnitTests.Settings
                 SetToProcessing(isAuthenticated);
                 Assert.IsFalse(_sut.RemoveDeviceCommand.CanExecute());
             }
-        }
-
-        protected ITestableObservable<T> CreateSingleValueColdObservable<T>(T value)
-        {
-            return _testSchedulerProvider.Concurrent.CreateColdObservable(
-                new Recorded<Notification<T>>(1, Notification.CreateOnNext(value)),
-                new Recorded<Notification<T>>(1, Notification.CreateOnCompleted<T>())
-                );
         }
 
         [TestFixture]
@@ -226,7 +214,20 @@ namespace CallWall.UnitTests.Settings
             }
 
             [Test]
-            public void Should_refresh_commands_on_completion()
+            public void Should_refresh_PairDeviceCommand_on_completion()
+            {
+                _sut.RemoveDeviceCommand.Execute();
+                _testSchedulerProvider.Concurrent.AdvanceBy(2);
+
+                var changeCount = 0;
+                _sut.PairDeviceCommand.CanExecuteChanged += (s, e) => { changeCount++; };
+                _testSchedulerProvider.Async.AdvanceBy(1);
+
+                Assert.AreEqual(1, changeCount);
+            }
+
+            [Test]
+            public void Should_refresh_RemoveDeviceCommand_on_completion()
             {
                 _sut.RemoveDeviceCommand.Execute();
                 _testSchedulerProvider.Concurrent.AdvanceBy(2);
@@ -300,13 +301,26 @@ namespace CallWall.UnitTests.Settings
             }
 
             [Test]
-            public void Should_refresh_commands_on_completion()
+            public void Should_refresh_PairDeviceCommand_on_completion()
             {
                 _sut.PairDeviceCommand.Execute();
                 _testSchedulerProvider.Concurrent.AdvanceBy(2);
 
                 var changeCount = 0;
                 _sut.PairDeviceCommand.CanExecuteChanged += (s, e) => { changeCount++; };
+                _testSchedulerProvider.Async.AdvanceBy(1);
+
+                Assert.AreEqual(1, changeCount);
+            }
+
+            [Test]
+            public void Should_refresh_RemoveDeviceCommand_on_completion()
+            {
+                _sut.PairDeviceCommand.Execute();
+                _testSchedulerProvider.Concurrent.AdvanceBy(2);
+
+                var changeCount = 0;
+                _sut.RemoveDeviceCommand.CanExecuteChanged += (s, e) => { changeCount++; };
                 _testSchedulerProvider.Async.AdvanceBy(1);
 
                 Assert.AreEqual(1, changeCount);
@@ -324,39 +338,6 @@ namespace CallWall.UnitTests.Settings
 
                 Assert.IsFalse(_sut.Status.IsProcessing);
                 Assert.AreEqual(1, statusChangeCount);
-            }
-        }
-
-        [TestFixture, Ignore]
-        public sealed class When_testing_device_connection : Given_a_constructed_BluetoothDevice
-        {
-            public override void Setup()
-            {
-                base.Setup(); 
-                _sut.TestDeviceCommand.Execute();
-            }
-
-            [Test]
-            public void When_testing_device_connection_should_pass_DeviceInfo_to_BluetoothService()
-            {
-                _bluetoothServiceMock.Verify(bs => bs.TestDeviceConnection(_bluetoothDeviceInfoMock.Object), Times.Once());
-            }
-
-            [Test]
-            public void Should_subscribe_to_device_connection_result_concurrently()
-            {
-                Assert.Inconclusive("Test not yet implemented");
-            }
-
-            [Test]
-            public void Should_do_somthing_when_test_works()
-            {
-                Assert.Inconclusive("Test not yet implemented");
-            }
-            [Test]
-            public void Should_do_somthing_when_test_fails()
-            {
-                Assert.Inconclusive("Test not yet implemented");
             }
         }
     }
