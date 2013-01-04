@@ -8,18 +8,21 @@
     ContentH1 11pt A7A7A7 semi bold
     
     -->
+    <SolidColorBrush x:Key="PrimaryForeground" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="SecondaryForeground" Color="#A7A7A7"/>
     
     <Style TargetType="TextBlock">
         <Setter Property="FontFamily" Value="Segoe"/>
-        <Setter Property="FontWeight" Value="300"/>
+        <Setter Property="FontWeight" Value="Light"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="TextAlignment" Value="Left"/>
-        <Setter Property="Margin" Value="1"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
     </Style>
     <Style TargetType="Label" >
-        <Setter Property="Foreground" Value="#FFFFFF"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryForeground}"/>
         <Setter Property="FontWeight" Value="200"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -27,22 +30,16 @@
         <Setter Property="Padding" Value="0"/>
     </Style>
     <Style x:Key="PageHeaderStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-        <Setter Property="FontFamily" Value="Segoe UI"/>
         <Setter Property="FontSize" Value="42"/>
-        <Setter Property="FontWeight" Value="Light"/>
-        <Setter Property="Foreground" Value="#FFFFFF"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryForeground}"/>
     </Style>
     <Style x:Key="PageSubHeaderStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-        <Setter Property="FontFamily" Value="Segoe UI"/>
         <Setter Property="FontSize" Value="28"/>
-        <Setter Property="FontWeight" Value="Light"/>
-        <Setter Property="Foreground" Value="#FFFFFF"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryForeground}"/>
     </Style>
     <Style x:Key="ContentHeading1Style" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-        <Setter Property="FontFamily" Value="Segoe UI"/>
         <Setter Property="FontSize" Value="28"/>
-        <Setter Property="FontWeight" Value="Light"/>
-        <Setter Property="Foreground" Value="#A7A7A7"/>
+        <Setter Property="Foreground" Value="{StaticResource SecondaryForeground}"/>
     </Style>
     <Style x:Key="ErrorTextStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
         <Setter Property="Foreground" Value="DarkGray"/>

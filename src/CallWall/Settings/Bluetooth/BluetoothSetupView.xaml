@@ -17,7 +17,7 @@
         </CollectionViewSource>
     </Control.Resources>
     <StackPanel>
-        <TextBlock Style="{StaticResource ContentHeading1Style}" Margin="0,9,0,0">
+        <TextBlock Style="{StaticResource ContentHeading1Style}" Margin="0,10,0,0">
                 Bluetooth Radio
         </TextBlock>
 
@@ -32,7 +32,7 @@
                       IsChecked="{Binding IsEnabled}"
                       ToolTip="Enable Bluetooth on this PC"/>
         
-        <Grid HorizontalAlignment="Left" Margin="0,10">
+        <Grid HorizontalAlignment="Left" Margin="0,20,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="2"/>

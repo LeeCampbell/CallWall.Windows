@@ -206,16 +206,16 @@
                                                 </Style>
                                             </Image.Style>
                                         </Image>
-                                        <TextBlock Text="{Binding Name}">
+                                        <TextBlock Text="{Binding Name}" >
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock" BasedOn="{StaticResource PageSubHeaderStyle}">
-                                                    <Setter Property="Foreground" Value="Gray"/>
+                                                    <Setter Property="Foreground" Value="{StaticResource SecondaryForeground}"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Expander}, Path=IsExpanded}" Value="True">
-                                                            <Setter Property="Foreground" Value="White"/>
+                                                            <Setter Property="Foreground" Value="{StaticResource PrimaryForeground}"/>
                                                         </DataTrigger>
                                                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel}, Path=IsMouseOver}" Value="True">
-                                                            <Setter Property="Foreground" Value="White"/>
+                                                            <Setter Property="Foreground" Value="{StaticResource PrimaryForeground}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
