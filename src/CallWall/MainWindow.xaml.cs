@@ -15,9 +15,10 @@ namespace CallWall
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
-            base.OnKeyUp(e);
-            if(e.Key==Key.Escape)
+                base.OnKeyUp(e);
+            if (!e.Handled && e.Key == Key.Escape)
             {
+                e.Handled = true;
                 Close();
             }
         }

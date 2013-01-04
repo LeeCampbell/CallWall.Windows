@@ -7,11 +7,11 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0">
-            <TextBlock Style="{StaticResource TitleTextStyle}">Connections</TextBlock>
+            <TextBlock Style="{StaticResource PageHeaderStyle}">Connections</TextBlock>
             <ItemsControl ItemsSource="{Binding Connections}"/>
         </StackPanel>
         <StackPanel Grid.Column="1">
-            <TextBlock Style="{StaticResource TitleTextStyle}">Accounts</TextBlock>
+            <TextBlock Style="{StaticResource PageHeaderStyle}">Accounts</TextBlock>
             <ItemsControl ItemsSource="{Binding Accounts}"/>
         </StackPanel>
     </Grid>

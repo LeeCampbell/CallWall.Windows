@@ -11,6 +11,7 @@
                 </ResourceDictionary>
                 <ResourceDictionary Source="Styles/Text.xaml"/>
                 <ResourceDictionary Source="Styles/Button.xaml"/>
+                <ResourceDictionary Source="Styles/TabControl.xaml"/>
                 <ResourceDictionary Source="Styles/WpfToolkit.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

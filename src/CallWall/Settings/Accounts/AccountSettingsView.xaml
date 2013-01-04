@@ -13,7 +13,7 @@
             <StackPanel>
                 <TextBlock Text="Accounts"
                        VerticalAlignment="Top"
-                       Style="{DynamicResource TitleTextStyle}" />
+                       Style="{DynamicResource PageHeaderStyle}" />
                 <TextBlock TextWrapping="Wrap">
                     Here you can select the social media accounts and features you would like to enable.
                 </TextBlock>
@@ -23,7 +23,7 @@
                         <StackPanel Orientation="Horizontal">
                             <!--TODO: Should be gray when not authorized for any features-->
                             <Image Source="C:\Users\Lee\Documents\GitHub\CallWall.Windows\src\CallWall\Images\Google_64x64.png" Stretch="Uniform" StretchDirection="Both" Height="32"/>
-                            <TextBlock Style="{DynamicResource Heading1Style}">Google</TextBlock>
+                            <TextBlock Style="{DynamicResource PageSubHeaderStyle}">Google</TextBlock>
                         </StackPanel>
                     </Expander.Header>
                     <DockPanel>

@@ -180,34 +180,27 @@
     <DockPanel>
         <Button DockPanel.Dock="Bottom" Command="{Binding CloseCommand}" IsDefault="True" Content="Done"/>
 
-
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap">
-                <Run FontSize="48">Connect</Run>
-                <Run >Select how you want to recieve the incoming call notification from your mobile</Run>
+        <TextBlock DockPanel.Dock="Top" Style="{StaticResource PageHeaderStyle}">
+            Connect your phone
         </TextBlock>
 
-
         <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <ItemsControl ItemsSource="{Binding ConnectivityConfigurators}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Expander Content="{Binding View}" 
-                                  BorderThickness="1,0,0,0"
-                                  BorderBrush="Black"
-                                  Style="{StaticResource ExpanderStyle1}">
-                            <Expander.Header>
-                                <StackPanel>
+            <TabControl ItemsSource="{Binding ConnectivityConfigurators}" 
+                        TabStripPlacement="Left"
+                        BorderThickness="0">
+                <TabControl.Resources>
+                    <Style TargetType="TabItem" BasedOn="{StaticResource {x:Type TabItem}}">
+                        <Setter Property="HeaderTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
                                         <Image Stretch="Uniform" StretchDirection="Both" Height="40">
                                             <Image.Style>
                                                 <Style TargetType="Image">
-                                                    <Setter Property="Source" Value="{Binding Image, Converter={StaticResource grayScaleConverter}}"/>
+                                                    <Setter Property="Source" Value="{Binding Image}"/>
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Expander}, Path=IsExpanded}" Value="True">
-                                                            <Setter Property="Source" Value="{Binding Image}"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel}, Path=IsMouseOver}" Value="True">
-                                                            <Setter Property="Source" Value="{Binding Image}"/>
+                                                        <DataTrigger Binding="{Binding IsEnabled}" Value="False">
+                                                            <Setter Property="Source" Value="{Binding Image, Converter={StaticResource grayScaleConverter}}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -215,7 +208,7 @@
                                         </Image>
                                         <TextBlock Text="{Binding Name}">
                                             <TextBlock.Style>
-                                                <Style TargetType="TextBlock" BasedOn="{StaticResource Heading1Style}">
+                                                <Style TargetType="TextBlock" BasedOn="{StaticResource PageSubHeaderStyle}">
                                                     <Setter Property="Foreground" Value="Gray"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Expander}, Path=IsExpanded}" Value="True">
@@ -229,78 +222,19 @@
                                             </TextBlock.Style>
                                         </TextBlock>
                                     </StackPanel>
-                                    <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Margin="5,5,0,0">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Expander}, Path=IsExpanded}" Value="True">
-                                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </StackPanel>
-                            </Expander.Header>
-                        </Expander>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-            <!--<StackPanel>
-                <Expander>
-                    <Expander.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="C:\Users\Lee\Documents\GitHub\CallWall.Windows\src\CallWall\Images\Bluetooth_72x72.png" Stretch="Uniform" StretchDirection="Both" Height="40"/>
-                            <TextBlock Style="{DynamicResource Heading1Style}">Bluetooth</TextBlock>
-                        </StackPanel>
-                    </Expander.Header>
-                    <StackPanel>
-                        <TextBlock TextWrapping="Wrap">
-                            Bluetooth is common radio technology that allows devices to transfer information within a radius of up to 10 meters (32 feet). 
-                            There are no data costs for using Bluetooth and will convieniently only activate CallWall if the paired phone is nearby. 
-                            Bluetooth will need to be enabled on both the phone and this client PC.
-                        </TextBlock>
-                        <Label>Turn on bluetooth</Label>
-                        <Label>Pair with device</Label>
-                        <Label>Test connection</Label>
-                    </StackPanel>
-                </Expander>
-                <Expander>
-                    <Expander.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="C:\Users\Lee\Documents\GitHub\CallWall.Windows\src\CallWall\Images\Wifi_140x98.png" Stretch="Uniform" StretchDirection="Both" Width="40"/>
-                            <TextBlock Style="{DynamicResource Heading1Style}">WiFi-Direct</TextBlock>
-                        </StackPanel>
-                    </Expander.Header>
-                    <StackPanel>
-                        <TextBlock TextWrapping="Wrap">
-                            WiFi-Direct is a modern radio technology that allows devices to transfer information within a radius of up to 100 meters (300 feet). 
-                            There are no data costs for using WiFi-Direct however few devices support it.
-                            Wifi will need to be enabled on both the phone and this client PC.
-                        </TextBlock>
-                        <Label>Turn on Wifi</Label>
-                        <Label>Pair with device</Label>
-                        <Label>Test connection</Label>
-                    </StackPanel>
-                </Expander>
-                <Expander>
-                    <Expander.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="C:\Users\Lee\Documents\GitHub\CallWall.Windows\src\CallWall\Images\Cloud_204x204.jpg" Stretch="Uniform" StretchDirection="Both" Width="40"/>
-                            <TextBlock Style="{DynamicResource Heading1Style}">Cloud</TextBlock>
-                        </StackPanel>
-                    </Expander.Header>
-                    <StackPanel>
-                        <TextBlock TextWrapping="Wrap">
-                            Using the data services available on your phone, the incoming call notification can be routed via the internet and pushed to the client PC.
-                            Both the phone and client PC will need access to the internet. Data charges may apply.
-                        </TextBlock>
-                        <Label>Turn on Wifi</Label>
-                        <Label>Pair with device</Label>
-                        <Label>Test connection</Label>
-                    </StackPanel>
-                </Expander>
-            </StackPanel>-->
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <ContentControl Content="{Binding View}"/>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TabControl.Resources>
+            </TabControl>
         </ScrollViewer>
     </DockPanel>
 </UserControl>

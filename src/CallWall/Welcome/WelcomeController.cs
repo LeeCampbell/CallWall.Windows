@@ -1,5 +1,6 @@
 using CallWall.Settings.Accounts;
 using CallWall.Settings.Connectivity;
+using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Regions;
 
 namespace CallWall.Welcome
@@ -13,11 +14,11 @@ namespace CallWall.Welcome
         private readonly IAccountSettingsView _accountSettingsView;
         private readonly IDemoView _demoView;
 
-        public WelcomeController(IRegionManager regionManager, 
-            IWelcomeView welcomeView, 
-            IWelcomeStep1View welcomeStep1View, 
-            IConnectivitySettingsView connectivitySettingsView, 
-            IAccountSettingsView accountSettingsView, 
+        public WelcomeController(IRegionManager regionManager,
+            IWelcomeView welcomeView,
+            IWelcomeStep1View welcomeStep1View,
+            IConnectivitySettingsView connectivitySettingsView,
+            IAccountSettingsView accountSettingsView,
             IDemoView demoView)
         {
             _regionManager = regionManager;
@@ -36,6 +37,7 @@ namespace CallWall.Welcome
             //The Test screen will explain that for a test we will emulate what a call from your own number would be like.
             //Invoke the Incoming event with the current user' data
 
+            _welcomeView.ViewModel.Close = new DelegateCommand(() => _regionManager.Regions[RegionNames.Modal].Remove(_welcomeView));
             _regionManager.AddToRegion(RegionNames.Modal, _welcomeView);
 
             var welcomeSettingRegion = _regionManager.Regions[ShellRegionNames.WelcomeSettingsRegion];
@@ -46,7 +48,7 @@ namespace CallWall.Welcome
 
             welcomeSettingRegion.Activate(_welcomeStep1View);
 
-            _welcomeStep1View.NextView+= (s, e) => welcomeSettingRegion.Activate(_connectivitySettingsView);
+            _welcomeStep1View.NextView += (s, e) => welcomeSettingRegion.Activate(_connectivitySettingsView);
             _connectivitySettingsView.ViewModel.Closed += (s, e) => welcomeSettingRegion.Activate(_accountSettingsView);
             _accountSettingsView.ViewModel.Closed += (s, e) => welcomeSettingRegion.Activate(_demoView);
         }

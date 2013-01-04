@@ -42,6 +42,7 @@ namespace CallWall
             ModuleCatalog.Add<HostModule>();
             ModuleCatalog.Add<Settings.SettingsModule>();
             ModuleCatalog.Add<Welcome.WelcomeModule>();
+            //ModuleCatalog.Add<ProfileDashboard.DashboardModule>();
         }
 
         protected override void ConfigureContainer()

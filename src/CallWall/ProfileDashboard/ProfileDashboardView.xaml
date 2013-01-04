@@ -1,0 +1,20 @@
+﻿<Window x:Class="CallWall.ProfileDashboard.ProfileDashboardView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:cal="clr-namespace:Microsoft.Practices.Prism.Regions;assembly=Microsoft.Practices.Prism"
+        xmlns:CallWall="clr-namespace:CallWall;assembly=CallWall.Core" 
+        Title="ProfileDashboardView" 
+        WindowState="Maximized"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="#F5303030">
+    <WrapPanel Orientation="Vertical">
+        <!--Probably should also have a Status area e.g. [Icon] Incoming Call : +4476541234-->
+        <ContentControl cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.ContactSummary}"/>
+        <ContentControl cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.CommunicationSummary}"/>
+        <ContentControl cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.EventSummary}"/>
+        <ContentControl cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.ImageGallery}"/>
+        <ContentControl cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.LocationMap}"/>
+        <ContentControl cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.CollaborationSummary}"/>
+    </WrapPanel>
+</Window>

@@ -35,6 +35,8 @@ namespace CallWall.UnitTests.Welcome
             _welcomeSettingsRegion = _regionManagerStub.CreateAndAddMock(ShellRegionNames.WelcomeSettingsRegion);
 
             _welcomeViewMock = new Mock<IWelcomeView>();
+            var vm = new WelcomeViewModel();
+            _welcomeViewMock.SetupGet(v => v.ViewModel).Returns(vm);
 
             _connectivitySettingsVMMock = new Mock<IConnectivitySettingsViewModel>();
             _connectivitySettingsViewMock = new Mock<IConnectivitySettingsView>();

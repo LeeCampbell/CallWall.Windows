@@ -17,20 +17,32 @@ namespace CallWall.Settings.Bluetooth
     //  Test a connection (i.e. validate that CallWall is installed on the paired device)
     public sealed class BluetoothSetupViewModel : INotifyPropertyChanged
     {
+        #region Field members
+
         private readonly IBluetoothService _bluetoothService;
         private readonly ISchedulerProvider _schedulerProvider;
         private readonly ObservableCollection<IBluetoothDevice> _devices = new ObservableCollection<IBluetoothDevice>();
         private readonly ReadOnlyObservableCollection<IBluetoothDevice> _roDevices;
 
-        private readonly DelegateCommand _searchForDevicesCommandCommand;
+        private readonly DelegateCommand _scanForDevicesCommand;
         private ViewModelStatus _status = ViewModelStatus.Idle;
+
+        #endregion
 
         public BluetoothSetupViewModel(IBluetoothService bluetoothService, ISchedulerProvider schedulerProvider)
         {
             _bluetoothService = bluetoothService;
             _schedulerProvider = schedulerProvider;
             _roDevices = new ReadOnlyObservableCollection<IBluetoothDevice>(_devices);
-            _searchForDevicesCommandCommand = new DelegateCommand(SearchForDevices, () => !Status.IsProcessing);
+            _scanForDevicesCommand = new DelegateCommand(ScanForDevices, CanScanForDevices);
+            _status = ViewModelStatus.Error("No devices. Scan to discover Bluetooth devices in the area.");
+            _bluetoothService.WhenPropertyChanges(bs => bs.IsEnabled)
+                             .Subscribe(_ =>
+                                            {
+                                                OnPropertyChanged("IsEnabled");
+                                                _scanForDevicesCommand.RaiseCanExecuteChanged();
+                                            });               
+                                 
         }
 
         public ReadOnlyObservableCollection<IBluetoothDevice> Devices
@@ -47,18 +59,34 @@ namespace CallWall.Settings.Bluetooth
                 {
                     _status = value;
                     OnPropertyChanged("Status");
-                    _searchForDevicesCommandCommand.RaiseCanExecuteChanged();
+                    _scanForDevicesCommand.RaiseCanExecuteChanged();
                 }
             }
         }
 
-        public DelegateCommand SearchForDevicesCommand { get { return _searchForDevicesCommandCommand; } }
+        public bool IsSupported
+        {
+            get { return _bluetoothService.IsSupported; }
+        }
 
-        private void SearchForDevices()
+        public bool IsEnabled
+        {
+            get { return _bluetoothService.IsEnabled; }
+            set { _bluetoothService.IsEnabled = value; }
+        }
+
+        public DelegateCommand ScanForDevicesCommand { get { return _scanForDevicesCommand; } }
+
+        private bool CanScanForDevices()
+        {
+            return !Status.IsProcessing && IsSupported && IsEnabled;
+        }
+
+        private void ScanForDevices()
         {
             _devices.Clear();
             Status = ViewModelStatus.Processing;
-            _bluetoothService.SearchForDevices()
+            _bluetoothService.ScanForDevices()
                 .SubscribeOn(_schedulerProvider.Concurrent)
                 .ObserveOn(_schedulerProvider.Async)
                 .Subscribe(

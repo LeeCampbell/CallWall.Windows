@@ -1,14 +1,17 @@
 ﻿using System;
+using System.ComponentModel;
 using CallWall.Settings.Bluetooth;
 
 namespace CallWall.Services
 {
-    public interface IBluetoothService
+    public interface IBluetoothService : INotifyPropertyChanged
     {
-        IObservable<IBluetoothDevice> SearchForDevices();
+        bool IsSupported { get; }
+        bool IsEnabled { get; set; }
+
+        IObservable<IBluetoothDevice> ScanForDevices();
 
         IObservable<bool> PairDevice(IBluetoothDeviceInfo device);
         IObservable<bool> RemoveDevice(IBluetoothDeviceInfo device);
-        IObservable<bool> TestDeviceConnection(IBluetoothDeviceInfo device);
     }
 }

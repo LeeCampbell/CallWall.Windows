@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:Bluetooth="clr-namespace:CallWall.Settings.Bluetooth"
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase" 
-             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="480">
+             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="480" 
+             d:DataContext="{d:DesignInstance Type=Bluetooth:BluetoothSetupViewModel}">
     <Control.Resources>
         <!--TODO: Add a Checkbox to show/hide only Phones -->
         <CollectionViewSource x:Key="sortedDevices" Source="{Binding Devices}">
@@ -16,23 +17,34 @@
         </CollectionViewSource>
     </Control.Resources>
     <StackPanel>
+        <TextBlock Style="{StaticResource ContentHeading1Style}" Margin="0,9,0,0">
+                Bluetooth Radio
+        </TextBlock>
 
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+        <TextBlock Visibility="{Binding IsSupported, Converter={StaticResource BooleanToInvisibilityConverter}}"
+                   Style="{StaticResource ErrorTextStyle}">
+                Bluetooth is not supported or enabled on this device.
+        </TextBlock>
+
+        <ToggleButton x:Name="EnableBlutoothToggle" 
+                      HorizontalAlignment="Left"
+                      Visibility="{Binding IsSupported, Converter={StaticResource BooleanToVisibilityConverter}}"
+                      IsChecked="{Binding IsEnabled}"
+                      ToolTip="Enable Bluetooth on this PC"/>
+        
+        <Grid HorizontalAlignment="Left" Margin="0,10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="2"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="2"/>
             </Grid.RowDefinitions>
-            <Button x:Name="ScanButton" 
-                    Grid.Column="1" Grid.Row="0"
-                    Command="{Binding SearchForDevicesCommand}" 
-                    ToolTip="Scan for discoverable devices">Scan</Button>
 
-            <ProgressBar Grid.Column="1" Grid.Row="2" 
+            <Button x:Name="ScanButton"
+                    Grid.Row="0" 
+                    Command="{Binding ScanForDevicesCommand}" 
+                    ToolTip="Scan for discoverable Bluetooth devices">Scan for devices</Button>
+
+            <ProgressBar Grid.Row="2" 
                          IsIndeterminate="True"
                          Height="2" 
                          Width="{Binding ElementName=ScanButton, Path=ActualWidth}"
@@ -41,6 +53,16 @@
                          HorizontalAlignment="Right"
                          Visibility="{Binding Status.IsProcessing, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         </Grid>
+
+
+        <!--<TextBlock TextWrapping="Wrap">
+            Bluetooth is a short range (10m/32') radio technology available on most phones.
+            Bluetooth wont incur any data costs and will need to be enabled on both the phone and this client PC.
+        </TextBlock>-->
+
+        <TextBlock Style="{StaticResource ContentHeading1Style}">
+            Devices
+        </TextBlock>
 
         <ItemsControl ItemsSource="{Binding Source={StaticResource sortedDevices}}">
             <ItemsControl.ItemTemplate>
@@ -64,7 +86,7 @@
                                    MaxWidth="42" MaxHeight="42" Stretch="Uniform" StretchDirection="Both"
                                    VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </Border>
-                        
+
                         <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Name}" FontSize="18" VerticalAlignment="Bottom"/>
                         <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding DeviceType.Name}" VerticalAlignment="Top"/>
 
@@ -72,7 +94,7 @@
                                      IsIndeterminate="True"
                                      Height="2" Margin="3,0"
                                      VerticalAlignment="Bottom"
-                                     Visibility="{Binding Status.IsPairing, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                     Visibility="{Binding Status.IsProcessing, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                         <Button Grid.Column="2" Grid.RowSpan="2" VerticalAlignment="Center" 
                                 Style="{DynamicResource SettingButton}"
                                 Command="{Binding PairDeviceCommand}">Pair</Button>

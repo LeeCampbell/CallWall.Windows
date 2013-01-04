@@ -8,7 +8,7 @@
         AllowsTransparency="True"
         Background="#F5303030">
     <Grid>
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource TitleTextStyle}" Margin="120,80">
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource PageHeaderStyle}" Margin="120,80">
             Call Wall
         </TextBlock>
         <ContentControl cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.Modal}"/>

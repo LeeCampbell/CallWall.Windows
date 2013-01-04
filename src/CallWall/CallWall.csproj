@@ -131,6 +131,9 @@
     <Compile Include="PrismExtensions\AccordionItemsSourceSyncBehavior.cs" />
     <Compile Include="PrismExtensions\ModuleCatalogExtensions.cs" />
     <Compile Include="PrismExtensions\AccordionRegionAdapter.cs" />
+    <Compile Include="ProfileDashboard\ProfileDashboardView.xaml.cs">
+      <DependentUpon>ProfileDashboardView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Services\BluetoothService.cs" />
     <Compile Include="Services\IBluetoothService.cs" />
     <Compile Include="Services\WrappedBluetoothInfo.cs" />
@@ -184,6 +187,7 @@
     <Compile Include="Welcome\WelcomeView.xaml.cs">
       <DependentUpon>WelcomeView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Welcome\WelcomeViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -201,6 +205,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ProfileDashboard\ProfileDashboardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Settings\Bluetooth\BluetoothSetupView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -218,6 +226,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\Button.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\TabControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

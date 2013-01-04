@@ -9,7 +9,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Command="{Binding CloseCommand}" Content="Skip"/>
+            <Button Grid.Column="0" Command="{Binding CloseCommand}" Content="Skip" IsCancel="True"/>
             <TextBox Grid.Column="1" Text="+44 7 827743025" Width="200" HorizontalAlignment="Right" TextAlignment="Right" Margin="10,0" />
             <Button Grid.Column="2" Command="{Binding CloseCommand}" Content="Try me"/>
         </Grid>
@@ -19,7 +19,7 @@
             <StackPanel>
                 <TextBlock Text="Try me"
                        VerticalAlignment="Top"
-                       Style="{DynamicResource TitleTextStyle}" />
+                       Style="{DynamicResource PageHeaderStyle}" />
 
                 <TextBlock TextWrapping="Wrap">Now that you are set up we will run an example of what you would see when a call is recieved, but with your information.</TextBlock>
             </StackPanel>

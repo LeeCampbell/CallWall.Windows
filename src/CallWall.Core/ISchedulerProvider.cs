@@ -5,7 +5,7 @@ namespace CallWall
     public interface ISchedulerProvider
     {
         /// <summary>
-        /// Provides asynchronous scheduling without introducing concurrency. In Client applications this will generally use the dispatcher
+        /// Provides asynchronous scheduling without introducing concurrency. In Client applications this will generally use the dispatcher, else probably the CurrentThreadScheduler.
         /// </summary>
         IScheduler Async { get; }
 

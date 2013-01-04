@@ -6,7 +6,6 @@ namespace CallWall.Settings.Bluetooth
     public sealed class BluetoothConnectivityConfigurator : IConnectivityConfigurator
     {
         private readonly IBluetoothSetupView _view;
-        private bool _isEnabled;
         private static readonly Uri _image;
 
         static BluetoothConnectivityConfigurator()
@@ -21,21 +20,15 @@ namespace CallWall.Settings.Bluetooth
         public BluetoothConnectivityConfigurator(IBluetoothSetupView view)
         {
             _view = view;
+            _view.ViewModel.WhenPropertyChanges(vm => vm.IsEnabled).Subscribe(_ => OnPropertyChanged("IsEnabled"));
         }
 
         #region Implementation of IConnectivityConfigurator
 
         public bool IsEnabled
         {
-            get { return _isEnabled; }
-            set
-            {
-                if (_isEnabled != value)
-                {
-                    _isEnabled = value;
-                    OnPropertyChanged("IsEnabled");
-                }
-            }
+            get { return _view.ViewModel.IsEnabled; }
+            set { _view.ViewModel.IsEnabled = value; }
         }
 
         public string Name
