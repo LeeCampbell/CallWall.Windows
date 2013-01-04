@@ -1,13 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Reactive;
-using System.Reactive.Linq;
-using CallWall.Services;
+﻿using CallWall.Services;
 using CallWall.Settings.Connectivity.Bluetooth;
 using InTheHand.Net.Bluetooth;
 using Microsoft.Reactive.Testing;
 using Moq;
 using NUnit.Framework;
+using System.Reactive;
+using System.Reactive.Linq;
 
 // ReSharper disable InconsistentNaming
 namespace CallWall.UnitTests.Settings
@@ -38,6 +36,7 @@ namespace CallWall.UnitTests.Settings
 
             _bluetoothDeviceInfoMock.Setup(bt => bt.DeviceAddress).Returns(_expectedAddress);
             _bluetoothDeviceInfoMock.Setup(bt => bt.DeviceName).Returns(_expectedName);
+            _bluetoothDeviceInfoMock.Setup(bt => bt.DeviceType).Returns(BluetoothDeviceType.Create(DeviceClass.SmartPhone));
         }
 
         protected ITestableObservable<T> CreateSingleValueColdObservable<T>(T value)
@@ -48,6 +47,25 @@ namespace CallWall.UnitTests.Settings
                 );
         }
 
+
+        [TestFixture]
+        public sealed class When_accessing_ToString: Given_a_constructed_BluetoothDevice
+        {
+            [Test]
+            public void Should_return_DeviceName_in_string()
+            {
+                StringAssert.Contains(_expectedName, _sut.ToString());
+            }
+
+            [Test]
+            public void Should_return_DeviceType_in_string(
+                [AllEnumValues(typeof(DeviceClass))] DeviceClass deviceClass)
+            {
+                var expectedDeviceType = BluetoothDeviceType.Create(deviceClass);
+                _bluetoothDeviceInfoMock.Setup(bt => bt.DeviceType).Returns(expectedDeviceType);
+                StringAssert.Contains(_sut.DeviceType.Name, _sut.ToString());
+            } 
+        }
         [TestFixture]
         public sealed class When_accessing_readonly_properties : Given_a_constructed_BluetoothDevice
         {
@@ -339,18 +357,6 @@ namespace CallWall.UnitTests.Settings
                 Assert.IsFalse(_sut.Status.IsProcessing);
                 Assert.AreEqual(1, statusChangeCount);
             }
-        }
-    }
-
-    public class AllEnumValuesAttribute : ValuesAttribute
-    {
-        public AllEnumValuesAttribute(Type enumType)
-        {
-            if (enumType.IsEnum == false)
-            {
-                throw new InvalidOperationException(string.Format("{0} must be an enum type", enumType.Name));
-            }
-            data = Enum.GetValues(enumType).Cast<object>().ToArray();
         }
     }
 }

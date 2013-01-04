@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CallWall.Services;
 using CallWall.Settings.Connectivity.Bluetooth;
 using Microsoft.Reactive.Testing;
@@ -44,6 +40,19 @@ namespace CallWall.UnitTests.Settings
                 new Recorded<Notification<IBluetoothDevice>>(4, Notification.CreateOnCompleted<IBluetoothDevice>())
                 );
             return sequence;
+        }
+
+        [TestFixture]
+        public sealed class When_setting_IsEnabled_property : Given_a_constructed_BluetoothSetupViewModel
+        {
+            [TestCase(false)]
+            [TestCase(true)]
+            public void Should_set_bluetoothServiceMock_IsEnabled_to_value(bool expected)
+            {
+                _viewModel.IsEnabled = expected;
+
+                Assert.AreEqual(expected, _bluetoothServiceMock.Object.IsEnabled);
+            } 
         }
 
         [TestFixture]

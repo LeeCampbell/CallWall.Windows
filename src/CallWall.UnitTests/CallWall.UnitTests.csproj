@@ -107,11 +107,13 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="AllEnumValuesAttribute.cs" />
     <Compile Include="HostModuleTests.cs" />
     <Compile Include="Logging\LogFactoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegionManagerStub.cs" />
     <Compile Include="Settings\BluetoothDeviceFixture.cs" />
+    <Compile Include="Settings\BluetoothDeviceTypeFixture.cs" />
     <Compile Include="Settings\BluetoothSetupViewModelFixture.cs" />
     <Compile Include="Settings\SettingsModuleFixture.cs" />
     <Compile Include="TestSchedulerProvider.cs" />
