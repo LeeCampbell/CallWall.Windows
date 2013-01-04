@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace CallWall.Settings.Bluetooth
+namespace CallWall.Settings.Connectivity.Bluetooth
 {
     public sealed class BluetoothConnectivityConfigurator : IConnectivityConfigurator
     {

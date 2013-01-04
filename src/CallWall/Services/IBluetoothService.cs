@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
-using CallWall.Settings.Bluetooth;
+using CallWall.Settings.Connectivity.Bluetooth;
 
 namespace CallWall.Services
 {

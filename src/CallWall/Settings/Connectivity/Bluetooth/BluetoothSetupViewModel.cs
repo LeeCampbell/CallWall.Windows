@@ -7,7 +7,7 @@ using CallWall.Services;
 using JetBrains.Annotations;
 using Microsoft.Practices.Prism.Commands;
 
-namespace CallWall.Settings.Bluetooth
+namespace CallWall.Settings.Connectivity.Bluetooth
 {
     //This class will need to expose the ability to 
     //  Turn on Bluetooth radio

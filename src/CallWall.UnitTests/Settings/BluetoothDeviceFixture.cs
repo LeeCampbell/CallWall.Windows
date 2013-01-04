@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using CallWall.Services;
-using CallWall.Settings.Bluetooth;
+using CallWall.Settings.Connectivity.Bluetooth;
 using InTheHand.Net.Bluetooth;
 using Microsoft.Reactive.Testing;
 using Moq;

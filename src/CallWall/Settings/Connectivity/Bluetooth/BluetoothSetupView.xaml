@@ -1,17 +1,17 @@
-﻿<UserControl x:Class="CallWall.Settings.Bluetooth.BluetoothSetupView"
+﻿<UserControl x:Class="CallWall.Settings.Connectivity.Bluetooth.BluetoothSetupView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:Bluetooth="clr-namespace:CallWall.Settings.Bluetooth"
-             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase" 
-             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="480" 
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             xmlns:Bluetooth="clr-namespace:CallWall.Settings.Connectivity.Bluetooth" mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="480" 
              d:DataContext="{d:DesignInstance Type=Bluetooth:BluetoothSetupViewModel}">
     <Control.Resources>
         <!--TODO: Add a Checkbox to show/hide only Phones -->
         <CollectionViewSource x:Key="sortedDevices" Source="{Binding Devices}">
             <CollectionViewSource.SortDescriptions>
                 <scm:SortDescription PropertyName="IsValid" Direction="Descending" />
+                <scm:SortDescription PropertyName="IsAuthenticated" Direction="Descending" />
                 <scm:SortDescription PropertyName="Name" Direction="Ascending" />
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>

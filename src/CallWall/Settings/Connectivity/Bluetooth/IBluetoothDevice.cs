@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using Microsoft.Practices.Prism.Commands;
 
-namespace CallWall.Settings.Bluetooth
+namespace CallWall.Settings.Connectivity.Bluetooth
 {
     public interface IBluetoothDevice : INotifyPropertyChanged
     {

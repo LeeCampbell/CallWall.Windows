@@ -1,4 +1,4 @@
-using CallWall.Settings.Bluetooth;
+using CallWall.Settings.Connectivity.Bluetooth;
 using InTheHand.Net.Sockets;
 
 namespace CallWall.Services

@@ -1,6 +1,4 @@
-﻿using System.Windows.Controls;
-
-namespace CallWall.Settings.Bluetooth
+﻿namespace CallWall.Settings.Connectivity.Bluetooth
 {
     /// <summary>
     /// Interaction logic for BluetoothSetupView.xaml

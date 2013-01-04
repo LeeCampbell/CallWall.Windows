@@ -1,7 +1,7 @@
 using System;
 using InTheHand.Net.Bluetooth;
 
-namespace CallWall.Settings.Bluetooth
+namespace CallWall.Settings.Connectivity.Bluetooth
 {
     public sealed class BluetoothDeviceType
     {

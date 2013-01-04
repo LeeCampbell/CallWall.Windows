@@ -5,7 +5,7 @@ using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
-using CallWall.Settings.Bluetooth;
+using CallWall.Settings.Connectivity.Bluetooth;
 using InTheHand.Net;
 using InTheHand.Net.Bluetooth;
 using InTheHand.Net.Sockets;

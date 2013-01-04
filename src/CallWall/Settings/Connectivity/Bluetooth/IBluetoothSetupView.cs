@@ -1,4 +1,4 @@
-namespace CallWall.Settings.Bluetooth
+namespace CallWall.Settings.Connectivity.Bluetooth
 {
     public interface IBluetoothSetupView
     {

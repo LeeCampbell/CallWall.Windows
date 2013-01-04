@@ -137,17 +137,17 @@
     <Compile Include="Services\BluetoothService.cs" />
     <Compile Include="Services\IBluetoothService.cs" />
     <Compile Include="Services\WrappedBluetoothInfo.cs" />
-    <Compile Include="Settings\Bluetooth\BluetoothConnectivityConfigurator.cs" />
-    <Compile Include="Settings\Bluetooth\BluetoothDevice.cs" />
-    <Compile Include="Settings\Bluetooth\BluetoothDeviceType.cs" />
-    <Compile Include="Settings\Bluetooth\BluetoothSetupView.xaml.cs">
+    <Compile Include="Settings\Connectivity\Bluetooth\BluetoothConnectivityConfigurator.cs" />
+    <Compile Include="Settings\Connectivity\Bluetooth\BluetoothDevice.cs" />
+    <Compile Include="Settings\Connectivity\Bluetooth\BluetoothDeviceType.cs" />
+    <Compile Include="Settings\Connectivity\Bluetooth\BluetoothSetupView.xaml.cs">
       <DependentUpon>BluetoothSetupView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Settings\Bluetooth\BluetoothSetupViewModel.cs" />
-    <Compile Include="Settings\Bluetooth\IBluetoothDevice.cs" />
-    <Compile Include="Settings\Bluetooth\IBluetoothDeviceInfo.cs" />
-    <Compile Include="Settings\Bluetooth\IBluetoothSetupView.cs" />
-    <Compile Include="Settings\Bluetooth\ViewModelStatus.cs" />
+    <Compile Include="Settings\Connectivity\Bluetooth\BluetoothSetupViewModel.cs" />
+    <Compile Include="Settings\Connectivity\Bluetooth\IBluetoothDevice.cs" />
+    <Compile Include="Settings\Connectivity\Bluetooth\IBluetoothDeviceInfo.cs" />
+    <Compile Include="Settings\Connectivity\Bluetooth\IBluetoothSetupView.cs" />
+    <Compile Include="Settings\Connectivity\Bluetooth\ViewModelStatus.cs" />
     <Compile Include="Settings\Connectivity\ConnectivitySettingsModel.cs" />
     <Compile Include="Settings\Connectivity\ConnectivitySettingsView.xaml.cs">
       <DependentUpon>ConnectivitySettingsView.xaml</DependentUpon>
@@ -209,7 +209,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Settings\Bluetooth\BluetoothSetupView.xaml">
+    <Page Include="Settings\Connectivity\Bluetooth\BluetoothSetupView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

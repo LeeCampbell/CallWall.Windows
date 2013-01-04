@@ -5,7 +5,7 @@ using CallWall.Services;
 using JetBrains.Annotations;
 using Microsoft.Practices.Prism.Commands;
 
-namespace CallWall.Settings.Bluetooth
+namespace CallWall.Settings.Connectivity.Bluetooth
 {
     public sealed class BluetoothDevice : IBluetoothDevice
     {
@@ -21,8 +21,13 @@ namespace CallWall.Settings.Bluetooth
             _deviceInfo = deviceInfo;
             _bluetoothService = bluetoothService;
             _schedulerProvider = schedulerProvider;
-            _pairDeviceCommand = new DelegateCommand(PairDevice, () => !Status.IsProcessing && !_deviceInfo.IsAuthenticated);
+            _pairDeviceCommand = new DelegateCommand(PairDevice, () => !Status.IsProcessing && !IsAuthenticated);
             _removeDeviceCommand = new DelegateCommand(RemoveDevice, () => !Status.IsProcessing && _deviceInfo.IsAuthenticated);
+        }
+
+        public bool IsAuthenticated
+        {
+            get { return _deviceInfo.IsAuthenticated; }
         }
 
         public string Name
@@ -71,7 +76,7 @@ namespace CallWall.Settings.Bluetooth
         private void UpdatePairingState(IObservable<bool> actionResult)
         {
             Status = ViewModelStatus.Processing;
-            RefreshCommands();
+            RefreshAuthenticationState();
 
             actionResult
                 .SubscribeOn(_schedulerProvider.Concurrent)
@@ -79,12 +84,13 @@ namespace CallWall.Settings.Bluetooth
                 .Subscribe(success =>
                 {
                     Status = ViewModelStatus.Idle;
-                    RefreshCommands();
+                    RefreshAuthenticationState();
                 });
         }
 
-        private void RefreshCommands()
+        private void RefreshAuthenticationState()
         {
+            OnPropertyChanged("IsAuthenticated");
             _pairDeviceCommand.RaiseCanExecuteChanged();
             _removeDeviceCommand.RaiseCanExecuteChanged();
         }

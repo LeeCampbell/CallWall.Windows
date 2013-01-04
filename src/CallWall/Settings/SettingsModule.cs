@@ -1,6 +1,6 @@
 ﻿using CallWall.Services;
 using CallWall.Settings.Accounts;
-using CallWall.Settings.Bluetooth;
+using CallWall.Settings.Connectivity.Bluetooth;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Unity;
 
