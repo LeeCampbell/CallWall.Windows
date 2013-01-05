@@ -64,7 +64,7 @@
             Devices
         </TextBlock>
 
-        <ItemsControl ItemsSource="{Binding Source={StaticResource sortedDevices}}">
+        <ItemsControl ItemsSource="{Binding Source={StaticResource sortedDevices}}" KeyboardNavigation.IsTabStop="False">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type Bluetooth:BluetoothDevice}">
                     <Grid>

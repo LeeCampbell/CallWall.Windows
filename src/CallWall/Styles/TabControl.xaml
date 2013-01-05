@@ -8,7 +8,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TabControl">
-                    <Grid ClipToBounds="True" SnapsToDevicePixels="True" KeyboardNavigation.TabNavigation="Local" Margin="0" >
+                    <Grid ClipToBounds="True" SnapsToDevicePixels="True" Margin="0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Name="ColumnDefinition0" Width="200" />
                             <ColumnDefinition Name="ColumnDefinition1" Width="*" />
@@ -30,11 +30,12 @@
                                 Background="{TemplateBinding Panel.Background}" 
                                 KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local" KeyboardNavigation.DirectionalNavigation="Contained">
                             <ContentPresenter x:Name="PART_SelectedContentHost" 
-                                                  Content="{TemplateBinding TabControl.SelectedContent}" 
-                                                  ContentTemplate="{TemplateBinding TabControl.SelectedContentTemplate}" 
-                                                  ContentSource="SelectedContent" 
-                                                  SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}"
-                                                  VerticalAlignment="Center" />
+                                              Content="{TemplateBinding TabControl.SelectedContent}" 
+                                              ContentTemplate="{TemplateBinding TabControl.SelectedContentTemplate}" 
+                                              ContentSource="SelectedContent" 
+                                              SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}"
+                                              KeyboardNavigation.TabNavigation="Local"
+                                              VerticalAlignment="Center" />
                         </Border>
                     </Grid>
                 </ControlTemplate>

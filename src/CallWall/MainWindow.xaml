@@ -11,6 +11,7 @@
         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource PageHeaderStyle}" Margin="120,80">
             Call Wall
         </TextBlock>
-        <ContentControl cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.Modal}"/>
+        <ContentControl cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.Modal}"
+                        KeyboardNavigation.IsTabStop="False"/>
     </Grid>
 </Window>
