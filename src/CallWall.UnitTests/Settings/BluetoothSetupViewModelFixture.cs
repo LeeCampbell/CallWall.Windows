@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Reactive;
 using System.Reactive.Linq;
 using CallWall.Services;
@@ -52,6 +53,18 @@ namespace CallWall.UnitTests.Settings
                 _viewModel.IsEnabled = expected;
 
                 Assert.AreEqual(expected, _bluetoothServiceMock.Object.IsEnabled);
+            }
+
+            [TestCase(false)]
+            [TestCase(true)]
+            public void Should_raise_propertychanged(bool expected)
+            {
+                var wasRaised = false;
+                _viewModel.WhenPropertyChanges(vm => vm.IsEnabled).Subscribe(_ => wasRaised = true);
+
+                _bluetoothServiceMock.Raise(bs => bs.PropertyChanged += null, new PropertyChangedEventArgs("IsEnabled"));
+
+                Assert.IsTrue(wasRaised);
             } 
         }
 
