@@ -1,4 +1,4 @@
-using CallWall.Settings.Connectivity.Bluetooth;
+using CallWall.Services;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Unity;
 
@@ -17,10 +17,12 @@ namespace CallWall
         {
             _container.RegisterType<ISchedulerProvider, SchedulerProvider>(new ContainerControlledLifetimeManager());
 
-            _container.RegisterType<IConnectionConfiguration, BluetoothConnectionConfiguration>(new ContainerControlledLifetimeManager());
-            //_container.RegisterType<IConnectionConfiguration, Settings.Cloud.CloudConnectivityConfigurator>(new ContainerControlledLifetimeManager());
-            //_container.RegisterType<IConnectionConfiguration, Settings.Usb.UsbConnectivityConfigurator>(new ContainerControlledLifetimeManager());
-            //_container.RegisterType<IConnectionConfiguration, Settings.WifiDirect.WifiDirectConnectivityConfigurator>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IBluetoothService, BluetoothService>(new TransientLifetimeManager());
+            
+            //_container.RegisterType<IIdentityActivator, UsbIdentityActivator>(new TransientLifetimeManager());
+            //_container.RegisterType<IIdentityActivator, BluetoothIdentityActivator>(new TransientLifetimeManager());
+            //_container.RegisterType<IIdentityActivator, WifiDirectIdentityActivator>(new TransientLifetimeManager());
+            //_container.RegisterType<IIdentityActivator, CloutIdentityActivator>(new TransientLifetimeManager());
         }
     }
 

@@ -77,6 +77,8 @@ namespace CallWall.UnitTests.Settings
                 _bluetoothServiceMock.Setup(bs => bs.ScanForDevices()).Returns(Observable.Never<IBluetoothDevice>());
                 _viewModel.ScanForDevicesCommand.Execute();
                 Assert.IsTrue(_viewModel.Status.IsProcessing);
+                Assert.IsFalse(_viewModel.Status.HasError);
+                Assert.IsNull(_viewModel.Status.ErrorMessage);
             }
 
             [Test]

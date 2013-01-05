@@ -147,6 +147,7 @@
     <Compile Include="Settings\Connectivity\Bluetooth\IBluetoothDevice.cs" />
     <Compile Include="Settings\Connectivity\Bluetooth\IBluetoothDeviceInfo.cs" />
     <Compile Include="Settings\Connectivity\Bluetooth\IBluetoothSetupView.cs" />
+    <Compile Include="Settings\Connectivity\Bluetooth\IBluetoothSetupViewModel.cs" />
     <Compile Include="Settings\Connectivity\Bluetooth\ViewModelStatus.cs" />
     <Compile Include="Settings\Connectivity\ConnectivitySettingsModel.cs" />
     <Compile Include="Settings\Connectivity\ConnectivitySettingsView.xaml.cs">

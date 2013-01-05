@@ -5,15 +5,15 @@
     /// </summary>
     public partial class BluetoothSetupView : IBluetoothSetupView
     {
-        private readonly BluetoothSetupViewModel _viewModel;
+        private readonly IBluetoothSetupViewModel _viewModel;
 
-        public BluetoothSetupView(BluetoothSetupViewModel viewModel)
+        public BluetoothSetupView(IBluetoothSetupViewModel viewModel)
         {
             DataContext = _viewModel = viewModel;
             InitializeComponent();
         }
 
-        public BluetoothSetupViewModel ViewModel
+        public IBluetoothSetupViewModel ViewModel
         {
             get { return _viewModel; }
         }

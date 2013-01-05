@@ -15,7 +15,7 @@ namespace CallWall.Settings.Connectivity.Bluetooth
     //  pair with an available Bluetooth device
     //  un-pair with a known device
     //  Test a connection (i.e. validate that CallWall is installed on the paired device)
-    public sealed class BluetoothSetupViewModel : INotifyPropertyChanged
+    public sealed class BluetoothSetupViewModel : IBluetoothSetupViewModel
     {
         #region Field members
 
