@@ -98,7 +98,7 @@ namespace CallWall.UnitTests.Settings
                 case DeviceClass.AudioVideoDisplayLoudSpeaker:
                 case DeviceClass.AudioVideoVideoConferencing:
                 case DeviceClass.AudioVideoGaming:
-                    expected = new Uri("pack://application:,,,/CallWall;component/Images/AudioVisual.png");
+                    expected = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/AudioVisual.png");
                     break;
                 //Peripheral/Accessories
                 case DeviceClass.Peripheral:

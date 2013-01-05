@@ -18,13 +18,13 @@ namespace CallWall.Settings.Connectivity.Bluetooth
         static BluetoothDeviceType()
         {
             Ensure.PackUriIsRegistered();
-            _phoneImageUri = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Phone.png");
-            _audioVisualImageUri = new Uri("pack://application:,,,/CallWall;component/Images/AudioVisual.png");
+            _audioVisualImageUri = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/AudioVisual.png");
             _computerImageUri = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Computer.png");
-            _networkImageUri = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Network.png");
-            _peripheralImageUri = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Peripheral.png");
             _imagingImageUri = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Imaging.png");
             _miscellaneousImageUri = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Miscellaneous.png");
+            _networkImageUri = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Network.png");
+            _phoneImageUri = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Phone.png");
+            _peripheralImageUri = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Peripheral.png");
         }
 
         #endregion
@@ -55,7 +55,6 @@ namespace CallWall.Settings.Connectivity.Bluetooth
                 case DeviceClass.SmartPhone:
                 case DeviceClass.WiredPhone:
                     return new BluetoothDeviceType(deviceClass.ToString(), _phoneImageUri, true);
-
                 //Computers
                 case DeviceClass.Computer:
                 case DeviceClass.DesktopComputer:
