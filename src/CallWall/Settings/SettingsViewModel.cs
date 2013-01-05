@@ -9,7 +9,7 @@ namespace CallWall.Settings
         private readonly IEnumerable<SubView> _connectivityConfigurators;
         private readonly IEnumerable<SubView> _providers;
 
-        public SettingsViewModel(IRegionManager regionManager, IEnumerable<IConnectivityConfigurator> connectivityConfigurators, IEnumerable<IProvider> providers)
+        public SettingsViewModel(IRegionManager regionManager, IEnumerable<IConnectionConfiguration> connectivityConfigurators, IEnumerable<IProvider> providers)
         {
             _connectivityConfigurators = connectivityConfigurators.Select(config => new SubView(config.Name, config.Image, () => regionManager.AddToRegion(RegionNames.Modal, config)))
                 .ToList()

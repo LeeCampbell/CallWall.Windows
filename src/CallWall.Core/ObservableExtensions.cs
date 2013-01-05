@@ -58,12 +58,12 @@ namespace CallWall
 
         public static IObservable<byte> ToObservable(
             this Stream source,
-            int buffersize,
+            int bufferSize,
             IScheduler scheduler)
         {
             var bytes = Observable.Create<byte>(o =>
                 {
-                    var initialState = new StreamReaderState(source, buffersize);
+                    var initialState = new StreamReaderState(source, bufferSize);
                     var currentStateSubscription = new SerialDisposable();
                     Action<StreamReaderState, Action<StreamReaderState>> iterator =
                         (state, self) =>

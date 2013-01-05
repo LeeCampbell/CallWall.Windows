@@ -3,12 +3,12 @@ using System.ComponentModel;
 
 namespace CallWall.Settings.Connectivity.Bluetooth
 {
-    public sealed class BluetoothConnectivityConfigurator : IConnectivityConfigurator
+    public sealed class BluetoothConnectionConfiguration : IConnectionConfiguration
     {
         private readonly IBluetoothSetupView _view;
         private static readonly Uri _image;
 
-        static BluetoothConnectivityConfigurator()
+        static BluetoothConnectionConfiguration()
         {
             if (!UriParser.IsKnownScheme("pack"))
             {
@@ -17,13 +17,13 @@ namespace CallWall.Settings.Connectivity.Bluetooth
             _image = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth_72x72.png");
         }
 
-        public BluetoothConnectivityConfigurator(IBluetoothSetupView view)
+        public BluetoothConnectionConfiguration(IBluetoothSetupView view)
         {
             _view = view;
             _view.ViewModel.WhenPropertyChanges(vm => vm.IsEnabled).Subscribe(_ => OnPropertyChanged("IsEnabled"));
         }
 
-        #region Implementation of IConnectivityConfigurator
+        #region Implementation of IConnectionConfiguration
 
         public bool IsEnabled
         {

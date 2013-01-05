@@ -17,10 +17,10 @@ namespace CallWall
         {
             _container.RegisterType<ISchedulerProvider, SchedulerProvider>(new ContainerControlledLifetimeManager());
 
-            _container.RegisterType<IConnectivityConfigurator, BluetoothConnectivityConfigurator>(new ContainerControlledLifetimeManager());
-            //_container.RegisterType<IConnectivityConfigurator, Settings.Cloud.CloudConnectivityConfigurator>(new ContainerControlledLifetimeManager());
-            //_container.RegisterType<IConnectivityConfigurator, Settings.Usb.UsbConnectivityConfigurator>(new ContainerControlledLifetimeManager());
-            //_container.RegisterType<IConnectivityConfigurator, Settings.WifiDirect.WifiDirectConnectivityConfigurator>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IConnectionConfiguration, BluetoothConnectionConfiguration>(new ContainerControlledLifetimeManager());
+            //_container.RegisterType<IConnectionConfiguration, Settings.Cloud.CloudConnectivityConfigurator>(new ContainerControlledLifetimeManager());
+            //_container.RegisterType<IConnectionConfiguration, Settings.Usb.UsbConnectivityConfigurator>(new ContainerControlledLifetimeManager());
+            //_container.RegisterType<IConnectionConfiguration, Settings.WifiDirect.WifiDirectConnectivityConfigurator>(new ContainerControlledLifetimeManager());
         }
     }
 

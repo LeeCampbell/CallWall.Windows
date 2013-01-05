@@ -3,9 +3,9 @@ using System.ComponentModel;
 
 namespace CallWall
 {
-    public interface IConnectivityConfigurator : INotifyPropertyChanged
+    public interface IConnectionConfiguration : INotifyPropertyChanged
     {
-        bool IsEnabled { get; set; }//?
+        bool IsEnabled { get; set; }
         string Name { get; }
         Uri Image { get; }
         string Description { get; }

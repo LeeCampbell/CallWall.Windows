@@ -5,6 +5,6 @@ namespace CallWall.Settings.Connectivity
     public interface IConnectivitySettingsModel
     {
         bool RequiresSetup { get; }
-        IEnumerable<IConnectivityConfigurator> ConnectivityConfigurators { get; }
+        IEnumerable<IConnectionConfiguration> ConnectionConfigurations { get; }
     }
 }

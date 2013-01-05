@@ -4,11 +4,11 @@ namespace CallWall.Settings.Connectivity
 {
     public sealed class ConnectivitySettingsModel : IConnectivitySettingsModel
     {
-        private readonly IEnumerable<IConnectivityConfigurator> _connectivityConfigurators;
+        private readonly IEnumerable<IConnectionConfiguration> _connectionConfigurations;
 
-        public ConnectivitySettingsModel(IEnumerable<IConnectivityConfigurator> connectivityConfigurators)
+        public ConnectivitySettingsModel(IEnumerable<IConnectionConfiguration> connectionConfigurations)
         {
-            _connectivityConfigurators = connectivityConfigurators;
+            _connectionConfigurations = connectionConfigurations;
         }
 
         #region Implementation of IConnectivitySettingsModel
@@ -18,9 +18,9 @@ namespace CallWall.Settings.Connectivity
             get { return true; }
         }
 
-        public IEnumerable<IConnectivityConfigurator> ConnectivityConfigurators
+        public IEnumerable<IConnectionConfiguration> ConnectionConfigurations
         {
-            get { return _connectivityConfigurators; }
+            get { return _connectionConfigurations; }
         }
 
         #endregion

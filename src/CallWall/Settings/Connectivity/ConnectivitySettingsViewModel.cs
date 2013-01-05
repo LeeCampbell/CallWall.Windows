@@ -20,9 +20,9 @@ namespace CallWall.Settings.Connectivity
             get { return _connectivitySettingsModel.RequiresSetup; }
         }
 
-        public IEnumerable<IConnectivityConfigurator> ConnectivityConfigurators
+        public IEnumerable<IConnectionConfiguration> ConnectivityConfigurators
         {
-            get { return _connectivitySettingsModel.ConnectivityConfigurators; }
+            get { return _connectivitySettingsModel.ConnectionConfigurations; }
         }
 
         public DelegateCommand CloseCommand

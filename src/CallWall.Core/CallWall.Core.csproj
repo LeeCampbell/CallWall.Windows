@@ -103,7 +103,7 @@
     <Compile Include="CollectionChangedData.cs" />
     <Compile Include="DependencyObjectExtensions.cs" />
     <Compile Include="GrayScaleConverter.cs" />
-    <Compile Include="IConnectivityConfigurator.cs" />
+    <Compile Include="IConnectionConfiguration.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="ILoggerFactory.cs" />
     <Compile Include="IProvider.cs" />
