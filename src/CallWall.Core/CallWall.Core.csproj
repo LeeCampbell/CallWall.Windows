@@ -102,6 +102,7 @@
     <Compile Include="BooleanToInvisibilityConverter.cs" />
     <Compile Include="CollectionChangedData.cs" />
     <Compile Include="DependencyObjectExtensions.cs" />
+    <Compile Include="Ensure.cs" />
     <Compile Include="GrayScaleConverter.cs" />
     <Compile Include="IConnectionConfiguration.cs" />
     <Compile Include="ILogger.cs" />

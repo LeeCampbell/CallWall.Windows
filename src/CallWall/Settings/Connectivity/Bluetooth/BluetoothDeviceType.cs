@@ -17,19 +17,13 @@ namespace CallWall.Settings.Connectivity.Bluetooth
 
         static BluetoothDeviceType()
         {
-            if (!UriParser.IsKnownScheme("pack"))
-            {
-                UriParser.Register(new GenericUriParser(GenericUriParserOptions.GenericAuthority), "pack", -1);
-            }
+            Ensure.PackUriIsRegistered();
             _phoneImageUri = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Phone.png");
             _audioVisualImageUri = new Uri("pack://application:,,,/CallWall;component/Images/AudioVisual.png");
             _computerImageUri = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Computer.png");
             _networkImageUri = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Network.png");
             _peripheralImageUri = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Peripheral.png");
             _imagingImageUri = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Imaging.png");
-            //_wearableImageUri = new Uri("pack://application:,,,/CallWall;component/Images/Wearable.png");
-            //_toyImageUri = new Uri("pack://application:,,,/CallWall;component/Images/Toy.png");
-            //_medicalImageUri = new Uri("pack://application:,,,/CallWall;component/Images/Medical.png");
             _miscellaneousImageUri = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Miscellaneous.png");
         }
 
@@ -120,32 +114,32 @@ namespace CallWall.Settings.Connectivity.Bluetooth
                 case DeviceClass.ImagingScanner:
                 case DeviceClass.ImagingPrinter:
                     return new BluetoothDeviceType(deviceClass.ToString(), _imagingImageUri, false);
-                //Wearable
-                case DeviceClass.Wearable:
-                case DeviceClass.WearableWristWatch:
-                case DeviceClass.WearablePager:
-                case DeviceClass.WearableJacket:
-                case DeviceClass.WearableHelmet:
-                case DeviceClass.WearableGlasses:
-                //Toys
-                case DeviceClass.Toy:
-                case DeviceClass.ToyRobot:
-                case DeviceClass.ToyVehicle:
-                case DeviceClass.ToyFigure:
-                case DeviceClass.ToyController:
-                case DeviceClass.ToyGame:
-                //Medical
-                case DeviceClass.Medical:
-                case DeviceClass.MedicalBloodPressureMonitor:
-                case DeviceClass.MedicalThermometer:
-                case DeviceClass.MedicalWeighingScale:
-                case DeviceClass.MedicalGlucoseMeter:
-                case DeviceClass.MedicalPulseOximeter:
-                case DeviceClass.MedicalHeartPulseRateMonitor:
-                case DeviceClass.MedicalDataDisplay:
-                //Other/Unknown
-                case DeviceClass.Uncategorized:
-                case DeviceClass.Miscellaneous:
+                ////Wearable
+                //case DeviceClass.Wearable:
+                //case DeviceClass.WearableWristWatch:
+                //case DeviceClass.WearablePager:
+                //case DeviceClass.WearableJacket:
+                //case DeviceClass.WearableHelmet:
+                //case DeviceClass.WearableGlasses:
+                ////Toys
+                //case DeviceClass.Toy:
+                //case DeviceClass.ToyRobot:
+                //case DeviceClass.ToyVehicle:
+                //case DeviceClass.ToyFigure:
+                //case DeviceClass.ToyController:
+                //case DeviceClass.ToyGame:
+                ////Medical
+                //case DeviceClass.Medical:
+                //case DeviceClass.MedicalBloodPressureMonitor:
+                //case DeviceClass.MedicalThermometer:
+                //case DeviceClass.MedicalWeighingScale:
+                //case DeviceClass.MedicalGlucoseMeter:
+                //case DeviceClass.MedicalPulseOximeter:
+                //case DeviceClass.MedicalHeartPulseRateMonitor:
+                //case DeviceClass.MedicalDataDisplay:
+                ////Other/Unknown
+                //case DeviceClass.Uncategorized:
+                //case DeviceClass.Miscellaneous:
                 default:
                     return new BluetoothDeviceType(deviceClass.ToString(), _miscellaneousImageUri, false);
             }

@@ -10,10 +10,7 @@ namespace CallWall.Settings.Connectivity.Bluetooth
 
         static BluetoothConnectionConfiguration()
         {
-            if (!UriParser.IsKnownScheme("pack"))
-            {
-                UriParser.Register(new GenericUriParser(GenericUriParserOptions.GenericAuthority), "pack", -1);
-            }
+            Ensure.PackUriIsRegistered();
             _image = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth_72x72.png");
         }
 
@@ -41,11 +38,11 @@ namespace CallWall.Settings.Connectivity.Bluetooth
             get { return _image; }
         }
 
-        public string Description
-        {
-            //TODO: Move to a resource.
-            get { return "Bluetooth is common radio technology that allows devices to transfer information within a radius of up to 10 meters (32 feet). There are no data costs for using Bluetooth and will conveniently only activate CallWall if the paired phone is nearby. Bluetooth will need to be enabled on both the phone and this client PC."; }
-        }
+        //public string Description
+        //{
+        //    //TODO: Move to a resource.
+        //    get { return "Bluetooth is common radio technology that allows devices to transfer information within a radius of up to 10 meters (32 feet). There are no data costs for using Bluetooth and will conveniently only activate CallWall if the paired phone is nearby. Bluetooth will need to be enabled on both the phone and this client PC."; }
+        //}
 
         public object View
         {

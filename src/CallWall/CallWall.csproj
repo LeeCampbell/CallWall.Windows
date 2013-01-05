@@ -321,24 +321,19 @@
     <Resource Include="Images\SmartPhone.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\AudioVideo.png" />
+    <Resource Include="Images\Bluetooth\AudioVisual.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Computer.png" />
     <Resource Include="Images\Imaging.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Bluetooth\ChipController.png" />
     <Resource Include="Images\Bluetooth\Computer.png" />
-    <Resource Include="Images\Bluetooth\Display.png" />
-    <Resource Include="Images\Bluetooth\HandsFree.png" />
     <Resource Include="Images\Bluetooth\Imaging.png" />
     <Resource Include="Images\Bluetooth\Miscellaneous.png" />
-    <Resource Include="Images\Bluetooth\Mouse.png" />
     <Resource Include="Images\Bluetooth\Network.png" />
     <Resource Include="Images\Bluetooth\Peripheral.png" />
     <Resource Include="Images\Bluetooth\Phone.png" />
-    <Resource Include="Images\Bluetooth\Speaker.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
