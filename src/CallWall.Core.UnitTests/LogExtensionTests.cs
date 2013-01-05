@@ -308,9 +308,9 @@ namespace CallWall.Core.UnitTests
             protected abstract string ExpectedMessage { get; }
 
             [Test]
-            public void Should_log_as_debug()
+            public void Should_log_as_trace()
             {
-                _loggerMock.Verify(l => l.Write(LogLevel.Debug, ExpectedMessage, null), Times.Once());
+                _loggerMock.Verify(l => l.Write(LogLevel.Trace, ExpectedMessage, null), Times.Once());
             }
 
             [Test]
@@ -318,7 +318,7 @@ namespace CallWall.Core.UnitTests
             {
                 _subscription.Dispose();
 
-                _loggerMock.Verify(l => l.Write(LogLevel.Debug, string.Format("{0}.Dispose()", _logName), null), Times.Once());
+                _loggerMock.Verify(l => l.Write(LogLevel.Trace, string.Format("{0}.Dispose()", _logName), null), Times.Once());
             }
 
             [TestFixture]

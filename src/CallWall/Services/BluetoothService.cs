@@ -196,7 +196,7 @@ namespace CallWall.Services
             _logger.Info("Request to {0} Bluetooth device '{1}' ({2}) was {3}successful",
                          action,
                          device.DeviceName,
-                         device.DeviceType,
+                         device.DeviceType.Name,
                          successful ? string.Empty : "un");
         }
 

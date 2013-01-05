@@ -259,14 +259,14 @@ namespace CallWall
             return Observable.Create<T>(
                 o =>
                 {
-                    logger.Debug("{0}.Subscribe()", name);
+                    logger.Trace("{0}.Subscribe()", name);
                     var subscription = source
                         .Do(
-                            i => logger.Debug("{0}.OnNext({1})", name, i),
-                            ex => logger.Debug("{0}.OnError({1})", name, ex),
-                            () => logger.Debug("{0}.OnCompleted()", name))
+                            i => logger.Trace("{0}.OnNext({1})", name, i),
+                            ex => logger.Trace("{0}.OnError({1})", name, ex),
+                            () => logger.Trace("{0}.OnCompleted()", name))
                         .Subscribe(o);
-                    var disposal = Disposable.Create(() => logger.Debug("{0}.Dispose()", name));
+                    var disposal = Disposable.Create(() => logger.Trace("{0}.Dispose()", name));
                     return new CompositeDisposable(subscription, disposal);
                 });
         }
