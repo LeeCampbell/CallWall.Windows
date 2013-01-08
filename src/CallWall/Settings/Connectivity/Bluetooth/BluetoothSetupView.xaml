@@ -17,7 +17,7 @@
         </CollectionViewSource>
     </Control.Resources>
     <StackPanel>
-        <TextBlock Style="{StaticResource ContentHeading1Style}" Margin="0,10,0,0">
+        <TextBlock Style="{StaticResource ContentHeading1Style}" Margin="0,6,0,0">
                 Bluetooth Radio
         </TextBlock>
 

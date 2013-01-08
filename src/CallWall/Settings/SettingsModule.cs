@@ -24,7 +24,7 @@ namespace CallWall.Settings
             _container.RegisterType<Connectivity.IConnectivitySettingsView, Connectivity.ConnectivitySettingsView>(new TransientLifetimeManager());
 
             //_container.RegisterType<IConnectionConfiguration, Settings.Usb.UsbConnectivityConfigurator>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IConnectionConfiguration, Connectivity.Bluetooth.BluetoothConnectionConfiguration>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IConnectionConfiguration, Connectivity.Bluetooth.BluetoothConnectionConfiguration>("BluetoothConnectionConfiguration", new ContainerControlledLifetimeManager());
             //_container.RegisterType<IConnectionConfiguration, Settings.WifiDirect.WifiDirectConnectivityConfigurator>(new ContainerControlledLifetimeManager());
             //_container.RegisterType<IConnectionConfiguration, Settings.Cloud.CloudConnectivityConfigurator>(new ContainerControlledLifetimeManager());
 

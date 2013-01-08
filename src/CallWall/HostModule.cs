@@ -16,8 +16,9 @@ namespace CallWall
         public void Initialize()
         {
             _container.RegisterType<ISchedulerProvider, SchedulerProvider>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IPersonalizationSettings, PersonalizationSettings>(new ContainerControlledLifetimeManager());
 
-            _container.RegisterType<IBluetoothService, BluetoothService>(new TransientLifetimeManager());
+            _container.RegisterType<IBluetoothService, BluetoothService>(new ContainerControlledLifetimeManager());
             
             //_container.RegisterType<IIdentityActivator, UsbIdentityActivator>(new TransientLifetimeManager());
             //_container.RegisterType<IIdentityActivator, BluetoothIdentityActivator>(new TransientLifetimeManager());

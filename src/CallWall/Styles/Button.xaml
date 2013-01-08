@@ -23,16 +23,17 @@
 
     <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
         <Setter Property="Background" Value="#00D8CC"/>
+        <Setter Property="Padding" Value="10,0,0,0"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
-                    <Grid Width="170">
+                    <Grid Width="170" Margin="{TemplateBinding Padding}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock x:Name="OnOffText" Grid.Column="0" Margin="0,0" />
+                        <TextBlock x:Name="OnOffText" Grid.Column="0"/>
                         
                         <Grid Grid.Column="1"
                               HorizontalAlignment="Right"

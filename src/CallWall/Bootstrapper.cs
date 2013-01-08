@@ -1,4 +1,5 @@
-﻿using CallWall.Logging;
+﻿using CallWall.FakeProvider;
+using CallWall.Logging;
 using CallWall.PrismExtensions;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.UnityExtensions;
@@ -41,8 +42,12 @@ namespace CallWall
 
             ModuleCatalog.Add<HostModule>();
             ModuleCatalog.Add<Settings.SettingsModule>();
-            ModuleCatalog.Add<Welcome.WelcomeModule>();
+            
+            ModuleCatalog.Add<FakeModule>();
+
+
             //ModuleCatalog.Add<ProfileDashboard.DashboardModule>();
+            ModuleCatalog.Add<Welcome.WelcomeModule>();
         }
 
         protected override void ConfigureContainer()
