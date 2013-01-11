@@ -11,7 +11,11 @@ namespace CallWall.PrismExtensions
         /// <returns>Instance of the <see cref="System.Windows.Window"/> wrapper.</returns>
         protected override IWindow CreateWindow()
         {
-            return new WindowWrapper();
+           var window = new WindowWrapper();
+            window.Style = WindowStyle;
+            return window;
         }
+
+        public System.Windows.Style WindowStyle { get; set; }
     }
 }

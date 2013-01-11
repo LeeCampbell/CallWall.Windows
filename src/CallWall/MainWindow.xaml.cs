@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Input;
 
 namespace CallWall
 {
@@ -13,14 +12,9 @@ namespace CallWall
             InitializeComponent();
         }
 
-        protected override void OnKeyUp(KeyEventArgs e)
+        private void CloseButton_Click_1(object sender, RoutedEventArgs e)
         {
-                base.OnKeyUp(e);
-            if (!e.Handled && e.Key == Key.Escape)
-            {
-                e.Handled = true;
-                Close();
-            }
+            Close();
         }
     }
 }

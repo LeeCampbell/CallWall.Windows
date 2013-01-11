@@ -35,77 +35,6 @@ namespace CallWall.PrismExtensions
     /// </remarks>
     public static class RegionPopupBehaviors
     {
-        /// <summary>
-        /// The name of the Popup <see cref="IRegion"/>.
-        /// </summary>
-        public static readonly DependencyProperty CreatePopupRegionWithNameProperty =
-            DependencyProperty.RegisterAttached("CreatePopupRegionWithName", typeof(string), typeof(RegionPopupBehaviors), new PropertyMetadata(CreatePopupRegionWithNamePropertyChanged));
-
-        /// <summary>
-        /// The <see cref="Style"/> to set to the Popup.
-        /// </summary>
-        public static readonly DependencyProperty ContainerWindowStyleProperty =
-          DependencyProperty.RegisterAttached("ContainerWindowStyle", typeof(Style), typeof(RegionPopupBehaviors), null);
-
-        /// <summary>
-        /// Gets the name of the Popup <see cref="IRegion"/>.
-        /// </summary>
-        /// <param name="owner">Owner of the Popup.</param>
-        /// <returns>The name of the Popup <see cref="IRegion"/>.</returns>
-        public static string GetCreatePopupRegionWithName(DependencyObject owner)
-        {
-            if (owner == null)
-            {
-                throw new ArgumentNullException("owner");
-            }
-
-            return owner.GetValue(CreatePopupRegionWithNameProperty) as string;
-        }
-
-        /// <summary>
-        /// Sets the name of the Popup <see cref="IRegion"/>.
-        /// </summary>
-        /// <param name="owner">Owner of the Popup.</param>
-        /// <param name="value">Name of the Popup <see cref="IRegion"/>.</param>
-        public static void SetCreatePopupRegionWithName(DependencyObject owner, string value)
-        {
-            if (owner == null)
-            {
-                throw new ArgumentNullException("owner");
-            }
-
-            owner.SetValue(CreatePopupRegionWithNameProperty, value);
-        }
-
-        /// <summary>
-        /// Gets the <see cref="Style"/> for the Popup.
-        /// </summary>
-        /// <param name="owner">Owner of the Popup.</param>
-        /// <returns>The <see cref="Style"/> for the Popup.</returns>
-        public static Style GetContainerWindowStyle(DependencyObject owner)
-        {
-            if (owner == null)
-            {
-                throw new ArgumentNullException("owner");
-            }
-
-            return owner.GetValue(ContainerWindowStyleProperty) as Style;
-        }
-
-        /// <summary>
-        /// Sets the <see cref="Style"/> for the Popup.
-        /// </summary>
-        /// <param name="owner">Owner of the Popup.</param>
-        /// <param name="style"><see cref="Style"/> for the Popup.</param>
-        public static void SetContainerWindowStyle(DependencyObject owner, Style style)
-        {
-            if (owner == null)
-            {
-                throw new ArgumentNullException("owner");
-            }
-
-            owner.SetValue(ContainerWindowStyleProperty, style);
-        }
 
         /// <summary>
         /// Creates a new <see cref="IRegion"/> and registers it in the default <see cref="IRegionManager"/>
@@ -117,7 +46,7 @@ namespace CallWall.PrismExtensions
         /// This method would typically not be called directly, instead the behaviour 
         /// should be set through the Attached Property <see cref="CreatePopupRegionWithNameProperty"/>.
         /// </remarks>
-        public static void RegisterNewPopupRegion(DependencyObject owner, string regionName)
+        public static void RegisterNewWindowRegion(string regionName, Style windowStyle)
         {
             // Creates a new region and registers it in the default region manager.
             // Another option if you need the complete infrastructure with the default region behaviours
@@ -127,30 +56,23 @@ namespace CallWall.PrismExtensions
             var regionManager = ServiceLocator.Current.GetInstance<IRegionManager>();
             if (regionManager != null)
             {
-                IRegion region = new SingleActiveRegion();
+                //IRegion region = new SingleActiveRegion();
+                IRegion region = new Region();
                 DialogActivationBehavior behavior;
 #if SILVERLIGHT
                 behavior = new PopupDialogActivationBehavior();
 #else
-                behavior = new WindowDialogActivationBehavior();
+                var winBehavior = new WindowDialogActivationBehavior();
+                winBehavior.WindowStyle = windowStyle;
+                behavior = winBehavior;
 #endif
-                behavior.HostControl = owner;
-
                 region.Behaviors.Add(DialogActivationBehavior.BehaviorKey, behavior);
                 region.Behaviors.Add(RegionActiveAwareBehavior.BehaviorKey, new RegionActiveAwareBehavior());
                 regionManager.Regions.Add(regionName, region);
             }
         }
 
-        private static void CreatePopupRegionWithNamePropertyChanged(DependencyObject hostControl, DependencyPropertyChangedEventArgs e)
-        {
-            if (IsInDesignMode(hostControl))
-            {
-                return;
-            }
-
-            RegisterNewPopupRegion(hostControl, e.NewValue as string);
-        }
+        
 
         private static bool IsInDesignMode(DependencyObject element)
         {

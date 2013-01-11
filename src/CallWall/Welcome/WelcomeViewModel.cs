@@ -4,6 +4,6 @@ namespace CallWall.Welcome
 {
     public sealed class WelcomeViewModel
     {
-        public DelegateCommand Close { get; set; }
+        public DelegateCommand CloseCommand { get; set; }
     }
 }

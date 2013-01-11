@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Prism.Modularity;
+﻿using CallWall.Settings.Demonstration;
+using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Unity;
 
 namespace CallWall.Welcome
@@ -17,7 +18,7 @@ namespace CallWall.Welcome
             _container.RegisterType<IWelcomeController, WelcomeController>(new TransientLifetimeManager());
             _container.RegisterType<IWelcomeView, WelcomeView>(new TransientLifetimeManager());
             _container.RegisterType<IWelcomeStep1View, WelcomeStep1View>(new TransientLifetimeManager());
-            _container.RegisterType<IDemoView, DemoView>(new TransientLifetimeManager());
+            
 
             var welcomeController = _container.Resolve<IWelcomeController>();
             welcomeController.Start();

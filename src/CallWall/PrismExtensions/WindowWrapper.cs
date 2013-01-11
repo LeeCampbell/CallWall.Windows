@@ -16,16 +16,13 @@ namespace CallWall.PrismExtensions
         public WindowWrapper()
         {
             _window = new Window();
+            _window.Closed += OnWindowClosed;
         }
 
         /// <summary>
         /// Occurs when the <see cref="Window"/> is closed.
         /// </summary>
-        public event EventHandler Closed
-        {
-            add { _window.Closed += value; }
-            remove { _window.Closed -= value; }
-        }
+        public event EventHandler Closed;
 
         /// <summary>
         /// Gets or Sets the content for the <see cref="Window"/>.
@@ -68,6 +65,15 @@ namespace CallWall.PrismExtensions
         public void Close()
         {
             _window.Close();
+        }
+
+        private void OnWindowClosed(object sender, EventArgs e)
+        {
+            var handler = Closed;
+            if (handler != null)
+            {
+                handler(this, EventArgs.Empty);
+            }
         }
     }
 }

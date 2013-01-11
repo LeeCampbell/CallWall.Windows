@@ -2,7 +2,7 @@ namespace CallWall
 {
     public abstract class RegionNames
     {
-        public static readonly string Modal = "CallWall.RegionNames.Modal";
+        public static readonly string WindowRegion = "CallWall.RegionNames.WindowRegion";
         
         public static readonly string ContactSummary = "CallWall.RegionNames.ContactSummary";
         public static readonly string CommunicationSummary = "CallWall.RegionNames.CommunicationSummary";

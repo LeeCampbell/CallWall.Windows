@@ -1,7 +1,4 @@
-﻿using CallWall.Services;
-//using CallWall.Settings.Accounts;
-//using CallWall.Settings.Connectivity.Bluetooth;
-using Microsoft.Practices.Prism.Modularity;
+﻿using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Unity;
 
 namespace CallWall.Settings
@@ -17,8 +14,6 @@ namespace CallWall.Settings
 
         public void Initialize()
         {
-
-
             _container.RegisterType<Connectivity.IConnectivitySettingsModel, Connectivity.ConnectivitySettingsModel>(new TransientLifetimeManager());
             _container.RegisterType<Connectivity.IConnectivitySettingsViewModel, Connectivity.ConnectivitySettingsViewModel>(new TransientLifetimeManager());
             _container.RegisterType<Connectivity.IConnectivitySettingsView, Connectivity.ConnectivitySettingsView>(new TransientLifetimeManager());
@@ -34,6 +29,11 @@ namespace CallWall.Settings
             _container.RegisterType<Accounts.IAccountSettingsModel, Accounts.AccountSettingsModel>(new TransientLifetimeManager());
             _container.RegisterType<Accounts.IAccountSettingsViewModel, Accounts.AccountSettingsViewModel>(new TransientLifetimeManager());
             _container.RegisterType<Accounts.IAccountSettingsView, Accounts.AccountSettingsView>(new TransientLifetimeManager());
+
+            _container.RegisterType<Demonstration.IDemoView, Demonstration.DemoView>(new TransientLifetimeManager());
+            var demoListener = new Demonstration.DemoActivatedIdentityListener();
+            _container.RegisterInstance<Demonstration.IDemoActivatedIdentityListener>(demoListener);
+            _container.RegisterInstance<IActivatedIdentityListener>("DemoActivatedIdentityListener", demoListener);
         }
     }
 

@@ -20,6 +20,19 @@
         <Setter Property="BorderBrush" Value="LightGray"/>
         <Setter Property="Foreground" Value="Black"/>
     </Style>
+    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}" x:Key="ImageButtonStyle">
+        <!--
+        VerticalAlignment="Center"
+        Width="40" 
+        Height="40"
+        Background="Transparent"
+        -->
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Width" Value="60"/>
+        <Setter Property="Height" Value="60"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+    </Style>
 
     <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
         <Setter Property="Background" Value="#00D8CC"/>

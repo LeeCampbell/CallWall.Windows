@@ -104,6 +104,7 @@
     <Compile Include="DependencyObjectExtensions.cs" />
     <Compile Include="Ensure.cs" />
     <Compile Include="GrayScaleConverter.cs" />
+    <Compile Include="IActivatedIdentityListener.cs" />
     <Compile Include="IConnectionConfiguration.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="ILoggerFactory.cs" />

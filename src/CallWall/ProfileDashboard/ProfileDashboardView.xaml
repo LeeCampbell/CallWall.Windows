@@ -1,20 +1,72 @@
-﻿<Window x:Class="CallWall.ProfileDashboard.ProfileDashboardView"
+﻿<UserControl x:Class="CallWall.ProfileDashboard.ProfileDashboardView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:cal="clr-namespace:Microsoft.Practices.Prism.Regions;assembly=Microsoft.Practices.Prism"
-        xmlns:CallWall="clr-namespace:CallWall;assembly=CallWall.Core" 
-        Title="ProfileDashboardView" 
-        WindowState="Maximized"
-        WindowStyle="None"
-        AllowsTransparency="True"
-        Background="#F5303030">
-    <WrapPanel Orientation="Vertical">
-        <!--Probably should also have a Status area e.g. [Icon] Incoming Call : +4476541234-->
-        <ContentControl cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.ContactSummary}"/>
-        <ContentControl cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.CommunicationSummary}"/>
-        <ContentControl cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.EventSummary}"/>
-        <ContentControl cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.ImageGallery}"/>
-        <ContentControl cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.LocationMap}"/>
-        <ContentControl cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.CollaborationSummary}"/>
-    </WrapPanel>
-</Window>
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DockPanel VerticalAlignment="Stretch">
+        <Border DockPanel.Dock="Top" 
+                    Height="120" 
+                    Background="LawnGreen">
+
+            <DockPanel Margin="80,0"  LastChildFill="False">
+                <StackPanel Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            DockPanel.Dock="Left">
+                    <TextBlock VerticalAlignment="Bottom"
+                               Style="{StaticResource PageHeaderStyle}">
+                        Lee Campbell
+                    </TextBlock>
+                    <Image VerticalAlignment="Bottom"
+                           Stretch="None"
+                           Source="/Images/Actions/IncomingCall_60x60.png"/>
+                    <TextBlock VerticalAlignment="Bottom"
+                               Style="{StaticResource ContentHeading1Style}">
+                        (Mobile) +44 7 8765 1234
+                    </TextBlock>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal"
+                            DockPanel.Dock="Right">
+
+                    <Button x:Name="HelpButton" 
+                            ToolTip="Help"
+                            Style="{StaticResource ImageButtonStyle}">
+                        <Image Source="/Images/Help_72x72.png" ToolTip="Help"/>
+                    </Button>
+
+                    <Button x:Name="SettingsButton" 
+                             ToolTip="Settings"
+                            Style="{StaticResource ImageButtonStyle}">
+                        <Image Source="/Images/Settings_72x72.png"/>
+                    </Button>
+
+                    <Button x:Name="CloseButton" 
+                            IsCancel="True"
+                            Command="{Binding CloseCommand}"
+                            ToolTip="Close"
+                            Style="{StaticResource ImageButtonStyle}">
+                        <Image Source="/Images/Hide_72x72.png"/>
+                    </Button>
+                </StackPanel>
+                <Grid/>
+            </DockPanel>
+        </Border>
+
+        <StackPanel Orientation="Horizontal">
+            <!--Probably should also have a Status area e.g. [Icon] Incoming Call : +4476541234-->
+            <HeaderedContentControl Header="Details" />
+            <HeaderedContentControl Header="Comunication" />
+            <HeaderedContentControl Header="Calendar" />
+            <HeaderedContentControl Header="Pictures" />
+            <HeaderedContentControl Header="Map" />
+            <HeaderedContentControl Header="Collaboration" />
+
+
+            <!--<HeaderedContentControl Header="Details" cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.ContactSummary}"/>
+            <HeaderedContentControl Header="Comunication" cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.CommunicationSummary}"/>
+            <HeaderedContentControl Header="Calendar" cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.EventSummary}"/>
+            <HeaderedContentControl Header="Pictures" cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.ImageGallery}"/>
+            <HeaderedContentControl Header="Map" cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.LocationMap}"/>
+            <HeaderedContentControl Header="Collaboration" cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.CollaborationSummary}"/>-->
+        </StackPanel>
+    </DockPanel>
+
+</UserControl>

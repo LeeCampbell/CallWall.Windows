@@ -1,5 +1,6 @@
 using CallWall.Settings.Accounts;
 using CallWall.Settings.Connectivity;
+using CallWall.Settings.Demonstration;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Regions;
 
@@ -31,14 +32,17 @@ namespace CallWall.Welcome
 
         public void Start()
         {
-            if (!_accountSettingsView.ViewModel.RequiresSetup && !_connectivitySettingsView.ViewModel.RequiresSetup)
+            //if (!_accountSettingsView.ViewModel.RequiresSetup && !_connectivitySettingsView.ViewModel.RequiresSetup)
                 return;
 
             //The Test screen will explain that for a test we will emulate what a call from your own number would be like.
             //Invoke the Incoming event with the current user' data
 
-            _welcomeView.ViewModel.Close = new DelegateCommand(() => _regionManager.Regions[RegionNames.Modal].Remove(_welcomeView));
-            _regionManager.AddToRegion(RegionNames.Modal, _welcomeView);
+            _demoView.ViewModel.CloseCommand =
+                new DelegateCommand(() => _regionManager.Regions[RegionNames.WindowRegion].Remove(_welcomeView));
+            _welcomeView.ViewModel.CloseCommand =
+                new DelegateCommand(() => _regionManager.Regions[RegionNames.WindowRegion].Remove(_welcomeView));
+            _regionManager.AddToRegion(RegionNames.WindowRegion, _welcomeView);
 
             var welcomeSettingRegion = _regionManager.Regions[ShellRegionNames.WelcomeSettingsRegion];
             welcomeSettingRegion.Add(_welcomeStep1View);
@@ -46,6 +50,7 @@ namespace CallWall.Welcome
             welcomeSettingRegion.Add(_accountSettingsView);
             welcomeSettingRegion.Add(_demoView);
 
+            _regionManager.Regions[RegionNames.WindowRegion].Activate(_welcomeView);
             welcomeSettingRegion.Activate(_welcomeStep1View);
 
             _welcomeStep1View.NextView += (s, e) => welcomeSettingRegion.Activate(_connectivitySettingsView);

@@ -45,8 +45,7 @@ namespace CallWall
             
             ModuleCatalog.Add<FakeModule>();
 
-
-            //ModuleCatalog.Add<ProfileDashboard.DashboardModule>();
+            ModuleCatalog.Add<ProfileDashboard.DashboardModule>();
             ModuleCatalog.Add<Welcome.WelcomeModule>();
         }
 
@@ -61,6 +60,11 @@ namespace CallWall
         {
             var baseMappings = base.ConfigureRegionAdapterMappings();
             baseMappings.RegisterMapping(typeof(System.Windows.Controls.Accordion), ServiceLocator.Current.GetInstance<AccordionRegionAdapter>());
+
+
+            var windowStyle = (Style)App.Current.FindResource("WindowRegionStyle");
+            RegionPopupBehaviors.RegisterNewWindowRegion(RegionNames.WindowRegion, windowStyle);
+
             return baseMappings;
         }
 
@@ -91,11 +95,15 @@ namespace CallWall
 
         protected override DependencyObject CreateShell()
         {
-            var shell = new MainWindow();
+            //var shell = new MainWindow();
 
-            Application.Current.MainWindow = shell;
-            shell.Show();
-            return shell;
+            //Application.Current.MainWindow = shell;
+            //shell.Show();
+            //return shell;
+            
+            
+            //Yeah pretty weird huh, this app doesn't have a shell. Technically it is a service that can show visuals (which end up being windows.) However closing a window doesn't indicate the end of the process. -LC
+            return null;
         }
 
         public void LogFailure(string source, DispatcherUnhandledExceptionEventArgs args)

@@ -1,27 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-
-namespace CallWall.ProfileDashboard
+﻿namespace CallWall.ProfileDashboard
 {
     /// <summary>
     /// Interaction logic for ProfileDashboardView.xaml
     /// </summary>
-    public partial class ProfileDashboardView : Window
+    public partial class ProfileDashboardView : IProfileDashboardView
     {
-        public ProfileDashboardView()
+        private readonly ProfileDashBoardViewModel _viewModel;
+
+        public ProfileDashboardView(ProfileDashBoardViewModel viewModel)
         {
+            DataContext = _viewModel = viewModel;
             InitializeComponent();
+        }
+
+        public ProfileDashBoardViewModel ViewModel
+        {
+            get { return _viewModel; }
         }
     }
 }

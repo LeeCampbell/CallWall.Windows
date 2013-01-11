@@ -5,7 +5,7 @@
              xmlns:cal="clr-namespace:Microsoft.Practices.Prism.Regions;assembly=Microsoft.Practices.Prism"
              xmlns:CallWall="clr-namespace:CallWall" 
              xmlns:Welcome="clr-namespace:CallWall.Welcome" 
-             Width="800" Height="400"
+             
              Foreground="White">
     <Control.Resources>
         <Welcome:WelcomeSettingStepHeaderConverter x:Key="stepHeaderConverter"/>
@@ -26,15 +26,56 @@
             </Setter>
         </Style>
     </Control.Resources>
-    
-    <layoutToolkit:Accordion x:Name="WelcomeStepSelector"
-                             ExpandDirection="Right"
-                             VerticalAlignment="Stretch" 
-                             VerticalContentAlignment="Stretch"
-                             HorizontalAlignment="Stretch"
-                             HorizontalContentAlignment="Stretch"
-                             BorderThickness="0"
-                             SelectionSequence="Simultaneous"
-                             SelectionMode="One"
-                             cal:RegionManager.RegionName="{x:Static CallWall:ShellRegionNames.WelcomeSettingsRegion}" />
+
+    <DockPanel VerticalAlignment="Stretch">
+        <Border DockPanel.Dock="Top" 
+                    Height="120" 
+                    Background="Blue">
+            <DockPanel Margin="80,0"  LastChildFill="False">
+                <StackPanel Orientation="Horizontal"
+                            DockPanel.Dock="Left">
+                    <TextBlock VerticalAlignment="Bottom"
+                               Style="{StaticResource PageHeaderStyle}">
+                        CallWall
+                    </TextBlock>
+                    
+                    <TextBlock VerticalAlignment="Bottom"
+                               Style="{StaticResource ContentHeading1Style}">
+                        Settings
+                    </TextBlock>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal"
+                            DockPanel.Dock="Right">
+
+                    <Button x:Name="CloseButton" 
+                            VerticalAlignment="Center"
+                            IsCancel="True"
+                            Command="{Binding CloseCommand}">
+                        Close
+                    </Button>
+                    <Button x:Name="HelpButton" 
+                            VerticalAlignment="Center"
+                            Width="40" Height="40"
+                            Background="Transparent">
+                        <Image Source="/Images/Settings_40x40.png" ToolTip="Help"/>
+                    </Button>
+                </StackPanel>
+                <Grid/>
+            </DockPanel>
+        </Border>
+
+
+        <layoutToolkit:Accordion x:Name="WelcomeStepSelector"
+                                 Width="800" Height="400"
+                                 ExpandDirection="Right"
+                                 VerticalAlignment="Stretch" 
+                                 VerticalContentAlignment="Stretch"
+                                 HorizontalAlignment="Stretch"
+                                 HorizontalContentAlignment="Stretch"
+                                 BorderThickness="0"
+                                 SelectionSequence="Simultaneous"
+                                 SelectionMode="One"
+                                 cal:RegionManager.RegionName="{x:Static CallWall:ShellRegionNames.WelcomeSettingsRegion}" />
+    </DockPanel>
 </UserControl>

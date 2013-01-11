@@ -11,10 +11,11 @@ namespace CallWall.Settings
 
         public SettingsViewModel(IRegionManager regionManager, IEnumerable<IConnectionConfiguration> connectivityConfigurators, IEnumerable<IProvider> providers)
         {
-            _connectivityConfigurators = connectivityConfigurators.Select(config => new SubView(config.Name, config.Image, () => regionManager.AddToRegion(RegionNames.Modal, config)))
+            _connectivityConfigurators = connectivityConfigurators.Select(config => 
+                    new SubView(config.Name, config.Image, () => regionManager.AddToRegion(RegionNames.WindowRegion, config)))
                 .ToList()
                 .AsReadOnly();
-            _providers = providers.Select(config => new SubView(config.Name, config.Image, () => regionManager.AddToRegion(RegionNames.Modal, config)))
+            _providers = providers.Select(config => new SubView(config.Name, config.Image, () => regionManager.AddToRegion(RegionNames.WindowRegion, config)))
                 .ToList()
                 .AsReadOnly();
         }

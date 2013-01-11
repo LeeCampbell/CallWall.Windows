@@ -1,4 +1,5 @@
-﻿using CallWall.Welcome;
+﻿using CallWall.Settings.Demonstration;
+using CallWall.Welcome;
 using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;
