@@ -21,7 +21,7 @@
                     <DataTemplate>
                         <TextBlock Text="{Binding}" FontSize="42" VerticalAlignment="Bottom"/>
                     </DataTemplate>
-                    
+
                 </Setter.Value>
             </Setter>
         </Style>
@@ -33,12 +33,13 @@
                     Background="Blue">
             <DockPanel Margin="80,0"  LastChildFill="False">
                 <StackPanel Orientation="Horizontal"
-                            DockPanel.Dock="Left">
+                            DockPanel.Dock="Left"
+                            VerticalAlignment="Center">
                     <TextBlock VerticalAlignment="Bottom"
                                Style="{StaticResource PageHeaderStyle}">
                         CallWall
                     </TextBlock>
-                    
+
                     <TextBlock VerticalAlignment="Bottom"
                                Style="{StaticResource ContentHeading1Style}">
                         Settings
@@ -48,17 +49,18 @@
                 <StackPanel Orientation="Horizontal"
                             DockPanel.Dock="Right">
 
-                    <Button x:Name="CloseButton" 
-                            VerticalAlignment="Center"
-                            IsCancel="True"
-                            Command="{Binding CloseCommand}">
-                        Close
-                    </Button>
                     <Button x:Name="HelpButton" 
-                            VerticalAlignment="Center"
-                            Width="40" Height="40"
-                            Background="Transparent">
-                        <Image Source="/Images/Settings_40x40.png" ToolTip="Help"/>
+                            ToolTip="Help"
+                            Style="{StaticResource ImageButtonStyle}">
+                        <Image Source="/Images/Help_72x72.png" ToolTip="Help"/>
+                    </Button>
+
+                    <Button x:Name="CloseButton" 
+                            IsCancel="True"
+                            Command="{Binding CloseCommand}"
+                            ToolTip="Close"
+                            Style="{StaticResource ImageButtonStyle}">
+                        <Image Source="/Images/Hide_72x72.png"/>
                     </Button>
                 </StackPanel>
                 <Grid/>

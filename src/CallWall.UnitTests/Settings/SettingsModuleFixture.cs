@@ -1,10 +1,12 @@
-﻿using CallWall.Settings;
+﻿using System.Linq;
+using CallWall.Settings;
 using CallWall.Settings.Accounts;
 using CallWall.Settings.Connectivity;
+using CallWall.Settings.Demonstration;
 using Microsoft.Practices.Unity;
-using Moq;
 using NUnit.Framework;
 
+// ReSharper disable ReplaceWithSingleCallToSingle
 // ReSharper disable InconsistentNaming
 namespace CallWall.UnitTests.Settings
 {
@@ -13,7 +15,7 @@ namespace CallWall.UnitTests.Settings
         #region Setup
 
         private SettingsModule _settingsModule;
-        private Mock<IUnityContainer> _containerMock;
+        private StubUnityContainer _container;
 
         private Given_a_constructed_SettingsModule()
         {
@@ -22,8 +24,8 @@ namespace CallWall.UnitTests.Settings
         [SetUp]
         public virtual void SetUp()
         {
-            _containerMock = new Mock<IUnityContainer>();
-            _settingsModule = new SettingsModule(_containerMock.Object);
+            _container = new StubUnityContainer();
+            _settingsModule = new SettingsModule(_container);
         }
 
         #endregion
@@ -40,33 +42,114 @@ namespace CallWall.UnitTests.Settings
             [Test]
             public void Should_register_ConnectivitySettingsView_to_container()
             {
-                _containerMock.Verify(c => c.RegisterType(typeof(IConnectivitySettingsView), typeof(ConnectivitySettingsView), (string)null, It.IsAny<TransientLifetimeManager>()));
+                _container.RegisteredTypes
+                    .Where(rt => rt.From == typeof (IConnectivitySettingsView))
+                    .Where(rt => rt.To == typeof (ConnectivitySettingsView))
+                    .Where(rt => rt.Name == null)
+                    .Where(rt => rt.LifetimeManager is TransientLifetimeManager)
+                    .Single();
             }
             [Test]
             public void Should_register_ConnectivitySettingsViewModel_to_container()
             {
-                _containerMock.Verify(c => c.RegisterType(typeof(IConnectivitySettingsViewModel), typeof(ConnectivitySettingsViewModel), (string)null, It.IsAny<TransientLifetimeManager>()));
+                _container.RegisteredTypes
+                    .Where(rt => rt.From == typeof(IConnectivitySettingsViewModel))
+                    .Where(rt => rt.To == typeof(ConnectivitySettingsViewModel))
+                    .Where(rt => rt.Name == null)
+                    .Where(rt => rt.LifetimeManager is TransientLifetimeManager)
+                    .Single();
             }
             [Test]
             public void Should_register_ConnectivitySettingsModel_to_container()
             {
-                _containerMock.Verify(c => c.RegisterType(typeof(IConnectivitySettingsModel), typeof(ConnectivitySettingsModel), (string)null, It.IsAny<TransientLifetimeManager>()));
+                _container.RegisteredTypes
+                    .Where(rt => rt.From == typeof(IConnectivitySettingsModel))
+                    .Where(rt => rt.To == typeof(ConnectivitySettingsModel))
+                    .Where(rt => rt.Name == null)
+                    .Where(rt => rt.LifetimeManager is TransientLifetimeManager)
+                    .Single();
             }
 
             [Test]
             public void Should_register_AccountSettingsView_to_container()
             {
-                _containerMock.Verify(c => c.RegisterType(typeof(IAccountSettingsView), typeof(AccountSettingsView), (string)null, It.IsAny<TransientLifetimeManager>()));
+                _container.RegisteredTypes
+                    .Where(rt => rt.From == typeof(IAccountSettingsView))
+                    .Where(rt => rt.To == typeof(AccountSettingsView))
+                    .Where(rt => rt.Name == null)
+                    .Where(rt => rt.LifetimeManager is TransientLifetimeManager)
+                    .Single();
             }
             [Test]
             public void Should_register_AccountSettingsViewModel_to_container()
             {
-                _containerMock.Verify(c => c.RegisterType(typeof(IAccountSettingsViewModel), typeof(AccountSettingsViewModel), (string)null, It.IsAny<TransientLifetimeManager>()));
+                _container.RegisteredTypes
+                    .Where(rt => rt.From == typeof(IAccountSettingsViewModel))
+                    .Where(rt => rt.To == typeof(AccountSettingsViewModel))
+                    .Where(rt => rt.Name == null)
+                    .Where(rt => rt.LifetimeManager is TransientLifetimeManager)
+                    .Single();
             }
             [Test]
             public void Should_register_AccountSettingsModel_to_container()
             {
-                _containerMock.Verify(c => c.RegisterType(typeof(IAccountSettingsModel), typeof(AccountSettingsModel), (string)null, It.IsAny<TransientLifetimeManager>()));
+
+                _container.RegisteredTypes
+                    .Where(rt => rt.From == typeof(IAccountSettingsModel))
+                    .Where(rt => rt.To == typeof(AccountSettingsModel))
+                    .Where(rt => rt.Name == null)
+                    .Where(rt => rt.LifetimeManager is TransientLifetimeManager)
+                    .Single();
+
+            }
+            
+            [Test]
+            public void Should_register_DemoView_to_container()
+            {
+                _container.RegisteredTypes
+                    .Where(rt => rt.From == typeof(IDemoView))
+                    .Where(rt => rt.To == typeof(DemoView))
+                    .Where(rt => rt.Name == null)
+                    .Where(rt => rt.LifetimeManager is TransientLifetimeManager)
+                    .Single();
+            }
+            
+            [Test]
+            public void Should_register_instance_of_DemoActivatedIdentityListener_to_container_as_IDemoActivatedIdentityListener()
+            {
+                _container.RegisteredInstances
+                    .Where(rt => rt.Instance is DemoActivatedIdentityListener)
+                    .Where(rt => rt.Type == typeof(IDemoActivatedIdentityListener))
+                    .Where(rt => rt.Name == null)
+                    .Where(rt => rt.LifetimeManager is ContainerControlledLifetimeManager)
+                    .Single();
+            }
+            [Test]
+            public void Should_register_instance_of_DemoActivatedIdentityListener_to_container_as_IActivatedIdentityListener()
+            {
+                _container.RegisteredInstances
+                    .Where(rt => rt.Type == typeof(IActivatedIdentityListener))
+                    .Where(rt => rt.Instance is DemoActivatedIdentityListener)
+                    .Where(rt => rt.Name == null)
+                    .Where(rt => rt.LifetimeManager is ContainerControlledLifetimeManager)
+                    .Single();
+            }
+            [Test]
+            public void Should_register_same_instance_of_DemoActivatedIdentityListener_to_as_IActivatedIdentityListener_and_IDemoActivatedIdentityListener()
+            {
+                var activatedInstance = _container.RegisteredInstances
+                    .Where(rt => rt.Type == typeof(IActivatedIdentityListener))
+                    .Where(rt => rt.Instance is DemoActivatedIdentityListener)
+                    .Where(rt => rt.Name == null)
+                    .Where(rt => rt.LifetimeManager is ContainerControlledLifetimeManager)
+                    .Single();
+                var demoInstance = _container.RegisteredInstances
+                    .Where(rt => rt.Type == typeof(IActivatedIdentityListener))
+                    .Where(rt => rt.Instance is DemoActivatedIdentityListener)
+                    .Where(rt => rt.Name == null)
+                    .Where(rt => rt.LifetimeManager is ContainerControlledLifetimeManager)
+                    .Single();
+                Assert.AreSame(activatedInstance.Instance, demoInstance.Instance);
             }
 
             [Test]
@@ -76,5 +159,7 @@ namespace CallWall.UnitTests.Settings
             }
         }
     }
+
 }
 // ReSharper restore InconsistentNaming
+// ReSharper restore ReplaceWithSingleCallToSingle

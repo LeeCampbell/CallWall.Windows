@@ -32,7 +32,7 @@ namespace CallWall.UnitTests.Welcome
         public virtual void SetUp()
         {
             _regionManagerStub = new RegionManagerStub();
-            _modalRegion = _regionManagerStub.CreateAndAddMock(RegionNames.Modal);
+            _modalRegion = _regionManagerStub.CreateAndAddMock(RegionNames.WindowRegion);
             _welcomeSettingsRegion = _regionManagerStub.CreateAndAddMock(ShellRegionNames.WelcomeSettingsRegion);
 
             _welcomeViewMock = new Mock<IWelcomeView>();

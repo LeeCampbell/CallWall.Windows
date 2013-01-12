@@ -10,7 +10,6 @@ namespace CallWall.Settings.Demonstration
         private readonly IDemoActivatedIdentityListener _demoListener;
         private readonly DelegateCommand _activateIdentityCommand;
         private string _identity;
-        private DelegateCommand _closeCommand;
 
         public DemoViewModel(IDemoActivatedIdentityListener demoListener)
         {
@@ -38,16 +37,7 @@ namespace CallWall.Settings.Demonstration
             get { return _activateIdentityCommand; }
         }
 
-        public DelegateCommand CloseCommand
-        {
-            get { return _closeCommand; }
-            set
-            {
-                _closeCommand = value;
-                OnPropertyChanged("CloseCommand");
-            }
-        }
-
+        
         private bool IsIdentityValid()
         {
             return !string.IsNullOrWhiteSpace(Identity);

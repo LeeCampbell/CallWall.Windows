@@ -117,6 +117,7 @@
     <Compile Include="Settings\BluetoothDeviceTypeFixture.cs" />
     <Compile Include="Settings\BluetoothSetupViewModelFixture.cs" />
     <Compile Include="Settings\SettingsModuleFixture.cs" />
+    <Compile Include="Settings\StubUnityContainer.cs" />
     <Compile Include="TestSchedulerProvider.cs" />
     <Compile Include="Welcome\WelcomeControllerFixture.cs" />
     <Compile Include="Welcome\WelcomeModuleFixture.cs" />

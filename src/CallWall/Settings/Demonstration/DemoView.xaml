@@ -9,7 +9,6 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Command="{Binding CloseCommand}" IsCancel="True">Skip</Button>
             <TextBox Grid.Column="1" Text="{Binding Identity, UpdateSourceTrigger=PropertyChanged}" Width="200" HorizontalAlignment="Right" TextAlignment="Right" Margin="10,0" />
             <Button Grid.Column="2" Command="{Binding ActivateIdentityCommand}" IsDefault="True">Try me</Button>
         </Grid>

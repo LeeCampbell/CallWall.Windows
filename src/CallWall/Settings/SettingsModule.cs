@@ -33,7 +33,7 @@ namespace CallWall.Settings
             _container.RegisterType<Demonstration.IDemoView, Demonstration.DemoView>(new TransientLifetimeManager());
             var demoListener = new Demonstration.DemoActivatedIdentityListener();
             _container.RegisterInstance<Demonstration.IDemoActivatedIdentityListener>(demoListener);
-            _container.RegisterInstance<IActivatedIdentityListener>("DemoActivatedIdentityListener", demoListener);
+            _container.RegisterInstance<IActivatedIdentityListener>(demoListener);
         }
     }
 

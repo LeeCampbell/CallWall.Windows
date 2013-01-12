@@ -1,5 +1,4 @@
-﻿using CallWall.Settings.Demonstration;
-using CallWall.Welcome;
+﻿using CallWall.Welcome;
 using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;
@@ -51,12 +50,6 @@ namespace CallWall.UnitTests.Welcome
             public void Should_register_WelcomeStep1View_to_container()
             {
                 _containerMock.Verify(c => c.RegisterType(typeof(IWelcomeStep1View), typeof(WelcomeStep1View), (string)null, It.IsAny<TransientLifetimeManager>()));
-            }
-
-            [Test]
-            public void Should_register_DemoView_to_container()
-            {
-                _containerMock.Verify(c => c.RegisterType(typeof(IDemoView), typeof(DemoView), (string)null, It.IsAny<TransientLifetimeManager>()));
             }
 
             [Test]

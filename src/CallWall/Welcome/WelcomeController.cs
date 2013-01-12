@@ -32,14 +32,12 @@ namespace CallWall.Welcome
 
         public void Start()
         {
-            //if (!_accountSettingsView.ViewModel.RequiresSetup && !_connectivitySettingsView.ViewModel.RequiresSetup)
+            if (!_accountSettingsView.ViewModel.RequiresSetup && !_connectivitySettingsView.ViewModel.RequiresSetup)
                 return;
 
             //The Test screen will explain that for a test we will emulate what a call from your own number would be like.
             //Invoke the Incoming event with the current user' data
 
-            _demoView.ViewModel.CloseCommand =
-                new DelegateCommand(() => _regionManager.Regions[RegionNames.WindowRegion].Remove(_welcomeView));
             _welcomeView.ViewModel.CloseCommand =
                 new DelegateCommand(() => _regionManager.Regions[RegionNames.WindowRegion].Remove(_welcomeView));
             _regionManager.AddToRegion(RegionNames.WindowRegion, _welcomeView);
