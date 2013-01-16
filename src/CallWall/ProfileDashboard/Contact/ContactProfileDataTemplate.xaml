@@ -3,10 +3,18 @@
                     xmlns:Contact="clr-namespace:CallWall.ProfileDashboard.Contact">
 
     <DataTemplate DataType="{x:Type Contact:AggregatedContact}">
-        <TextBlock Text="{Binding FullName}"/>
+        <StackPanel>
+            <TextBlock Text="{Binding FullName}" 
+                       Style="{StaticResource ContentHeading2Style}"/>
+            <!--
+            DateOfBirth
+            
+            Organizations
+            Relationships
+            
+            PhoneNumbers
+            EmailAddresses
+            -->
+        </StackPanel>
     </DataTemplate>
-
-    <!--<DataTemplate DataType="Contact:AggregatedContact" x:Key="AggregatedContactDataTemplate2">
-        <TextBlock Text="{Binding FullName}"/>
-    </DataTemplate>-->
 </ResourceDictionary>

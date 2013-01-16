@@ -13,7 +13,6 @@
                 <ResourceDictionary Source="Styles/Button.xaml"/>
                 <ResourceDictionary Source="Styles/TabControl.xaml"/>
                 <ResourceDictionary Source="Styles/Window.xaml"/>
-                <ResourceDictionary Source="Styles/HeaderedContentControl.xaml"/>
                 <ResourceDictionary Source="Styles/WpfToolkit.xaml"/>
                 
                 <ResourceDictionary Source="ProfileDashboard/Contact/ContactProfileDataTemplate.xaml"/>
