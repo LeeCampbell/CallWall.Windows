@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 
-namespace CallWall
+namespace CallWall.Contract
 {
     public interface IProvider : IProviderDescription, INotifyPropertyChanged
     {

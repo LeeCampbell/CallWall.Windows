@@ -10,17 +10,22 @@
                 <StackPanel Orientation="Horizontal"
                             VerticalAlignment="Center"
                             DockPanel.Dock="Left">
-                    <TextBlock VerticalAlignment="Bottom"
-                               Style="{StaticResource PageHeaderStyle}">
-                        Lee Campbell
-                    </TextBlock>
+
                     <Image VerticalAlignment="Bottom"
+                           Stretch="Uniform"
+                           Height="80" Margin="10,0"
+                           Source="{Binding Contact.Avatars[0]}"/>
+
+                    <TextBlock VerticalAlignment="Bottom"
+                               Text="{Binding Contact.Title}"
+                               Style="{StaticResource PageHeaderStyle}"/>
+                    <!--<Image VerticalAlignment="Bottom"
                            Stretch="None"
                            Source="/Images/Actions/IncomingCall_60x60.png"/>
                     <TextBlock VerticalAlignment="Bottom"
                                Style="{StaticResource ContentHeading1Style}">
                         (Mobile) +44 7 8765 1234
-                    </TextBlock>
+                    </TextBlock>-->
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal"
@@ -52,7 +57,8 @@
 
         <StackPanel Orientation="Horizontal">
             <!--Probably should also have a Status area e.g. [Icon] Incoming Call : +4476541234-->
-            <HeaderedContentControl Header="Details" />
+            <!--<HeaderedContentControl Header="Details" Content="{Binding Contact}" ContentTemplate="{StaticResource AggregatedContactDataTemplate2}" />-->
+            <HeaderedContentControl Header="Details" Content="{Binding Contact}" />
             <HeaderedContentControl Header="Comunication" />
             <HeaderedContentControl Header="Calendar" />
             <HeaderedContentControl Header="Pictures" />

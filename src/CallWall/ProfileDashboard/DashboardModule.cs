@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.Regions;
@@ -6,27 +8,66 @@ using Microsoft.Practices.Unity;
 
 namespace CallWall.ProfileDashboard
 {
-    public sealed class DashboardModule : IModule
+    public sealed class DashboardModule : IModule, IDisposable
     {
         private readonly IUnityContainer _container;
         private readonly IRegionManager _regionManager;
+        private readonly ISchedulerProvider _schedulerProvider;
+        private readonly SingleAssignmentDisposable _activationSubscription = new SingleAssignmentDisposable();
 
-        public DashboardModule(IUnityContainer container, IRegionManager regionManager)
+        public DashboardModule(IUnityContainer container, IRegionManager regionManager, ISchedulerProvider schedulerProvider)
         {
             _container = container;
             _regionManager = regionManager;
+            _schedulerProvider = schedulerProvider;
         }
-
-        #region Implementation of IModule
 
         public void Initialize()
         {
-            _container.RegisterType<IProfileDashboardView, ProfileDashboardView>(new ContainerControlledLifetimeManager());
+            RegisterTypes();
 
+            ShowProfileViewOnProfileActivation();
+        }
+
+        private void RegisterTypes()
+        {
+            _container.RegisterType<IProfileActivator, ProfileActivator>(new ContainerControlledLifetimeManager());
+
+            _container.RegisterType<Contact.IContactQueryAggregator, Contact.ContactQueryAggregator>(new TransientLifetimeManager());
+
+            _container.RegisterType<IProfileDashboardView, ProfileDashboardView>(new TransientLifetimeManager());
+            _container.RegisterType<IProfileDashboard, ProfileDashboard>(new TransientLifetimeManager());
+        }
+
+        private void ShowProfileViewOnProfileActivation()
+        {
+            var activator = _container.Resolve<IProfileActivator>();
+            _activationSubscription.Disposable = activator.ProfileActivated()
+                .ObserveOn(_schedulerProvider.Async)
+                .Subscribe(ShowProfile);
+        }
+
+        private void ShowProfile(Contract.IProfile profile)
+        {
+            var windowRegion = _regionManager.Regions[RegionNames.WindowRegion];
             var view = _container.Resolve<IProfileDashboardView>();
-            _regionManager.AddToRegion(RegionNames.WindowRegion, view);
-            view.ViewModel.CloseCommand = new DelegateCommand(() => _regionManager.Regions[RegionNames.WindowRegion].Remove(view));
-            view.ViewModel.Activated.Subscribe(_ => _regionManager.Regions[RegionNames.WindowRegion].Activate(view));
+            
+            view.ViewModel.CloseCommand = new DelegateCommand(() => windowRegion.Remove(view));
+            view.ViewModel.Load(profile);
+
+            windowRegion.Add(view);
+            windowRegion.Activate(view);
+        }
+
+        #region Implementation of IDisposable
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
+        public void Dispose()
+        {
+            _activationSubscription.Dispose();
         }
 
         #endregion

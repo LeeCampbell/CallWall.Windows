@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using CallWall.Contract;
 using Microsoft.Practices.Prism.Regions;
 
 namespace CallWall.Settings

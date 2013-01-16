@@ -134,11 +134,20 @@
     <Compile Include="PrismExtensions\AccordionItemsSourceSyncBehavior.cs" />
     <Compile Include="PrismExtensions\ModuleCatalogExtensions.cs" />
     <Compile Include="PrismExtensions\AccordionRegionAdapter.cs" />
+    <Compile Include="ProfileDashboard\Contact\AggregatedContact.cs" />
+    <Compile Include="ProfileDashboard\Contact\ContactQueryAggregator.cs" />
+    <Compile Include="ProfileDashboard\Contact\NullContactProfile.cs" />
     <Compile Include="ProfileDashboard\DashboardModule.cs" />
+    <Compile Include="ProfileDashboard\Contact\IContactQueryAggregator.cs" />
+    <Compile Include="ProfileDashboard\IProfileActivator.cs" />
+    <Compile Include="ProfileDashboard\IProfileDashboard.cs" />
     <Compile Include="ProfileDashboard\IProfileDashboardView.cs" />
+    <Compile Include="ProfileDashboard\ProfileActivator.cs" />
+    <Compile Include="ProfileDashboard\ProfileDashboard.cs" />
     <Compile Include="ProfileDashboard\ProfileDashboardView.xaml.cs">
       <DependentUpon>ProfileDashboardView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProfileDashboard\ProfileDashBoardViewModel.cs" />
     <Compile Include="Services\BluetoothService.cs" />
     <Compile Include="Services\IBluetoothService.cs" />
     <Compile Include="Services\PersonalizationSettings.cs" />
@@ -215,6 +224,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ProfileDashboard\Contact\ContactProfileDataTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ProfileDashboard\ProfileDashboardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

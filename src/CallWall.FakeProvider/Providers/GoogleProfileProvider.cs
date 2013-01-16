@@ -1,12 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reactive.Linq;
+using CallWall.Contract;
 
 namespace CallWall.FakeProvider.Providers
 {
-    class GoogleProfileProvider
+    public sealed class FakeGoogleContactQueryProvider : IContactQueryProvider
     {
+        public IObservable<IContactProfile> Search(IProfile activeProfile)
+        {
+            return Observable.Return(new GoogleContactProfile());
+        }
     }
 }

@@ -5,7 +5,6 @@
              xmlns:cal="clr-namespace:Microsoft.Practices.Prism.Regions;assembly=Microsoft.Practices.Prism"
              xmlns:CallWall="clr-namespace:CallWall" 
              xmlns:Welcome="clr-namespace:CallWall.Welcome" 
-             
              Foreground="White">
     <Control.Resources>
         <Welcome:WelcomeSettingStepHeaderConverter x:Key="stepHeaderConverter"/>
@@ -21,7 +20,6 @@
                     <DataTemplate>
                         <TextBlock Text="{Binding}" FontSize="42" VerticalAlignment="Bottom"/>
                     </DataTemplate>
-
                 </Setter.Value>
             </Setter>
         </Style>
@@ -66,7 +64,6 @@
                 <Grid/>
             </DockPanel>
         </Border>
-
 
         <layoutToolkit:Accordion x:Name="WelcomeStepSelector"
                                  Width="800" Height="400"

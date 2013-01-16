@@ -101,6 +101,12 @@
     <Compile Include="AuthorizationStatus.cs" />
     <Compile Include="BooleanToInvisibilityConverter.cs" />
     <Compile Include="CollectionChangedData.cs" />
+    <Compile Include="Contract\IContactProfile.cs" />
+    <Compile Include="Contract\IContactAssociation.cs" />
+    <Compile Include="Contract\IContactQueryProvider.cs" />
+    <Compile Include="Contract\IIdentityProvider.cs" />
+    <Compile Include="Contract\IPersonalIdentifier.cs" />
+    <Compile Include="Contract\IProfile.cs" />
     <Compile Include="DependencyObjectExtensions.cs" />
     <Compile Include="Ensure.cs" />
     <Compile Include="GrayScaleConverter.cs" />
@@ -109,9 +115,9 @@
     <Compile Include="ILogger.cs" />
     <Compile Include="ILoggerFactory.cs" />
     <Compile Include="IPersonalizationSettings.cs" />
-    <Compile Include="IProvider.cs" />
-    <Compile Include="IProviderDescription.cs" />
-    <Compile Include="IResourceScope.cs" />
+    <Compile Include="Contract\IProvider.cs" />
+    <Compile Include="Contract\IProviderDescription.cs" />
+    <Compile Include="Contract\IResourceScope.cs" />
     <Compile Include="ISchedulerProvider.cs" />
     <Compile Include="LoggerExtensions.cs" />
     <Compile Include="LogLevel.cs" />
@@ -129,6 +135,7 @@
     <None Include="..\CallWall.snk" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
