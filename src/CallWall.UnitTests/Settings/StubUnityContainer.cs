@@ -16,7 +16,7 @@ namespace CallWall.UnitTests.Settings
 
         public IUnityContainer RegisterType(Type @from, Type to, string name, LifetimeManager lifetimeManager, params InjectionMember[] injectionMembers)
         {
-            var registration = new RegisteredType { From = @from, To = to, Name = name, LifetimeManager = lifetimeManager };
+            var registration = new RegisteredType { From = @from, To = to, Name = name, LifetimeManager = lifetimeManager, InjectionMembers = injectionMembers };
             RegisteredTypes.Add(registration);
             return this;
         }
@@ -104,6 +104,8 @@ namespace CallWall.UnitTests.Settings
         public string Name { get; set; }
 
         public LifetimeManager LifetimeManager { get; set; }
+
+        public InjectionMember[] InjectionMembers { get; set; }
 
         public override string ToString()
         {

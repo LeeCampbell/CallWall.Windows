@@ -43,8 +43,8 @@ namespace CallWall.UnitTests.Settings
             public void Should_register_ConnectivitySettingsView_to_container()
             {
                 _container.RegisteredTypes
-                    .Where(rt => rt.From == typeof (IConnectivitySettingsView))
-                    .Where(rt => rt.To == typeof (ConnectivitySettingsView))
+                    .Where(rt => rt.From == typeof(IConnectivitySettingsView))
+                    .Where(rt => rt.To == typeof(ConnectivitySettingsView))
                     .Where(rt => rt.Name == null)
                     .Where(rt => rt.LifetimeManager is TransientLifetimeManager)
                     .Single();
@@ -102,7 +102,7 @@ namespace CallWall.UnitTests.Settings
                     .Single();
 
             }
-            
+
             [Test]
             public void Should_register_DemoView_to_container()
             {
@@ -113,44 +113,51 @@ namespace CallWall.UnitTests.Settings
                     .Where(rt => rt.LifetimeManager is TransientLifetimeManager)
                     .Single();
             }
-            
+
+            /*
+                This is a strategy for registering a singleton but as two seperate types. This maintains lazy instantiation.
+             
+             */
             [Test]
-            public void Should_register_instance_of_DemoActivatedIdentityListener_to_container_as_IDemoActivatedIdentityListener()
+            public void Should_register_DemoActivatedIdentityListener_to_container_as_IDemoActivatedIdentityListener()
             {
-                _container.RegisteredInstances
-                    .Where(rt => rt.Instance is DemoActivatedIdentityListener)
-                    .Where(rt => rt.Type == typeof(IDemoActivatedIdentityListener))
+                _container.RegisteredTypes
+                    .Where(rt => rt.From == typeof(IDemoActivatedIdentityListener))
+                    .Where(rt => rt.To == typeof(DemoActivatedIdentityListener))
                     .Where(rt => rt.Name == null)
                     .Where(rt => rt.LifetimeManager is ContainerControlledLifetimeManager)
                     .Single();
             }
             [Test]
-            public void Should_register_instance_of_DemoActivatedIdentityListener_to_container_as_IActivatedIdentityListener()
+            public void Should_register_DemoActivatedIdentityListener_to_container_as_named_IActivatedIdentityListener()
             {
-                _container.RegisteredInstances
-                    .Where(rt => rt.Type == typeof(IActivatedIdentityListener))
-                    .Where(rt => rt.Instance is DemoActivatedIdentityListener)
-                    .Where(rt => rt.Name == null)
-                    .Where(rt => rt.LifetimeManager is ContainerControlledLifetimeManager)
+                _container.RegisteredTypes
+                    .Where(rt => rt.From == typeof(IActivatedIdentityListener))
+                    .Where(rt => rt.To == typeof(DemoActivatedIdentityListener))
+                    .Where(rt => rt.Name == "DemoActivatedIdentityListener")
+                    .Where(rt => rt.LifetimeManager is ExternallyControlledLifetimeManager) //} HACK: A poor way of checking if the instance is registered
+                    .Where(rt => rt.InjectionMembers.Single() is InjectionFactory)          //} to actually redirect to the registered IDemoActivatedIdentityListener instance/type.
                     .Single();
             }
-            [Test]
-            public void Should_register_same_instance_of_DemoActivatedIdentityListener_to_as_IActivatedIdentityListener_and_IDemoActivatedIdentityListener()
-            {
-                var activatedInstance = _container.RegisteredInstances
-                    .Where(rt => rt.Type == typeof(IActivatedIdentityListener))
-                    .Where(rt => rt.Instance is DemoActivatedIdentityListener)
-                    .Where(rt => rt.Name == null)
-                    .Where(rt => rt.LifetimeManager is ContainerControlledLifetimeManager)
-                    .Single();
-                var demoInstance = _container.RegisteredInstances
-                    .Where(rt => rt.Type == typeof(IActivatedIdentityListener))
-                    .Where(rt => rt.Instance is DemoActivatedIdentityListener)
-                    .Where(rt => rt.Name == null)
-                    .Where(rt => rt.LifetimeManager is ContainerControlledLifetimeManager)
-                    .Single();
-                Assert.AreSame(activatedInstance.Instance, demoInstance.Instance);
-            }
+
+            //[Test]
+            //public void Should_register_same_instance_of_DemoActivatedIdentityListener_to_as_IActivatedIdentityListener_and_IDemoActivatedIdentityListener()
+            //{
+
+            //    var activatedInstance = _container.RegisteredInstances
+            //        .Where(rt => rt.Type == typeof(IActivatedIdentityListener))
+            //        .Where(rt => rt.Instance is DemoActivatedIdentityListener)
+            //        .Where(rt => rt.Name == null)
+            //        .Where(rt => rt.LifetimeManager is ContainerControlledLifetimeManager)
+            //        .Single();
+            //    var demoInstance = _container.RegisteredInstances
+            //        .Where(rt => rt.Type == typeof(IActivatedIdentityListener))
+            //        .Where(rt => rt.Instance is DemoActivatedIdentityListener)
+            //        .Where(rt => rt.Name == null)
+            //        .Where(rt => rt.LifetimeManager is ContainerControlledLifetimeManager)
+            //        .Single();
+            //    Assert.AreSame(activatedInstance.Instance, demoInstance.Instance);
+            //}
 
             [Test]
             public void Should_register_for_some_event_to_show_the_settings_view()
