@@ -6,6 +6,7 @@
             <Setter Property="Margin" Value="40,20"/>
             <Setter Property="FontSize" Value="28"/>
             <Setter Property="Foreground" Value="#A7A7A7"/>
+            <Setter Property="Background" Value="#806080"/>
             <Setter Property="HeaderTemplate">
                 <Setter.Value>
                     <DataTemplate>

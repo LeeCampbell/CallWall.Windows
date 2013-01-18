@@ -48,12 +48,58 @@ namespace CallWall.FakeProvider.Providers
             get { return new DateTime(1979, 12, 27); }
         }
 
-        public IEnumerable<IContactAssociation> Organizations { get { return _noAssociations; } }
+        public IEnumerable<IContactAssociation> Organizations
+        {
+            get
+            {
+                return new IContactAssociation[]
+                {
+                    new ContactAssociation("Work", "RBC Capital Markets"), 
+                    new ContactAssociation("Owner", "Campbell Consulting London Ltd"), 
+                };
+            }
+        }
 
-        public IEnumerable<IContactAssociation> Relationships { get { return _noAssociations; } }
+        public IEnumerable<IContactAssociation> Relationships
+        {
+            get
+            {
+                return new IContactAssociation[]
+                {
+                    new ContactAssociation("Wife", "Erynne Campbell"), 
+                    new ContactAssociation("Brother", "Rhys Campbell"), 
+                };
+            }
+        }
 
-        public IEnumerable<IContactAssociation> EmailAddresses { get { return _noAssociations; } }
+        public IEnumerable<IContactAssociation> EmailAddresses
+        {
+            get
+            {
+                return new IContactAssociation[]
+                {
+                    new ContactAssociation("Home", "Lee.Ryan.Campbell@gmail.com"), 
+                    new ContactAssociation("Work", "Lee.Campbell@RBCCM.com"), 
+                };
+            }
+        }
 
         public IEnumerable<IContactAssociation> PhoneNumbers { get { return _noAssociations; } }
+
+        private sealed class ContactAssociation : IContactAssociation
+        {
+            private readonly string _name;
+            private readonly string _association;
+
+            public ContactAssociation(string name, string association)
+            {
+                _name = name;
+                _association = association;
+            }
+
+            public string Name { get { return _name; } }
+
+            public string Association { get { return _association; } }
+        }
     }
 }
