@@ -7,12 +7,19 @@
             <Setter Property="FontSize" Value="28"/>
             <Setter Property="Foreground" Value="#A7A7A7"/>
             <Setter Property="Background" Value="#806080"/>
-            <Setter Property="HeaderTemplate">
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="Template">
                 <Setter.Value>
-                    <DataTemplate>
-                        <TextBlock Style="{StaticResource ContentHeading1Style}" 
-                                   Text="{Binding}"/>
-                    </DataTemplate>
+                    <ControlTemplate TargetType="HeaderedContentControl">
+                        <DockPanel MinWidth="300">
+                            <TextBlock DockPanel.Dock="Top"
+                                       Text="{TemplateBinding Header}"
+                                       Style="{StaticResource ContentHeading1Style}" />
+                            <ContentPresenter Content="{TemplateBinding Content}" 
+                                              Margin="0,10,0,20"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </DockPanel>
+                    </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
@@ -71,24 +78,16 @@
             </DockPanel>
         </Border>
 
-        <StackPanel Orientation="Horizontal">
-            <!--Probably should also have a Status area e.g. [Icon] Incoming Call : +4476541234-->
-            <!--<HeaderedContentControl Header="Details" Content="{Binding Contact}" ContentTemplate="{StaticResource AggregatedContactDataTemplate2}" />-->
-            <HeaderedContentControl Header="Details" Content="{Binding Contact}" Style="{StaticResource ContentSection}"/>
-            <HeaderedContentControl Header="Comunication" Style="{StaticResource ContentSection}"/>
-            <HeaderedContentControl Header="Calendar" Style="{StaticResource ContentSection}"/>
-            <HeaderedContentControl Header="Pictures" Style="{StaticResource ContentSection}"/>
-            <HeaderedContentControl Header="Map" Style="{StaticResource ContentSection}"/>
-            <HeaderedContentControl Header="Collaboration" Style="{StaticResource ContentSection}"/>
-
-
-            <!--<HeaderedContentControl Header="Details" cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.ContactSummary}"/>
-            <HeaderedContentControl Header="Comunication" cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.CommunicationSummary}"/>
-            <HeaderedContentControl Header="Calendar" cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.EventSummary}"/>
-            <HeaderedContentControl Header="Pictures" cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.ImageGallery}"/>
-            <HeaderedContentControl Header="Map" cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.LocationMap}"/>
-            <HeaderedContentControl Header="Collaboration" cal:RegionManager.RegionName="{x:Static CallWall:RegionNames.CollaborationSummary}"/>-->
-        </StackPanel>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
+            <StackPanel Orientation="Horizontal">
+                <HeaderedContentControl Header="Details" Content="{Binding Contact}" Style="{StaticResource ContentSection}"/>
+                <HeaderedContentControl Header="Comunication" Style="{StaticResource ContentSection}"/>
+                <HeaderedContentControl Header="Calendar" Style="{StaticResource ContentSection}"/>
+                <HeaderedContentControl Header="Pictures" Style="{StaticResource ContentSection}"/>
+                <HeaderedContentControl Header="Map" Style="{StaticResource ContentSection}"/>
+                <HeaderedContentControl Header="Collaboration" Style="{StaticResource ContentSection}"/>
+            </StackPanel>
+        </ScrollViewer>
     </DockPanel>
 
 </UserControl>

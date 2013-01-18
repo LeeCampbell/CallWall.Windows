@@ -4,18 +4,34 @@
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
     <Style TargetType="HeaderedItemsControl" x:Key="SubsetStyle">
-        <Setter Property="DisplayMemberPath" Value="Association"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="HeaderedItemsControl">
                     <StackPanel Margin="0,20,0,0"
                                 Visibility="{Binding ElementName=Items, Path=HasItems, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <TextBlock x:Name="HeaderText" 
-                                   Text="{TemplateBinding Header}"
-                                   Style="{StaticResource ContentHeading2Style}"/>
+                        <Border Background="#101010" Padding="10,2">
+                            <TextBlock x:Name="HeaderText" 
+                                       Text="{TemplateBinding Header}"
+                                       Foreground="White"
+                                       Style="{StaticResource SubTextStyle}"/>
+                        </Border>
                         <ItemsControl x:Name="Items"
-                                      ItemsSource="{TemplateBinding ItemsSource}" 
-                                      DisplayMemberPath="{TemplateBinding DisplayMemberPath}"/>
+                                      ItemsSource="{TemplateBinding ItemsSource}" >
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderThickness="0,1,0,0" BorderBrush="White"
+                                            Padding="10,2"
+                                            SnapsToDevicePixels="True">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Name}"
+                                                   Style="{StaticResource SubTextStyle}"/>
+                                            <TextBlock Text="{Binding Association}" Foreground="White"/>
+
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </StackPanel>
                 </ControlTemplate>
             </Setter.Value>
@@ -23,17 +39,20 @@
     </Style>
 
     <DataTemplate DataType="{x:Type Contact:AggregatedContact}">
-        <StackPanel>
-            <TextBlock Text="{Binding FullName}" 
-                       Style="{StaticResource ContentHeading2Style}"/>
+        <Border Background="#202020" VerticalAlignment="Stretch">
+            <StackPanel>
+                <TextBlock Text="{Binding FullName}" 
+                           Margin="10,10,0,0"
+                           Style="{StaticResource ContentHeading2Style}"/>
 
-            <!--
+                <!--
             DateOfBirth TODO: Create a Birthday control.
             -->
-            <HeaderedItemsControl Header="Organizations" ItemsSource="{Binding Organizations}" Style="{StaticResource SubsetStyle}"/>
-            <HeaderedItemsControl Header="Relationships" ItemsSource="{Binding Relationships}" Style="{StaticResource SubsetStyle}"/>
-            <HeaderedItemsControl Header="PhoneNumbers" ItemsSource="{Binding PhoneNumbers}" Style="{StaticResource SubsetStyle}"/>
-            <HeaderedItemsControl Header="EmailAddresses" ItemsSource="{Binding EmailAddresses}" Style="{StaticResource SubsetStyle}"/>
-        </StackPanel>
+                <HeaderedItemsControl Header="Organizations" ItemsSource="{Binding Organizations}" Style="{StaticResource SubsetStyle}"/>
+                <HeaderedItemsControl Header="Relationships" ItemsSource="{Binding Relationships}" Style="{StaticResource SubsetStyle}"/>
+                <HeaderedItemsControl Header="PhoneNumbers" ItemsSource="{Binding PhoneNumbers}" Style="{StaticResource SubsetStyle}"/>
+                <HeaderedItemsControl Header="EmailAddresses" ItemsSource="{Binding EmailAddresses}" Style="{StaticResource SubsetStyle}"/>
+            </StackPanel>
+        </Border>
     </DataTemplate>
 </ResourceDictionary>

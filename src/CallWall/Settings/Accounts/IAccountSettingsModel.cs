@@ -11,7 +11,7 @@ namespace CallWall.Settings.Accounts
 
         public bool RequiresSetup
         {
-            get { return true; }
+            get { return false; }
         }
 
         #endregion
