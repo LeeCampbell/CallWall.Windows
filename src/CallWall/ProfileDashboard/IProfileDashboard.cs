@@ -1,6 +1,7 @@
 using System;
 using CallWall.Contract;
 using CallWall.Contract.Contact;
+using CallWall.ProfileDashboard.Communication;
 
 namespace CallWall.ProfileDashboard
 {
@@ -17,5 +18,7 @@ namespace CallWall.ProfileDashboard
 
         //Status Status { get; }
         IObservable<IContactProfile> Contact { get; }
+
+        IObservable<MessageViewModel> Messages { get; }
     }
 }

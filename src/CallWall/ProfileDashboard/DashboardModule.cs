@@ -34,6 +34,7 @@ namespace CallWall.ProfileDashboard
             _container.RegisterType<IProfileActivator, ProfileActivator>(new ContainerControlledLifetimeManager());
 
             _container.RegisterType<Contact.IContactQueryAggregator, Contact.ContactQueryAggregator>(new TransientLifetimeManager());
+            _container.RegisterType<Communication.ICommunicationQueryAggregator, Communication.CommunicationQueryAggregator>(new TransientLifetimeManager());
 
             _container.RegisterType<IProfileDashboardView, ProfileDashboardView>(new TransientLifetimeManager());
             _container.RegisterType<IProfileDashboard, ProfileDashboard>(new TransientLifetimeManager());

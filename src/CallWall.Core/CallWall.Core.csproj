@@ -101,7 +101,7 @@
     <Compile Include="AuthorizationStatus.cs" />
     <Compile Include="BooleanToInvisibilityConverter.cs" />
     <Compile Include="CollectionChangedData.cs" />
-    <Compile Include="Contract\Communication\ICommunicationProfile.cs" />
+    <Compile Include="Contract\Communication\ICommunicationQueryProvider.cs" />
     <Compile Include="Contract\Communication\IMessage.cs" />
     <Compile Include="Contract\Communication\MessageDirection.cs" />
     <Compile Include="Contract\Contact\IContactProfile.cs" />

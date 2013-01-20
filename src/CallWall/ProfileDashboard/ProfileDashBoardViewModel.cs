@@ -1,9 +1,12 @@
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using CallWall.Contract;
+using CallWall.Contract.Communication;
 using CallWall.Contract.Contact;
+using CallWall.ProfileDashboard.Communication;
 using JetBrains.Annotations;
 using Microsoft.Practices.Prism.Commands;
 
@@ -16,6 +19,8 @@ namespace CallWall.ProfileDashboard
         private readonly IProfileDashboard _profileDashboard;
         private readonly ISchedulerProvider _schedulerProvider;
         private readonly CompositeDisposable _subscriptions = new CompositeDisposable();
+        private readonly ObservableCollection<MessageViewModel> _messages = new ObservableCollection<MessageViewModel>();
+        private readonly ReadOnlyObservableCollection<MessageViewModel> _roMessages;
         private DelegateCommand _closeCommand;
         private IContactProfile _contact;
 
@@ -25,6 +30,7 @@ namespace CallWall.ProfileDashboard
         {
             _profileDashboard = profileDashboard;
             _schedulerProvider = schedulerProvider;
+            _roMessages = new ReadOnlyObservableCollection<MessageViewModel>(_messages);
         }
 
         public IContactProfile Contact
@@ -35,6 +41,11 @@ namespace CallWall.ProfileDashboard
                 _contact = value;
                 OnPropertyChanged("Contact");
             }
+        }
+
+        public ReadOnlyObservableCollection<MessageViewModel> Messages
+        {
+            get { return _roMessages; }
         }
 
         public DelegateCommand CloseCommand
@@ -51,6 +62,7 @@ namespace CallWall.ProfileDashboard
         public void Load(IProfile profile)
         {
             _subscriptions.Add(SubscribeToContact());
+            _subscriptions.Add(SubscribeToMessages());
             _profileDashboard.Load(profile);
         }
 
@@ -59,6 +71,13 @@ namespace CallWall.ProfileDashboard
             return _profileDashboard.Contact
                                     .ObserveOn(_schedulerProvider.Async)
                                     .Subscribe(c => Contact = c);
+        }
+
+        private IDisposable SubscribeToMessages()
+        {
+            return _profileDashboard.Messages
+                                    .ObserveOn(_schedulerProvider.Async)
+                                    .Subscribe(_messages.Add);
         }
 
         #region INotifyPropertyChanged implementation

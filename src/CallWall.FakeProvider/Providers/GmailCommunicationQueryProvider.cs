@@ -1,23 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using CallWall.Contract;
 using CallWall.Contract.Communication;
 
 namespace CallWall.FakeProvider.Providers
 {
-    public class GmailCommunicationProfile : ICommunicationProfile
+    public class GmailCommunicationQueryProvider : ICommunicationQueryProvider
     {
-        public IEnumerable<IMessage> Message
+        public IObservable<IMessage> Messages(IProfile activeProfile)
         {
-            get
-            {
-                return new IMessage[]
-                             {
-                                 new GmailEmail(DateTimeOffset.Now.AddDays(-1), MessageDirection.Inbound, "Pricing a Cross example", "Here is that sample we were talking about the other day. If you want to be able to price a cross, first you need to gets the component..."), 
-                                 new GmailEmail(DateTimeOffset.Now.AddDays(-4), MessageDirection.Outbound, "Oz Travel plans?", "Are you guys planning a trip to Ozzie yet?"), 
-                                 new GmailEmail(DateTimeOffset.Now.AddDays(-10), MessageDirection.Outbound, "Happy Birthday", "Quick happy birthday note."), 
-                             };
-            }
+            return Observable.Create<IMessage>(
+                o =>
+                {
+                    o.OnNext(new GmailEmail(DateTimeOffset.Now.AddDays(-1), MessageDirection.Inbound, "Pricing a Cross example", "Here is that sample we were talking about the other day. If you want to be able to price a cross, first you need to gets the component..."));
+                    o.OnNext(new GmailEmail(DateTimeOffset.Now.AddDays(-4), MessageDirection.Outbound, "Oz Travel plans?", "Are you guys planning a trip to Ozzie yet?"));
+                    o.OnNext(new GmailEmail(DateTimeOffset.Now.AddDays(-10), MessageDirection.Outbound, "Happy Birthday", "Quick happy birthday note."));
+                    return Disposable.Empty;
+                });
+
         }
 
         private sealed class GmailEmail : IMessage

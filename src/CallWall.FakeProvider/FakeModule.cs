@@ -1,4 +1,5 @@
-﻿using CallWall.Contract.Contact;
+﻿using CallWall.Contract.Communication;
+using CallWall.Contract.Contact;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Unity;
 
@@ -21,6 +22,7 @@ namespace CallWall.FakeProvider
             
             
             _container.RegisterType<IContactQueryProvider, Providers.FakeGoogleContactQueryProvider>("FakeGoogleContactQueryProvider", new ContainerControlledLifetimeManager());
+            _container.RegisterType<ICommunicationQueryProvider, Providers.GmailCommunicationQueryProvider>("GmailCommunicationQueryProvider", new ContainerControlledLifetimeManager());
             
 
             //_container.RegisterType<IIdentityActivator, UsbIdentityActivator>(new TransientLifetimeManager());

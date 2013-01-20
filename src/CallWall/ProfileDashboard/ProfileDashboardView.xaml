@@ -23,6 +23,27 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style TargetType="HeaderedItemsControl" x:Key="ContentItemsSection">
+            <Setter Property="Margin" Value="40,20"/>
+            <Setter Property="FontSize" Value="28"/>
+            <Setter Property="Foreground" Value="#A7A7A7"/>
+            <Setter Property="Background" Value="#806080"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="HeaderedItemsControl">
+                        <DockPanel MinWidth="300" MaxWidth="300" Width="300">
+                            <TextBlock DockPanel.Dock="Top"
+                                       Text="{TemplateBinding Header}"
+                                       Style="{StaticResource ContentHeading1Style}" />
+                            <ItemsControl ItemsSource="{TemplateBinding ItemsSource}" 
+                                          Margin="0,10,0,20"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Control.Resources>
     <DockPanel VerticalAlignment="Stretch">
         <Border DockPanel.Dock="Top" 
@@ -81,7 +102,7 @@
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
             <StackPanel Orientation="Horizontal">
                 <HeaderedContentControl Header="Details" Content="{Binding Contact}" Style="{StaticResource ContentSection}"/>
-                <HeaderedContentControl Header="Comunication" Style="{StaticResource ContentSection}"/>
+                <HeaderedItemsControl Header="Comunication" ItemsSource="{Binding Messages}" Style="{StaticResource ContentItemsSection}"/>
                 <HeaderedContentControl Header="Calendar" Style="{StaticResource ContentSection}"/>
                 <HeaderedContentControl Header="Pictures" Style="{StaticResource ContentSection}"/>
                 <HeaderedContentControl Header="Map" Style="{StaticResource ContentSection}"/>

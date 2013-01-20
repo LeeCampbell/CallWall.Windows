@@ -16,6 +16,7 @@
                 <ResourceDictionary Source="Styles/WpfToolkit.xaml"/>
                 
                 <ResourceDictionary Source="ProfileDashboard/Contact/ContactProfileDataTemplate.xaml"/>
+                <ResourceDictionary Source="ProfileDashboard/Communication/MessageDataTemplate.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
