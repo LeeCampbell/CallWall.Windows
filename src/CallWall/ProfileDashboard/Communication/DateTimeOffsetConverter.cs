@@ -17,9 +17,9 @@ namespace CallWall.ProfileDashboard.Communication
             var diff = DateTimeOffset.Now - input;
             if(diff.Days==1)
             {
-                return "1 day";
+                return "1d";
             }
-            return string.Format("{0} days", diff.Days);
+            return string.Format("{0}d", diff.Days);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
