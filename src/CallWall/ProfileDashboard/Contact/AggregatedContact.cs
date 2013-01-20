@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using CallWall.Contract;
+using CallWall.Contract.Contact;
 using Microsoft.Practices.Unity.Utility;
 
 namespace CallWall.ProfileDashboard.Contact
@@ -21,6 +21,7 @@ namespace CallWall.ProfileDashboard.Contact
             EmailAddresses = Concat(seed.EmailAddresses, addendum.EmailAddresses);
             PhoneNumbers = Concat(seed.PhoneNumbers, addendum.PhoneNumbers);
         }
+
         public string Title { get; private set; }
         public string FullName { get; private set; }
         public DateTime? DateOfBirth { get; private set; }

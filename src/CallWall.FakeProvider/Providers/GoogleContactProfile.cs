@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using CallWall.Contract;
+using CallWall.Contract.Contact;
 
 namespace CallWall.FakeProvider.Providers
 {
     public sealed class GoogleContactProfile : IContactProfile
     {
-        private static readonly IEnumerable<IContactAssociation> _noAssociations = new IContactAssociation[] { };
-
         /// <summary>
         /// How the user commonly references the contact e.g. Dan Rowe
         /// </summary>
@@ -56,6 +54,7 @@ namespace CallWall.FakeProvider.Providers
                 {
                     new ContactAssociation("Work", "RBC Capital Markets"), 
                     new ContactAssociation("Owner", "Campbell Consulting London Ltd"), 
+                    new ContactAssociation("Volunteer", "VLCON - Very long charitable organization name"), 
                 };
             }
         }
@@ -79,12 +78,24 @@ namespace CallWall.FakeProvider.Providers
                 return new IContactAssociation[]
                 {
                     new ContactAssociation("Home", "Lee.Ryan.Campbell@gmail.com"), 
-                    new ContactAssociation("Work", "Lee.Campbell@RBCCM.com"), 
+                    new ContactAssociation("Work", "Lee.Campbell@work.com"), 
+                    new ContactAssociation("Home", "Lee.Ryan.Campbell@CampbellConsultingLondonLimited.com"), //Really long email to test formatting.
                 };
             }
         }
 
-        public IEnumerable<IContactAssociation> PhoneNumbers { get { return _noAssociations; } }
+        public IEnumerable<IContactAssociation> PhoneNumbers
+        {
+            get
+            {
+                return new IContactAssociation[]
+                {
+                    new ContactAssociation("Mobile", "+44 7 8277 43025"),
+                    new ContactAssociation("Home", "+44 8 1234 1234"), 
+                    new ContactAssociation("Work", "+44 8 43231 4321"), 
+                };
+            }
+        }
 
         private sealed class ContactAssociation : IContactAssociation
         {

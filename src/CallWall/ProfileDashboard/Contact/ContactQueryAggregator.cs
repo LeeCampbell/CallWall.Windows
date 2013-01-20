@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using CallWall.Contract;
+using CallWall.Contract.Contact;
 
 namespace CallWall.ProfileDashboard.Contact
 {

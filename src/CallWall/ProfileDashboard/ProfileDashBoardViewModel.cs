@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using CallWall.Contract;
+using CallWall.Contract.Contact;
 using JetBrains.Annotations;
 using Microsoft.Practices.Prism.Commands;
 

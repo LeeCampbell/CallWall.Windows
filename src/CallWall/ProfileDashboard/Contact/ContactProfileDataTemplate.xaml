@@ -24,8 +24,14 @@
                                             SnapsToDevicePixels="True">
                                         <StackPanel>
                                             <TextBlock Text="{Binding Name}"
-                                                   Style="{StaticResource SubTextStyle}"/>
-                                            <TextBlock Text="{Binding Association}" Foreground="White"/>
+                                                       TextWrapping="WrapWithOverflow"
+                                                       TextTrimming="CharacterEllipsis"
+                                                       Style="{StaticResource SubTextStyle}" />
+                                            <TextBlock Text="{Binding Association}"
+                                                       ToolTip="{Binding Association}"
+                                                       Foreground="White"
+                                                       TextWrapping="WrapWithOverflow"
+                                                       TextTrimming="CharacterEllipsis" />
 
                                         </StackPanel>
                                     </Border>

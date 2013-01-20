@@ -11,7 +11,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="HeaderedContentControl">
-                        <DockPanel MinWidth="300">
+                        <DockPanel MinWidth="300" MaxWidth="300" Width="300">
                             <TextBlock DockPanel.Dock="Top"
                                        Text="{TemplateBinding Header}"
                                        Style="{StaticResource ContentHeading1Style}" />

@@ -1,5 +1,6 @@
 using System;
 using CallWall.Contract;
+using CallWall.Contract.Contact;
 
 namespace CallWall.ProfileDashboard
 {

@@ -3,6 +3,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using CallWall.Contract;
+using CallWall.Contract.Contact;
 using CallWall.ProfileDashboard.Contact;
 
 namespace CallWall.ProfileDashboard
@@ -16,7 +17,8 @@ namespace CallWall.ProfileDashboard
         //HACK: How can I avoid subject here? -LC
         private readonly ISubject<IContactProfile> _contact = new Subject<IContactProfile>();
 
-        public ProfileDashboard(ILoggerFactory loggerFactory, IContactQueryAggregator contactQueryAggregator)
+        public ProfileDashboard(ILoggerFactory loggerFactory, 
+            IContactQueryAggregator contactQueryAggregator)
         {
             _contactQueryAggregator = contactQueryAggregator;
             _logger = loggerFactory.CreateLogger();

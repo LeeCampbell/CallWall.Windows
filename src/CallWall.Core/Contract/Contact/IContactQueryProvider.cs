@@ -1,6 +1,6 @@
 using System;
 
-namespace CallWall.Contract
+namespace CallWall.Contract.Contact
 {
     public interface IContactQueryProvider
     {

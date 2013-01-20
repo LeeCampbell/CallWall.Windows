@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CallWall.Contract
+namespace CallWall.Contract.Contact
 {
     public interface IContactProfile
     {

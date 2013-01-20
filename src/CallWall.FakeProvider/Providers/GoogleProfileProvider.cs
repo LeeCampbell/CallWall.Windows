@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive.Linq;
 using CallWall.Contract;
+using CallWall.Contract.Contact;
 
 namespace CallWall.FakeProvider.Providers
 {

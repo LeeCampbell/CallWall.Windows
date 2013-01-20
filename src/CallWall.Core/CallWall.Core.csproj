@@ -101,9 +101,12 @@
     <Compile Include="AuthorizationStatus.cs" />
     <Compile Include="BooleanToInvisibilityConverter.cs" />
     <Compile Include="CollectionChangedData.cs" />
-    <Compile Include="Contract\IContactProfile.cs" />
-    <Compile Include="Contract\IContactAssociation.cs" />
-    <Compile Include="Contract\IContactQueryProvider.cs" />
+    <Compile Include="Contract\Communication\ICommunicationProfile.cs" />
+    <Compile Include="Contract\Communication\IMessage.cs" />
+    <Compile Include="Contract\Communication\MessageDirection.cs" />
+    <Compile Include="Contract\Contact\IContactProfile.cs" />
+    <Compile Include="Contract\Contact\IContactAssociation.cs" />
+    <Compile Include="Contract\Contact\IContactQueryProvider.cs" />
     <Compile Include="Contract\IIdentityProvider.cs" />
     <Compile Include="Contract\IPersonalIdentifier.cs" />
     <Compile Include="Contract\IProfile.cs" />
