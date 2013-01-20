@@ -135,6 +135,7 @@
     <Compile Include="PrismExtensions\ModuleCatalogExtensions.cs" />
     <Compile Include="PrismExtensions\AccordionRegionAdapter.cs" />
     <Compile Include="ProfileDashboard\Communication\CommunicationQueryAggregator.cs" />
+    <Compile Include="ProfileDashboard\Communication\DateTimeOffsetConverter.cs" />
     <Compile Include="ProfileDashboard\Communication\ICommunicationQueryAggregator.cs" />
     <Compile Include="ProfileDashboard\Communication\MessageViewModel.cs" />
     <Compile Include="ProfileDashboard\Contact\AggregatedContact.cs" />

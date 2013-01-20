@@ -84,6 +84,8 @@
     <Compile Include="Providers\GmailCommunicationQueryProvider.cs" />
     <Compile Include="Providers\GoogleContactProfile.cs" />
     <Compile Include="Providers\GoogleProfileProvider.cs" />
+    <Compile Include="Providers\SMSCommunicationQueryProvider.cs" />
+    <Compile Include="Providers\TwitterCommunicationQueryProvider.cs" />
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -162,6 +164,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Communication\Gmail_128x128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Communication\Twitter_48x48.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

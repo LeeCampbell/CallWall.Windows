@@ -2,46 +2,56 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:CallWall.ProfileDashboard.Communication"
                     xmlns:Communication="clr-namespace:CallWall.Contract.Communication;assembly=CallWall.Core">
+    <local:DateTimeOffsetConverter x:Key="DateTimeOffsetConverter"/>
     <DataTemplate DataType="{x:Type local:MessageViewModel}">
-        <DockPanel>
-            <Grid DockPanel.Dock="Left"
+        <Border BorderThickness="0,1,0,0" BorderBrush="Gray">
+            <DockPanel>
+                <Grid DockPanel.Dock="Left"
                   Width="50" Height="50" 
                   ToolTip="Bits and stuff">
-                <Image Source="{Binding Provider.Image}"
+                    <Image Source="{Binding Provider.Image}"
                        VerticalAlignment="Bottom"
                        MaxWidth="32" MaxHeight="32" Stretch="Uniform"
                        Opacity="0.5">
-                    <Image.Style>
-                        <Style TargetType="Image">
-                            <Setter Property="HorizontalAlignment" Value="Left"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Direction}" Value="{x:Static Communication:MessageDirection.Outbound}">
-                                    <Setter Property="HorizontalAlignment" Value="Right"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Image.Style>
-                </Image>
-                <Image VerticalAlignment="Center" Width="32" Height="32">
-                    <Image.Style>
-                        <Style TargetType="Image">
-                            <Setter Property="HorizontalAlignment" Value="Right"/>
-                            <Setter Property="Source" Value="\Images\Actions\RightArrow_32x32.png"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Direction}" Value="{x:Static Communication:MessageDirection.Outbound}">
-                                    <Setter Property="HorizontalAlignment" Value="Left"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Image.Style>
-                </Image>
-            </Grid>
-            <StackPanel>
-                <TextBlock Text="{Binding Subject}"/>
-                <TextBlock Text="{Binding Content}" 
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Setter Property="HorizontalAlignment" Value="Left"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Direction}" Value="{x:Static Communication:MessageDirection.Outbound}">
+                                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                    <Image VerticalAlignment="Center" Width="32" Height="32">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Setter Property="HorizontalAlignment" Value="Right"/>
+                                <Setter Property="Source" Value="\Images\Actions\RightArrow_32x32.png"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Direction}" Value="{x:Static Communication:MessageDirection.Outbound}">
+                                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                    <TextBlock Text="{Binding Timestamp, Converter={StaticResource DateTimeOffsetConverter}}"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Top"
+                               Margin="5,0"
+                               Style="{StaticResource SubTextStyle}"/>
+                </Grid>
+                <StackPanel>
+                    <TextBlock Text="{Binding Subject}"
+                               TextWrapping="Wrap"
+                               ToolTip="{Binding Subject}"/>
+                    <TextBlock Text="{Binding Content}" 
                            TextTrimming="CharacterEllipsis"
                            Style="{StaticResource SubTextStyle}"/>
-            </StackPanel>
-        </DockPanel>
+                </StackPanel>
+            </DockPanel>
+        </Border>
     </DataTemplate>
 </ResourceDictionary>
