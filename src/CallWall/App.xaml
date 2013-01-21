@@ -17,6 +17,7 @@
                 
                 <ResourceDictionary Source="ProfileDashboard/Contact/ContactProfileDataTemplate.xaml"/>
                 <ResourceDictionary Source="ProfileDashboard/Communication/MessageDataTemplate.xaml"/>
+                <ResourceDictionary Source="ProfileDashboard/Pictures/AlbumDataTemplate.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

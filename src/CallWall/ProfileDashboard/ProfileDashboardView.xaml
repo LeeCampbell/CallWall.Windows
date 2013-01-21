@@ -39,7 +39,8 @@
                                        Style="{StaticResource ContentHeading1Style}" />
                             <ItemsControl ItemsSource="{TemplateBinding ItemsSource}" 
                                           Margin="0,10,0,20"
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                                          ScrollViewer.VerticalScrollBarVisibility="Auto"/>
                         </DockPanel>
                     </ControlTemplate>
                 </Setter.Value>
@@ -49,6 +50,12 @@
         <CollectionViewSource x:Key="SortedMessages" Source="{Binding Messages}">
             <CollectionViewSource.SortDescriptions>
                 <ComponentModel:SortDescription PropertyName="Timestamp" Direction="Descending"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+
+        <CollectionViewSource x:Key="SortedPictureAlbums" Source="{Binding PictureAlbums}">
+            <CollectionViewSource.SortDescriptions>
+                <ComponentModel:SortDescription PropertyName="LastUpdate" Direction="Descending"/>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
     </Control.Resources>
@@ -106,12 +113,12 @@
             </DockPanel>
         </Border>
 
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
             <StackPanel Orientation="Horizontal">
                 <HeaderedContentControl Header="Details" Content="{Binding Contact}" Style="{StaticResource ContentSection}"/>
                 <HeaderedItemsControl Header="Comunication" ItemsSource="{Binding Source={StaticResource SortedMessages}}" Style="{StaticResource ContentItemsSection}"/>
+                <HeaderedItemsControl Header="Pictures" ItemsSource="{Binding Source={StaticResource SortedPictureAlbums}}" Style="{StaticResource ContentItemsSection}"/>
                 <HeaderedContentControl Header="Calendar" Style="{StaticResource ContentSection}"/>
-                <HeaderedContentControl Header="Pictures" Style="{StaticResource ContentSection}"/>
                 <HeaderedContentControl Header="Map" Style="{StaticResource ContentSection}"/>
                 <HeaderedContentControl Header="Collaboration" Style="{StaticResource ContentSection}"/>
             </StackPanel>

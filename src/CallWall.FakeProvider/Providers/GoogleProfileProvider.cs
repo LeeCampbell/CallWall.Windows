@@ -7,7 +7,7 @@ namespace CallWall.FakeProvider.Providers
 {
     public sealed class FakeGoogleContactQueryProvider : IContactQueryProvider
     {
-        public IObservable<IContactProfile> Search(IProfile activeProfile)
+        public IObservable<IContactProfile> LoadContact(IProfile activeProfile)
         {
             return Observable.Return(new GoogleContactProfile());
         }

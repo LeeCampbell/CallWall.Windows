@@ -7,6 +7,7 @@ using CallWall.Contract;
 using CallWall.Contract.Communication;
 using CallWall.Contract.Contact;
 using CallWall.ProfileDashboard.Communication;
+using CallWall.ProfileDashboard.Pictures;
 using JetBrains.Annotations;
 using Microsoft.Practices.Prism.Commands;
 
@@ -19,18 +20,21 @@ namespace CallWall.ProfileDashboard
         private readonly IProfileDashboard _profileDashboard;
         private readonly ISchedulerProvider _schedulerProvider;
         private readonly CompositeDisposable _subscriptions = new CompositeDisposable();
-        private readonly ObservableCollection<MessageViewModel> _messages = new ObservableCollection<MessageViewModel>();
-        private readonly ReadOnlyObservableCollection<MessageViewModel> _roMessages;
+        private readonly ObservableCollection<Message> _messages = new ObservableCollection<Message>();
+        private readonly ObservableCollection<Album> _pictureAlbums = new ObservableCollection<Album>();
+        private readonly ReadOnlyObservableCollection<Message> _roMessages;
+        private readonly ReadOnlyObservableCollection<Album> _roPictureAlbums;
         private DelegateCommand _closeCommand;
         private IContactProfile _contact;
-
+        
         #endregion
 
         public ProfileDashBoardViewModel(IProfileDashboard profileDashboard, ISchedulerProvider schedulerProvider)
         {
             _profileDashboard = profileDashboard;
             _schedulerProvider = schedulerProvider;
-            _roMessages = new ReadOnlyObservableCollection<MessageViewModel>(_messages);
+            _roMessages = new ReadOnlyObservableCollection<Message>(_messages);
+            _roPictureAlbums = new ReadOnlyObservableCollection<Album>(_pictureAlbums);
         }
 
         public IContactProfile Contact
@@ -43,9 +47,14 @@ namespace CallWall.ProfileDashboard
             }
         }
 
-        public ReadOnlyObservableCollection<MessageViewModel> Messages
+        public ReadOnlyObservableCollection<Message> Messages
         {
             get { return _roMessages; }
+        }
+
+        public ReadOnlyObservableCollection<Album> PictureAlbums
+        {
+            get { return _roPictureAlbums; }
         }
 
         public DelegateCommand CloseCommand
@@ -58,11 +67,11 @@ namespace CallWall.ProfileDashboard
             }
         }
 
-
         public void Load(IProfile profile)
         {
             _subscriptions.Add(SubscribeToContact());
             _subscriptions.Add(SubscribeToMessages());
+            _subscriptions.Add(SubscribeToPictures());
             _profileDashboard.Load(profile);
         }
 
@@ -78,6 +87,13 @@ namespace CallWall.ProfileDashboard
             return _profileDashboard.Messages
                                     .ObserveOn(_schedulerProvider.Async)
                                     .Subscribe(_messages.Add);
+        }
+
+        private IDisposable SubscribeToPictures()
+        {
+            return _profileDashboard.PictureAlbums
+                                    .ObserveOn(_schedulerProvider.Async)
+                                    .Subscribe(_pictureAlbums.Add);
         }
 
         #region INotifyPropertyChanged implementation

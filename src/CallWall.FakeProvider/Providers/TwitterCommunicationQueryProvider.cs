@@ -8,7 +8,7 @@ namespace CallWall.FakeProvider.Providers
 {
     public sealed class TwitterCommunicationQueryProvider : ICommunicationQueryProvider
     {
-        public IObservable<IMessage> Messages(IProfile activeProfile)
+        public IObservable<IMessage> LoadMessages(IProfile activeProfile)
         {
             return Observable.Create<IMessage>(
                 o =>

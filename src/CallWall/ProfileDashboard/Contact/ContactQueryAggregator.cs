@@ -18,7 +18,7 @@ namespace CallWall.ProfileDashboard.Contact
         public IObservable<IContactProfile> Search(IProfile profile)
         {
             var queryResults = from provider in _contactQueryProviders.ToObservable()
-                               from contact in provider.Search(profile)
+                               from contact in provider.LoadContact(profile)
                                select contact;
 
             var aggergateContact = queryResults.Scan(NullContactProfile.Instance,

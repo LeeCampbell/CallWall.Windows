@@ -1,0 +1,50 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Pictures="clr-namespace:CallWall.ProfileDashboard.Pictures">
+    <DataTemplate DataType="{x:Type Pictures:Album}">
+        <DataTemplate.Resources>
+            <Style TargetType="Image" x:Key="CoverStyle">
+                <Setter Property="MaxHeight" Value="180"/>
+                <Setter Property="MaxWidth" Value="260"/>
+                <Setter Property="Stretch" Value="UniformToFill"/>
+                <Setter Property="StretchDirection" Value="DownOnly"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+            </Style>
+            <Style TargetType="Border" x:Key="ImageBorderStyle">
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+                <Setter Property="BorderBrush" Value="#101010"/>
+                <Setter Property="BorderThickness" Value="2"/>
+            </Style>
+        </DataTemplate.Resources>
+        <Border Background="#202020"
+                Padding="10"
+                Margin="0,0,0,20">
+            <StackPanel>
+                <TextBlock Text="{Binding Name}"
+                           Foreground="White"
+                           Margin="0,0,0,5"
+                           Style="{StaticResource ContentHeading2Style}"/>
+                <Grid Height="200" Width="300">
+                    <Border Margin="20,20,0,0"
+                            Style="{StaticResource ImageBorderStyle}">
+                        <Image Source="{Binding Pictures[2].Source}"
+                               Style="{StaticResource CoverStyle}" />
+                    </Border>
+                    <Border Margin="10"
+                            Style="{StaticResource ImageBorderStyle}">
+                        <Image Source="{Binding Pictures[1].Source}"
+                               Style="{StaticResource CoverStyle}" />
+                    </Border>
+                    <Border Margin="0,0,20,20"
+                            Style="{StaticResource ImageBorderStyle}">
+                        <Image Source="{Binding Pictures[0].Source}"
+                               Style="{StaticResource CoverStyle}" />
+                    </Border>
+
+                </Grid>
+            </StackPanel>
+        </Border>
+    </DataTemplate>
+</ResourceDictionary>

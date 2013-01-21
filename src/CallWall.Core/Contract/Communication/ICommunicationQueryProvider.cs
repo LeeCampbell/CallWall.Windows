@@ -4,6 +4,6 @@ namespace CallWall.Contract.Communication
 {
     public interface ICommunicationQueryProvider
     {
-        IObservable<IMessage> Messages(IProfile activeProfile);
+        IObservable<IMessage> LoadMessages(IProfile activeProfile);
     }
 }

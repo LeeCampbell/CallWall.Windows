@@ -5,6 +5,6 @@ namespace CallWall.ProfileDashboard.Communication
 {
     public interface ICommunicationQueryAggregator
     {
-        IObservable<MessageViewModel> Search(IProfile activeProfile);
+        IObservable<Message> Search(IProfile activeProfile);
     }
 }

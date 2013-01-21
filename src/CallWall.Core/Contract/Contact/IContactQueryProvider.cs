@@ -4,6 +4,6 @@ namespace CallWall.Contract.Contact
 {
     public interface IContactQueryProvider
     {
-        IObservable<IContactProfile> Search(IProfile activeProfile);
+        IObservable<IContactProfile> LoadContact(IProfile activeProfile);
     }
 }

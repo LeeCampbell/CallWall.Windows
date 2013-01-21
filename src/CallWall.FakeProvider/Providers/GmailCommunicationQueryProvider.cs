@@ -8,7 +8,7 @@ namespace CallWall.FakeProvider.Providers
 {
     public class GmailCommunicationQueryProvider : ICommunicationQueryProvider
     {
-        public IObservable<IMessage> Messages(IProfile activeProfile)
+        public IObservable<IMessage> LoadMessages(IProfile activeProfile)
         {
             return Observable.Create<IMessage>(
                 o =>

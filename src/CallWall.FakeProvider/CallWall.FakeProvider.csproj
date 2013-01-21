@@ -84,6 +84,7 @@
     <Compile Include="Providers\GmailCommunicationQueryProvider.cs" />
     <Compile Include="Providers\GoogleContactProfile.cs" />
     <Compile Include="Providers\GoogleProfileProvider.cs" />
+    <Compile Include="Providers\SkydrivePictureProvider.cs" />
     <Compile Include="Providers\SMSCommunicationQueryProvider.cs" />
     <Compile Include="Providers\TwitterCommunicationQueryProvider.cs" />
     <Page Include="Themes\Generic.xaml">
@@ -167,6 +168,26 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Communication\Twitter_48x48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Pictures\SnowSwim\a.jpg" />
+    <Resource Include="Images\Pictures\SnowSwim\b.jpg" />
+    <Resource Include="Images\Pictures\SnowSwim\c.jpg" />
+    <Resource Include="Images\Pictures\SnowSwim\d.jpg" />
+    <Resource Include="Images\Pictures\SnowSwim\e.jpg" />
+    <Resource Include="Images\Pictures\SnowSwim\f.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Pictures\XmasFood\a.jpg" />
+    <Resource Include="Images\Pictures\XmasFood\b.jpg" />
+    <Resource Include="Images\Pictures\XmasFood\c.jpg" />
+    <Resource Include="Images\Pictures\XmasFood\d.jpg" />
+    <Resource Include="Images\Pictures\XmasFood\e.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Pictures\Xmas\a.jpg" />
+    <Resource Include="Images\Pictures\Xmas\b.jpg" />
+    <Resource Include="Images\Pictures\Xmas\c.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

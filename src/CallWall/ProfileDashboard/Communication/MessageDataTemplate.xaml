@@ -3,7 +3,7 @@
                     xmlns:local="clr-namespace:CallWall.ProfileDashboard.Communication"
                     xmlns:Communication="clr-namespace:CallWall.Contract.Communication;assembly=CallWall.Core">
     <local:DateTimeOffsetConverter x:Key="DateTimeOffsetConverter"/>
-    <DataTemplate DataType="{x:Type local:MessageViewModel}">
+    <DataTemplate DataType="{x:Type local:Message}">
         <Border BorderThickness="0,1,0,0" BorderBrush="Gray">
             <DockPanel>
                 <Grid DockPanel.Dock="Left">
@@ -16,10 +16,10 @@
                                Opacity="0.5">
                             <Image.Style>
                                 <Style TargetType="Image">
-                                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                                    <Setter Property="HorizontalAlignment" Value="Right"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Direction}" Value="{x:Static Communication:MessageDirection.Outbound}">
-                                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                                            <Setter Property="HorizontalAlignment" Value="Left"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -28,11 +28,11 @@
                         <Image VerticalAlignment="Center" Width="32" Height="32">
                             <Image.Style>
                                 <Style TargetType="Image">
-                                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                                    <Setter Property="HorizontalAlignment" Value="Left"/>
                                     <Setter Property="Source" Value="\Images\Actions\RightArrow_32x32.png"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Direction}" Value="{x:Static Communication:MessageDirection.Outbound}">
-                                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                                            <Setter Property="HorizontalAlignment" Value="Right"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>

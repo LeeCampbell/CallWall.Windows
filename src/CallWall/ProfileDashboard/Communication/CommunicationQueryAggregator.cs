@@ -15,11 +15,11 @@ namespace CallWall.ProfileDashboard.Communication
             _communicationQueryProviders = communicationQueryProviders;
         }
 
-        public IObservable<MessageViewModel> Search(IProfile activeProfile)
+        public IObservable<Message> Search(IProfile activeProfile)
         {
             return from provider in _communicationQueryProviders.ToObservable()
-                   from message in provider.Messages(activeProfile)
-                   select new MessageViewModel(message);
+                   from message in provider.LoadMessages(activeProfile)
+                   select new Message(message);
         }
     }
 }
