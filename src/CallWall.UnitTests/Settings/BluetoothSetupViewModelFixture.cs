@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Reactive;
 using System.Reactive.Linq;
+using CallWall.Activators;
 using CallWall.Services;
 using CallWall.Settings.Connectivity.Bluetooth;
 using Microsoft.Reactive.Testing;
@@ -19,6 +20,7 @@ namespace CallWall.UnitTests.Settings
 
         private BluetoothSetupViewModel _viewModel;
         private Mock<IBluetoothService> _bluetoothServiceMock;
+        private Mock<IBluetoothProfileActivator> _bluetoothProfileActivator;
         private TestSchedulerProvider _testSchedulerProvider;
 
         [SetUp]
@@ -27,9 +29,11 @@ namespace CallWall.UnitTests.Settings
             _bluetoothServiceMock = new Mock<IBluetoothService>();
             _bluetoothServiceMock.Setup(bs => bs.IsSupported).Returns(true);
             _bluetoothServiceMock.SetupAllProperties();
-            _bluetoothServiceMock.Object.IsEnabled = true;
+            _bluetoothProfileActivator = new Mock<IBluetoothProfileActivator>();
+            _bluetoothProfileActivator.SetupAllProperties();
+            _bluetoothProfileActivator.Object.IsEnabled = true;
             _testSchedulerProvider = new TestSchedulerProvider();
-            _viewModel = new BluetoothSetupViewModel(_bluetoothServiceMock.Object, _testSchedulerProvider);
+            _viewModel = new BluetoothSetupViewModel(_bluetoothServiceMock.Object,_bluetoothProfileActivator.Object, _testSchedulerProvider);
         }
 
         protected ITestableObservable<IBluetoothDevice> CreateSequenceOfThreeOneTickApart()
@@ -48,11 +52,11 @@ namespace CallWall.UnitTests.Settings
         {
             [TestCase(false)]
             [TestCase(true)]
-            public void Should_set_bluetoothServiceMock_IsEnabled_to_value(bool expected)
+            public void Should_set_BluetoothProfileActivator_IsEnabled_to_value(bool expected)
             {
                 _viewModel.IsEnabled = expected;
 
-                Assert.AreEqual(expected, _bluetoothServiceMock.Object.IsEnabled);
+                Assert.AreEqual(expected, _bluetoothProfileActivator.Object.IsEnabled);
             }
 
             [TestCase(false)]
@@ -62,7 +66,7 @@ namespace CallWall.UnitTests.Settings
                 var wasRaised = false;
                 _viewModel.WhenPropertyChanges(vm => vm.IsEnabled).Subscribe(_ => wasRaised = true);
 
-                _bluetoothServiceMock.Raise(bs => bs.PropertyChanged += null, new PropertyChangedEventArgs("IsEnabled"));
+                _bluetoothProfileActivator.Raise(bs => bs.PropertyChanged += null, new PropertyChangedEventArgs("IsEnabled"));
 
                 Assert.IsTrue(wasRaised);
             } 

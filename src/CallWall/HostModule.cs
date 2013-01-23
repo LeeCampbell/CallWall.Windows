@@ -1,4 +1,5 @@
 using CallWall.Activators;
+using CallWall.ProfileDashboard;
 using CallWall.Services;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Unity;
@@ -21,12 +22,16 @@ namespace CallWall
 
             _container.RegisterType<IBluetoothService, BluetoothService>(new ContainerControlledLifetimeManager());
 
+            //TODO: Make an extension method.
             //http://www.stackoverflow.com/questions/10910237
             _container.RegisterType<IBluetoothProfileActivator, BluetoothProfileActivator>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IProfileActivator, BluetoothProfileActivator>("BluetoothProfileActivator",
                 new ExternallyControlledLifetimeManager(),
                 new InjectionFactory(u => u.Resolve<IBluetoothProfileActivator>()));
-            
+
+
+            //_container.RegisterType<IProfileActivator, FakeProfileActivator>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IProfileActivatorAggregator, ProfileActivatorAggregator>(new ContainerControlledLifetimeManager());
             
             //_container.RegisterType<IIdentityActivator, UsbIdentityActivator>(new TransientLifetimeManager());
             //_container.RegisterType<IIdentityActivator, BluetoothIdentityActivator>(new TransientLifetimeManager());

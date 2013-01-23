@@ -18,7 +18,7 @@
     </Control.Resources>
     <StackPanel>
         <TextBlock Style="{StaticResource ContentHeading1Style}" Margin="0,6,0,0">
-                Bluetooth Radio
+                Bluetooth Radio Connectivity
         </TextBlock>
 
         <TextBlock Visibility="{Binding IsSupported, Converter={StaticResource BooleanToInvisibilityConverter}}"
@@ -30,7 +30,7 @@
                       HorizontalAlignment="Left"
                       Visibility="{Binding IsSupported, Converter={StaticResource BooleanToVisibilityConverter}}"
                       IsChecked="{Binding IsEnabled}"
-                      ToolTip="Enable Bluetooth on this PC"/>
+                      ToolTip="Connect with Bluetooth on this PC to your Phone"/>
         
         <Grid HorizontalAlignment="Left" Margin="0,20,0,0">
             <Grid.RowDefinitions>

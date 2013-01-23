@@ -32,9 +32,6 @@ namespace CallWall.ProfileDashboard
 
         private void RegisterTypes()
         {
-            _container.RegisterType<IProfileActivator, FakeProfileActivator>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IProfileActivatorAggregator, ProfileActivatorAggregator>(new ContainerControlledLifetimeManager());
-
             _container.RegisterType<Contact.IContactQueryAggregator, Contact.ContactQueryAggregator>(new TransientLifetimeManager());
             _container.RegisterType<Communication.ICommunicationQueryAggregator, Communication.CommunicationQueryAggregator>(new TransientLifetimeManager());
             _container.RegisterType<Pictures.IPictureQueryAggregator, Pictures.PictureQueryAggregator>(new TransientLifetimeManager());
