@@ -81,7 +81,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Providers\FacebookPictureQueryProvider.cs" />
     <Compile Include="Providers\GmailCommunicationQueryProvider.cs" />
+    <Compile Include="Providers\GoogleCalendarQueryProvider.cs" />
     <Compile Include="Providers\GoogleContactProfile.cs" />
     <Compile Include="Providers\GoogleProfileProvider.cs" />
     <Compile Include="Providers\SkydrivePictureProvider.cs" />

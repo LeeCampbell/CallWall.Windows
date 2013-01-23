@@ -101,6 +101,7 @@
     <Compile Include="AuthorizationStatus.cs" />
     <Compile Include="BooleanToInvisibilityConverter.cs" />
     <Compile Include="CollectionChangedData.cs" />
+    <Compile Include="Contract\Calendar\ICalendarQueryProvider.cs" />
     <Compile Include="Contract\Communication\ICommunicationQueryProvider.cs" />
     <Compile Include="Contract\Communication\IMessage.cs" />
     <Compile Include="Contract\Communication\MessageDirection.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="Contract\Picture\IAlbum.cs" />
     <Compile Include="Contract\Picture\IPicture.cs" />
     <Compile Include="Contract\Picture\IPictureQueryProvider.cs" />
+    <Compile Include="Contract\Profile.cs" />
     <Compile Include="DependencyObjectExtensions.cs" />
     <Compile Include="Ensure.cs" />
     <Compile Include="GrayScaleConverter.cs" />

@@ -129,27 +129,31 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Activators\BluetoothActivator.cs" />
+    <Compile Include="Activators\FakeProfileActivator.cs" />
+    <Compile Include="Activators\IBluetoothProfileActivator.cs" />
+    <Compile Include="Activators\IProfileActivator.cs" />
     <Compile Include="Logging\Log4NetLogger.cs" />
     <Compile Include="Logging\LoggerFactory.cs" />
     <Compile Include="PrismExtensions\AccordionItemsSourceSyncBehavior.cs" />
     <Compile Include="PrismExtensions\ModuleCatalogExtensions.cs" />
     <Compile Include="PrismExtensions\AccordionRegionAdapter.cs" />
     <Compile Include="ProfileDashboard\Communication\CommunicationQueryAggregator.cs" />
-    <Compile Include="ProfileDashboard\Communication\DateTimeOffsetConverter.cs" />
-    <Compile Include="ProfileDashboard\Communication\ICommunicationQueryAggregator.cs" />
+    <Compile Include="ProfileDashboard\DateTimeOffsetConverter.cs" />
+    <Compile Include="ProfileDashboard\ICommunicationQueryAggregator.cs" />
     <Compile Include="ProfileDashboard\Communication\Message.cs" />
     <Compile Include="ProfileDashboard\Contact\AggregatedContact.cs" />
     <Compile Include="ProfileDashboard\Contact\ContactQueryAggregator.cs" />
     <Compile Include="ProfileDashboard\Contact\NullContactProfile.cs" />
     <Compile Include="ProfileDashboard\DashboardModule.cs" />
     <Compile Include="ProfileDashboard\Contact\IContactQueryAggregator.cs" />
-    <Compile Include="ProfileDashboard\IProfileActivator.cs" />
+    <Compile Include="ProfileDashboard\IProfileActivatorAggregator.cs" />
     <Compile Include="ProfileDashboard\IProfileDashboard.cs" />
     <Compile Include="ProfileDashboard\IProfileDashboardView.cs" />
     <Compile Include="ProfileDashboard\Pictures\Album.cs" />
     <Compile Include="ProfileDashboard\Pictures\IPictureQueryAggregator.cs" />
     <Compile Include="ProfileDashboard\Pictures\PictureQueryAggregator.cs" />
-    <Compile Include="ProfileDashboard\ProfileActivator.cs" />
+    <Compile Include="ProfileDashboard\ProfileActivatorAggregator.cs" />
     <Compile Include="ProfileDashboard\ProfileDashboard.cs" />
     <Compile Include="ProfileDashboard\ProfileDashboardView.xaml.cs">
       <DependentUpon>ProfileDashboardView.xaml</DependentUpon>

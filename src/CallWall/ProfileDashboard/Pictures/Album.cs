@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using CallWall.Contract;
 using CallWall.Contract.Picture;
 
 namespace CallWall.ProfileDashboard.Pictures
@@ -32,6 +33,11 @@ namespace CallWall.ProfileDashboard.Pictures
         public DateTimeOffset LastUpdate
         {
             get { return _lastUpdate; }
+        }
+
+        public IProviderDescription Provider
+        {
+            get { return _album.Provider; }
         }
     }
 }

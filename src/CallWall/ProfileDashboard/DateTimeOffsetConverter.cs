@@ -2,24 +2,26 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace CallWall.ProfileDashboard.Communication
+namespace CallWall.ProfileDashboard
 {
     public sealed class DateTimeOffsetConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var input = (DateTimeOffset)value;
-            
-            if (input.Date == DateTimeOffset.Now.Date)
-            {
-                return input.ToString("hh:mm");
-            }
             var diff = DateTimeOffset.Now - input;
-            if(diff.Days==1)
+
+            if (diff.Days > 28)
+                return input.ToString("MMM-yy", culture);
+            if (diff.Days > 6)
             {
-                return "1d";
+                var weeks = diff.Days / 7;
+                return string.Format(culture, "{0}w", weeks);
             }
-            return string.Format("{0}d", diff.Days);
+            if (diff.Days > 0)
+                return string.Format(culture, "{0}d", diff.Days);
+
+            return input.ToString("hh:mm", culture);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

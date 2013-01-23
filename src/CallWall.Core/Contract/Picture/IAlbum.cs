@@ -7,5 +7,7 @@ namespace CallWall.Contract.Picture
         string Name { get; }
 
         IEnumerable<IPicture> Pictures { get; }
+
+        IProviderDescription Provider { get; }
     }
 }

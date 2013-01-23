@@ -14,21 +14,6 @@ namespace CallWall.FakeProvider.Providers
             return Observable.Create<IAlbum>(
                 o =>
                 {
-                    var snowSwim = new Album
-                    {
-                        Name = "Snow Swim",
-                        Pictures =
-                            {
-                                new Picture{ Timestamp = DateTimeOffset.Now.AddDays(-3), Source= new Uri("pack://application:,,,/CallWall.FakeProvider;component/Images/Pictures/SnowSwim/a.jpg")},
-                                new Picture{ Timestamp = DateTimeOffset.Now.AddDays(-3), Source= new Uri("pack://application:,,,/CallWall.FakeProvider;component/Images/Pictures/SnowSwim/b.jpg")},
-                                new Picture{ Timestamp = DateTimeOffset.Now.AddDays(-3), Source= new Uri("pack://application:,,,/CallWall.FakeProvider;component/Images/Pictures/SnowSwim/c.jpg")},
-                                new Picture{ Timestamp = DateTimeOffset.Now.AddDays(-3), Source= new Uri("pack://application:,,,/CallWall.FakeProvider;component/Images/Pictures/SnowSwim/d.jpg")},
-                                new Picture{ Timestamp = DateTimeOffset.Now.AddDays(-3), Source= new Uri("pack://application:,,,/CallWall.FakeProvider;component/Images/Pictures/SnowSwim/e.jpg")},
-                                new Picture{ Timestamp = DateTimeOffset.Now.AddDays(-3), Source= new Uri("pack://application:,,,/CallWall.FakeProvider;component/Images/Pictures/SnowSwim/f.jpg")},
-                            }
-                    };
-                    o.OnNext(snowSwim);
-
                     var xmasFood = new Album
                     {
                         Name = "Xmas food 2012",
@@ -67,12 +52,11 @@ namespace CallWall.FakeProvider.Providers
             }
             public string Name { get; set; }
 
-            public List<IPicture> Pictures { get; set; }
+            public List<IPicture> Pictures { get; private set; }
 
-            IEnumerable<IPicture> IAlbum.Pictures
-            {
-                get { return Pictures; }
-            }
+            IEnumerable<IPicture> IAlbum.Pictures { get { return Pictures; } }
+
+            IProviderDescription IAlbum.Provider { get { return SkyDriveProvider.Instance; } }
         }
 
         private sealed class Picture : IPicture
@@ -80,6 +64,17 @@ namespace CallWall.FakeProvider.Providers
             public DateTimeOffset Timestamp { get; set; }
             public Uri Source { get; set; }
             public string Caption { get; set; }
+        }
+
+        private sealed class SkyDriveProvider : IProviderDescription
+        {
+            public static readonly IProviderDescription Instance = new SkyDriveProvider();
+
+            private SkyDriveProvider()
+            { }
+            public string Name { get { return "SkyDrive"; } }
+
+            public Uri Image { get { return new Uri("pack://application:,,,/CallWall.FakeProvider;component/Images/Accounts/Microsoft_64x64.png"); } }
         }
     }
 }

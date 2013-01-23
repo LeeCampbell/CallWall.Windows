@@ -1,9 +1,12 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:CallWall.ProfileDashboard.Communication"
-                    xmlns:Communication="clr-namespace:CallWall.Contract.Communication;assembly=CallWall.Core">
-    <local:DateTimeOffsetConverter x:Key="DateTimeOffsetConverter"/>
+                    xmlns:Communication="clr-namespace:CallWall.Contract.Communication;assembly=CallWall.Core"
+                    xmlns:profileDashboard="clr-namespace:CallWall.ProfileDashboard">
     <DataTemplate DataType="{x:Type local:Message}">
+        <DataTemplate.Resources>
+            <profileDashboard:DateTimeOffsetConverter x:Key="DateTimeOffsetConverter"/>
+        </DataTemplate.Resources>
         <Border BorderThickness="0,1,0,0" BorderBrush="Gray">
             <DockPanel>
                 <Grid DockPanel.Dock="Left">

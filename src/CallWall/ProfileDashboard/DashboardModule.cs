@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using CallWall.Activators;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.Regions;
@@ -31,7 +32,8 @@ namespace CallWall.ProfileDashboard
 
         private void RegisterTypes()
         {
-            _container.RegisterType<IProfileActivator, ProfileActivator>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IProfileActivator, FakeProfileActivator>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IProfileActivatorAggregator, ProfileActivatorAggregator>(new ContainerControlledLifetimeManager());
 
             _container.RegisterType<Contact.IContactQueryAggregator, Contact.ContactQueryAggregator>(new TransientLifetimeManager());
             _container.RegisterType<Communication.ICommunicationQueryAggregator, Communication.CommunicationQueryAggregator>(new TransientLifetimeManager());
@@ -43,7 +45,7 @@ namespace CallWall.ProfileDashboard
 
         private void ShowProfileViewOnProfileActivation()
         {
-            var activator = _container.Resolve<IProfileActivator>();
+            var activator = _container.Resolve<IProfileActivatorAggregator>();
             _activationSubscription.Disposable = activator.ProfileActivated()
                 .ObserveOn(_schedulerProvider.Async)
                 .Subscribe(ShowProfile);

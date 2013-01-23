@@ -20,37 +20,16 @@ namespace CallWall.Services
 
         private readonly ISchedulerProvider _schedulerProvider;
         private readonly ILogger _logger;
-        private bool _isEnabled;
 
         public BluetoothService(ISchedulerProvider schedulerProvider, ILoggerFactory loggerFactory)
         {
             _schedulerProvider = schedulerProvider;
             _logger = loggerFactory.CreateLogger();
-            
-            //TODO: Load IsEnabled from personalization settings -LC
-            IsEnabled = true;
-
-            //HACK:
-            //IdentitiesActivated(_schedulerProvider.LongRunning)
-            //    .Retry().Repeat()
-            //    .Log(_logger, "IdentitiesActivated")
-            //    .Subscribe(stuff => _logger.Debug(string.Join(",", stuff)));
         }
 
         public bool IsSupported
         {
             get { return BluetoothRadio.IsSupported; }
-        }
-
-        public bool IsEnabled
-        {
-            get { return _isEnabled; }
-            set
-            {
-                if (value.Equals(_isEnabled)) return;
-                _isEnabled = value;
-                OnPropertyChanged("IsEnabled");
-            }
         }
 
         public IObservable<IBluetoothDevice> ScanForDevices()
@@ -91,44 +70,7 @@ namespace CallWall.Services
             return ActionDevice("remove", device, BluetoothSecurity.RemoveDevice);
         }
 
-        private IObservable<bool> ActionDevice(string actionName, IBluetoothDeviceInfo device, Func<BluetoothAddress, bool> action)
-        {
-            return Observable.Create<bool>(o =>
-            {
-                _logger.Info("Request to {0} Bluetooth device {1} ({2})", actionName, device.DeviceName, device.DeviceType.Name);
-                if (!IsSupported)
-                {
-                    o.OnError(new InvalidOperationException("Bluetooth not currently supported on this device."));
-                    return Disposable.Empty;
-                }
-
-                try
-                {
-                    var btAddress = new BluetoothAddress(device.DeviceAddress);
-                    var successful = action(btAddress);
-                    LogDeviceAction(actionName, device, successful);
-
-                    RefreshDevice(device);
-
-                    o.OnNext(successful);
-                    o.OnCompleted();
-                }
-                catch (Exception ex)
-                {
-                    _logger.Warn(ex, "Request to {0} Bluetooth device '{1}' ({2}) caused an error",
-                        actionName,
-                        device.DeviceName,
-                        device.DeviceType.Name);
-                    o.OnNext(false);
-                    o.OnCompleted();
-                }
-                //Cancellation not supported by BluetoothSecurity api.
-                return Disposable.Empty;
-            });
-        }
-
-
-        private IObservable<IList<string>> IdentitiesActivated(IScheduler scheduler)
+        public IObservable<IList<string>> IdentitiesActivated(IScheduler scheduler)
         {
             return Observable.Create<IList<string>>(
                 o =>
@@ -175,6 +117,42 @@ namespace CallWall.Services
                 }).SubscribeOn(scheduler);
         }
 
+        private IObservable<bool> ActionDevice(string actionName, IBluetoothDeviceInfo device, Func<BluetoothAddress, bool> action)
+        {
+            return Observable.Create<bool>(o =>
+            {
+                _logger.Info("Request to {0} Bluetooth device {1} ({2})", actionName, device.DeviceName, device.DeviceType.Name);
+                if (!IsSupported)
+                {
+                    o.OnError(new InvalidOperationException("Bluetooth not currently supported on this device."));
+                    return Disposable.Empty;
+                }
+
+                try
+                {
+                    var btAddress = new BluetoothAddress(device.DeviceAddress);
+                    var successful = action(btAddress);
+                    LogDeviceAction(actionName, device, successful);
+
+                    RefreshDevice(device);
+
+                    o.OnNext(successful);
+                    o.OnCompleted();
+                }
+                catch (Exception ex)
+                {
+                    _logger.Warn(ex, "Request to {0} Bluetooth device '{1}' ({2}) caused an error",
+                        actionName,
+                        device.DeviceName,
+                        device.DeviceType.Name);
+                    o.OnNext(false);
+                    o.OnCompleted();
+                }
+                //Cancellation not supported by BluetoothSecurity api.
+                return Disposable.Empty;
+            });
+        }
+        
         private BluetoothListener StartBluetoothListener()
         {
             _logger.Debug("Creating BluetoothListener({0})", _callMeServiceId);

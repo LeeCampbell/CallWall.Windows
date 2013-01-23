@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
+using CallWall.Activators;
 using CallWall.Services;
 using JetBrains.Annotations;
 using Microsoft.Practices.Prism.Commands;
@@ -20,6 +21,7 @@ namespace CallWall.Settings.Connectivity.Bluetooth
         #region Field members
 
         private readonly IBluetoothService _bluetoothService;
+        private readonly IBluetoothProfileActivator _bluetoothProfileActivator;
         private readonly ISchedulerProvider _schedulerProvider;
         private readonly ObservableCollection<IBluetoothDevice> _devices = new ObservableCollection<IBluetoothDevice>();
         private readonly ReadOnlyObservableCollection<IBluetoothDevice> _roDevices;
@@ -29,14 +31,15 @@ namespace CallWall.Settings.Connectivity.Bluetooth
 
         #endregion
 
-        public BluetoothSetupViewModel(IBluetoothService bluetoothService, ISchedulerProvider schedulerProvider)
+        public BluetoothSetupViewModel(IBluetoothService bluetoothService, IBluetoothProfileActivator bluetoothProfileActivator, ISchedulerProvider schedulerProvider)
         {
             _bluetoothService = bluetoothService;
+            _bluetoothProfileActivator = bluetoothProfileActivator;
             _schedulerProvider = schedulerProvider;
             _roDevices = new ReadOnlyObservableCollection<IBluetoothDevice>(_devices);
             _scanForDevicesCommand = new DelegateCommand(ScanForDevices, CanScanForDevices);
             _status = ViewModelStatus.Error("No devices. Scan to discover Bluetooth devices in the area.");
-            _bluetoothService.WhenPropertyChanges(bs => bs.IsEnabled)
+            _bluetoothProfileActivator.WhenPropertyChanges(bs => bs.IsEnabled)
                              .Subscribe(_ =>
                                             {
                                                 OnPropertyChanged("IsEnabled");
@@ -71,8 +74,8 @@ namespace CallWall.Settings.Connectivity.Bluetooth
 
         public bool IsEnabled
         {
-            get { return _bluetoothService.IsEnabled; }
-            set { _bluetoothService.IsEnabled = value; }
+            get { return _bluetoothProfileActivator.IsEnabled; }
+            set { _bluetoothProfileActivator.IsEnabled = value; }
         }
 
         public DelegateCommand ScanForDevicesCommand { get { return _scanForDevicesCommand; } }
