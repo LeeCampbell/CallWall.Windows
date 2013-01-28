@@ -58,7 +58,7 @@ namespace CallWall.Activators
 
         private IProfile Translate(IEnumerable<string> phoneNumbers)
         {
-            var ids = phoneNumbers.Select(pn => new FakePersonalIdentifier("mobile", pn));
+            var ids = phoneNumbers.Select(pn => new PersonalIdentifier("mobile", pn, FakeProviderDescription.Instance));
             return new Profile(ids);
         }
 
@@ -76,29 +76,13 @@ namespace CallWall.Activators
 
         #endregion
 
-        //HACK: Correct this design
-        private sealed class FakePersonalIdentifier : IPersonalIdentifier
-        {
-            private readonly IProviderDescription _provider;
-            private readonly string _identifierType;
-            private readonly string _value;
-
-            public FakePersonalIdentifier(string identifierType, string value)
-            {
-                _provider = new FakeProviderDescription();
-                _identifierType = identifierType;
-                _value = value;
-            }
-
-            public IProviderDescription Provider { get { return _provider; } }
-
-            public string IdentifierType { get { return _identifierType; } }
-
-            public string Value { get { return _value; } }
-        }
-
         private sealed class FakeProviderDescription : IProviderDescription
         {
+            public static readonly IProviderDescription Instance = new FakeProviderDescription();
+
+            private FakeProviderDescription()
+            {}
+
             public string Name { get { return "Test"; } }
 
             public Uri Image

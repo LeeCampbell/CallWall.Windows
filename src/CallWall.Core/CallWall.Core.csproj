@@ -111,6 +111,7 @@
     <Compile Include="Contract\IIdentityProvider.cs" />
     <Compile Include="Contract\IPersonalIdentifier.cs" />
     <Compile Include="Contract\IProfile.cs" />
+    <Compile Include="Contract\PersonalIdentifier.cs" />
     <Compile Include="Contract\Picture\IAlbum.cs" />
     <Compile Include="Contract\Picture\IPicture.cs" />
     <Compile Include="Contract\Picture\IPictureQueryProvider.cs" />
