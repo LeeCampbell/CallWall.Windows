@@ -138,6 +138,7 @@
     <Compile Include="PrismExtensions\AccordionItemsSourceSyncBehavior.cs" />
     <Compile Include="PrismExtensions\ModuleCatalogExtensions.cs" />
     <Compile Include="PrismExtensions\AccordionRegionAdapter.cs" />
+    <Compile Include="PrismExtensions\UnityContainerExtensions.cs" />
     <Compile Include="ProfileDashboard\Communication\CommunicationQueryAggregator.cs" />
     <Compile Include="ProfileDashboard\DateTimeOffsetConverter.cs" />
     <Compile Include="ProfileDashboard\ICommunicationQueryAggregator.cs" />

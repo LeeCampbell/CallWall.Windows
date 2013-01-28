@@ -1,4 +1,5 @@
-﻿using CallWall.Settings.Demonstration;
+﻿using CallWall.PrismExtensions;
+using CallWall.Settings.Demonstration;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Unity;
 
@@ -36,11 +37,8 @@ namespace CallWall.Settings
 
             //DemoView
             _container.RegisterType<IDemoView, DemoView>(new TransientLifetimeManager());
-            //http://www.stackoverflow.com/questions/10910237
-            _container.RegisterType<IDemoActivatedIdentityListener, DemoActivatedIdentityListener>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IActivatedIdentityListener, DemoActivatedIdentityListener>("DemoActivatedIdentityListener", 
-                new ExternallyControlledLifetimeManager(), 
-                new InjectionFactory(u=>u.Resolve<IDemoActivatedIdentityListener>()));
+            _container.RegisterComposite<IActivatedIdentityListener, IDemoActivatedIdentityListener, DemoActivatedIdentityListener>();
+            
 
             //var demoListener = new Demonstration.DemoActivatedIdentityListener();
             //_container.RegisterInstance<Demonstration.IDemoActivatedIdentityListener>(demoListener);
