@@ -9,51 +9,6 @@ namespace CallWall
 {
     public static class ObservableExtensions
     {
-        //public static IObservable<T> Log<T>(this IObservable<T> source, ILogger logger, string name)
-        //{
-        //    return Observable.Create<T>(o =>
-        //                                    {
-        //                                        logger.Trace("[->]{0}.Subscribe()", name);
-        //                                        var subscription = source.Do
-        //                                            (
-        //                                                i => logger.Trace("[0]{0}.OnNext({1})", name, i),
-        //                                                ex => logger.Trace("[X]{0}.OnError({1})", name, ex),
-        //                                                () => logger.Trace("[|]{0}.OnComplete()", name)
-        //                                            )
-        //                                            .Subscribe(o);
-        //                                        var loggedDisposal = Disposable.Create(() => { logger.Trace("[<-]{0}.Dispose()", name); });
-        //                                        return new CompositeDisposable(loggedDisposal, subscription);
-        //                                    });
-        //}
-
-        //public static IObservable<T> LazyConcat<T>(params IObservable<T>[] sources)
-        //{
-        //    return Observable.Create<T>(o =>
-        //                                    {
-        //                                        var cancelFlag = new BooleanDisposable();
-        //                                        var enumerator = sources.GetEnumerator();
-
-        //                                        Func<IScheduler, IEnumerator, IDisposable> loop = null;
-        //                                        loop = (s, e) =>
-        //                                                   {
-        //                                                       IDisposable subscription = Disposable.Empty;
-        //                                                       if (!cancelFlag.IsDisposed && e.MoveNext())
-        //                                                       {
-        //                                                           var cur = (IObservable<T>)e.Current;
-        //                                                           subscription = cur.Subscribe(
-        //                                                               i => o.OnNext(i),
-        //                                                               ex => o.OnError(ex),
-        //                                                               () => { s.Schedule(e, loop); });
-        //                                                       }
-        //                                                       return subscription;
-        //                                                   };
-
-        //                                        var scheduled = ImmediateScheduler.Instance.Schedule(enumerator, loop);
-
-        //                                        return new CompositeDisposable(cancelFlag, scheduled);
-        //                                    });
-        //}
-
         //TODO: Could potentially upgrade to using tasks/Await-LC
 
         public static IObservable<byte> ToObservable(

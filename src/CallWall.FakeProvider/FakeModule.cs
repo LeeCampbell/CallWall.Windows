@@ -27,12 +27,6 @@ namespace CallWall.FakeProvider
             _container.RegisterType<ICommunicationQueryProvider, Providers.TwitterCommunicationQueryProvider>("TwitterCommunicationQueryProvider", new ContainerControlledLifetimeManager());
             _container.RegisterType<IPictureQueryProvider, Providers.SkydrivePictureQueryProvider>("SkydrivePictureQueryProvider", new ContainerControlledLifetimeManager());
             _container.RegisterType<IPictureQueryProvider, Providers.FacebookPictureQueryProvider>("FacebookPictureQueryProvider", new ContainerControlledLifetimeManager());
-            
-
-            //_container.RegisterType<IIdentityActivator, UsbIdentityActivator>(new TransientLifetimeManager());
-            //_container.RegisterType<IIdentityActivator, BluetoothIdentityActivator>(new TransientLifetimeManager());
-            //_container.RegisterType<IIdentityActivator, WifiDirectIdentityActivator>(new TransientLifetimeManager());
-            //_container.RegisterType<IIdentityActivator, CloutIdentityActivator>(new TransientLifetimeManager());
         }
     }
 }

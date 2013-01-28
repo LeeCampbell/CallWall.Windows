@@ -115,7 +115,7 @@ namespace CallWall.UnitTests.Settings
             }
 
             /*
-                This is a strategy for registering a singleton but as two seperate types. This maintains lazy instantiation.
+                This is a strategy for registering a singleton but as two separate types. This maintains lazy instantiation.
              
              */
             [Test]
