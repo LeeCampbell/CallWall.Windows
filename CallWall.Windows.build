@@ -46,15 +46,10 @@
     </MSBuild>
   </Target>
   
-  <!--TODO: Use the AllowedReferenceRelatedFileExtensions property instead. This should reduce the build IO and the Find/Delete IO-->
+  <!--XML doc files are not copied to the Bin directory as we use the <AllowedReferenceRelatedFileExtensions> project property instead (to specify only pdb related files). This should reduce the build IO and the Find/Delete IO-->
   <Target Name="Compress" DependsOnTargets="Compile">
 	<ItemGroup>
-      <FilesToDelete Include=".\bin\$(Configuration)\**\*.xml"/>
-      <!--
-      Delete **\*.CodeAnalysisLog.xml
-      Delete **\*.lastcodeanalysissucceeded
-      Delete **\*.xml
-      -->
+      <FilesToDelete Include=".\bin\$(Configuration)\**\*.CodeAnalysisLog.xml;.\bin\$(Configuration)\**\*.lastcodeanalysissucceeded"/>
     </ItemGroup>            
     <Delete Files="@(FilesToDelete)" />
   </Target>
