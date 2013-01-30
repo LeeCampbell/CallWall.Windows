@@ -46,6 +46,7 @@
     </MSBuild>
   </Target>
   
+  <!--TODO: Use the AllowedReferenceRelatedFileExtensions property instead. This should reduce the build IO and the Find/Delete IO-->
   <Target Name="Compress" DependsOnTargets="Compile">
 	<ItemGroup>
       <FilesToDelete Include=".\bin\$(Configuration)\**\*.xml"/>
