@@ -26,6 +26,8 @@ namespace CallWall.Activators
             _schedulerProvider = schedulerProvider;
             _logger = loggerFactory.CreateLogger();
 
+            _logger.Verbose("BluetoothProfileActivator.ctor();");
+            //TODO: Potentially this should be using it's own BluetoothListener thread i.e. EventLoopScheduler? -LC
             _profileActivated = _bluetoothService.IdentitiesActivated(_schedulerProvider.LongRunning)
                 .Retry()
                 .Repeat()

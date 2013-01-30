@@ -1,0 +1,2 @@
+bug in the BT results where smart phones should be sorted above handheld PCs
+BT bug on testing seemss to belong in the Android code. Restarting the PC didnt help, but restarting the Phone did. Need to run more validation test. It is however a good assumption that the Android code is shite :-)

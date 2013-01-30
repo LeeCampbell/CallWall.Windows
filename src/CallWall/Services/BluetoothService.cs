@@ -16,7 +16,8 @@ namespace CallWall.Services
     public sealed class BluetoothService : IBluetoothService
     {
         private const string Pin = "127025";//TODO: Validate what this is used for. May need to rand generate it for security purposes. -LC
-        private static readonly Guid _callMeServiceId = new Guid("5DFEE4FE-A594-4BFB-B21A-6D7184330669"); //My generated random Id.
+        //private static readonly Guid _callMeServiceId = new Guid("5DFEE4FE-A594-4BFB-B21A-6D7184330669"); //My generated random Id.
+        private static readonly Guid _commonSerialBoardServiceId = new Guid("00001101-0000-1000-8000-00805F9B34FB"); //My generated random Id.
 
         private readonly ISchedulerProvider _schedulerProvider;
         private readonly ILogger _logger;
@@ -155,8 +156,8 @@ namespace CallWall.Services
         
         private BluetoothListener StartBluetoothListener()
         {
-            _logger.Debug("Creating BluetoothListener({0})", _callMeServiceId);
-            var listener = new BluetoothListener(_callMeServiceId);
+            _logger.Debug("Creating BluetoothListener({0})", _commonSerialBoardServiceId);
+            var listener = new BluetoothListener(_commonSerialBoardServiceId);
             _logger.Debug("Starting Bluetooth listener...");
             listener.Start();
             _logger.Debug("Bluetooth listener started.");
