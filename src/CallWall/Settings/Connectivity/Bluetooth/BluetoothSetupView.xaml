@@ -10,7 +10,7 @@
         <!--TODO: Add a Checkbox to show/hide only Phones -->
         <CollectionViewSource x:Key="sortedDevices" Source="{Binding Devices}">
             <CollectionViewSource.SortDescriptions>
-                <scm:SortDescription PropertyName="IsValid" Direction="Descending" />
+                <scm:SortDescription PropertyName="DeviceType.Ordinal" Direction="Ascending" />
                 <scm:SortDescription PropertyName="IsAuthenticated" Direction="Descending" />
                 <scm:SortDescription PropertyName="Name" Direction="Ascending" />
             </CollectionViewSource.SortDescriptions>

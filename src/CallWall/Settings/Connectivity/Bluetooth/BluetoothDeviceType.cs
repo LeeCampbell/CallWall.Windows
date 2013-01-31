@@ -32,17 +32,20 @@ namespace CallWall.Settings.Connectivity.Bluetooth
         private readonly string _name;
         private readonly Uri _image;
         private readonly bool _isValid;
+        private readonly byte _ordinal;
 
-        private BluetoothDeviceType(string name, Uri image, bool isValid)
+        private BluetoothDeviceType(string name, Uri image, bool isValid, byte ordinal)
         {
             _name = name;
             _image = image;
             _isValid = isValid;
+            _ordinal = ordinal;
         }
 
         public bool IsValid { get { return _isValid; } }
         public string Name { get { return _name; } }
         public Uri Image { get { return _image; } }
+        public byte Ordinal { get { return _ordinal; } }
 
         public static BluetoothDeviceType Create(DeviceClass deviceClass)
         {
@@ -54,7 +57,7 @@ namespace CallWall.Settings.Connectivity.Bluetooth
                 case DeviceClass.CordlessPhone:
                 case DeviceClass.SmartPhone:
                 case DeviceClass.WiredPhone:
-                    return new BluetoothDeviceType(deviceClass.ToString(), _phoneImageUri, true);
+                    return new BluetoothDeviceType(deviceClass.ToString(), _phoneImageUri, true, 1);
                 //Computers
                 case DeviceClass.Computer:
                 case DeviceClass.DesktopComputer:
@@ -63,7 +66,7 @@ namespace CallWall.Settings.Connectivity.Bluetooth
                 case DeviceClass.HandheldComputer:
                 case DeviceClass.PdaComputer:
                 case DeviceClass.WearableComputer:
-                    return new BluetoothDeviceType(deviceClass.ToString(), _computerImageUri, false);
+                    return new BluetoothDeviceType(deviceClass.ToString(), _computerImageUri, false, 2);
                 //Network
                 case DeviceClass.IsdnAccess:
                 case DeviceClass.AccessPointAvailable:
@@ -74,7 +77,7 @@ namespace CallWall.Settings.Connectivity.Bluetooth
                 case DeviceClass.AccessPoint67To83:
                 case DeviceClass.AccessPoint83To99:
                 case DeviceClass.AccessPointNoService:
-                    return new BluetoothDeviceType(deviceClass.ToString(), _networkImageUri, false);
+                    return new BluetoothDeviceType(deviceClass.ToString(), _networkImageUri, false, 3);
                 //AV
                 case DeviceClass.AudioVideoUnclassified:
                 case DeviceClass.AudioVideoHeadset:
@@ -93,7 +96,7 @@ namespace CallWall.Settings.Connectivity.Bluetooth
                 case DeviceClass.AudioVideoDisplayLoudSpeaker:
                 case DeviceClass.AudioVideoVideoConferencing:
                 case DeviceClass.AudioVideoGaming:
-                    return new BluetoothDeviceType(deviceClass.ToString(), _audioVisualImageUri, false);
+                    return new BluetoothDeviceType(deviceClass.ToString(), _audioVisualImageUri, false, 3);
                 //Peripheral/Accessories
                 case DeviceClass.Peripheral:
                 case DeviceClass.PeripheralJoystick:
@@ -105,14 +108,14 @@ namespace CallWall.Settings.Connectivity.Bluetooth
                 case DeviceClass.PeripheralKeyboard:
                 case DeviceClass.PeripheralPointingDevice:
                 case DeviceClass.PeripheralCombinedKeyboardPointingDevice:
-                    return new BluetoothDeviceType(deviceClass.ToString(), _peripheralImageUri, false);
+                    return new BluetoothDeviceType(deviceClass.ToString(), _peripheralImageUri, false, 3);
                 //Imaging/Printers/Cameras
                 case DeviceClass.Imaging:
                 case DeviceClass.ImagingDisplay:
                 case DeviceClass.ImagingCamera:
                 case DeviceClass.ImagingScanner:
                 case DeviceClass.ImagingPrinter:
-                    return new BluetoothDeviceType(deviceClass.ToString(), _imagingImageUri, false);
+                    return new BluetoothDeviceType(deviceClass.ToString(), _imagingImageUri, false, 3);
                 ////Wearable
                 //case DeviceClass.Wearable:
                 //case DeviceClass.WearableWristWatch:
@@ -140,7 +143,7 @@ namespace CallWall.Settings.Connectivity.Bluetooth
                 //case DeviceClass.Uncategorized:
                 //case DeviceClass.Miscellaneous:
                 default:
-                    return new BluetoothDeviceType(deviceClass.ToString(), _miscellaneousImageUri, false);
+                    return new BluetoothDeviceType(deviceClass.ToString(), _miscellaneousImageUri, false, 3);
             }
         }
     }

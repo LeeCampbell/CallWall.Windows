@@ -22,11 +22,13 @@ namespace CallWall
             _container.RegisterType<IPersonalizationSettings, PersonalizationSettings>(new ContainerControlledLifetimeManager());
 
             //_container.RegisterType<IProfileActivator, FakeProfileActivator>(new ContainerControlledLifetimeManager());
+            
             _container.RegisterType<IBluetoothService, BluetoothService>(new ContainerControlledLifetimeManager());
             _container.RegisterComposite<IProfileActivator, IBluetoothProfileActivator, BluetoothProfileActivator>();
             //_container.RegisterComposite<IProfileActivator, IUsbIdentityActivator, UsbIdentityActivator>();
             //_container.RegisterComposite<IProfileActivator, IWifiDirectIdentityActivator, WifiDirectIdentityActivator>();
             //_container.RegisterComposite<IProfileActivator, ICloudIdentityActivator, CloudIdentityActivator>();
+            //_container.RegisterComposite<IProfileActivator, IIsdnIdentityActivator, CloudIdentityActivator>();
             
             _container.RegisterType<IProfileActivatorAggregator, ProfileActivatorAggregator>(new ContainerControlledLifetimeManager());
         }

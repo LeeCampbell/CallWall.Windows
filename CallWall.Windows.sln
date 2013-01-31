@@ -8,6 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		BuildTestPublish.bat = BuildTestPublish.bat
 		CallWall.Windows.build = CallWall.Windows.build
 		tools\MSBuild.Community.Tasks.targets = tools\MSBuild.Community.Tasks.targets
+		todo.txt = todo.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.Core.UnitTests", "src\CallWall.Core.UnitTests\CallWall.Core.UnitTests.csproj", "{1FF86383-9A6D-4D45-A81D-94EFBD6DAE84}"

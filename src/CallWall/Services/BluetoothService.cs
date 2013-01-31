@@ -65,7 +65,7 @@ namespace CallWall.Services
         {
             return ActionDevice("pair", device, btAddress => BluetoothSecurity.PairRequest(btAddress, Pin));
         }
-        
+
         public IObservable<bool> RemoveDevice(IBluetoothDeviceInfo device)
         {
             return ActionDevice("remove", device, BluetoothSecurity.RemoveDevice);
@@ -153,7 +153,7 @@ namespace CallWall.Services
                 return Disposable.Empty;
             });
         }
-        
+
         private BluetoothListener StartBluetoothListener()
         {
             _logger.Debug("Creating BluetoothListener({0})", _commonSerialBoardServiceId);
