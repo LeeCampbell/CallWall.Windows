@@ -167,6 +167,7 @@
     <Compile Include="Services\IBluetoothService.cs" />
     <Compile Include="Services\PersonalizationSettings.cs" />
     <Compile Include="Services\WrappedBluetoothInfo.cs" />
+    <Compile Include="Settings\Accounts\AccountSettingsModel.cs" />
     <Compile Include="Settings\Connectivity\Bluetooth\BluetoothConnectionConfiguration.cs" />
     <Compile Include="Settings\Connectivity\Bluetooth\BluetoothDevice.cs" />
     <Compile Include="Settings\Connectivity\Bluetooth\BluetoothDeviceType.cs" />
@@ -365,6 +366,10 @@
     <ProjectReference Include="..\CallWall.FakeProvider\CallWall.FakeProvider.csproj">
       <Project>{54A13F98-B269-4235-8F67-EABB712176A4}</Project>
       <Name>CallWall.FakeProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CallWall.Google\CallWall.Google.csproj">
+      <Project>{62351821-7438-4898-987e-8debab0d66ee}</Project>
+      <Name>CallWall.Google</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

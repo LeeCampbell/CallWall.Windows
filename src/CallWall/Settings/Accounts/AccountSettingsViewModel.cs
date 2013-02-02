@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.Practices.Prism.Commands;
 
 namespace CallWall.Settings.Accounts
@@ -17,6 +18,11 @@ namespace CallWall.Settings.Accounts
         public bool RequiresSetup
         {
             get { return _accountSettingsModel.RequiresSetup; }
+        }
+
+        public IEnumerable<IAccountConfiguration> ConnectivityConfigurators
+        {
+            get { return _accountSettingsModel.AccountConfigurations; }
         }
 
         public DelegateCommand CloseCommand

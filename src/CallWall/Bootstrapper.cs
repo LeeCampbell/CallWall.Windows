@@ -1,4 +1,5 @@
 ﻿using CallWall.FakeProvider;
+using CallWall.Google;
 using CallWall.Logging;
 using CallWall.PrismExtensions;
 using Microsoft.Practices.Prism.Modularity;
@@ -44,6 +45,7 @@ namespace CallWall
             ModuleCatalog.Add<Settings.SettingsModule>();
             
             ModuleCatalog.Add<FakeModule>();
+            ModuleCatalog.Add<GoogleModule>();
 
             ModuleCatalog.Add<ProfileDashboard.DashboardModule>();
             ModuleCatalog.Add<Welcome.WelcomeModule>();

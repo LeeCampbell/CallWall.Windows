@@ -35,7 +35,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
-	<AssemblyOriginatorKeyFile>..\CallWall.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\CallWall.snk</AssemblyOriginatorKeyFile>
     <RestorePackages>true</RestorePackages>
     <AllowedReferenceRelatedFileExtensions>.pdb</AllowedReferenceRelatedFileExtensions>
   </PropertyGroup>
@@ -118,6 +118,7 @@
     <Compile Include="DependencyObjectExtensions.cs" />
     <Compile Include="Ensure.cs" />
     <Compile Include="GrayScaleConverter.cs" />
+    <Compile Include="IAccountConfiguration.cs" />
     <Compile Include="IActivatedIdentityListener.cs" />
     <Compile Include="IConnectionConfiguration.cs" />
     <Compile Include="ILogger.cs" />

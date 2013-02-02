@@ -1,12 +1,15 @@
 ﻿<UserControl x:Class="CallWall.Settings.Accounts.AccountSettingsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:CallWall="clr-namespace:CallWall;assembly=CallWall.Core">
     <Control.Resources>
         <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
             <Setter Property="Width" Value="200"/>
         </Style>
+        
+        <CallWall:GrayscaleConverter x:Key="grayScaleConverter"/>
     </Control.Resources>
-    <DockPanel>
+    <!--<DockPanel>
         <Button DockPanel.Dock="Bottom" Command="{Binding CloseCommand}" IsDefault="True" Content="Done"/>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -21,13 +24,13 @@
                 <Expander>
                     <Expander.Header>
                         <StackPanel Orientation="Horizontal">
-                            <!--TODO: Should be gray when not authorized for any features-->
+                            <! - -TODO: Should be gray when not authorized for any features- - >
                             <Image Source="C:\Users\Lee\Documents\GitHub\CallWall.Windows\src\CallWall\Images\Google_64x64.png" Stretch="Uniform" StretchDirection="Both" Height="32"/>
                             <TextBlock Style="{DynamicResource PageSubHeaderStyle}">Google</TextBlock>
                         </StackPanel>
                     </Expander.Header>
                     <DockPanel>
-                        <!--TODO: Authorize should only be enabled when a change is made-->
+                        < ! - - TODO: Authorize should only be enabled when a change is made - - >
                         <Button DockPanel.Dock="Bottom" Command="{Binding CloseCommand}" Content="Authorize"/>
                         <WrapPanel Orientation="Horizontal">
                             <CheckBox>Contacts</CheckBox>
@@ -39,6 +42,79 @@
                     </DockPanel>
                 </Expander>
             </StackPanel>
+        </ScrollViewer>
+    </DockPanel>-->
+
+    <DockPanel KeyboardNavigation.DirectionalNavigation="Contained" 
+               KeyboardNavigation.TabNavigation="Contained"
+               KeyboardNavigation.ControlTabNavigation="Contained">
+        <Button DockPanel.Dock="Bottom" 
+                Command="{Binding CloseCommand}" 
+                IsDefault="True"
+                TabIndex="99">
+            Done
+        </Button>
+
+        <TextBlock DockPanel.Dock="Top" Style="{StaticResource PageHeaderStyle}">
+            Register your accounts
+        </TextBlock>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <TabControl ItemsSource="{Binding ConnectivityConfigurators}" 
+                        TabStripPlacement="Left"
+                        BorderThickness="0"
+                        Background="#802080">
+                <TabControl.Resources>
+                    <Style TargetType="TabItem" BasedOn="{StaticResource {x:Type TabItem}}">
+                        <Setter Property="HeaderTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Stretch="Uniform" StretchDirection="Both" Height="40">
+                                            <Image.Style>
+                                                <Style TargetType="Image">
+                                                    <Setter Property="Source" Value="{Binding Image}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsEnabled}" Value="False">
+                                                            <Setter Property="Source" Value="{Binding Image, Converter={StaticResource grayScaleConverter}}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Image.Style>
+                                        </Image>
+                                        <TextBlock Text="{Binding Name}" >
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock" BasedOn="{StaticResource PageSubHeaderStyle}">
+                                                    <Setter Property="Foreground" Value="{StaticResource SecondaryForeground}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Expander}, Path=IsExpanded}" Value="True">
+                                                            <Setter Property="Foreground" Value="{StaticResource PrimaryForeground}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=StackPanel}, Path=IsMouseOver}" Value="True">
+                                                            <Setter Property="Foreground" Value="{StaticResource PrimaryForeground}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <ContentControl Content="{Binding View}"
+                                                    Margin="10,0"
+                                                    Focusable="False"
+                                                    KeyboardNavigation.IsTabStop="False"
+                                                    KeyboardNavigation.TabNavigation="Local"/>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TabControl.Resources>
+            </TabControl>
         </ScrollViewer>
     </DockPanel>
 </UserControl>

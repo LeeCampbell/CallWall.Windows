@@ -1,0 +1,5 @@
+Port the Google Contacts code over
+Integrate Google Mail
+Integrate Pictures from Google (Where?). Can I get images from emails?
+
+Backfill the tests!! Coverage is pretty low!
