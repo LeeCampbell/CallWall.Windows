@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using CallWall.Activators;
 using CallWall.Services;
 using CallWall.Settings.Connectivity.Bluetooth;
+using CallWall.Testing;
 using Microsoft.Reactive.Testing;
 using Moq;
 using NUnit.Framework;

@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 
-namespace CallWall.UnitTests
+namespace CallWall.Testing
 {
     public sealed class AllEnumValuesAttribute : ValuesAttribute
     {

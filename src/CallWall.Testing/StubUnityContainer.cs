@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Practices.Unity;
 
-namespace CallWall.UnitTests.Settings
+namespace CallWall.Testing
 {
     public sealed class StubUnityContainer : IUnityContainer
     {
@@ -10,7 +10,7 @@ namespace CallWall.UnitTests.Settings
         private readonly List<RegisteredInstance> _registeredInstances = new List<RegisteredInstance>();
 
         public void Dispose()
-        {}
+        { }
 
         #region Implementation of IUnityContainer
 
@@ -23,7 +23,7 @@ namespace CallWall.UnitTests.Settings
 
         public IUnityContainer RegisterInstance(Type t, string name, object instance, LifetimeManager lifetime)
         {
-            var registeredInstance = new RegisteredInstance{Type = t, Name = name, Instance = instance, LifetimeManager = lifetime};
+            var registeredInstance = new RegisteredInstance { Type = t, Name = name, Instance = instance, LifetimeManager = lifetime };
             RegisteredInstances.Add(registeredInstance);
             return this;
         }
@@ -35,7 +35,7 @@ namespace CallWall.UnitTests.Settings
 
         public IEnumerable<object> ResolveAll(Type t, params ResolverOverride[] resolverOverrides)
         {
-            return new object[] {};
+            return new object[] { };
         }
 
         public object BuildUp(Type t, object existing, string name, params ResolverOverride[] resolverOverrides)
@@ -79,7 +79,7 @@ namespace CallWall.UnitTests.Settings
             get { throw new NotImplementedException(); }
         }
 
-        
+
 
         #endregion
 
@@ -91,41 +91,6 @@ namespace CallWall.UnitTests.Settings
         public List<RegisteredInstance> RegisteredInstances
         {
             get { return _registeredInstances; }
-        }
-    }
-
-
-    public sealed class RegisteredType
-    {
-        public Type From { get; set; }
-
-        public Type To { get; set; }
-
-        public string Name { get; set; }
-
-        public LifetimeManager LifetimeManager { get; set; }
-
-        public InjectionMember[] InjectionMembers { get; set; }
-
-        public override string ToString()
-        {
-            return string.Format("RegisteredType{{From={0}, To={1}, Name={2}, LM={3}}}", From.Name, To.Name, Name, LifetimeManager);
-        }
-    }
-
-    public sealed class RegisteredInstance
-    {
-        public Type Type { get; set; }
-
-        public string Name { get; set; }
-
-        public object Instance { get; set; }
-
-        public LifetimeManager LifetimeManager { get; set; }
-
-        public override string ToString()
-        {
-            return string.Format("RegisteredInstance{{Type={0}, Name={1}, Instance={2}, LM={3}}}", Type.Name, Name, Instance, LifetimeManager);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using CallWall.Services;
 using CallWall.Settings.Connectivity.Bluetooth;
+using CallWall.Testing;
 using InTheHand.Net.Bluetooth;
 using Microsoft.Reactive.Testing;
 using Moq;

@@ -3,6 +3,7 @@ using CallWall.Settings;
 using CallWall.Settings.Accounts;
 using CallWall.Settings.Connectivity;
 using CallWall.Settings.Demonstration;
+using CallWall.Testing;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
 

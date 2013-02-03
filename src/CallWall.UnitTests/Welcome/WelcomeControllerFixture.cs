@@ -2,6 +2,7 @@
 using CallWall.Settings.Accounts;
 using CallWall.Settings.Connectivity;
 using CallWall.Settings.Demonstration;
+using CallWall.Testing;
 using CallWall.Welcome;
 using Microsoft.Practices.Prism.Regions;
 using Moq;

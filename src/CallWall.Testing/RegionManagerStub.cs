@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -6,7 +6,7 @@ using System.Linq;
 using Microsoft.Practices.Prism.Regions;
 using Moq;
 
-namespace CallWall.UnitTests
+namespace CallWall.Testing
 {
     public sealed class RegionManagerStub : IRegionManager
     {
