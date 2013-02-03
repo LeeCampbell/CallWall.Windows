@@ -6,4 +6,10 @@
         <Setter Property="AllowsTransparency" Value="True"/>
         <Setter Property="Background" Value="#F5303030"/>
     </Style>
+
+    <Style TargetType="Window" x:Key="PopupRegionStyle">
+        <Setter Property="WindowState" Value="Normal"/>
+        <Setter Property="WindowStyle" Value="ToolWindow"/>
+        <Setter Property="AllowsTransparency" Value="False"/>
+    </Style>
 </ResourceDictionary>

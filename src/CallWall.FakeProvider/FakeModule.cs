@@ -21,7 +21,7 @@ namespace CallWall.FakeProvider
             _container.RegisterType<IConnectionConfiguration, Connectivity.WifiDirectConnectionConfiguration>("WifiDirectConnectionConfiguration", new ContainerControlledLifetimeManager());
             _container.RegisterType<IConnectionConfiguration, Connectivity.CloudConnectionConfiguration>("CloudConnectionConfiguration", new ContainerControlledLifetimeManager());
             
-            _container.RegisterType<IContactQueryProvider, Providers.FakeGoogleContactQueryProvider>("FakeGoogleContactQueryProvider", new ContainerControlledLifetimeManager());
+            //_container.RegisterType<IContactQueryProvider, Providers.FakeGoogleContactQueryProvider>("FakeGoogleContactQueryProvider", new ContainerControlledLifetimeManager());
             _container.RegisterType<ICommunicationQueryProvider, Providers.GmailCommunicationQueryProvider>("GmailCommunicationQueryProvider", new ContainerControlledLifetimeManager());
             _container.RegisterType<ICommunicationQueryProvider, Providers.SmsCommunicationQueryProvider>("SmsCommunicationQueryProvider", new ContainerControlledLifetimeManager());
             _container.RegisterType<ICommunicationQueryProvider, Providers.TwitterCommunicationQueryProvider>("TwitterCommunicationQueryProvider", new ContainerControlledLifetimeManager());

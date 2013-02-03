@@ -32,7 +32,7 @@ namespace CallWall.Google.AccountConfiguration
 
         public DelegateCommand AuthorizeCommand { get { return _authorizeCommand; } }
 
-        public ReadOnlyObservableCollection<GoogleResource> Resources { get { return _model.Resources; } }
+        public ReadOnlyCollection<GoogleResource> Resources { get { return _model.Resources; } }
 
         #region INotifyPropertyChanged implementation
         public event PropertyChangedEventHandler PropertyChanged;

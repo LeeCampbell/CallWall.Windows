@@ -9,6 +9,34 @@ namespace CallWall
 {
     public static class ObservableExtensions
     {
+        public static IObservable<T> LazyConcat<T>(params IObservable<T>[] sources)
+        {
+            return Observable.Create<T>(o =>
+            {
+                var cancelFlag = new BooleanDisposable();
+                var enumerator = sources.GetEnumerator();
+
+                Func<IScheduler, IEnumerator, IDisposable> loop = null;
+                loop = (s, e) =>
+                {
+                    var subscription = Disposable.Empty;
+                    if (!cancelFlag.IsDisposed && e.MoveNext())
+                    {
+                        var cur = (IObservable<T>)e.Current;
+                        subscription = cur.Subscribe(
+                            i => o.OnNext(i),
+                            ex => o.OnError(ex),
+                            () => { s.Schedule(e, loop); });
+                    }
+                    return subscription;
+                };
+
+                var scheduled = ImmediateScheduler.Instance.Schedule(enumerator, loop);
+
+                return new CompositeDisposable(cancelFlag, scheduled);
+            });
+        }
+
         //TODO: Could potentially upgrade to using tasks/Await-LC
 
         public static IObservable<byte> ToObservable(

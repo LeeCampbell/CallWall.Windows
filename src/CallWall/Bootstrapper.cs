@@ -67,6 +67,9 @@ namespace CallWall
             var windowStyle = (Style)App.Current.FindResource("WindowRegionStyle");
             RegionPopupBehaviors.RegisterNewWindowRegion(RegionNames.WindowRegion, windowStyle);
 
+            var popupStyle = (Style)App.Current.FindResource("PopupRegionStyle");
+            RegionPopupBehaviors.RegisterNewWindowRegion(RegionNames.PopupWindowRegion, popupStyle);
+
             return baseMappings;
         }
 

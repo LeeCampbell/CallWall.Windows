@@ -20,6 +20,7 @@ namespace CallWall
         {
             _container.RegisterType<ISchedulerProvider, SchedulerProvider>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IPersonalizationSettings, PersonalizationSettings>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<Web.IHttpClient, Web.HttpClient>(new ContainerControlledLifetimeManager());
 
             //_container.RegisterType<IProfileActivator, FakeProfileActivator>(new ContainerControlledLifetimeManager());
             

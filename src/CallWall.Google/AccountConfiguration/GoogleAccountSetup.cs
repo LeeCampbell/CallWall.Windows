@@ -1,49 +1,44 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using CallWall.Google.Authorization;
 
 namespace CallWall.Google.AccountConfiguration
 {
     public sealed class GoogleAccountSetup : IGoogleAccountSetup
     {
-        private readonly ReadOnlyObservableCollection<GoogleResource> _roResources;
-        private readonly ObservableCollection<GoogleResource> _resouces = new ObservableCollection<GoogleResource>();
+        private const string IsEnabledKey = "CallWall.Google.AccountConfiguration.GoogleAccountSetup.IsEnabled";
+        private readonly IPersonalizationSettings _settings;
+        private readonly IGoogleAuthorization _authorization;
         private bool _isAuthorized;
-        private bool _isEnabled;
 
-        public GoogleAccountSetup()
+        public GoogleAccountSetup(IPersonalizationSettings settings, IGoogleAuthorization authorization)
         {
+            _settings = settings;
+            _authorization = authorization;
+            _authorization.Status.Subscribe(s => IsAuthorized = s.IsAuthorized);
+
             //TODO: Know what we are and are not Authenticated for. 
             //  A change to this state should be reflected in the Model
             //  Save state to disk (can I encrypt this? Will LocalStorage providers protect i for me?)
-
-            _resouces = new ObservableCollection<GoogleResource>();
-            _roResources = new ReadOnlyObservableCollection<GoogleResource>(_resouces);
-
-            _resouces.Add(new GoogleResource("Contacts", "Contacts_48x48.png", new Uri(@"https://www.google.com/m8/feeds/")));
-            _resouces.Add(new GoogleResource("Email", "Email_48x48.png", null));
-            _resouces.Add(new GoogleResource("Calendar", "Calendar_48x48.png", null));
         }
 
-        public ReadOnlyObservableCollection<GoogleResource> Resources { get { return _roResources; } }
-        
+        public ReadOnlyCollection<GoogleResource> Resources { get { return _authorization.AvailableResourceScopes; } }
+
         public bool IsEnabled
         {
-            get { return _isEnabled; }
+            get { return _settings.GetAsBool(IsEnabledKey, false); }
             set
             {
-                if (_isEnabled != value)
-                {
-                    _isEnabled = value;
-                    OnPropertyChanged("IsEnabled");
-                }
+                _settings.SetAsBool(IsEnabledKey, value);
+                OnPropertyChanged("IsEnabled");
             }
         }
 
         public bool IsAuthorized
         {
             get { return _isAuthorized; }
-            set
+            private set
             {
                 if (_isAuthorized != value)
                 {
@@ -55,7 +50,7 @@ namespace CallWall.Google.AccountConfiguration
 
         public void Authorize()
         {
-            throw new NotImplementedException();
+            _authorization.RequestAccessToken().Subscribe();
         }
 
         #region INotifyPropertyChanged implementation
