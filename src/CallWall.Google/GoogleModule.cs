@@ -24,6 +24,7 @@ namespace CallWall.Google
             _container.RegisterType<AccountConfiguration.IGoogleAccountSetupView, AccountConfiguration.GoogleAccountSetupView>(new ContainerControlledLifetimeManager());
             _container.RegisterType<AccountConfiguration.IGoogleAccountSetup, AccountConfiguration.GoogleAccountSetup>(new ContainerControlledLifetimeManager());
 
+            _container.RegisterType<Providers.IGoogleContactProfileTranslator, Providers.GoogleContactProfileTranslator>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IContactQueryProvider, Providers.GoogleContactQueryProvider>("GoogleContactQueryProvider", new ContainerControlledLifetimeManager());
             //Contacts
             //Mail

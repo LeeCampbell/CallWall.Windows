@@ -10,26 +10,28 @@ namespace CallWall.Google.Providers
 {
     public sealed class GoogleContactQueryProvider : IContactQueryProvider
     {
-        private readonly IGoogleAuthorization _authorizationModel;
+        private readonly IGoogleAuthorization _authorization;
         private readonly IHttpClient _webRequstService;
+        private readonly IGoogleContactProfileTranslator _translator;
         private readonly ILogger _logger;
 
-        public GoogleContactQueryProvider(IGoogleAuthorization authorizationModel, IHttpClient webRequstService, ILoggerFactory loggerFactory)
+        public GoogleContactQueryProvider(IGoogleAuthorization authorization, IHttpClient webRequstService, IGoogleContactProfileTranslator translator, ILoggerFactory loggerFactory)
         {
-            _authorizationModel = authorizationModel;
+            _authorization = authorization;
             _webRequstService = webRequstService;
+            _translator = translator;
             _logger = loggerFactory.CreateLogger();
         }
 
         public IObservable<IContactProfile> LoadContact(IProfile activeProfile)
         {
             return (
-                       from accessToken in _authorizationModel.RequestAccessToken()
-                           .Log(_logger, "GCQPRequestAccessToken")
+                       from accessToken in _authorization.RequestAccessToken()
+                           .Log(_logger, "RequestAccessToken")
                        from request in Observable.Return(CreateRequestParams(activeProfile, accessToken))
                            .Log(_logger, "ContactRequestParams")
                        from response in _webRequstService.GetResponse(request)
-                       select GoogleContactProfile.Translate(response, accessToken)
+                       select _translator.Translate(response, accessToken)
                    )
                 .Take(1);
         }
@@ -44,6 +46,7 @@ namespace CallWall.Google.Providers
             param.QueryStringParameters.Add("access_token", accessToken);
             param.QueryStringParameters.Add("q", query);
             param.Headers.Add("GData-Version", "3.0");
+            
             return param;
         }
     }
