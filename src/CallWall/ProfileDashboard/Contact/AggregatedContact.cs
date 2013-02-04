@@ -5,6 +5,7 @@ using Microsoft.Practices.Unity.Utility;
 
 namespace CallWall.ProfileDashboard.Contact
 {
+    //TODO: Resolve duplicates and conflicts.
     public sealed class AggregatedContact : IContactProfile
     {
         public AggregatedContact(IContactProfile seed, IContactProfile addendum)
@@ -15,6 +16,7 @@ namespace CallWall.ProfileDashboard.Contact
             Title = seed.Title ?? addendum.Title;
             FullName = seed.FullName ?? addendum.FullName;
             DateOfBirth = seed.DateOfBirth ?? addendum.DateOfBirth;
+            Tags = Concat(seed.Tags, addendum.Tags);
             Avatars = Concat(seed.Avatars, addendum.Avatars);
             Organizations = Concat(seed.Organizations, addendum.Organizations);
             Relationships = Concat(seed.Relationships, addendum.Relationships);

@@ -23,7 +23,7 @@ namespace CallWall
         public static void Fatal(this ILogger logger, Exception exception, string format, params object[] args)
         {
             if (logger == null) throw new ArgumentNullException("logger");
-            var formattedMessage = string.Format(CultureInfo.CurrentCulture, format, args);
+            var formattedMessage = Format(format, args);
             logger.Write(LogLevel.Fatal, formattedMessage, exception);
         }
         /// <summary>
@@ -50,7 +50,7 @@ namespace CallWall
         public static void Error(this ILogger logger, Exception exception, string format, params object[] args)
         {
             if (logger == null) throw new ArgumentNullException("logger");
-            var formattedMessage = string.Format(CultureInfo.CurrentCulture, format, args);
+            var formattedMessage = Format(format, args);
             logger.Write(LogLevel.Error, formattedMessage, exception);
         }
         /// <summary>
@@ -77,7 +77,7 @@ namespace CallWall
         public static void Info(this ILogger logger, Exception exception, string format, params object[] args)
         {
             if (logger == null) throw new ArgumentNullException("logger");
-            var formattedMessage = string.Format(CultureInfo.CurrentCulture, format, args);
+            var formattedMessage = Format(format, args);
             logger.Write(LogLevel.Info, formattedMessage, exception);
         }
         /// <summary>
@@ -104,7 +104,7 @@ namespace CallWall
         public static void Warn(this ILogger logger, Exception exception, string format, params object[] args)
         {
             if (logger == null) throw new ArgumentNullException("logger");
-            var formattedMessage = string.Format(CultureInfo.CurrentCulture, format, args);
+            var formattedMessage = Format(format, args);
             logger.Write(LogLevel.Warn, formattedMessage, exception);
         }
         /// <summary>
@@ -131,7 +131,7 @@ namespace CallWall
         public static void Debug(this ILogger logger, Exception exception, string format, params object[] args)
         {
             if (logger == null) throw new ArgumentNullException("logger");
-            var formattedMessage = string.Format(CultureInfo.CurrentCulture, format, args);
+            var formattedMessage = Format(format, args);
             logger.Write(LogLevel.Debug, formattedMessage, exception);
         }
         /// <summary>
@@ -158,7 +158,7 @@ namespace CallWall
         public static void Trace(this ILogger logger, Exception exception, string format, params object[] args)
         {
             if (logger == null) throw new ArgumentNullException("logger");
-            var formattedMessage = string.Format(CultureInfo.CurrentCulture, format, args);
+            var formattedMessage = Format(format, args);
             logger.Write(LogLevel.Trace, formattedMessage, exception);
         }
         /// <summary>
@@ -185,7 +185,7 @@ namespace CallWall
         public static void Verbose(this ILogger logger, Exception exception, string format, params object[] args)
         {
             if (logger == null) throw new ArgumentNullException("logger");
-            var formattedMessage = string.Format(CultureInfo.CurrentCulture, format, args);
+            var formattedMessage = Format(format, args);
             logger.Write(LogLevel.Verbose, formattedMessage, exception);
         }
         /// <summary>
@@ -199,6 +199,13 @@ namespace CallWall
         {
             if (logger == null) throw new ArgumentNullException("logger");
             logger.Verbose(null, format, args);
+        }
+
+        private static string Format(string format, params object[] args)
+        {
+            if (args == null || args.Length == 0)
+                return format;
+            return string.Format(CultureInfo.CurrentCulture, format, args);
         }
 
         /// <summary>

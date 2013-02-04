@@ -54,10 +54,27 @@
                 <!--
             DateOfBirth TODO: Create a Birthday control.
             -->
+                <ItemsControl ItemsSource="{Binding Tags}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="#101010" Margin="5,5,0,0">
+                                <TextBlock Text="{Binding}" 
+                                           Margin="5"
+                                           Foreground="White"
+                                           Style="{StaticResource ContentHeading2Style}"/>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
                 <HeaderedItemsControl Header="Organizations" ItemsSource="{Binding Organizations}" Style="{StaticResource SubsetStyle}"/>
                 <HeaderedItemsControl Header="Relationships" ItemsSource="{Binding Relationships}" Style="{StaticResource SubsetStyle}"/>
-                <HeaderedItemsControl Header="PhoneNumbers" ItemsSource="{Binding PhoneNumbers}" Style="{StaticResource SubsetStyle}"/>
-                <HeaderedItemsControl Header="EmailAddresses" ItemsSource="{Binding EmailAddresses}" Style="{StaticResource SubsetStyle}"/>
+                <HeaderedItemsControl Header="Phone Numbers" ItemsSource="{Binding PhoneNumbers}" Style="{StaticResource SubsetStyle}"/>
+                <HeaderedItemsControl Header="Email Addresses" ItemsSource="{Binding EmailAddresses}" Style="{StaticResource SubsetStyle}"/>
             </StackPanel>
         </Border>
     </DataTemplate>

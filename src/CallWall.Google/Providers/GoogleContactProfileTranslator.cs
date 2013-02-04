@@ -95,8 +95,8 @@ namespace CallWall.Google.Providers
                     from groupEntry in xGroupFeed.Elements(ToXName("x", "entry"))
                     let id = groupEntry.Element(ToXName("x", "id"))
                     let title = groupEntry.Element(ToXName("x", "title"))
-                    where id != null && title != null
-                    select new {Id = id.Value, Title = title.Value}
+                    where id != null && title != null && !string.IsNullOrWhiteSpace(title.Value)
+                    select new { Id = id.Value, Title = title.Value.Replace("System Group: ", string.Empty) }
                 ).ToDictionary(g => g.Id, g => g.Title);
 
 
