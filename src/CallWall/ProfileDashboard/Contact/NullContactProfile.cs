@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using CallWall.Contract;
 using CallWall.Contract.Contact;
 
 namespace CallWall.ProfileDashboard.Contact
@@ -16,6 +15,7 @@ namespace CallWall.ProfileDashboard.Contact
         public string FullName { get { return null; } }
         public IEnumerable<Uri> Avatars { get { return null; } }
         public DateTime? DateOfBirth { get { return null; } }
+        public IEnumerable<string> Tags { get { return null; } }
         public IEnumerable<IContactAssociation> Organizations { get { return null; } }
         public IEnumerable<IContactAssociation> Relationships { get { return null; } }
         public IEnumerable<IContactAssociation> EmailAddresses { get { return null; } }

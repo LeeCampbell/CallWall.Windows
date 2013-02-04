@@ -29,6 +29,11 @@ namespace CallWall.Contract.Contact
         /// </summary>
         DateTime? DateOfBirth { get; }
 
+        /// <summary>
+        /// Any tags a.k.a groups that the contact belongs to. e.g. Friends, Family, Co-workers etc.
+        /// </summary>
+        IEnumerable<string> Tags { get; } 
+
         IEnumerable<IContactAssociation> Organizations { get; }
 
         IEnumerable<IContactAssociation> Relationships { get; }

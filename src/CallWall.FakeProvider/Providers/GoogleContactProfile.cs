@@ -97,6 +97,18 @@ namespace CallWall.FakeProvider.Providers
             }
         }
 
+        public IEnumerable<string> Tags
+        {
+            get
+            {
+                return new[]
+                {
+                    "Family",
+                    "UK", 
+                };
+            }
+        }
+
         private sealed class ContactAssociation : IContactAssociation
         {
             private readonly string _name;

@@ -42,14 +42,14 @@ namespace CallWall.Google.UnitTests.Providers
             private IProfile _profile;
             private string _accessToken = "The access token";
             private string _webResponse = "The web response";
-            private Mock<IContactProfile> _contactProfileMock;
+            private Mock<IGoogleContactProfile> _contactProfileMock;
 
             public override void Setup()
             {
                 base.Setup();
                 _authorizationMock.Setup(a => a.RequestAccessToken())
                     .Returns(Observable.Return(_accessToken));
-                _contactProfileMock = new Mock<IContactProfile>();
+                _contactProfileMock = new Mock<IGoogleContactProfile>();
                 _translatorMock.Setup(t => t.Translate(_webResponse, _accessToken))
                     .Returns(_contactProfileMock.Object);
                 _profile = CreateProfile();

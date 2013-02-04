@@ -3,7 +3,6 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using CallWall.Contract.Contact;
 using CallWall.Web;
 
 namespace CallWall.Google.Providers
@@ -11,7 +10,6 @@ namespace CallWall.Google.Providers
     public sealed class GoogleContactProfileTranslator : IGoogleContactProfileTranslator
     {
         private static readonly XmlNamespaceManager _ns;
-        private readonly ILogger _logger;
 
         static GoogleContactProfileTranslator()
         {
@@ -23,22 +21,18 @@ namespace CallWall.Google.Providers
             _ns.AddNamespace("gd", "http://schemas.google.com/g/2005");
         }
 
-        public GoogleContactProfileTranslator(ILoggerFactory loggerFactory)
+        public GoogleContactProfileTranslator()
         {
-            _logger = loggerFactory.CreateLogger();
         }
 
-        public IContactProfile Translate(string response, string accessToken)
+        public IGoogleContactProfile Translate(string response, string accessToken)
         {
-            _logger.Verbose(response);
-
             var xDoc = XDocument.Parse(response);
-            
-            var entryXName = XName.Get("entry", "http://www.w3.org/2005/Atom");
-
-            var xContactEntry = xDoc.Root.Element(entryXName);
+            if (xDoc.Root == null)
+                return null;    //TODO: Is the pattern to return null or a NullObject?
+            var xContactEntry = xDoc.Root.Element(ToXName("x", "entry"));
             if (xContactEntry == null)
-                throw new InvalidOperationException(); //TODO: Support not finding anything.
+                return null;
 
 
             var title = XPathString(xContactEntry, "x:title", _ns);
@@ -80,8 +74,42 @@ namespace CallWall.Google.Providers
             var relationships = from xElement in xContactEntry.XPathSelectElements("gContact:relation", _ns)
                                 select new ContactAssociation(ToContactAssociation(xElement.Attribute("rel")), xElement.Value);
 
-            var result = new GoogleContactProfile(title, fullName, dateOfBirth, avatars, emails, phoneNumbers, organizations, relationships);
+            var groupUris = from xElement in xContactEntry.XPathSelectElements("gContact:groupMembershipInfo", _ns)
+                            let hrefAttribute = xElement.Attribute("href")
+                            where hrefAttribute != null
+                            select new Uri(hrefAttribute.Value);
+
+            var result = new GoogleContactProfile(title, fullName, dateOfBirth, avatars, emails, phoneNumbers, organizations, relationships, groupUris);
             return result;
+        }
+
+        public IGoogleContactProfile AddTags(IGoogleContactProfile contactProfile, string response)
+        {
+            var xDoc = XDocument.Parse(response);
+            var xGroupFeed = xDoc.Root;
+            if (xGroupFeed == null)
+                return contactProfile;
+
+            var groups =
+                (
+                    from groupEntry in xGroupFeed.Elements(ToXName("x", "entry"))
+                    let id = groupEntry.Element(ToXName("x", "id"))
+                    let title = groupEntry.Element(ToXName("x", "title"))
+                    where id != null && title != null
+                    select new {Id = id.Value, Title = title.Value}
+                ).ToDictionary(g => g.Id, g => g.Title);
+
+
+            foreach (var groupUri in contactProfile.GroupUris)
+            {
+                string tag;
+                if (groups.TryGetValue(groupUri.ToString(), out tag))
+                {
+                    contactProfile.AddTag(tag);
+                }
+            }
+
+            return contactProfile;
         }
 
         private static XName ToXName(string prefix, string name)

@@ -25,6 +25,7 @@ namespace CallWall.ProfileDashboard.Contact
         public string Title { get; private set; }
         public string FullName { get; private set; }
         public DateTime? DateOfBirth { get; private set; }
+        public IEnumerable<string> Tags { get; private set; }
         public IEnumerable<Uri> Avatars { get; private set; }
         public IEnumerable<IContactAssociation> Organizations { get; private set; }
         public IEnumerable<IContactAssociation> Relationships { get; private set; }

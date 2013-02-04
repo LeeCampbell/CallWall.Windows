@@ -19,6 +19,7 @@ namespace CallWall.Services
                 string payload = srReader.ReadToEnd();
                 _data = JsonConvert.DeserializeObject<Dictionary<string, string>>(payload)
                     ?? new Dictionary<string, string>();
+                _data = new Dictionary<string, string>();
                 srReader.Close();
             }
         }

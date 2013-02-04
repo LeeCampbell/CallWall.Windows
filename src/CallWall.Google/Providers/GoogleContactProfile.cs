@@ -1,29 +1,35 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using CallWall.Contract.Contact;
 
 namespace CallWall.Google.Providers
 {
-    public sealed class GoogleContactProfile : IContactProfile
+    public sealed class GoogleContactProfile : IGoogleContactProfile
     {
         private readonly IEnumerable<Uri> _avatars;
         private readonly IEnumerable<IContactAssociation> _organizations;
         private readonly IEnumerable<IContactAssociation> _relationships;
         private readonly IEnumerable<IContactAssociation> _emailAddresses;
         private readonly IEnumerable<IContactAssociation> _phoneNumbers;
+        private readonly IEnumerable<Uri> _groupUris;
+        private readonly Collection<string> _tags = new Collection<string>();
 
-        public GoogleContactProfile(string title, string fullName, DateTime? dateOfBirth,
-            IEnumerable<Uri> avatars,
-            IEnumerable<ContactAssociation> emailAddresses,
-            IEnumerable<ContactAssociation> phoneNumbers,
-            IEnumerable<ContactAssociation> organizations,
-            IEnumerable<ContactAssociation> relationships)
+        public GoogleContactProfile(string title, string fullName, DateTime? dateOfBirth, 
+            IEnumerable<Uri> avatars, 
+            IEnumerable<ContactAssociation> emailAddresses, 
+            IEnumerable<ContactAssociation> phoneNumbers, 
+            IEnumerable<ContactAssociation> organizations, 
+            IEnumerable<ContactAssociation> relationships,
+            IEnumerable<Uri> groupUris)
         {
             _avatars = avatars;
             _emailAddresses = emailAddresses;
             _phoneNumbers = phoneNumbers;
             _organizations = organizations;
             _relationships = relationships;
+            _groupUris = groupUris;
             Title = title;
             FullName = fullName;
             DateOfBirth = dateOfBirth;
@@ -71,5 +77,26 @@ namespace CallWall.Google.Providers
         {
             get { return _phoneNumbers; }
         }
+
+        public IEnumerable<string> Tags
+        {
+            get { return _tags.AsEnumerable(); }
+        }
+
+        public IEnumerable<Uri> GroupUris
+        {
+            get { return _groupUris; }
+        }
+
+        public void AddTag(string tag)
+        {
+            _tags.Add(tag);
+        }
+    }
+
+    public interface IGoogleContactProfile : IContactProfile
+    {
+        IEnumerable<Uri> GroupUris { get; }
+        void AddTag(string tag);
     }
 }
