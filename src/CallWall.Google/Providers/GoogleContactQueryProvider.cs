@@ -44,6 +44,8 @@ namespace CallWall.Google.Providers
 
         public IObservable<IGoogleContactProfile> EnrichTags(IGoogleContactProfile contactProfile)
         {
+            //TODO: This should fetch any extra pages of groups
+            //TODO: The groups can be cached as they are related to the logged in user. I would imagine that we can safely cache for 1minute.
             return (
                        from accessToken in _authorization.RequestAccessToken()
                        from request in Observable.Return(CreateConactGroupRequestParams(accessToken))

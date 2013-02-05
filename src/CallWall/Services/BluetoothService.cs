@@ -1,3 +1,5 @@
+using System.Reactive.Threading.Tasks;
+using System.Threading.Tasks;
 using CallWall.Settings.Connectivity.Bluetooth;
 using InTheHand.Net;
 using InTheHand.Net.Bluetooth;
@@ -44,19 +46,10 @@ namespace CallWall.Services
                         return Disposable.Empty;
                     }
 
-                    using (var btClient = new BluetoothClient())
-                    {
-                        var devices = btClient.DiscoverDevices();
-                        _logger.Debug("Found {0} Bluetooth devices", devices.Length);
-                        foreach (var bluetoothDeviceInfo in devices)
-                        {
-                            var btd = Create(bluetoothDeviceInfo);
-                            o.OnNext(btd);
-                        }
-                        o.OnCompleted();
-                        //TODO: implement cancelation properly. -LC
-                        return Disposable.Empty;
-                    }
+                    return Observable.Using(() => new BluetoothClient(), DiscoverDevices)
+                                     .SelectMany(devices => devices)
+                                     .Select(Create)
+                                     .Subscribe(o);
                 })
                 .Log(_logger, "ScanForDevices()");
         }
@@ -116,6 +109,17 @@ namespace CallWall.Services
                     }
                     return resources;
                 }).SubscribeOn(scheduler);
+        }
+
+        private static IObservable<IList<BluetoothDeviceInfo>> DiscoverDevices(BluetoothClient bluetoothClient)
+        {
+            return Task.Factory
+                       .FromAsync<BluetoothDeviceInfo[]>(
+                            (callback, state) =>
+                            bluetoothClient.BeginDiscoverDevices(byte.MaxValue, true, true, true, false, callback, state),
+                            bluetoothClient.EndDiscoverDevices,
+                            null)
+                        .ToObservable();
         }
 
         private IObservable<bool> ActionDevice(string actionName, IBluetoothDeviceInfo device, Func<BluetoothAddress, bool> action)

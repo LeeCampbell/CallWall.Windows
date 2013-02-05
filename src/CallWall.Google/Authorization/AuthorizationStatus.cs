@@ -32,6 +32,4 @@
             public override bool IsProcessing { get { return true; } }
         }
     }
-
-    //TODO: Move actual http calls into a seperat service so we can unit test this class. -LC
 }

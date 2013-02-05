@@ -29,7 +29,7 @@ namespace CallWall.Google.Providers
         {
             var xDoc = XDocument.Parse(response);
             if (xDoc.Root == null)
-                return null;    //TODO: Is the pattern to return null or a NullObject?
+                return null;
             var xContactEntry = xDoc.Root.Element(ToXName("x", "entry"));
             if (xContactEntry == null)
                 return null;

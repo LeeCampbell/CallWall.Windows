@@ -1,16 +1,16 @@
+using CallWall.Google.AccountConfiguration;
+using CallWall.Web;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using CallWall.Contract;
-using CallWall.Google.AccountConfiguration;
-using CallWall.Web;
-using Newtonsoft.Json.Linq;
 
 namespace CallWall.Google.Authorization
 {
+    //TODO: Should set to not-Authorized when the Enabled/Selected Resources differs from the ones that were actually authorized.
     public sealed class GoogleAuthorization : IGoogleAuthorization
     {
         private const string ClientId = "410654176090.apps.googleusercontent.com";  //}
