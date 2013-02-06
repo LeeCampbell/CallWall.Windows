@@ -50,11 +50,9 @@
                 <TextBlock Text="{Binding FullName}" 
                            Margin="10,10,0,0"
                            Style="{StaticResource ContentHeading2Style}"/>
-
-                <!--
-            DateOfBirth TODO: Create a Birthday control.
-            -->
-                <ItemsControl ItemsSource="{Binding Tags}">
+                
+                <ItemsControl ItemsSource="{Binding Tags}"
+                              Margin="5,10,5,0">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel/>
@@ -71,6 +69,18 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
+
+                <!-- DateOfBirth TODO: Create a Birthday control. -->
+                <StackPanel Orientation="Horizontal"
+                            Margin="10,10,0,0">
+                    <Image Source="pack://application:,,,/CallWall;component/Images/Birthday_64x64.png"
+                           MaxWidth="20"
+                           Stretch="Uniform"/>
+                    <TextBlock Text="{Binding DateOfBirth, StringFormat=dd-MMM}"
+                               Margin="10,0,0,0"
+                               Style="{StaticResource ContentHeading2Style}"/>
+                </StackPanel>
+
                 <HeaderedItemsControl Header="Organizations" ItemsSource="{Binding Organizations}" Style="{StaticResource SubsetStyle}"/>
                 <HeaderedItemsControl Header="Relationships" ItemsSource="{Binding Relationships}" Style="{StaticResource SubsetStyle}"/>
                 <HeaderedItemsControl Header="Phone Numbers" ItemsSource="{Binding PhoneNumbers}" Style="{StaticResource SubsetStyle}"/>

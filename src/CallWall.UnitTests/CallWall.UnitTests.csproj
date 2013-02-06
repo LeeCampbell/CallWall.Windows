@@ -110,6 +110,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Controls\BirthdayTextConverterTests.cs" />
     <Compile Include="HostModuleTests.cs" />
     <Compile Include="Logging\LogFactoryTests.cs" />
     <Compile Include="ProfileDashboard\ContactQueryAggregatorTests.cs" />

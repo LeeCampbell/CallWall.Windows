@@ -136,6 +136,7 @@
     <Compile Include="Activators\FakeProfileActivator.cs" />
     <Compile Include="Activators\IBluetoothProfileActivator.cs" />
     <Compile Include="Activators\IProfileActivator.cs" />
+    <Compile Include="Controls\BirthdayTextConverter.cs" />
     <Compile Include="Logging\Log4NetLogger.cs" />
     <Compile Include="Logging\LoggerFactory.cs" />
     <Compile Include="PrismExtensions\AccordionItemsSourceSyncBehavior.cs" />
@@ -412,7 +413,9 @@
     <Resource Include="Images\Actions\Inbound_27x27.png" />
     <Resource Include="Images\Actions\Outbound_27x27.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\Birthday_64x64.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
