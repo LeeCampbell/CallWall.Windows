@@ -11,6 +11,8 @@ using System.Reactive.Subjects;
 namespace CallWall.Google.Authorization
 {
     //TODO: Should set to not-Authorized when the Enabled/Selected Resources differs from the ones that were actually authorized.
+    //TODO: Bug when hit Authorize, then cancel/close the browser. Hitting Authorize again, does nothing.
+    //TODO: Bug that only one resource is requested
     public sealed class GoogleAuthorization : IGoogleAuthorization
     {
         private const string ClientId = "410654176090.apps.googleusercontent.com";  //}
@@ -35,8 +37,8 @@ namespace CallWall.Google.Authorization
             _availableResourceScopes = new ReadOnlyCollection<GoogleResource>(
                 new[]
                 {
+                    new GoogleResource("Email", "Email_48x48.png", new Uri("https://mail.google.com/")),
                     new GoogleResource("Contacts", "Contacts_48x48.png", new Uri(@"https://www.google.com/m8/feeds/")),
-                    new GoogleResource("Email", "Email_48x48.png", null),
                     new GoogleResource("Calendar", "Calendar_48x48.png", null),
                 });
             _currentSession = LoadSession();
@@ -64,7 +66,15 @@ namespace CallWall.Google.Authorization
             get { return _currentSession; }
             set
             {
+                if (_currentSession == value) 
+                    return;
+
+                _logger.Verbose("Setting accessToken from {0} to {1}",
+                    _currentSession == null ? "null" : _currentSession.AccessToken,
+                    value == null ? "null" : value.AccessToken);
+
                 _currentSession = value;
+
                 if (_currentSession == null)
                 {
                     _localStore.Remove("Google.AccessToken");
@@ -90,7 +100,7 @@ namespace CallWall.Google.Authorization
         public IObservable<string> RequestAccessToken()
         {
             var requestedResources = AvailableResourceScopes
-                .Where(rs=>rs.IsEnabled)
+                .Where(rs => rs.IsEnabled)
                 .Select(s => s.Resource)
                 .ToArray();
             var currentSession = Observable.Return(CurrentSession);
@@ -249,7 +259,7 @@ namespace CallWall.Google.Authorization
             queryString["client_id"] = ClientId; //Lee.Ryan.Campbell@gmail.com client Id
             queryString["redirect_uri"] = RedirectUri;
             var scopes = requestedResources.Select(uri => uri.ToString()).ToArray();
-            queryString["scope"] = string.Join("+", scopes);
+            queryString["scope"] = string.Join(" ", scopes);    //" " should be translated into a "+" as per https://developers.google.com/accounts/docs/OAuth2InstalledApp
 
             var authorizationUri = new UriBuilder(@"https://accounts.google.com/o/oauth2/auth");
             authorizationUri.Query = queryString.ToString(); // Returns "key1=value1&key2=value2", all URL-encoded

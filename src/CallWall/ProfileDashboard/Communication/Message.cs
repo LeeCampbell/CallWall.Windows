@@ -10,6 +10,7 @@ namespace CallWall.ProfileDashboard.Communication
 
         public Message(IMessage data)
         {
+            if (data == null) throw new ArgumentNullException("data");
             _data = data;
         }
 
