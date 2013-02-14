@@ -64,26 +64,24 @@
                     Height="120" 
                     Background="LawnGreen">
 
-            <DockPanel Margin="80,0"  LastChildFill="False">
+            <DockPanel Margin="40,0"  LastChildFill="False">
                 <StackPanel Orientation="Horizontal"
                             VerticalAlignment="Center"
                             DockPanel.Dock="Left">
 
+                    <Image Source="pack://application:,,,/CallWall;component/Images/CallWallLogo.png" 
+                           Stretch="Uniform" 
+                           Height="64"/>
+                    
+                    <!--TODO: Create an ImageCarousel that rotates through collections of images-->
                     <Image VerticalAlignment="Bottom"
                            Stretch="Uniform"
                            Height="80" Margin="10,0"
-                           Source="{Binding Contact.Avatars[0]}"/>
+                           Source="{Binding Avatar}"/>
 
                     <TextBlock VerticalAlignment="Bottom"
                                Text="{Binding Contact.Title}"
                                Style="{StaticResource PageHeaderStyle}"/>
-                    <!--<Image VerticalAlignment="Bottom"
-                           Stretch="None"
-                           Source="/Images/Actions/IncomingCall_60x60.png"/>
-                    <TextBlock VerticalAlignment="Bottom"
-                               Style="{StaticResource ContentHeading1Style}">
-                        (Mobile) +44 7 8765 1234
-                    </TextBlock>-->
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal"
@@ -91,22 +89,25 @@
 
                     <Button x:Name="HelpButton" 
                             ToolTip="Help"
+                            MaxHeight="30"
                             Style="{StaticResource ImageButtonStyle}">
-                        <Image Source="/Images/Help_72x72.png" ToolTip="Help"/>
+                        Help
                     </Button>
 
                     <Button x:Name="SettingsButton" 
-                             ToolTip="Settings"
+                            ToolTip="Settings"
+                            MaxHeight="30"
                             Style="{StaticResource ImageButtonStyle}">
-                        <Image Source="/Images/Settings_72x72.png"/>
+                        Settings
                     </Button>
 
                     <Button x:Name="CloseButton" 
                             IsCancel="True"
                             Command="{Binding CloseCommand}"
                             ToolTip="Close"
+                            MaxHeight="30"
                             Style="{StaticResource ImageButtonStyle}">
-                        <Image Source="/Images/Hide_72x72.png"/>
+                        Close
                     </Button>
                 </StackPanel>
                 <Grid/>

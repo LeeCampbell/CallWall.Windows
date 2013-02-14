@@ -33,14 +33,13 @@
                 <StackPanel Orientation="Horizontal"
                             DockPanel.Dock="Left"
                             VerticalAlignment="Center">
+                    <Image Source="pack://application:,,,/CallWall;component/Images/CallWallLogo.png" 
+                           Stretch="Uniform" 
+                           Height="64"
+                           Margin="0,0,10,0"/>
                     <TextBlock VerticalAlignment="Bottom"
                                Style="{StaticResource PageHeaderStyle}">
                         CallWall
-                    </TextBlock>
-
-                    <TextBlock VerticalAlignment="Bottom"
-                               Style="{StaticResource ContentHeading1Style}">
-                        Settings
                     </TextBlock>
                 </StackPanel>
 
@@ -49,16 +48,20 @@
 
                     <Button x:Name="HelpButton" 
                             ToolTip="Help"
+                            MaxHeight="30"
                             Style="{StaticResource ImageButtonStyle}">
-                        <Image Source="/Images/Help_72x72.png" ToolTip="Help"/>
+                        <!--<Image Source="/Images/Help_72x72.png" ToolTip="Help"/>-->
+                        Help
                     </Button>
 
                     <Button x:Name="CloseButton" 
                             IsCancel="True"
                             Command="{Binding CloseCommand}"
                             ToolTip="Close"
+                            MaxHeight="30"
                             Style="{StaticResource ImageButtonStyle}">
-                        <Image Source="/Images/Hide_72x72.png"/>
+                        <!--<Image Source="/Images/Hide_72x72.png"/>-->
+                        Close
                     </Button>
                 </StackPanel>
                 <Grid/>

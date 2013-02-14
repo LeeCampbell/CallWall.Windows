@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using CallWall.Contract;
@@ -26,7 +27,8 @@ namespace CallWall.ProfileDashboard
         private readonly ReadOnlyObservableCollection<Album> _roPictureAlbums;
         private DelegateCommand _closeCommand;
         private IContactProfile _contact;
-        
+        private Uri _avatar;
+
         #endregion
 
         public ProfileDashBoardViewModel(IProfileDashboard profileDashboard, ISchedulerProvider schedulerProvider)
@@ -37,12 +39,27 @@ namespace CallWall.ProfileDashboard
             _roPictureAlbums = new ReadOnlyObservableCollection<Album>(_pictureAlbums);
         }
 
+        //HACK: Temp hack until I can merge without full updates (which I imagine will force another call to the web to load the avatars
+        public Uri Avatar
+        {
+            get { return _avatar; }
+            set
+            {
+                if (_avatar != value)
+                {
+                    _avatar = value;
+                    OnPropertyChanged("Avatar");
+                }
+            }
+        }
+
         public IContactProfile Contact
         {
             get { return _contact; }
             private set
             {
                 _contact = value;
+                if (_contact != null) Avatar = _contact.Avatars.FirstOrDefault();
                 OnPropertyChanged("Contact");
             }
         }
