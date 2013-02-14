@@ -15,6 +15,9 @@ namespace CallWall.Google.Authorization
     //TODO: Bug that only one resource is requested
     public sealed class GoogleAuthorization : IGoogleAuthorization
     {
+        internal const string GmailResource = @"https://mail.google.com/";
+        internal const string ContactsResource = @"https://www.google.com/m8/feeds/";
+
         private const string ClientId = "410654176090.apps.googleusercontent.com";  //}
         private const string ClientSecret = "bDkwW8Y2RnUt0JsjbAwYA8cb";             //} TODO:This is all the Spike stuff. Might need to change.
         private const string RedirectUri = "urn:ietf:wg:oauth:2.0:oob";             //} I probably will eventually change this to be related to a CallWall.com email/google address.
@@ -37,8 +40,8 @@ namespace CallWall.Google.Authorization
             _availableResourceScopes = new ReadOnlyCollection<GoogleResource>(
                 new[]
                 {
-                    new GoogleResource("Email", "Email_48x48.png", new Uri("https://mail.google.com/")),
-                    new GoogleResource("Contacts", "Contacts_48x48.png", new Uri(@"https://www.google.com/m8/feeds/")),
+                    new GoogleResource("Email", "Email_48x48.png", new Uri(GmailResource)),
+                    new GoogleResource("Contacts", "Contacts_48x48.png", new Uri(ContactsResource)),
                     new GoogleResource("Calendar", "Calendar_48x48.png", null),
                 });
             _currentSession = LoadSession();

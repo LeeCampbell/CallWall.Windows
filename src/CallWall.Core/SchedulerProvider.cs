@@ -20,7 +20,8 @@ namespace CallWall
 
         public IScheduler Concurrent
         {
-            get { return ThreadPoolScheduler.Instance; }
+            //get { return ThreadPoolScheduler.Instance; }
+            get { return TaskPoolScheduler.Default; }
         }
 
         public IScheduler LongRunning

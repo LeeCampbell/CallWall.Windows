@@ -101,7 +101,7 @@
     <Compile Include="Providers\Gmail\Imap\IIMapOperation.cs" />
     <Compile Include="Providers\Gmail\Imap\ListFoldersOperation.cs" />
     <Compile Include="Providers\Gmail\Imap\OAuthOperation.cs" />
-    <Compile Include="Providers\Gmail\Imap\SearchFromOrToEmailOperation.cs" />
+    <Compile Include="Providers\Gmail\Imap\SearchEmailAddressOperation.cs" />
     <Compile Include="Providers\Gmail\Imap\SelectFolderOperation.cs" />
     <Compile Include="Providers\Contacts\GoogleContactProfileTranslator.cs" />
     <Compile Include="Providers\Contacts\GoogleContactQueryProvider.cs" />

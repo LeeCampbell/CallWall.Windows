@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Security;
@@ -13,13 +14,16 @@ namespace CallWall.Google.Providers.Gmail.Imap
 {
     public sealed class ImapClient : IImapClient
     {
+        #region Private fields
+
         private readonly ILoggerFactory _loggerFactory;
         private const string Prefix = "CW0";
         private readonly ILogger _logger;
         private SslStream _imapSslStream;
         private StreamReader _imapSslStreamReader;
-        private int _commandCount = 0;
+        private int _commandCount;
 
+        #endregion
 
         public ImapClient(ILoggerFactory loggerFactory)
         {
@@ -72,29 +76,35 @@ namespace CallWall.Google.Providers.Gmail.Imap
             return Execute(op);
         }
 
-
-        public IObservable<IMessage> FindEmailsFromOrTo(string emailAddress)
+        public IObservable<IList<ulong>> FindEmailIds(string emailAddress)
         {
-            return Observable.Create<IMessage>(
+            return Observable.Create<IList<ulong>>(
                 o =>
                 {
-                    var searchOp = new SearchFromOrToEmailOperation(emailAddress, _loggerFactory);
+                    var searchOp = new SearchEmailAddressOperation(emailAddress, _loggerFactory);
                     if (Execute(searchOp))
                     {
-                        return searchOp.MessageIds()
-                            .Reverse()
-                            .Take(10)
-                            .Select(LoadMessage)
-                            .Concat()
-                            .Where(msg => msg != null)
-                            .Subscribe(o);
+                        var msgIds = searchOp.MessageIds();
+                        o.OnNext(msgIds.ToArray());
+                        o.OnCompleted();
+                        return Disposable.Empty;
                     }
                     o.OnError(new IOException("IMAP search failed"));
                     return Disposable.Empty;
                 });
         }
 
-        private IObservable<GmailEmail> LoadMessage(string messageId)
+        public IObservable<IMessage> FetchEmailSummaries(IEnumerable<ulong> messageIds)
+        {
+            _logger.Debug("FetchEmailSummaries({0})", string.Join(", ", messageIds));
+            return messageIds
+                .Select(LoadMessage)
+                .Concat()
+                .Where(msg => msg != null)
+                .Log(_logger, "FetchEmailSummaries");
+        }
+
+        private IObservable<GmailEmail> LoadMessage(ulong messageId)
         {
             return Observable.Create<GmailEmail>(
                 o =>
@@ -108,7 +118,8 @@ namespace CallWall.Google.Providers.Gmail.Imap
                     }
                     o.OnError(new IOException("Loading email failed"));
                     return Disposable.Empty;
-                });
+                })
+                .Log(_logger, string.Format("LoadMessage({0})", messageId));
         }
 
 

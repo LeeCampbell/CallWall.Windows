@@ -16,6 +16,7 @@ namespace CallWall.ProfileDashboard
         private readonly IContactQueryAggregator _contactQueryAggregator;
         private readonly ICommunicationQueryAggregator _communicationQueryAggregator;
         private readonly IPictureQueryAggregator _pictureQueryAggregator;
+        private readonly ISchedulerProvider _schedulerProvider;
         private readonly ILogger _logger;
 
         //HACK: How can I avoid subject here? -LC
@@ -26,11 +27,13 @@ namespace CallWall.ProfileDashboard
         public ProfileDashboard(ILoggerFactory loggerFactory,
             IContactQueryAggregator contactQueryAggregator,
             ICommunicationQueryAggregator communicationQueryAggregator,
-            IPictureQueryAggregator pictureQueryAggregator)
+            IPictureQueryAggregator pictureQueryAggregator,
+            ISchedulerProvider schedulerProvider)
         {
             _contactQueryAggregator = contactQueryAggregator;
             _communicationQueryAggregator = communicationQueryAggregator;
             _pictureQueryAggregator = pictureQueryAggregator;
+            _schedulerProvider = schedulerProvider;
             _logger = loggerFactory.CreateLogger();
         }
 
@@ -65,19 +68,26 @@ namespace CallWall.ProfileDashboard
         {
             //TODO: What to do when a failure occurs?
             return _contactQueryAggregator.Search(profile)
-                                           .Subscribe(_contact);
+                                          .SubscribeOn(_schedulerProvider.Concurrent)
+                                          .ObserveOn(_schedulerProvider.Async)
+                                          .Subscribe(_contact);
         }
 
         private IDisposable QueryMessages(IProfile profile)
         {
             //TODO: What to do when a failure occurs?
             return _communicationQueryAggregator.Search(profile)
+                                                .Log(_logger, "QueryMessages")
+                                                .SubscribeOn(_schedulerProvider.Concurrent)
+                                                .ObserveOn(_schedulerProvider.Async)
                                                 .Subscribe(_messages);
         }
 
         private IDisposable QueryPictureAlbums(IProfile profile)
         {
             return _pictureQueryAggregator.Search(profile)
+                                          .SubscribeOn(_schedulerProvider.Concurrent)
+                                          .ObserveOn(_schedulerProvider.Async)
                                           .Subscribe(_pictureAlbums);
         }
 

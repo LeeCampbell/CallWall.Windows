@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using CallWall.Contract.Communication;
 
 namespace CallWall.Google.Providers.Gmail.Imap
@@ -9,7 +11,7 @@ namespace CallWall.Google.Providers.Gmail.Imap
     {
         private readonly string _command;
 
-        public FetchMessageOperation(string messageId, ILoggerFactory loggerFactory)
+        public FetchMessageOperation(ulong messageId, ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             _command = string.Format("FETCH {0} BODY.PEEK[HEADER.FIELDS (FROM TO Message-ID Subject Date)]", messageId);
@@ -21,45 +23,51 @@ namespace CallWall.Google.Providers.Gmail.Imap
 
         public GmailEmail ExtractMessage()
         {
-            bool isDateSet, isSubjectSet, isDirectionSet;
-            isDateSet = isSubjectSet = isDirectionSet = false;
+            bool isDateSet, isSubjectSet;
+            isDateSet = isSubjectSet = false;
             var date = DateTimeOffset.MinValue;
             string subject = null;
-            //string body = null;
-            var direction = MessageDirection.Outbound;
-            foreach (var line in ResponseLines)
+            var direction = MessageDirection.Inbound;
+
+            var kvp = new Dictionary<string, string>();
+            var lastKey = string.Empty;
+            foreach (var line in ResponseLines.Skip(1))
             {
-                if (line.StartsWith("Date: "))
-                {
-                    date = DateTimeOffset.ParseExact(line.Substring(6), "ddd, d MMM yyyy HH:mm:ss zzz", CultureInfo.InvariantCulture);
-                    isDateSet = true;
+                if (line.StartsWith("*") || string.IsNullOrWhiteSpace(line)) 
                     continue;
-                }
-                if (line.StartsWith("Subject: "))
+                if (string.Equals(line, ")"))
+                    break;
+                if (line.StartsWith(" "))
                 {
-                    subject = line.Substring(9);
-                    isSubjectSet = true;
-                    continue;
+                    kvp[lastKey] += line;
                 }
-                if (line.StartsWith("From: "))
+                else
                 {
-                    if (line.ToLower().Contains("lee.ryan.campbell@gmail.com"))
-                    {
-                        direction = MessageDirection.Outbound;
-                        isDirectionSet = true;
-                    }
-                    continue;
-                }
-                if (line.StartsWith("From: "))
-                {
-                    if (line.ToLower().Contains("lee.ryan.campbell@gmail.com"))
-                    {
-                        direction = MessageDirection.Inbound;
-                        isDirectionSet = true;
-                    }
-                                            continue;
+                    var indexOf = line.IndexOf(":");
+                    var key = line.Substring(0, indexOf);
+                    kvp[key] = line.Substring(indexOf + 2);
+                    lastKey = key;
                 }
             }
+            if(kvp.ContainsKey("Date"))
+            {
+                date = DateTimeOffset.ParseExact(kvp["Date"], "ddd, d MMM yyyy HH:mm:ss zzz", CultureInfo.InvariantCulture);
+                isDateSet = true; 
+            }
+            if (kvp.ContainsKey("Subject"))
+            {
+                subject = kvp["Subject"];
+                isSubjectSet = true;
+            }
+            if (kvp.ContainsKey("From"))
+            {
+                //HACK: Need to have this provided
+                if(kvp["From"].ToLower().Contains("lee.ryan.campbell@gmail.com"))
+                {
+                    direction = MessageDirection.Outbound;
+                }
+            } 
+           
             /*
 [<--]Date: Thu, 27 Sep 2012 09:13:40 +0100
 [<--]Message-ID: <CAPLQusCjGquLW-shZiFkSEWnDZkWO1j+Kc6_aGvtpJybqiRdFQ@mail.gmail.com>
@@ -68,7 +76,7 @@ namespace CallWall.Google.Providers.Gmail.Imap
 [<--]To: Marcus Whitworth <hello@marcuswhitworth.com>
 
              */
-            if (isDateSet && isSubjectSet && isDirectionSet)
+            if (isDateSet && isSubjectSet)
             {
                 return new GmailEmail(date, direction, subject, null);
             }

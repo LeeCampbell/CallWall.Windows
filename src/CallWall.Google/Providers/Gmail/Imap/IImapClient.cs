@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using CallWall.Contract.Communication;
 
 namespace CallWall.Google.Providers.Gmail.Imap
@@ -7,7 +8,8 @@ namespace CallWall.Google.Providers.Gmail.Imap
     {
         bool Connect(string sHost, int nPort);
         bool Authenticate(string user, string accessToken);
-        IObservable<IMessage> FindEmailsFromOrTo(string emailAddress);
         bool SelectFolder(string folder);
+        IObservable<IList<ulong>> FindEmailIds(string emailAddress);
+        IObservable<IMessage> FetchEmailSummaries(IEnumerable<ulong> messageIds);
     }
 }

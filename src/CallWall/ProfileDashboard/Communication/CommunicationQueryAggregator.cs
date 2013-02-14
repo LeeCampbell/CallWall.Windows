@@ -21,7 +21,8 @@ namespace CallWall.ProfileDashboard.Communication
         {
             return from provider in _communicationQueryProviders.ToObservable()
                    from message in provider.LoadMessages(activeProfile)
-                                           .Catch<IMessage, Exception> (ex =>
+                                           .Log(_logger, "provider.LoadMessages(activeProfile)")
+                                           .Catch<IMessage, Exception>(ex =>
                                             {
                                                 _logger.Error(ex, "{0} failed loading messages", provider.GetType().Name);
                                                 return Observable.Empty<IMessage>();
