@@ -31,7 +31,7 @@ namespace CallWall.Google.Providers.Gmail.Imap
             {
                 if (line.StartsWith("Date: "))
                 {
-                    date = DateTimeOffset.ParseExact(line.Substring(6), "ddd, dd MMM yyyy hh:mm:ss zzz", CultureInfo.InvariantCulture);
+                    date = DateTimeOffset.ParseExact(line.Substring(6), "ddd, d MMM yyyy HH:mm:ss zzz", CultureInfo.InvariantCulture);
                     isDateSet = true;
                     continue;
                 }
