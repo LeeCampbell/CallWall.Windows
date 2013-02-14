@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using CallWall.Contract;
 using CallWall.Google.Authorization;
 using CallWall.Google.Providers;
+using CallWall.Google.Providers.Contacts;
 using CallWall.Web;
 using Moq;
 using NUnit.Framework;

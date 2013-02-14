@@ -1,6 +1,6 @@
 using CallWall.Contract.Contact;
 
-namespace CallWall.Google.Providers
+namespace CallWall.Google.Providers.Contacts
 {
     public sealed class ContactAssociation : IContactAssociation
     {

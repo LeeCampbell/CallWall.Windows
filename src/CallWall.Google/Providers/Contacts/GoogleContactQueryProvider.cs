@@ -6,7 +6,7 @@ using CallWall.Contract.Contact;
 using CallWall.Google.Authorization;
 using CallWall.Web;
 
-namespace CallWall.Google.Providers
+namespace CallWall.Google.Providers.Contacts
 {
     public sealed class GoogleContactQueryProvider : IContactQueryProvider
     {

@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using CallWall.Contract.Contact;
 
-namespace CallWall.Google.Providers
+namespace CallWall.Google.Providers.Contacts
 {
     public sealed class GoogleContactProfile : IGoogleContactProfile
     {

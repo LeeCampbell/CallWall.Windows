@@ -4,6 +4,7 @@ using CallWall.Google.AccountConfiguration;
 using CallWall.Google.Authorization;
 using CallWall.Google.Authorization.Login;
 using CallWall.Google.Providers;
+using CallWall.Google.Providers.Contacts;
 using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;

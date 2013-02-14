@@ -89,7 +89,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Providers\ContactAssociation.cs" />
+    <Compile Include="Providers\Contacts\ContactAssociation.cs" />
     <Compile Include="Providers\Gmail\GmailCommunicationQueryProvider.cs" />
     <Compile Include="Providers\Gmail\GmailEmail.cs" />
     <Compile Include="Providers\Gmail\GmailProviderDescription.cs" />
@@ -103,10 +103,10 @@
     <Compile Include="Providers\Gmail\Imap\OAuthOperation.cs" />
     <Compile Include="Providers\Gmail\Imap\SearchFromOrToEmailOperation.cs" />
     <Compile Include="Providers\Gmail\Imap\SelectFolderOperation.cs" />
-    <Compile Include="Providers\GoogleContactProfileTranslator.cs" />
-    <Compile Include="Providers\GoogleContactQueryProvider.cs" />
-    <Compile Include="Providers\GoogleContactProfile.cs" />
-    <Compile Include="Providers\IGoogleContactProfileTranslator.cs" />
+    <Compile Include="Providers\Contacts\GoogleContactProfileTranslator.cs" />
+    <Compile Include="Providers\Contacts\GoogleContactQueryProvider.cs" />
+    <Compile Include="Providers\Contacts\GoogleContactProfile.cs" />
+    <Compile Include="Providers\Contacts\IGoogleContactProfileTranslator.cs" />
     <Page Include="AccountConfiguration\GoogleAccountSetupView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

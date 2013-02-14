@@ -5,7 +5,7 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using CallWall.Web;
 
-namespace CallWall.Google.Providers
+namespace CallWall.Google.Providers.Contacts
 {
     public sealed class GoogleContactProfileTranslator : IGoogleContactProfileTranslator
     {

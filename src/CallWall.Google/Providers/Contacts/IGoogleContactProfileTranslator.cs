@@ -1,4 +1,4 @@
-namespace CallWall.Google.Providers
+namespace CallWall.Google.Providers.Contacts
 {
     public interface IGoogleContactProfileTranslator
     {
