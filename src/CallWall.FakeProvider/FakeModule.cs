@@ -20,6 +20,13 @@ namespace CallWall.FakeProvider
             _container.RegisterType<IConnectionConfiguration, Connectivity.UsbConnectionConfiguration>("UsbConnectionConfiguration", new ContainerControlledLifetimeManager());
             _container.RegisterType<IConnectionConfiguration, Connectivity.WifiDirectConnectionConfiguration>("WifiDirectConnectionConfiguration", new ContainerControlledLifetimeManager());
             _container.RegisterType<IConnectionConfiguration, Connectivity.CloudConnectionConfiguration>("CloudConnectionConfiguration", new ContainerControlledLifetimeManager());
+
+            _container.RegisterType<IAccountConfiguration, AccountConfiguration.MicrosoftAccountConfiguration>("MicrosoftAccountConfiguration", new ContainerControlledLifetimeManager());
+            _container.RegisterType<IAccountConfiguration, AccountConfiguration.FacebookAccountConfiguration>("FacebookAccountConfiguration", new ContainerControlledLifetimeManager());
+            _container.RegisterType<IAccountConfiguration, AccountConfiguration.LinkedInAccountConfiguration>("LinkedInAccountConfiguration", new ContainerControlledLifetimeManager());
+            _container.RegisterType<IAccountConfiguration, AccountConfiguration.TwitterAccountConfiguration>("TwitterAccountConfiguration", new ContainerControlledLifetimeManager());
+            _container.RegisterType<IAccountConfiguration, AccountConfiguration.YahooAccountConfiguration>("YahooAccountConfiguration", new ContainerControlledLifetimeManager());
+            _container.RegisterType<IAccountConfiguration, AccountConfiguration.GithubAccountConfiguration>("GithubAccountConfiguration", new ContainerControlledLifetimeManager());
             
             //_container.RegisterType<IContactQueryProvider, Providers.FakeGoogleContactQueryProvider>("FakeGoogleContactQueryProvider", new ContainerControlledLifetimeManager());
             //_container.RegisterType<ICommunicationQueryProvider, Providers.GmailCommunicationQueryProvider>("FakeGmailCommunicationQueryProvider", new ContainerControlledLifetimeManager());
