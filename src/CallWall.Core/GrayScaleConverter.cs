@@ -26,7 +26,7 @@ namespace CallWall
             if (bitmapSource != null)
             {
                 BitmapSource orgBmp = bitmapSource;
-                if (orgBmp.Format == PixelFormats.Bgra32)
+                if (orgBmp.Format == PixelFormats.Bgra32 ||orgBmp.Format == PixelFormats.Bgr32)
                 {
                     byte[] orgPixels = new byte[orgBmp.PixelHeight *
                                                 orgBmp.PixelWidth * 4];
