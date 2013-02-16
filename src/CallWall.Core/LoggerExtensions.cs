@@ -263,19 +263,47 @@ namespace CallWall
 
         public static IObservable<T> Log<T>(this IObservable<T> source, ILogger logger, string name)
         {
-            return Observable.Create<T>(
-                o =>
-                {
-                    logger.Trace("{0}.Subscribe()", name);
-                    var subscription = source
-                        .Do(
-                            i => logger.Trace("{0}.OnNext({1})", name, i),
-                            ex => logger.Trace("{0}.OnError({1})", name, ex),
-                            () => logger.Trace("{0}.OnCompleted()", name))
-                        .Subscribe(o);
-                    var disposal = Disposable.Create(() => logger.Trace("{0}.Dispose()", name));
-                    return new CompositeDisposable(subscription, disposal);
-                });
+            return Observable.Using(
+                ()=> logger.Time(name),
+                timer=> Observable.Create<T>(
+                    o =>
+                    {
+                        logger.Trace("{0}.Subscribe()", name);
+                        var subscription = source
+                            .Do(
+                                i => logger.Trace("{0}.OnNext({1})", name, i),
+                                ex => logger.Trace("{0}.OnError({1})", name, ex),
+                                () => logger.Trace("{0}.OnCompleted()", name))
+                            .Subscribe(o);
+                        var disposal = Disposable.Create(() => logger.Trace("{0}.Dispose()", name));
+                        return new CompositeDisposable(subscription, disposal);
+                    })
+                );
+        }
+
+        public static IDisposable Time(this ILogger logger, string name)
+        {
+            return new Timer(logger, name);
+        }
+
+        private sealed class Timer : IDisposable
+        {
+            private readonly ILogger _logger;
+            private readonly string _name;
+            private readonly Stopwatch _stopwatch;
+
+            public Timer(ILogger logger, string name)
+            {
+                _logger = logger;
+                _name = name;
+                _stopwatch = Stopwatch.StartNew();
+            }
+
+            public void Dispose()
+            {
+                _stopwatch.Stop();
+                _logger.Debug("{0} took {1}", _name, _stopwatch.Elapsed);
+            }
         }
     }
 }
