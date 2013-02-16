@@ -43,9 +43,10 @@ namespace CallWall
 
             ModuleCatalog.Add<HostModule>();
             ModuleCatalog.Add<Settings.SettingsModule>();
-            
-            ModuleCatalog.Add<FakeModule>();
+
             ModuleCatalog.Add<GoogleModule>();
+            ModuleCatalog.Add<FakeModule>();
+            
 
             ModuleCatalog.Add<ProfileDashboard.DashboardModule>();
             ModuleCatalog.Add<Welcome.WelcomeModule>();

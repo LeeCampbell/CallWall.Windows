@@ -9,41 +9,6 @@
         
         <CallWall:GrayscaleConverter x:Key="grayScaleConverter"/>
     </Control.Resources>
-    <!--<DockPanel>
-        <Button DockPanel.Dock="Bottom" Command="{Binding CloseCommand}" IsDefault="True" Content="Done"/>
-
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel>
-                <TextBlock Text="Accounts"
-                       VerticalAlignment="Top"
-                       Style="{DynamicResource PageHeaderStyle}" />
-                <TextBlock TextWrapping="Wrap">
-                    Here you can select the social media accounts and features you would like to enable.
-                </TextBlock>
-
-                <Expander>
-                    <Expander.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <! - -TODO: Should be gray when not authorized for any features- - >
-                            <Image Source="C:\Users\Lee\Documents\GitHub\CallWall.Windows\src\CallWall\Images\Google_64x64.png" Stretch="Uniform" StretchDirection="Both" Height="32"/>
-                            <TextBlock Style="{DynamicResource PageSubHeaderStyle}">Google</TextBlock>
-                        </StackPanel>
-                    </Expander.Header>
-                    <DockPanel>
-                        < ! - - TODO: Authorize should only be enabled when a change is made - - >
-                        <Button DockPanel.Dock="Bottom" Command="{Binding CloseCommand}" Content="Authorize"/>
-                        <WrapPanel Orientation="Horizontal">
-                            <CheckBox>Contacts</CheckBox>
-                            <CheckBox>Gmail</CheckBox>
-                            <CheckBox>Calendar</CheckBox>
-                            <CheckBox>Google Drive</CheckBox>
-                            <CheckBox>Picassa</CheckBox>
-                        </WrapPanel>
-                    </DockPanel>
-                </Expander>
-            </StackPanel>
-        </ScrollViewer>
-    </DockPanel>-->
 
     <DockPanel KeyboardNavigation.DirectionalNavigation="Contained" 
                KeyboardNavigation.TabNavigation="Contained"
@@ -63,7 +28,7 @@
             <TabControl ItemsSource="{Binding ConnectivityConfigurators}" 
                         TabStripPlacement="Left"
                         BorderThickness="0"
-                        Background="#802080">
+                        Background="#800080">
                 <TabControl.Resources>
                     <Style TargetType="TabItem" BasedOn="{StaticResource {x:Type TabItem}}">
                         <Setter Property="HeaderTemplate">
