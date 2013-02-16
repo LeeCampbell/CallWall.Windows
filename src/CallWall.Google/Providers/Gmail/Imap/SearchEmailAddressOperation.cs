@@ -8,7 +8,8 @@ namespace CallWall.Google.Providers.Gmail.Imap
         private const string Prefix = "* SEARCH ";
         private readonly string _emailAddress;
 
-        public SearchEmailAddressOperation(string emailAddress, ILoggerFactory loggerFactory) : base(loggerFactory)
+        public SearchEmailAddressOperation(string emailAddress, ILoggerFactory loggerFactory)
+            : base(loggerFactory)
         {
             _emailAddress = emailAddress;
         }
@@ -20,16 +21,19 @@ namespace CallWall.Google.Providers.Gmail.Imap
 
         public IEnumerable<ulong> MessageIds()
         {
-            var response = ResponseLines.First.Value;
-            
-            string messageIdString = string.Empty;
-            if (response.StartsWith(Prefix))
+            using (Logger.Time("MessageIds()"))
             {
-                messageIdString = response.Substring(Prefix.Length);
-            }
+                var response = ResponseLines.First.Value;
 
-            return messageIdString.Split(' ')
-                                  .Select(ulong.Parse);
+                string messageIdString = string.Empty;
+                if (response.StartsWith(Prefix))
+                {
+                    messageIdString = response.Substring(Prefix.Length);
+                }
+
+                return messageIdString.Split(' ')
+                    .Select(ulong.Parse);
+            }
         }
     }
 }

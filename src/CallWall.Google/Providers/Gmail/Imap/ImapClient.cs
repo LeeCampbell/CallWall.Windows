@@ -91,7 +91,8 @@ namespace CallWall.Google.Providers.Gmail.Imap
                     }
                     o.OnError(new IOException("IMAP search failed"));
                     return Disposable.Empty;
-                });
+                })
+                .Log(_logger, string.Format("FindEmailIds('{0}')", emailAddress));
         }
 
         public IObservable<IMessage> FetchEmailSummaries(IEnumerable<ulong> messageIds)

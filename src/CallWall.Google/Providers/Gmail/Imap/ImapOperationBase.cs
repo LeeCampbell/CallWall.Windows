@@ -14,7 +14,8 @@ namespace CallWall.Google.Providers.Gmail.Imap
 
         protected ImapOperationBase(ILoggerFactory loggerFactory)
         {
-            _logger = loggerFactory.CreateLogger();
+            var realType = GetType();
+            _logger = loggerFactory.CreateLogger(realType);
         }
 
         protected abstract string Command { get; }
@@ -24,15 +25,23 @@ namespace CallWall.Google.Providers.Gmail.Imap
             get { return _responseLines; }
         }
 
+        protected ILogger Logger
+        {
+            get { return _logger; }
+        }
+
         public virtual bool Execute(string prefix, SslStream sendStream, StreamReader receiveStream)
         {
-            if(_hasExecuted)
-                throw new InvalidOperationException("Operations can not be executed more than once.");
-            _hasExecuted = true;
+            using (Logger.Time(string.Format("Executing IMAP Command '{0}'", ToImapCommand(prefix).Replace("\r\n", string.Empty))))
+            {
+                if (_hasExecuted)
+                    throw new InvalidOperationException("Operations can not be executed more than once.");
+                _hasExecuted = true;
 
-            var wasSent = Send(prefix, sendStream);
-            return wasSent 
-                && Receive(prefix, receiveStream);
+                var wasSent = Send(prefix, sendStream);
+                return wasSent
+                       && Receive(prefix, receiveStream);
+            }
         }
 
         protected virtual string ToImapCommand(string prefix)
@@ -49,59 +58,65 @@ namespace CallWall.Google.Providers.Gmail.Imap
         protected virtual bool Send(string prefix, SslStream sendStream)
         {
             var commandText = ToImapCommand(prefix);
-            _logger.Trace("[-->] {0}", commandText);
-            byte[] bytes = Encoding.ASCII.GetBytes(commandText.ToCharArray());
+            Logger.Trace("[-->] {0}", commandText);
+            using (Logger.Time(string.Format("Sending IMAP Command '{0}'", commandText.Replace("\r\n", string.Empty))))
+            {
+                byte[] bytes = Encoding.ASCII.GetBytes(commandText.ToCharArray());
 
-            var hasSent = false;
-            try
-            {
-                sendStream.Write(bytes, 0, bytes.Length);
-                hasSent = true;
-            }
-            catch (IOException ioEx)
-            {
-                _logger.Error(ioEx, "Error sending IMAP command");
-            }
-            catch (InvalidOperationException invEx)
-            {
-                _logger.Error(invEx, "Error sending IMAP command");
-            }
+                var hasSent = false;
+                try
+                {
+                    sendStream.Write(bytes, 0, bytes.Length);
+                    hasSent = true;
+                }
+                catch (IOException ioEx)
+                {
+                    Logger.Error(ioEx, "Error sending IMAP command");
+                }
+                catch (InvalidOperationException invEx)
+                {
+                    Logger.Error(invEx, "Error sending IMAP command");
+                }
 
-            return hasSent;
+                return hasSent;
+            }
         }
 
         protected bool Receive(string prefix, StreamReader receiveStream)
         {
-            var isSuccess = false;
-            try
+            using (Logger.Time(string.Format("Receiving IMAP Command '{0}'", ToImapCommand(prefix).Replace("\r\n", string.Empty))))
             {
-                var canExpectMoreLines = true;
-                while (canExpectMoreLines)
+                var isSuccess = false;
+                try
                 {
-                    var line = receiveStream.ReadLine();
-                    _logger.Trace("[<--]{0}", line);
-
-                    if (line != null)
+                    var canExpectMoreLines = true;
+                    while (canExpectMoreLines)
                     {
-                        ResponseLines.AddLast(line);
-                        if (IsSuccessLine(prefix, line))
+                        var line = receiveStream.ReadLine();
+                        Logger.Trace("[<--]{0}", line);
+
+                        if (line != null)
                         {
-                            canExpectMoreLines = false;
-                            isSuccess = true;
-                        }
-                        else if (IsFailureLine(prefix, line))
-                        {
-                            canExpectMoreLines = false;
+                            ResponseLines.AddLast(line);
+                            if (IsSuccessLine(prefix, line))
+                            {
+                                canExpectMoreLines = false;
+                                isSuccess = true;
+                            }
+                            else if (IsFailureLine(prefix, line))
+                            {
+                                canExpectMoreLines = false;
+                            }
                         }
                     }
                 }
+                catch (IOException ioEx)
+                {
+                    Logger.Error(ioEx, "Error receiving IMAP response.");
+                    isSuccess = false;
+                }
+                return isSuccess;
             }
-            catch (IOException ioEx)
-            {
-                _logger.Error(ioEx, "Error receiving IMAP response.");
-                isSuccess = false;
-            }
-            return isSuccess;
         }
 
         protected virtual bool IsSuccessLine(string prefix, string responseLine)
