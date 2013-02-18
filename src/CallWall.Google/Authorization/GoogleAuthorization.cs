@@ -1,12 +1,13 @@
 using CallWall.Google.AccountConfiguration;
 using CallWall.Web;
+using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
 
 namespace CallWall.Google.Authorization
 {
@@ -33,7 +34,7 @@ namespace CallWall.Google.Authorization
         private readonly IHttpClient _httpClient;
         private readonly ILogger _logger;
         private readonly ReadOnlyCollection<GoogleResource> _availableResourceScopes;
-        private readonly BehaviorSubject<AuthorizationStatus> _status = new BehaviorSubject<AuthorizationStatus>(AuthorizationStatus.NotAuthorized);
+        private AuthorizationStatus _status = AuthorizationStatus.NotAuthorized;
 
         private RequestAuthorizationCode _callback;
         private Session _currentSession;
@@ -47,13 +48,21 @@ namespace CallWall.Google.Authorization
             _currentSession = LoadSession();
             if (_currentSession != null)
             {
-                _status.OnNext(AuthorizationStatus.Authorized);
+                _status = AuthorizationStatus.Authorized;
             }
         }
 
-        public IObservable<AuthorizationStatus> Status
+        public AuthorizationStatus Status
         {
-            get { return _status.AsObservable(); }
+            get { return _status; }
+            private set
+            {
+                if (_status != value)
+                {
+                    _status = value;
+                    OnPropertyChanged("Status");
+                }
+            }
         }
 
         public ReadOnlyCollection<GoogleResource> AvailableResourceScopes { get { return _availableResourceScopes; } }
@@ -69,7 +78,7 @@ namespace CallWall.Google.Authorization
             get { return _currentSession; }
             set
             {
-                if (_currentSession == value) 
+                if (_currentSession == value)
                     return;
 
                 _logger.Verbose("Setting accessToken from {0} to {1}",
@@ -89,7 +98,7 @@ namespace CallWall.Google.Authorization
                     _localStore.Put("Google.AccessToken", _currentSession.AccessToken);
                     _localStore.Put("Google.AccessTokenExpires", _currentSession.Expires.ToString("o"));
                     _localStore.Put("Google.RefreshToken", _currentSession.RefreshToken);
-                    _status.OnNext(AuthorizationStatus.Authorized);
+                    _status = AuthorizationStatus.Authorized;
                 }
             }
         }
@@ -272,5 +281,19 @@ namespace CallWall.Google.Authorization
             authorizationUri.Query = queryString.ToString(); // Returns "key1=value1&key2=value2", all URL-encoded
             return authorizationUri.Uri;
         }
+
+        #region INotifyPropertyChanged implementation
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        private void OnPropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
+
     }
 }

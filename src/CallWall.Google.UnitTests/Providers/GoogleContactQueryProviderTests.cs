@@ -28,7 +28,7 @@ namespace CallWall.Google.UnitTests.Providers
             _translatorMock = new Mock<IGoogleContactProfileTranslator>();
             _logFactoryStub = new Mock<ILoggerFactory>();
             _loggerStub = new Mock<ILogger>();
-            _logFactoryStub.Setup(lf => lf.CreateLogger()).Returns(_loggerStub.Object);
+            _logFactoryStub.Setup(lf => lf.CreateLogger(It.IsAny<Type>())).Returns(_loggerStub.Object);
             
         }
 

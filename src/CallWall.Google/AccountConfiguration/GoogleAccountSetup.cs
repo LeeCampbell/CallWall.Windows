@@ -16,7 +16,7 @@ namespace CallWall.Google.AccountConfiguration
         {
             _settings = settings;
             _authorization = authorization;
-            _authorization.Status.Subscribe(s => IsAuthorized = s.IsAuthorized);
+            _authorization.WhenPropertyChanges(a => a.Status).Subscribe(s => IsAuthorized = s.IsAuthorized);
 
             //TODO: Know what we are and are not Authenticated for. 
             //  A change to this state should be reflected in the Model
