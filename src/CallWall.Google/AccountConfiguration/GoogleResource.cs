@@ -1,10 +1,12 @@
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using CallWall.Contract;
 using JetBrains.Annotations;
 
 namespace CallWall.Google.AccountConfiguration
 {
+    //TODO: Hmmm; may these shouldn't be static, or at least the IsEnabled may need to be detached.
     public sealed class GoogleResource : IResourceScope, INotifyPropertyChanged
     {
         private readonly string _name;
@@ -12,11 +14,26 @@ namespace CallWall.Google.AccountConfiguration
         private readonly Uri _resource;
         private bool _isEnabled;
 
-        public GoogleResource(string name, string image, Uri resource)
+        static GoogleResource()
+        {
+            Ensure.PackUriIsRegistered();
+        }
+
+        private GoogleResource(string name, string image, Uri resource)
         {
             _name = name;
             _image = new Uri(string.Format("pack://application:,,,/CallWall.Google;component/Images/{0}", image));
             _resource = resource;
+        }
+
+        public static ReadOnlyCollection<GoogleResource> AvailableResourceScopes()
+        {
+            return new ReadOnlyCollection<GoogleResource>(new[]
+                {
+                    new GoogleResource("Contacts", "Contacts_48x48.png", new Uri(@"https://www.google.com/m8/feeds/")),
+                    new GoogleResource("Email", "Email_48x48.png", new Uri(@"https://mail.google.com/")),
+                    new GoogleResource("Calendar", "Calendar_48x48.png", null)
+                });
         }
 
         public string Name { get { return _name; } }

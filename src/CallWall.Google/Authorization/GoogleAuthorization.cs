@@ -25,9 +25,6 @@ namespace CallWall.Google.Authorization
     */
     public sealed class GoogleAuthorization : IGoogleAuthorization
     {
-        internal const string GmailResource = @"https://mail.google.com/";
-        internal const string ContactsResource = @"https://www.google.com/m8/feeds/";
-
         private const string ClientId = "410654176090.apps.googleusercontent.com";  //}
         private const string ClientSecret = "bDkwW8Y2RnUt0JsjbAwYA8cb";             //} TODO:This is all the Spike stuff. Might need to change.
         private const string RedirectUri = "urn:ietf:wg:oauth:2.0:oob";             //} I probably will eventually change this to be related to a CallWall.com email/google address.
@@ -46,14 +43,7 @@ namespace CallWall.Google.Authorization
             _localStore = localStore;
             _httpClient = httpClient;
             _logger = loggerFactory.CreateLogger();
-
-            _availableResourceScopes = new ReadOnlyCollection<GoogleResource>(
-                new[]
-                {
-                    new GoogleResource("Email", "Email_48x48.png", new Uri(GmailResource)),
-                    new GoogleResource("Contacts", "Contacts_48x48.png", new Uri(ContactsResource)),
-                    new GoogleResource("Calendar", "Calendar_48x48.png", null),
-                });
+            _availableResourceScopes = GoogleResource.AvailableResourceScopes();
             _currentSession = LoadSession();
             if (_currentSession != null)
             {
@@ -116,6 +106,10 @@ namespace CallWall.Google.Authorization
                 .Where(rs => rs.IsEnabled)
                 .Select(s => s.Resource)
                 .ToArray();
+
+            if (requestedResources.Length == 0)
+                return Observable.Throw<string>(new InvalidOperationException("No resources have been enabled."));
+
             var currentSession = Observable.Return(CurrentSession);
             var refreshSession = Observable.Defer(() => RefreshSession(requestedResources));
             var createSession = Observable.Defer(() => CreateSession(requestedResources));
