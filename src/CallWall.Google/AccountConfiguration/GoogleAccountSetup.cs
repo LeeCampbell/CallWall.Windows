@@ -1,6 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using CallWall.Google.Authorization;
 
 namespace CallWall.Google.AccountConfiguration
@@ -10,13 +11,18 @@ namespace CallWall.Google.AccountConfiguration
         private const string IsEnabledKey = "CallWall.Google.AccountConfiguration.GoogleAccountSetup.IsEnabled";
         private readonly IPersonalizationSettings _settings;
         private readonly IGoogleAuthorization _authorization;
-        private bool _isAuthorized;
+        private readonly ObservableCollection<GoogleResource> _selectedResources = new ObservableCollection<GoogleResource>();
 
         public GoogleAccountSetup(IPersonalizationSettings settings, IGoogleAuthorization authorization)
         {
             _settings = settings;
             _authorization = authorization;
-            _authorization.WhenPropertyChanges(a => a.Status).Subscribe(s => IsAuthorized = s.IsAuthorized);
+            _authorization.WhenPropertyChanges(a => a.Status).Subscribe(
+                _ =>
+                {
+                    OnPropertyChanged("IsAuthorized");
+                    OnPropertyChanged("IsProcessing");
+                });
 
             //TODO: Know what we are and are not Authenticated for. 
             //  A change to this state should be reflected in the Model
@@ -24,6 +30,17 @@ namespace CallWall.Google.AccountConfiguration
         }
 
         public ReadOnlyCollection<GoogleResource> Resources { get { return _authorization.AvailableResourceScopes; } }
+        public ObservableCollection<GoogleResource> SelectedResources { get { return _selectedResources; } }
+
+        public bool IsAuthorized
+        {
+            get { return _authorization.Status.IsAuthorized; }
+        }
+
+        public bool IsProcessing
+        {
+            get { return _authorization.Status.IsProcessing; }
+        }
 
         public bool IsEnabled
         {
@@ -35,22 +52,10 @@ namespace CallWall.Google.AccountConfiguration
             }
         }
 
-        public bool IsAuthorized
-        {
-            get { return _isAuthorized; }
-            private set
-            {
-                if (_isAuthorized != value)
-                {
-                    _isAuthorized = value;
-                    OnPropertyChanged("IsAuthorized");
-                }
-            }
-        }
-
         public void Authorize()
         {
-            _authorization.RequestAccessToken().Subscribe();
+            _authorization.Authorize(SelectedResources.Select(r => r.Resource))
+                .Subscribe(i => { }, ex => { });
         }
 
         #region INotifyPropertyChanged implementation

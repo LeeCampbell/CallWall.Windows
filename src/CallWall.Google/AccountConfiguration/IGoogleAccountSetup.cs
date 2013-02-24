@@ -7,8 +7,10 @@ namespace CallWall.Google.AccountConfiguration
     {
         bool IsAuthorized { get; }
         ReadOnlyCollection<GoogleResource> Resources { get; }
+        ObservableCollection<GoogleResource> SelectedResources { get; }
+
         bool IsEnabled { get; set; }
-        
+
         void Authorize();
     }
 }

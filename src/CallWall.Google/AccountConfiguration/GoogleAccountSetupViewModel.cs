@@ -33,6 +33,7 @@ namespace CallWall.Google.AccountConfiguration
         public DelegateCommand AuthorizeCommand { get { return _authorizeCommand; } }
 
         public ReadOnlyCollection<GoogleResource> Resources { get { return _model.Resources; } }
+        public ObservableCollection<GoogleResource> SelectedResources { get { return _model.SelectedResources; } }
 
         #region INotifyPropertyChanged implementation
         public event PropertyChangedEventHandler PropertyChanged;

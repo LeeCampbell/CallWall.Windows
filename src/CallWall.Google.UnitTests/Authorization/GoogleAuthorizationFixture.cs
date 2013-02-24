@@ -1,5 +1,4 @@
 ﻿using CallWall.Google.Authorization;
-using CallWall.Web;
 using Microsoft.Reactive.Testing;
 using Moq;
 using NUnit.Framework;
@@ -16,7 +15,7 @@ namespace CallWall.Google.UnitTests.Authorization
 
         private GoogleAuthorization _sut;
         private Mock<IPersonalizationSettings> _localStoreMock;
-        private Mock<IHttpClient> _httpClientMock;
+        private Mock<IGoogleOAuthService> _oAuthServiceMock;
         private Mock<ILogger> _loggerMock;
 
         private Given_a_newly_constructed_GoogleAuthorization()
@@ -27,24 +26,37 @@ namespace CallWall.Google.UnitTests.Authorization
         public virtual void SetUp()
         {
             _localStoreMock = new Mock<IPersonalizationSettings>();
-            _httpClientMock = new Mock<IHttpClient>();
+            _oAuthServiceMock = new Mock<IGoogleOAuthService>();
             _loggerMock = new Mock<ILogger>();
             var logFactory = new Mock<ILoggerFactory>();
             logFactory.Setup(lf => lf.CreateLogger(It.IsAny<Type>())).Returns(_loggerMock.Object);
-            _sut = new GoogleAuthorization(_localStoreMock.Object, _httpClientMock.Object, logFactory.Object);
+            // logFactory.Setup(lf => lf.CreateLogger(It.IsAny<Type>())).Returns(new DebugLogger());
+            _sut = new GoogleAuthorization(_localStoreMock.Object, _oAuthServiceMock.Object, logFactory.Object);
         }
 
         #endregion
 
         [TestFixture]
-        public sealed class Given_no_registered_GoogleAuthorization_callback : Given_a_newly_constructed_GoogleAuthorization
+        public sealed class When_no_callback_is_registered_for_GoogleAuthorization : Given_a_newly_constructed_GoogleAuthorization
         {
+            private readonly Uri[] _requestedResources = new[] { new Uri("http://mail.google.com") };
             [Test]
-            public void Should_OnError_RequestForAccess()
+            public void Should_return_false_for_IsAuthorized_Status()
             {
-                var observer = new TestScheduler().CreateObserver<string>();
-                _sut.AvailableResourceScopes[0].IsEnabled = true;
-                _sut.RequestAccessToken().Subscribe(observer);
+                Assert.IsFalse(_sut.Status.IsAuthorized);
+            }
+
+            [Test]
+            public void Should_return_false_for_IsProcessing_Status()
+            {
+                Assert.IsFalse(_sut.Status.IsProcessing);
+            }
+
+            [Test]
+            public void Should_return_Error_from_Authorize()
+            {
+                var observer = new TestScheduler().CreateObserver<Unit>();
+                _sut.Authorize(_requestedResources).Subscribe(observer);
                 Assert.AreEqual(1, observer.Messages.Count);
                 Assert.AreEqual(NotificationKind.OnError, observer.Messages[0].Value.Kind);
                 Assert.IsInstanceOf<InvalidOperationException>(observer.Messages[0].Value.Exception);
@@ -57,6 +69,9 @@ namespace CallWall.Google.UnitTests.Authorization
         {
             #region Setup guff
 
+            private readonly Uri[] _requestedResources = new[] { new Uri("http://mail.google.com") };
+            private const string _authUri = "http://someUri.com";
+
             private Given_a_registered_GoogleAuthorization()
             {
             }
@@ -68,28 +83,36 @@ namespace CallWall.Google.UnitTests.Authorization
                 base.SetUp();
                 var callback = CreateCallback();
                 _sut.RegisterAuthorizationCallback(callback);
-                _sut.AvailableResourceScopes[0].IsEnabled = true;   //Set at least one Resource to enabled to allow nominal tests to pass.
+                _oAuthServiceMock.Setup(oaSvc => oaSvc.BuildAuthorizationUri(It.IsAny<Uri[]>()))
+                                     .Returns(new Uri(_authUri));
             }
 
             #endregion
 
             [Test]
-            public void Should_OnError_if_no_Resources_have_been_selected()
+            public void Should_OnError_if_requesting_accesstoken_when_not_Authorized()
             {
                 var observer = new TestScheduler().CreateObserver<string>();
-                RequestAuthorizationCode callback = uri => Observable.Empty<string>();
-                _sut.RegisterAuthorizationCallback(callback);
-                foreach (var resourceScope in _sut.AvailableResourceScopes)
-                {
-                    resourceScope.IsEnabled = false;
-                }
                 _sut.RequestAccessToken().Subscribe(observer);
+
+                Assert.AreEqual(1, observer.Messages.Count);
+                Assert.AreEqual(NotificationKind.OnError, observer.Messages[0].Value.Kind);
+                Assert.IsInstanceOf<InvalidOperationException>(observer.Messages[0].Value.Exception);
+                Assert.AreEqual("Can not request access token until authorized.", observer.Messages[0].Value.Exception.Message);
+            }
+
+            [Test]
+            public void Should_OnError_if_no_Resources_have_been_selected()
+            {
+                var observer = new TestScheduler().CreateObserver<Unit>();
+                _sut.Authorize(new Uri[] { }).Subscribe(observer);
 
                 Assert.AreEqual(1, observer.Messages.Count);
                 Assert.AreEqual(NotificationKind.OnError, observer.Messages[0].Value.Kind);
                 Assert.IsInstanceOf<InvalidOperationException>(observer.Messages[0].Value.Exception);
                 Assert.AreEqual("No resources have been enabled.", observer.Messages[0].Value.Exception.Message);
             }
+
 
             [TestFixture]
             public sealed class When_calling_authorization_callback_with_empty_response : Given_a_registered_GoogleAuthorization
@@ -103,14 +126,14 @@ namespace CallWall.Google.UnitTests.Authorization
                 [Test]
                 public void Should_set_status_as_not_authorized()
                 {
-                    _sut.RequestAccessToken().Subscribe();
+                    _sut.Authorize(_requestedResources).Subscribe();
                     Assert.IsFalse(_sut.Status.IsAuthorized);
                 }
 
                 [Test]
                 public void Should_set_status_as_not_processing()
                 {
-                    _sut.RequestAccessToken().Subscribe();
+                    _sut.Authorize(_requestedResources).Subscribe();
                     Assert.IsFalse(_sut.Status.IsProcessing);
                 }
             }
@@ -135,14 +158,14 @@ namespace CallWall.Google.UnitTests.Authorization
                 [Test]
                 public void Should_set_status_as_not_authorized()
                 {
-                    _sut.RequestAccessToken().Subscribe(i => { }, ex => { });
+                    _sut.Authorize(_requestedResources).Subscribe(i => { }, ex => { });
                     Assert.IsFalse(_sut.Status.IsAuthorized);
                 }
 
                 [Test]
                 public void Should_set_status_as_not_processing()
                 {
-                    _sut.RequestAccessToken().Subscribe(i=>{},ex=> { });
+                    _sut.Authorize(_requestedResources).Subscribe(i => { }, ex => { });
                     Assert.IsFalse(_sut.Status.IsProcessing);
                 }
 
@@ -150,11 +173,55 @@ namespace CallWall.Google.UnitTests.Authorization
                 public void Should_pass_through_error()
                 {
                     Exception actual = null;
-                    _sut.RequestAccessToken().Subscribe(_ => { }, ex => { actual = ex; });
+                    _sut.Authorize(_requestedResources).Subscribe(_ => { }, ex => { actual = ex; });
                     Assert.AreSame(_expectedException, actual);
                 }
             }
 
+            [TestFixture]
+            public sealed class When_authorization_callback_responds_with_AuthToken : Given_a_registered_GoogleAuthorization
+            {
+                private const string _authCode = "ABCDEF";
+
+                private Mock<ISession> _sessionMock;
+
+                public override void SetUp()
+                {
+                    base.SetUp();
+
+                    _sessionMock = new Mock<ISession>();
+                    _oAuthServiceMock.Setup(oaSvc => oaSvc.RequestAccessToken(_authCode))
+                                     .Returns(Observable.Return(_sessionMock.Object));
+                }
+
+                protected override RequestAuthorizationCode CreateCallback()
+                {
+                    RequestAuthorizationCode callback = uri => Observable.Return(_authCode);
+                    return callback;
+                }
+
+                [Test]
+                public void Should_set_status_as_authorized()
+                {
+                    _sut.Authorize(_requestedResources).Subscribe(i => { }, ex => { });
+                    Assert.IsTrue(_sut.Status.IsAuthorized);
+                }
+
+                [Test]
+                public void Should_set_status_as_not_processing()
+                {
+                    _sut.Authorize(_requestedResources).Subscribe(i => { }, ex => { });
+                    Assert.IsFalse(_sut.Status.IsProcessing);
+                }
+
+                [Test]
+                public void Should_complete_authorization_sequence()
+                {
+                    var isCompleted = false;
+                    _sut.Authorize(_requestedResources).Subscribe(_ => { }, () => { isCompleted = true; });
+                    Assert.IsTrue(isCompleted);
+                }
+            }
             //when multiple concurrent requests for access token are made should only call call-back once
         }
 

@@ -1,18 +1,14 @@
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using CallWall.Contract;
-using JetBrains.Annotations;
 
 namespace CallWall.Google.AccountConfiguration
 {
-    //TODO: Hmmm; may these shouldn't be static, or at least the IsEnabled may need to be detached.
-    public sealed class GoogleResource : IResourceScope, INotifyPropertyChanged
+    public sealed class GoogleResource : IResourceScope
     {
         private readonly string _name;
         private readonly Uri _image;
         private readonly Uri _resource;
-        private bool _isEnabled;
 
         static GoogleResource()
         {
@@ -26,6 +22,7 @@ namespace CallWall.Google.AccountConfiguration
             _resource = resource;
         }
 
+        //Could go back to being a static list now that IsEnabled has been removed.-LC
         public static ReadOnlyCollection<GoogleResource> AvailableResourceScopes()
         {
             return new ReadOnlyCollection<GoogleResource>(new[]
@@ -41,30 +38,5 @@ namespace CallWall.Google.AccountConfiguration
         public Uri Resource { get { return _resource; } }
 
         public Uri Image { get { return _image; } }
-
-        public bool IsEnabled
-        {
-            get { return _isEnabled; }
-            set
-            {
-                if (_isEnabled != value)
-                {
-                    _isEnabled = value;
-                    OnPropertyChanged("IsEnabled");
-                }
-            }
-        }
-
-
-        #region INotifyPropertyChanged implementation
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        private void OnPropertyChanged(string propertyName)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
     }
 }

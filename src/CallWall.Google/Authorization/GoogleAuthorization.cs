@@ -1,7 +1,7 @@
+using System.Collections.Generic;
+using System.Reactive;
 using CallWall.Google.AccountConfiguration;
-using CallWall.Web;
 using JetBrains.Annotations;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
+//Was fun getting kicked around by the tesco interview today. This class clearly does way too much. Time to carve stuff off it. -LC
 namespace CallWall.Google.Authorization
 {
     //TODO: Should set to not-Authorized when the Enabled/Selected Resources differs from the ones that were actually authorized.
@@ -26,29 +27,28 @@ namespace CallWall.Google.Authorization
     */
     public sealed class GoogleAuthorization : IGoogleAuthorization
     {
-        private const string ClientId = "410654176090.apps.googleusercontent.com";  //}
-        private const string ClientSecret = "bDkwW8Y2RnUt0JsjbAwYA8cb";             //} TODO:This is all the Spike stuff. Might need to change.
-        private const string RedirectUri = "urn:ietf:wg:oauth:2.0:oob";             //} I probably will eventually change this to be related to a CallWall.com email/google address.
+        //TODO: I need to ensure that I am setting IsProcessing appropriately. -LC
 
+        
         private readonly IPersonalizationSettings _localStore;
-        private readonly IHttpClient _httpClient;
+        private readonly IGoogleOAuthService _oAuthService;
         private readonly ILogger _logger;
         private readonly ReadOnlyCollection<GoogleResource> _availableResourceScopes;
-        private AuthorizationStatus _status = AuthorizationStatus.NotAuthorized;
+        private AuthorizationStatus _status = AuthorizationStatus.Uninitialized;
 
         private RequestAuthorizationCode _callback;
-        private Session _currentSession;
+        private ISession _currentSession;
 
-        public GoogleAuthorization(IPersonalizationSettings localStore, IHttpClient httpClient, ILoggerFactory loggerFactory)
+        public GoogleAuthorization(IPersonalizationSettings localStore, IGoogleOAuthService oAuthService, ILoggerFactory loggerFactory)
         {
             _localStore = localStore;
-            _httpClient = httpClient;
+            _oAuthService = oAuthService;
             _logger = loggerFactory.CreateLogger();
             _availableResourceScopes = GoogleResource.AvailableResourceScopes();
             _currentSession = LoadSession();
             if (_currentSession != null)
             {
-                _status = AuthorizationStatus.Authorized;
+                Status = AuthorizationStatus.Authorized;
             }
         }
 
@@ -73,7 +73,7 @@ namespace CallWall.Google.Authorization
             set { _localStore.Put("Google.AuthorizationCode", value); }
         }
 
-        private Session CurrentSession
+        private ISession CurrentSession
         {
             get { return _currentSession; }
             set
@@ -98,7 +98,7 @@ namespace CallWall.Google.Authorization
                     _localStore.Put("Google.AccessToken", _currentSession.AccessToken);
                     _localStore.Put("Google.AccessTokenExpires", _currentSession.Expires.ToString("o"));
                     _localStore.Put("Google.RefreshToken", _currentSession.RefreshToken);
-                    _status = AuthorizationStatus.Authorized;
+                    Status = AuthorizationStatus.Authorized;
                 }
             }
         }
@@ -107,30 +107,82 @@ namespace CallWall.Google.Authorization
         public void RegisterAuthorizationCallback(RequestAuthorizationCode callback)
         {
             _callback = callback;
+            Status = AuthorizationStatus.NotAuthorized;
+        }
+
+        public IObservable<Unit> Authorize(IEnumerable<Uri> resources)
+        {
+            return Observable.Create<Unit>(
+                o =>
+                {
+                    if (!Status.IsInitialized)
+                    {
+                        o.OnError(new InvalidOperationException(Status.ErrorMessage));
+                        return Disposable.Empty;
+                    }
+                    //if (Status.IsAuthorized)
+                    //{
+                    //    o.OnError(new InvalidOperationException("Already authorized"));
+                    //    return Disposable.Empty;
+                    //}
+                    Status = AuthorizationStatus.Processing;
+                    var requestedResources = resources.ToArray();
+                    if (!requestedResources.Any())
+                    {
+                        var errorMessage = "No resources have been enabled.";
+                        Status = AuthorizationStatus.Error(errorMessage);
+                        o.OnError(new InvalidOperationException(errorMessage));
+                        return Disposable.Empty;
+                    }
+
+
+                    return CreateSession(requestedResources)
+                        .Concat(Observable.Return<ISession>(null))
+                        .Take(1)
+                        
+                        .Subscribe(
+                            session =>
+                                {
+                                    CurrentSession = session;
+                                    Status = session==null 
+                                        ? AuthorizationStatus.Error("Failed to Authorize") 
+                                        : AuthorizationStatus.Authorized;
+                                    
+                                    o.OnCompleted();
+                                },
+                            ex => { Status = AuthorizationStatus.NotAuthorized; o.OnError(ex); });
+                });
         }
 
         public IObservable<string> RequestAccessToken()
         {
-            var requestedResources = AvailableResourceScopes
-                .Where(rs => rs.IsEnabled)
-                .Select(s => s.Resource)
-                .ToArray();
+            return Observable.Create<string>(
+                o =>
+                {
+                    //if (!Status.IsInitialized)
+                    //{
+                    //    o.OnError(new InvalidOperationException(Status.ErrorMessage));
+                    //    return Disposable.Empty;
+                    //}
+                    if (!Status.IsAuthorized)
+                    {
+                        o.OnError(new InvalidOperationException("Can not request access token until authorized."));
+                        return Disposable.Empty;
+                    }
 
-            if (requestedResources.Length == 0)
-                return Observable.Throw<string>(new InvalidOperationException("No resources have been enabled."));
+                    var currentSession = Observable.Return(CurrentSession);
+                    var refreshSession = Observable.Defer(RefreshSession);
 
-            var currentSession = Observable.Return(CurrentSession);
-            var refreshSession = Observable.Defer(() => RefreshSession(requestedResources));
-            var createSession = Observable.Defer(() => CreateSession(requestedResources));
+                    var sessionPriorities = ObservableExtensions.LazyConcat(currentSession, refreshSession);
 
-            var sessionPriorities = ObservableExtensions.LazyConcat(currentSession, refreshSession, createSession);
-
-            var sequence = sessionPriorities
-                .Where(session => session != null && !session.HasExpired())
-                .Do(session => CurrentSession = session)
-                .Take(1)
-                .Select(session => session.AccessToken);
-            return sequence.Log(_logger, "RequestAccessToken()");
+                    var sequence = sessionPriorities
+                        .Where(session => session != null && !session.HasExpired())
+                        .Do(session => CurrentSession = session)
+                        .Take(1)
+                        .Select(session => session.AccessToken);
+                    return sequence.Log(_logger, "RequestAccessToken()")
+                                   .Subscribe(o);
+                });
         }
 
 
@@ -145,11 +197,21 @@ namespace CallWall.Google.Authorization
             return new Session(accessToken, refreshToken, expires);
         }
 
+        private IObservable<ISession> CreateSession(Uri[] requestedResources)
+        {
+            return (from authCode in GetAuthorizationCode(requestedResources)
+                    from accessToken in _oAuthService.RequestAccessToken(authCode)
+                    select accessToken).Log(_logger, "createSession()");
+        }
+
         private IObservable<string> GetAuthorizationCode(Uri[] requestedResources)
         {
             return Observable.Create<string>(
                 o =>
                 {
+                    //If we have an Authorization code from a previous session, we can continue to use that.
+                    //TODO:What if the AuthCode has since been rejected? -LC
+                    //TODO: What if the requestedResouces dont match the ones from the stored AuthCode -LC (if we store them, then order them, lower case them and comma delimit them for fast comparison)
                     if (AuthorizationCode != null)
                     {
                         return Observable.Return(AuthorizationCode)
@@ -169,117 +231,18 @@ namespace CallWall.Google.Authorization
                 {
                     if (_callback == null)
                         throw new InvalidOperationException("No call-back has been registered via the RegisterAuthorizationCallback method");
-                    var uri = BuildAuthorizationUri(requestedResources);
+                    var uri = _oAuthService.BuildAuthorizationUri(requestedResources);
                     return _callback(uri).Subscribe(o);
                 })
                 .Log(_logger, "requestAuthorizationCode()");
         }
 
-        private IObservable<Session> CreateSession(Uri[] requestedResources)
-        {
-            return (from authCode in GetAuthorizationCode(requestedResources)
-                    from accessToken in RequestAccessToken(authCode)
-                    select accessToken).Log(_logger, "createSession()");
-        }
-
-        private IObservable<Session> RefreshSession(Uri[] requestedResources)
+        private IObservable<ISession> RefreshSession()
         {
             if (CurrentSession == null)
                 return Observable.Empty<Session>().Log(_logger, "refreshSession()");
-            return (from authCode in GetAuthorizationCode(requestedResources)
-                    from accessToken in RequestRefreshedAccessToken(CurrentSession.RefreshToken)
+            return (from accessToken in _oAuthService.RequestRefreshedAccessToken(CurrentSession.RefreshToken)
                     select accessToken).Log(_logger, "refreshSession()");
-        }
-
-        private IObservable<Session> RequestAccessToken(string authorizationCode)
-        {
-            return Observable.Create<Session>(
-                o =>
-                {
-                    try
-                    {
-                        var request = CreateAccessTokenWebRequest(authorizationCode);
-                        var requestedAt = DateTimeOffset.Now;
-                        return _httpClient.GetResponse(request)
-                            .Select(JObject.Parse)
-                            .Select(json => new Session(
-                                                (string)json["access_token"],
-                                                (string)json["refresh_token"],
-                                                TimeSpan.FromSeconds((int)json["expires_in"]),
-                                                requestedAt))
-                            .Subscribe(o);
-                    }
-                    catch (Exception e)
-                    {
-                        o.OnError(e);
-                        return Disposable.Empty;
-                    }
-                })
-                .Log(_logger, string.Format("requestAccessToken({0})", authorizationCode));
-        }
-
-        private IObservable<Session> RequestRefreshedAccessToken(string refreshToken)
-        {
-            return Observable.Create<Session>(
-                o =>
-                {
-                    try
-                    {
-                        var request = CreateRefreshTokenWebRequest(refreshToken);
-                        var requestedAt = DateTimeOffset.Now;
-
-                        return _httpClient.GetResponse(request)
-                            .Select(JObject.Parse)
-                            .Select(payload => new Session(
-                                                   (string)payload["access_token"],
-                                                   refreshToken,
-                                                   TimeSpan.FromSeconds((int)payload["expires_in"]),
-                                                   requestedAt))
-                            .Subscribe(o);
-                    }
-                    catch (Exception e)
-                    {
-                        o.OnError(e);
-                        return Disposable.Empty;
-                    }
-                })
-                .Log(_logger, string.Format("requestRefreshedAccessToken({0})", refreshToken));
-        }
-
-
-        private static HttpRequestParameters CreateAccessTokenWebRequest(string authorizationCode)
-        {
-            var requestParams = new HttpRequestParameters(@"https://accounts.google.com/o/oauth2/token");
-            requestParams.PostParameters.Add("code", authorizationCode);
-            requestParams.PostParameters.Add("client_id", ClientId);
-            requestParams.PostParameters.Add("client_secret", ClientSecret);
-            requestParams.PostParameters.Add("redirect_uri", RedirectUri);
-            requestParams.PostParameters.Add("grant_type", "authorization_code");
-            return requestParams;
-        }
-
-        private static HttpRequestParameters CreateRefreshTokenWebRequest(string refreshToken)
-        {
-            var requestParams = new HttpRequestParameters(@"https://accounts.google.com/o/oauth2/token");
-            requestParams.PostParameters.Add("client_id", ClientId);
-            requestParams.PostParameters.Add("client_secret", ClientSecret);
-            requestParams.PostParameters.Add("refresh_token", refreshToken);
-            requestParams.PostParameters.Add("grant_type", "refresh_token");
-            return requestParams;
-        }
-
-        private static Uri BuildAuthorizationUri(Uri[] requestedResources)
-        {
-            var queryString = System.Web.HttpUtility.ParseQueryString(string.Empty);
-            queryString["response_type"] = "code";
-            queryString["client_id"] = ClientId; //Lee.Ryan.Campbell@gmail.com client Id
-            queryString["redirect_uri"] = RedirectUri;
-            var scopes = requestedResources.Select(uri => uri.ToString()).ToArray();
-            queryString["scope"] = string.Join(" ", scopes);    //" " should be translated into a "+" as per https://developers.google.com/accounts/docs/OAuth2InstalledApp
-
-            var authorizationUri = new UriBuilder(@"https://accounts.google.com/o/oauth2/auth");
-            authorizationUri.Query = queryString.ToString(); // Returns "key1=value1&key2=value2", all URL-encoded
-            return authorizationUri.Uri;
         }
 
         #region INotifyPropertyChanged implementation
@@ -294,6 +257,5 @@ namespace CallWall.Google.Authorization
         }
 
         #endregion
-
     }
 }
