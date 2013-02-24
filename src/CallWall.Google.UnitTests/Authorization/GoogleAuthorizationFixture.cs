@@ -38,6 +38,18 @@ namespace CallWall.Google.UnitTests.Authorization
         #endregion
 
         [TestFixture]
+        public sealed class When_current_Session_has_been_persisted : Given_a_newly_constructed_GoogleAuthorization
+        {
+            //TODO: Should...
+        }
+
+        [TestFixture]
+        public sealed class When_expired_Session_has_been_persisted : Given_a_newly_constructed_GoogleAuthorization
+        {
+            //TODO: Should....
+        }
+
+        [TestFixture]
         public sealed class When_no_callback_is_registered_for_GoogleAuthorization : Given_a_newly_constructed_GoogleAuthorization
         {
             private readonly GoogleResource[] _requestedResources = new[] { GoogleResource.Contacts };
@@ -241,7 +253,7 @@ namespace CallWall.Google.UnitTests.Authorization
             private readonly GoogleResource _unauthorizedResource = GoogleResource.Gmail;
             private string _accessToken = "TheAccessToken";
             private Given_an_Authorized_GoogleAuthorization()
-            {}
+            { }
 
             public override void SetUp()
             {
@@ -255,10 +267,10 @@ namespace CallWall.Google.UnitTests.Authorization
                                  .Returns(new Uri("http://someuri.com"));
                 _oAuthServiceMock.Setup(oaSvc => oaSvc.RequestAccessToken(authCode))
                                  .Returns(Observable.Return(sessionMock.Object));
-                
+
                 RequestAuthorizationCode callback = uri => Observable.Return(authCode);
                 _sut.RegisterAuthorizationCallback(callback);
-                _sut.Authorize(new[] {_authorizedResource}).Subscribe();
+                _sut.Authorize(new[] { _authorizedResource }).Subscribe();
             }
 
             #endregion
@@ -271,7 +283,7 @@ namespace CallWall.Google.UnitTests.Authorization
                 {
                     var observer = new TestScheduler().CreateObserver<string>();
                     _sut.RequestAccessToken(_unauthorizedResource).Subscribe(observer);
-                    
+
                     Assert.AreEqual(1, observer.Messages.Count);
                     Assert.AreEqual(NotificationKind.OnCompleted, observer.Messages[0].Value.Kind);
                 }
@@ -293,16 +305,13 @@ namespace CallWall.Google.UnitTests.Authorization
 
             }
 
-            //      Should do stuff if the requested Resource has been authorized
-            //      Should fail if the requested Resource has not been authorized
-
             //  when requesting access token for modified resources
             //  when multiple concurrent requests for access token are made     
         }
-        
+
         //Given a lapsed GoogleAuthoization
 
-        
+
     }
 }
 // ReSharper restore InconsistentNaming

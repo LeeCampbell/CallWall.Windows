@@ -11,7 +11,9 @@
   <ItemGroup>
     <Projects Include=".\src\CallWall\CallWall.csproj"/>
     <Projects Include=".\src\CallWall.UnitTests\CallWall.UnitTests.csproj"/>
+    <Projects Include=".\src\CallWall.UnitTests\CallWall.UnitTests.csproj"/>
     <Projects Include=".\src\CallWall.Core.UnitTests\CallWall.Core.UnitTests.csproj"/>
+    <Projects Include=".\src\CallWall.Google.UnitTests\CallWall.Google.UnitTests.csproj"/>
   </ItemGroup>
   
   <Import Project=".\tools\MSBuild.Community.Tasks.Targets" />

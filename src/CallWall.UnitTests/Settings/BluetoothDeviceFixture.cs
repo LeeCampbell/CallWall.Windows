@@ -278,7 +278,6 @@ namespace CallWall.UnitTests.Settings
                 [Test]
                 public override void Should_pass_deviceInfo_to_bluetoothService()
                 {
-                    Console.WriteLine("Running When_device_is_removed.Should_pass_deviceInfo_to_bluetoothService");
                     _sut.RemoveDeviceCommand.Execute();
 
                     _bluetoothServiceMock.Verify(bs => bs.RemoveDevice(_bluetoothDeviceInfoMock.Object), Times.Once());
@@ -313,7 +312,6 @@ namespace CallWall.UnitTests.Settings
                 [Test]
                 public override void Should_pass_deviceInfo_to_bluetoothService()
                 {
-                    Console.WriteLine("Running When_device_is_paired.Should_pass_deviceInfo_to_bluetoothService");
                     _sut.PairDeviceCommand.Execute();
 
                     _bluetoothServiceMock.Verify(bs => bs.PairDevice(_bluetoothDeviceInfoMock.Object), Times.Once());
