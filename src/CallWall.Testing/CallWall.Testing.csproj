@@ -98,6 +98,7 @@
     <Compile Include="RegisteredInstance.cs" />
     <Compile Include="RegisteredType.cs" />
     <Compile Include="StubUnityContainer.cs" />
+    <Compile Include="TestSchedulerExtensions.cs" />
     <Compile Include="TestSchedulerProvider.cs" />
   </ItemGroup>
   <ItemGroup>

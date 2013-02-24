@@ -33,7 +33,7 @@ namespace CallWall.Google.Authorization
         private readonly IPersonalizationSettings _localStore;
         private readonly IGoogleOAuthService _oAuthService;
         private readonly ILogger _logger;
-        private readonly ReadOnlyCollection<GoogleResource> _availableResourceScopes;
+        private readonly List<GoogleResource> _authorizedResources = new List<GoogleResource>();
         private AuthorizationStatus _status = AuthorizationStatus.Uninitialized;
 
         private RequestAuthorizationCode _callback;
@@ -44,7 +44,6 @@ namespace CallWall.Google.Authorization
             _localStore = localStore;
             _oAuthService = oAuthService;
             _logger = loggerFactory.CreateLogger();
-            _availableResourceScopes = GoogleResource.AvailableResourceScopes();
             _currentSession = LoadSession();
             if (_currentSession != null)
             {
@@ -65,7 +64,7 @@ namespace CallWall.Google.Authorization
             }
         }
 
-        public ReadOnlyCollection<GoogleResource> AvailableResourceScopes { get { return _availableResourceScopes; } }
+        public ReadOnlyCollection<GoogleResource> AvailableResourceScopes { get { return GoogleResource.AvailableResourceScopes; } }
 
         private string AuthorizationCode
         {
@@ -110,7 +109,7 @@ namespace CallWall.Google.Authorization
             Status = AuthorizationStatus.NotAuthorized;
         }
 
-        public IObservable<Unit> Authorize(IEnumerable<Uri> resources)
+        public IObservable<Unit> Authorize(IEnumerable<GoogleResource> resources)
         {
             return Observable.Create<Unit>(
                 o =>
@@ -120,11 +119,6 @@ namespace CallWall.Google.Authorization
                         o.OnError(new InvalidOperationException(Status.ErrorMessage));
                         return Disposable.Empty;
                     }
-                    //if (Status.IsAuthorized)
-                    //{
-                    //    o.OnError(new InvalidOperationException("Already authorized"));
-                    //    return Disposable.Empty;
-                    //}
                     Status = AuthorizationStatus.Processing;
                     var requestedResources = resources.ToArray();
                     if (!requestedResources.Any())
@@ -139,36 +133,39 @@ namespace CallWall.Google.Authorization
                     return CreateSession(requestedResources)
                         .Concat(Observable.Return<ISession>(null))
                         .Take(1)
-                        
                         .Subscribe(
                             session =>
                                 {
                                     CurrentSession = session;
-                                    Status = session==null 
-                                        ? AuthorizationStatus.Error("Failed to Authorize") 
-                                        : AuthorizationStatus.Authorized;
-                                    
+                                    if (session == null)
+                                    {
+                                        _authorizedResources.Clear();
+                                        Status = AuthorizationStatus.Error("Failed to Authorize");
+                                    }
+                                    else
+                                    {
+                                        _authorizedResources.AddRange(requestedResources);
+                                        Status = AuthorizationStatus.Authorized;
+                                    }
+
                                     o.OnCompleted();
                                 },
                             ex => { Status = AuthorizationStatus.NotAuthorized; o.OnError(ex); });
                 });
         }
 
-        public IObservable<string> RequestAccessToken()
+        public IObservable<string> RequestAccessToken(GoogleResource resource)
         {
             return Observable.Create<string>(
                 o =>
                 {
-                    //if (!Status.IsInitialized)
-                    //{
-                    //    o.OnError(new InvalidOperationException(Status.ErrorMessage));
-                    //    return Disposable.Empty;
-                    //}
                     if (!Status.IsAuthorized)
                     {
                         o.OnError(new InvalidOperationException("Can not request access token until authorized."));
                         return Disposable.Empty;
                     }
+                    if (!_authorizedResources.Contains(resource)) 
+                        return Observable.Empty<string>().Subscribe(o);
 
                     var currentSession = Observable.Return(CurrentSession);
                     var refreshSession = Observable.Defer(RefreshSession);
@@ -197,14 +194,14 @@ namespace CallWall.Google.Authorization
             return new Session(accessToken, refreshToken, expires);
         }
 
-        private IObservable<ISession> CreateSession(Uri[] requestedResources)
+        private IObservable<ISession> CreateSession(IEnumerable<GoogleResource> requestedResources)
         {
             return (from authCode in GetAuthorizationCode(requestedResources)
                     from accessToken in _oAuthService.RequestAccessToken(authCode)
                     select accessToken).Log(_logger, "createSession()");
         }
 
-        private IObservable<string> GetAuthorizationCode(Uri[] requestedResources)
+        private IObservable<string> GetAuthorizationCode(IEnumerable<GoogleResource> requestedResources)
         {
             return Observable.Create<string>(
                 o =>
@@ -224,14 +221,14 @@ namespace CallWall.Google.Authorization
                 .Log(_logger, "getAuthorizationCode()");
         }
 
-        private IObservable<string> RequestAuthorizationCode(Uri[] requestedResources)
+        private IObservable<string> RequestAuthorizationCode(IEnumerable<GoogleResource> requestedResources)
         {
             return Observable.Create<string>(
                 o =>
                 {
                     if (_callback == null)
                         throw new InvalidOperationException("No call-back has been registered via the RegisterAuthorizationCallback method");
-                    var uri = _oAuthService.BuildAuthorizationUri(requestedResources);
+                    var uri = _oAuthService.BuildAuthorizationUri(requestedResources.Select(r=>r.Resource));
                     return _callback(uri).Subscribe(o);
                 })
                 .Log(_logger, "requestAuthorizationCode()");

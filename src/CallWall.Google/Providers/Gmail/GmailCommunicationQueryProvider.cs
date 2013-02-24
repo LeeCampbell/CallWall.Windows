@@ -7,6 +7,7 @@ using System.Reactive.Linq;
 using System.Security.Authentication;
 using CallWall.Contract;
 using CallWall.Contract.Communication;
+using CallWall.Google.AccountConfiguration;
 using CallWall.Google.Authorization;
 using CallWall.Google.Providers.Gmail.Imap;
 
@@ -28,10 +29,10 @@ namespace CallWall.Google.Providers.Gmail
             _logger = loggerFactory.CreateLogger();
         }
 
-        //TODO: Only run if the email scope is Authorized
         public IObservable<IMessage> LoadMessages(IProfile activeProfile)
         {
-            return from token in _authorization.RequestAccessToken()
+            return from hasAccess in Observable.Return(_authorization.Status.IsAuthorized).Where(isAuth => isAuth)
+                   from token in _authorization.RequestAccessToken(GoogleResource.Gmail)
                    from message in SearchImap(activeProfile, token)
                    select message;
         }

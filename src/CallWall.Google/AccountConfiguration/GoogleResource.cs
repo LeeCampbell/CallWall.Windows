@@ -6,6 +6,12 @@ namespace CallWall.Google.AccountConfiguration
 {
     public sealed class GoogleResource : IResourceScope
     {
+        public static readonly GoogleResource Contacts;
+        public static readonly GoogleResource Gmail;
+        public static readonly GoogleResource Calendar;
+
+        private static readonly ReadOnlyCollection<GoogleResource> _availableResourceScopes;
+
         private readonly string _name;
         private readonly Uri _image;
         private readonly Uri _resource;
@@ -13,6 +19,15 @@ namespace CallWall.Google.AccountConfiguration
         static GoogleResource()
         {
             Ensure.PackUriIsRegistered();
+            Contacts = new GoogleResource("Contacts", "Contacts_48x48.png", new Uri(@"https://www.google.com/m8/feeds/"));
+            Gmail = new GoogleResource("Email", "Email_48x48.png", new Uri(@"https://mail.google.com/"));
+            Calendar = new GoogleResource("Calendar", "Calendar_48x48.png", null);
+            _availableResourceScopes = new ReadOnlyCollection<GoogleResource>(new[]
+                {
+                    Contacts,
+                    Gmail,
+                    Calendar
+                });
         }
 
         private GoogleResource(string name, string image, Uri resource)
@@ -22,15 +37,9 @@ namespace CallWall.Google.AccountConfiguration
             _resource = resource;
         }
 
-        //Could go back to being a static list now that IsEnabled has been removed.-LC
-        public static ReadOnlyCollection<GoogleResource> AvailableResourceScopes()
+        public static ReadOnlyCollection<GoogleResource> AvailableResourceScopes
         {
-            return new ReadOnlyCollection<GoogleResource>(new[]
-                {
-                    new GoogleResource("Contacts", "Contacts_48x48.png", new Uri(@"https://www.google.com/m8/feeds/")),
-                    new GoogleResource("Email", "Email_48x48.png", new Uri(@"https://mail.google.com/")),
-                    new GoogleResource("Calendar", "Calendar_48x48.png", null)
-                });
+            get { return _availableResourceScopes; }
         }
 
         public string Name { get { return _name; } }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using CallWall.Contract;
+using CallWall.Google.AccountConfiguration;
 using CallWall.Google.Authorization;
 using CallWall.Google.Providers;
 using CallWall.Google.Providers.Contacts;
@@ -10,6 +11,7 @@ using CallWall.Web;
 using Moq;
 using NUnit.Framework;
 
+// ReSharper disable InconsistentNaming
 namespace CallWall.Google.UnitTests.Providers
 {
     public abstract class Given_a_constructed_GoogleContactQueryProvider
@@ -56,7 +58,7 @@ namespace CallWall.Google.UnitTests.Providers
             public override void Setup()
             {
                 base.Setup();
-                _authorizationMock.Setup(a => a.RequestAccessToken())
+                _authorizationMock.Setup(a => a.RequestAccessToken(GoogleResource.Contacts))
                     .Returns(Observable.Return(_accessToken));
                 _contactProfileMock = new Mock<IGoogleContactProfile>();
                 _enrichedProfileMock = new Mock<IGoogleContactProfile>();
@@ -99,7 +101,6 @@ namespace CallWall.Google.UnitTests.Providers
             public void Should_call_webClient_first_with_GoogleContactURI()
             {
                 _sut.LoadContact(_profile).Subscribe();
-
                 
                 Assert.AreEqual(_contactsUri, _httpClient.Requests[0].EndPointUrl);
             }
@@ -184,3 +185,4 @@ namespace CallWall.Google.UnitTests.Providers
         }
     }
 }
+// ReSharper restore InconsistentNaming

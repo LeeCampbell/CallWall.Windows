@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using CallWall.Contract;
 using CallWall.Contract.Contact;
+using CallWall.Google.AccountConfiguration;
 using CallWall.Google.Authorization;
 using CallWall.Web;
 
@@ -33,7 +34,8 @@ namespace CallWall.Google.Providers.Contacts
         private IObservable<IGoogleContactProfile> LoadContact(IPersonalIdentifier personalIdentifier)
         {
             return (
-                       from accessToken in _authorization.RequestAccessToken()
+                       from hasAccess in Observable.Return(_authorization.Status.IsAuthorized).Where(isAuth=>isAuth)
+                       from accessToken in _authorization.RequestAccessToken(GoogleResource.Contacts)
                        from request in Observable.Return(CreateRequestParams(personalIdentifier, accessToken))
                        from response in _httpClient.GetResponse(request)
                        select _translator.Translate(response, accessToken)
@@ -47,7 +49,8 @@ namespace CallWall.Google.Providers.Contacts
             //TODO: This should fetch any extra pages of groups
             //TODO: The groups can be cached as they are related to the logged in user. I would imagine that we can safely cache for 1minute.
             return (
-                       from accessToken in _authorization.RequestAccessToken()
+                       from hasAccess in Observable.Return(_authorization.Status.IsAuthorized).Where(isAuth => isAuth)
+                       from accessToken in _authorization.RequestAccessToken(GoogleResource.Contacts)
                        from request in Observable.Return(CreateConactGroupRequestParams(accessToken))
                        from response in _httpClient.GetResponse(request)
                        select _translator.AddTags(contactProfile, response)

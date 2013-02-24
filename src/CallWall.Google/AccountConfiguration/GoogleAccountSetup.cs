@@ -54,7 +54,7 @@ namespace CallWall.Google.AccountConfiguration
 
         public void Authorize()
         {
-            _authorization.Authorize(SelectedResources.Select(r => r.Resource))
+            _authorization.Authorize(SelectedResources)
                 .Subscribe(i => { }, ex => { });
         }
 

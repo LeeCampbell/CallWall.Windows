@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -22,7 +23,21 @@ namespace CallWall.Google.Authorization
             _logger = loggerFactory.CreateLogger();
         }
 
-        
+
+        public Uri BuildAuthorizationUri(IEnumerable<Uri> requestedResources)
+        {
+            var queryString = System.Web.HttpUtility.ParseQueryString(string.Empty);
+            queryString["response_type"] = "code";
+            queryString["client_id"] = ClientId; //Lee.Ryan.Campbell@gmail.com client Id
+            queryString["redirect_uri"] = RedirectUri;
+            var scopes = requestedResources.Select(uri => uri.ToString()).ToArray();
+            queryString["scope"] = string.Join(" ", scopes);    //" " should be translated into a "+" as per https://developers.google.com/accounts/docs/OAuth2InstalledApp
+
+            var authorizationUri = new UriBuilder(@"https://accounts.google.com/o/oauth2/auth");
+            authorizationUri.Query = queryString.ToString(); // Returns "key1=value1&key2=value2", all URL-encoded
+            return authorizationUri.Uri;
+        }
+
         public IObservable<ISession> RequestAccessToken(string authorizationCode)
         {
             return Observable.Create<Session>(
@@ -48,20 +63,6 @@ namespace CallWall.Google.Authorization
                         }
                     })
                 .Log(_logger, string.Format("requestAccessToken({0})", authorizationCode));
-        }
-        
-        public Uri BuildAuthorizationUri(Uri[] requestedResources)
-        {
-            var queryString = System.Web.HttpUtility.ParseQueryString(string.Empty);
-            queryString["response_type"] = "code";
-            queryString["client_id"] = ClientId; //Lee.Ryan.Campbell@gmail.com client Id
-            queryString["redirect_uri"] = RedirectUri;
-            var scopes = requestedResources.Select(uri => uri.ToString()).ToArray();
-            queryString["scope"] = string.Join(" ", scopes);    //" " should be translated into a "+" as per https://developers.google.com/accounts/docs/OAuth2InstalledApp
-
-            var authorizationUri = new UriBuilder(@"https://accounts.google.com/o/oauth2/auth");
-            authorizationUri.Query = queryString.ToString(); // Returns "key1=value1&key2=value2", all URL-encoded
-            return authorizationUri.Uri;
         }
 
         public IObservable<ISession> RequestRefreshedAccessToken(string refreshToken)

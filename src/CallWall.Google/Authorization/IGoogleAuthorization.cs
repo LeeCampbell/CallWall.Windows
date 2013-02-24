@@ -15,7 +15,7 @@ namespace CallWall.Google.Authorization
         ReadOnlyCollection<GoogleResource> AvailableResourceScopes { get; }
 
         void RegisterAuthorizationCallback(RequestAuthorizationCode callback);
-        IObservable<Unit> Authorize(IEnumerable<Uri> resources);
-        IObservable<string> RequestAccessToken();
+        IObservable<Unit> Authorize(IEnumerable<GoogleResource> resources);
+        IObservable<string> RequestAccessToken(GoogleResource resource);
     }
 }

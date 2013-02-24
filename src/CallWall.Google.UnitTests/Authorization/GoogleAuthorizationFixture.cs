@@ -1,4 +1,5 @@
-﻿using CallWall.Google.Authorization;
+﻿using CallWall.Google.AccountConfiguration;
+using CallWall.Google.Authorization;
 using Microsoft.Reactive.Testing;
 using Moq;
 using NUnit.Framework;
@@ -39,7 +40,7 @@ namespace CallWall.Google.UnitTests.Authorization
         [TestFixture]
         public sealed class When_no_callback_is_registered_for_GoogleAuthorization : Given_a_newly_constructed_GoogleAuthorization
         {
-            private readonly Uri[] _requestedResources = new[] { new Uri("http://mail.google.com") };
+            private readonly GoogleResource[] _requestedResources = new[] { GoogleResource.Contacts };
             [Test]
             public void Should_return_false_for_IsAuthorized_Status()
             {
@@ -53,7 +54,7 @@ namespace CallWall.Google.UnitTests.Authorization
             }
 
             [Test]
-            public void Should_return_Error_from_Authorize()
+            public void Should_fail_when_Authorize_is_called()
             {
                 var observer = new TestScheduler().CreateObserver<Unit>();
                 _sut.Authorize(_requestedResources).Subscribe(observer);
@@ -69,7 +70,7 @@ namespace CallWall.Google.UnitTests.Authorization
         {
             #region Setup guff
 
-            private readonly Uri[] _requestedResources = new[] { new Uri("http://mail.google.com") };
+            private readonly GoogleResource[] _requestedResources = new[] { GoogleResource.Contacts };
             private const string _authUri = "http://someUri.com";
 
             private Given_a_registered_GoogleAuthorization()
@@ -93,7 +94,7 @@ namespace CallWall.Google.UnitTests.Authorization
             public void Should_OnError_if_requesting_accesstoken_when_not_Authorized()
             {
                 var observer = new TestScheduler().CreateObserver<string>();
-                _sut.RequestAccessToken().Subscribe(observer);
+                _sut.RequestAccessToken(GoogleResource.Contacts).Subscribe(observer);
 
                 Assert.AreEqual(1, observer.Messages.Count);
                 Assert.AreEqual(NotificationKind.OnError, observer.Messages[0].Value.Kind);
@@ -105,14 +106,13 @@ namespace CallWall.Google.UnitTests.Authorization
             public void Should_OnError_if_no_Resources_have_been_selected()
             {
                 var observer = new TestScheduler().CreateObserver<Unit>();
-                _sut.Authorize(new Uri[] { }).Subscribe(observer);
+                _sut.Authorize(new GoogleResource[] { }).Subscribe(observer);
 
                 Assert.AreEqual(1, observer.Messages.Count);
                 Assert.AreEqual(NotificationKind.OnError, observer.Messages[0].Value.Kind);
                 Assert.IsInstanceOf<InvalidOperationException>(observer.Messages[0].Value.Exception);
                 Assert.AreEqual("No resources have been enabled.", observer.Messages[0].Value.Exception.Message);
             }
-
 
             [TestFixture]
             public sealed class When_calling_authorization_callback_with_empty_response : Given_a_registered_GoogleAuthorization
@@ -135,6 +135,14 @@ namespace CallWall.Google.UnitTests.Authorization
                 {
                     _sut.Authorize(_requestedResources).Subscribe();
                     Assert.IsFalse(_sut.Status.IsProcessing);
+                }
+
+                [Test]
+                public void Should_complete_authorization_sequence()
+                {
+                    var isCompleted = false;
+                    _sut.Authorize(_requestedResources).Subscribe(_ => { }, () => { isCompleted = true; });
+                    Assert.IsTrue(isCompleted);
                 }
             }
 
@@ -222,14 +230,79 @@ namespace CallWall.Google.UnitTests.Authorization
                     Assert.IsTrue(isCompleted);
                 }
             }
-            //when multiple concurrent requests for access token are made should only call call-back once
         }
 
-        //Given an Authorized_GoogleAuthoization
-        //  When requesting access token
-        //  when requesting access token for modified resources
-        //  when multiple concurrent requests for access token are made
+
+        public abstract class Given_an_Authorized_GoogleAuthorization : Given_a_newly_constructed_GoogleAuthorization
+        {
+            #region Setup guff
+
+            private readonly GoogleResource _authorizedResource = GoogleResource.Contacts;
+            private readonly GoogleResource _unauthorizedResource = GoogleResource.Gmail;
+            private string _accessToken = "TheAccessToken";
+            private Given_an_Authorized_GoogleAuthorization()
+            {}
+
+            public override void SetUp()
+            {
+                base.SetUp();
+                var authCode = "SomeAuthCode";
+                var sessionMock = new Mock<ISession>();
+                sessionMock.Setup(s => s.AccessToken).Returns(_accessToken);
+                sessionMock.Setup(s => s.HasExpired()).Returns(false);
+
+                _oAuthServiceMock.Setup(oaSvc => oaSvc.BuildAuthorizationUri(It.IsAny<Uri[]>()))
+                                 .Returns(new Uri("http://someuri.com"));
+                _oAuthServiceMock.Setup(oaSvc => oaSvc.RequestAccessToken(authCode))
+                                 .Returns(Observable.Return(sessionMock.Object));
+                
+                RequestAuthorizationCode callback = uri => Observable.Return(authCode);
+                _sut.RegisterAuthorizationCallback(callback);
+                _sut.Authorize(new[] {_authorizedResource}).Subscribe();
+            }
+
+            #endregion
+
+            [TestFixture]
+            public sealed class When_requesting_an_unauthorized_access_token : Given_an_Authorized_GoogleAuthorization
+            {
+                [Test]
+                public void Should_return_empty_sequence()
+                {
+                    var observer = new TestScheduler().CreateObserver<string>();
+                    _sut.RequestAccessToken(_unauthorizedResource).Subscribe(observer);
+                    
+                    Assert.AreEqual(1, observer.Messages.Count);
+                    Assert.AreEqual(NotificationKind.OnCompleted, observer.Messages[0].Value.Kind);
+                }
+            }
+
+            [TestFixture]
+            public sealed class When_requesting_an_authorized_access_token : Given_an_Authorized_GoogleAuthorization
+            {
+                [Test]
+                public void Should_return_access_token()
+                {
+                    var observer = new TestScheduler().CreateObserver<string>();
+                    _sut.RequestAccessToken(_authorizedResource).Subscribe(observer);
+
+                    Assert.AreEqual(2, observer.Messages.Count);
+                    Assert.AreEqual(_accessToken, observer.Messages[0].Value.Value);
+                    Assert.AreEqual(NotificationKind.OnCompleted, observer.Messages[1].Value.Kind);
+                }
+
+            }
+
+            //      Should do stuff if the requested Resource has been authorized
+            //      Should fail if the requested Resource has not been authorized
+
+            //  when requesting access token for modified resources
+            //  when multiple concurrent requests for access token are made     
+        }
+        
         //Given a lapsed GoogleAuthoization
+
+        
     }
 }
 // ReSharper restore InconsistentNaming

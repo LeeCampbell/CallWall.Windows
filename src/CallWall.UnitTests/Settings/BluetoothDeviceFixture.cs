@@ -6,7 +6,6 @@ using InTheHand.Net.Bluetooth;
 using Microsoft.Reactive.Testing;
 using Moq;
 using NUnit.Framework;
-using System.Reactive;
 using System.Reactive.Linq;
 
 // ReSharper disable InconsistentNaming
@@ -40,15 +39,6 @@ namespace CallWall.UnitTests.Settings
             _bluetoothDeviceInfoMock.Setup(bt => bt.DeviceName).Returns(_expectedName);
             _bluetoothDeviceInfoMock.Setup(bt => bt.DeviceType).Returns(BluetoothDeviceType.Create(DeviceClass.SmartPhone));
         }
-
-        protected ITestableObservable<T> CreateSingleValueColdObservable<T>(T value)
-        {
-            return _testSchedulerProvider.Concurrent.CreateColdObservable(
-                new Recorded<Notification<T>>(1, Notification.CreateOnNext(value)),
-                new Recorded<Notification<T>>(1, Notification.CreateOnCompleted<T>())
-                );
-        }
-
 
         [TestFixture]
         public sealed class When_accessing_ToString: Given_a_constructed_BluetoothDevice
@@ -270,7 +260,7 @@ namespace CallWall.UnitTests.Settings
                     base.Setup();
 
                     _bluetoothDeviceInfoMock.Setup(bdi => bdi.IsAuthenticated).Returns(true);
-                    _removeDeviceResult = CreateSingleValueColdObservable(true);
+                    _removeDeviceResult = _testSchedulerProvider.Concurrent.CreateSingleValueColdObservable(true);
                     _bluetoothServiceMock.Setup(bs => bs.RemoveDevice(_bluetoothDeviceInfoMock.Object))
                         .Returns(_removeDeviceResult);
                 }
@@ -305,7 +295,7 @@ namespace CallWall.UnitTests.Settings
                     base.Setup();
 
                     _bluetoothDeviceInfoMock.Setup(bdi => bdi.IsAuthenticated).Returns(false);
-                    _pairDeviceResult = CreateSingleValueColdObservable(true);
+                    _pairDeviceResult = _testSchedulerProvider.Concurrent.CreateSingleValueColdObservable(true);
                     _bluetoothServiceMock.Setup(bs => bs.PairDevice(_bluetoothDeviceInfoMock.Object))
                         .Returns(_pairDeviceResult);
                 }
