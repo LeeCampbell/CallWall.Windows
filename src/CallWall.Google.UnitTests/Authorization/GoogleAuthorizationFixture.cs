@@ -29,18 +29,45 @@ namespace CallWall.Google.UnitTests.Authorization
             _localStoreMock = new Mock<IPersonalizationSettings>();
             _oAuthServiceMock = new Mock<IGoogleOAuthService>();
             _loggerMock = new Mock<ILogger>();
+            SetupLocalStoreMock();
             var logFactory = new Mock<ILoggerFactory>();
             logFactory.Setup(lf => lf.CreateLogger(It.IsAny<Type>())).Returns(_loggerMock.Object);
-            // logFactory.Setup(lf => lf.CreateLogger(It.IsAny<Type>())).Returns(new DebugLogger());
             _sut = new GoogleAuthorization(_localStoreMock.Object, _oAuthServiceMock.Object, logFactory.Object);
         }
 
         #endregion
+        protected virtual void SetupLocalStoreMock()
+        {}
 
-        [TestFixture]
-        public sealed class When_current_Session_has_been_persisted : Given_a_newly_constructed_GoogleAuthorization
+        
+        public abstract class Given_current_Session_has_been_persisted : Given_a_newly_constructed_GoogleAuthorization
         {
-            //TODO: Should...
+            private string _savedAccessToken = "savedAccessToken";
+            private string _savedRefreshToken = "savedRefreshToken";
+            private string _savedTokenExpiryDate;
+
+            protected override void SetupLocalStoreMock()
+            {
+                base.SetupLocalStoreMock();
+                _savedTokenExpiryDate = DateTimeOffset.Now.AddHours(1).ToString("o");
+                _localStoreMock.Setup(ls => ls.Get("Google.AccessToken")).Returns(_savedAccessToken);
+                _localStoreMock.Setup(ls => ls.Get("Google.AccessTokenExpires")).Returns(_savedTokenExpiryDate);
+                _localStoreMock.Setup(ls => ls.Get("Google.RefreshToken")).Returns(_savedRefreshToken);
+            }
+            
+            [TestFixture]
+            public sealed class When_requesting_access_token : Given_current_Session_has_been_persisted
+            {
+                [Test]
+                public void Should_not_call_OAuthService_for_new_session()
+                {
+                    RequestAuthorizationCode callback = uri => Observable.Return("");
+                    _sut.RegisterAuthorizationCallback(callback);
+                    _sut.Authorize(new[] {GoogleResource.Contacts}).Subscribe();
+                    _sut.RequestAccessToken(GoogleResource.Contacts).Subscribe();
+                    _oAuthServiceMock.Verify(oauth=>oauth.RequestAccessToken(It.IsAny<string>()), Times.Never());
+                }
+            }
         }
 
         [TestFixture]

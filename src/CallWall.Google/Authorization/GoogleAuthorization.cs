@@ -29,7 +29,7 @@ namespace CallWall.Google.Authorization
     {
         //TODO: I need to ensure that I am setting IsProcessing appropriately. -LC
 
-        
+
         private readonly IPersonalizationSettings _localStore;
         private readonly IGoogleOAuthService _oAuthService;
         private readonly ILogger _logger;
@@ -106,7 +106,10 @@ namespace CallWall.Google.Authorization
         public void RegisterAuthorizationCallback(RequestAuthorizationCode callback)
         {
             _callback = callback;
-            Status = AuthorizationStatus.NotAuthorized;
+            if (!Status.IsInitialized)
+            {
+                Status = AuthorizationStatus.NotAuthorized;
+            }
         }
 
         public IObservable<Unit> Authorize(IEnumerable<GoogleResource> resources)
@@ -114,6 +117,8 @@ namespace CallWall.Google.Authorization
             return Observable.Create<Unit>(
                 o =>
                 {
+                    if (Status.IsAuthorized)
+                        return Observable.Return(Unit.Default).Subscribe(o);
                     if (!Status.IsInitialized)
                     {
                         o.OnError(new InvalidOperationException(Status.ErrorMessage));
@@ -135,21 +140,21 @@ namespace CallWall.Google.Authorization
                         .Take(1)
                         .Subscribe(
                             session =>
+                            {
+                                CurrentSession = session;
+                                if (session == null)
                                 {
-                                    CurrentSession = session;
-                                    if (session == null)
-                                    {
-                                        _authorizedResources.Clear();
-                                        Status = AuthorizationStatus.Error("Failed to Authorize");
-                                    }
-                                    else
-                                    {
-                                        _authorizedResources.AddRange(requestedResources);
-                                        Status = AuthorizationStatus.Authorized;
-                                    }
+                                    _authorizedResources.Clear();
+                                    Status = AuthorizationStatus.Error("Failed to Authorize");
+                                }
+                                else
+                                {
+                                    _authorizedResources.AddRange(requestedResources);
+                                    Status = AuthorizationStatus.Authorized;
+                                }
 
-                                    o.OnCompleted();
-                                },
+                                o.OnCompleted();
+                            },
                             ex => { Status = AuthorizationStatus.NotAuthorized; o.OnError(ex); });
                 });
         }
@@ -164,7 +169,7 @@ namespace CallWall.Google.Authorization
                         o.OnError(new InvalidOperationException("Can not request access token until authorized."));
                         return Disposable.Empty;
                     }
-                    if (!_authorizedResources.Contains(resource)) 
+                    if (!_authorizedResources.Contains(resource))
                         return Observable.Empty<string>().Subscribe(o);
 
                     var currentSession = Observable.Return(CurrentSession);
@@ -228,7 +233,7 @@ namespace CallWall.Google.Authorization
                 {
                     if (_callback == null)
                         throw new InvalidOperationException("No call-back has been registered via the RegisterAuthorizationCallback method");
-                    var uri = _oAuthService.BuildAuthorizationUri(requestedResources.Select(r=>r.Resource));
+                    var uri = _oAuthService.BuildAuthorizationUri(requestedResources.Select(r => r.Resource));
                     return _callback(uri).Subscribe(o);
                 })
                 .Log(_logger, "requestAuthorizationCode()");
@@ -238,8 +243,8 @@ namespace CallWall.Google.Authorization
         {
             if (CurrentSession == null)
                 return Observable.Empty<Session>().Log(_logger, "refreshSession()");
-            return (from accessToken in _oAuthService.RequestRefreshedAccessToken(CurrentSession.RefreshToken)
-                    select accessToken).Log(_logger, "refreshSession()");
+            return (from newSession in _oAuthService.RequestRefreshedAccessToken(CurrentSession.RefreshToken)
+                    select newSession).Log(_logger, "refreshSession()");
         }
 
         #region INotifyPropertyChanged implementation
