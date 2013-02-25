@@ -28,10 +28,11 @@ namespace CallWall.FakeProvider.Providers
                                                    }
                                            };
                         o.OnNext(snowSwim);
-
+                        o.OnCompleted();
 
                         return Disposable.Empty;
-                    });
+                    })
+                    .Zip(Observable.Interval(TimeSpan.FromMilliseconds(700)), (album, l) => album);
         }
 
         private sealed class Album : IAlbum

@@ -1,4 +1,4 @@
-namespace CallWall.Settings.Connectivity.Bluetooth
+namespace CallWall
 {
     public abstract class ViewModelStatus
     {

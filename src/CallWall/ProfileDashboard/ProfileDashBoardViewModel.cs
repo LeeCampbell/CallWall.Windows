@@ -21,12 +21,11 @@ namespace CallWall.ProfileDashboard
         private readonly IProfileDashboard _profileDashboard;
         private readonly ISchedulerProvider _schedulerProvider;
         private readonly CompositeDisposable _subscriptions = new CompositeDisposable();
-        private readonly ObservableCollection<Message> _messages = new ObservableCollection<Message>();
-        private readonly ObservableCollection<Album> _pictureAlbums = new ObservableCollection<Album>();
-        private readonly ReadOnlyObservableCollection<Message> _roMessages;
-        private readonly ReadOnlyObservableCollection<Album> _roPictureAlbums;
+        private readonly DashboardCollection<Message> _messages;
+        private readonly DashboardCollection<Album> _pictureAlbums;
         private DelegateCommand _closeCommand;
         private IContactProfile _contact;
+        private ViewModelStatus _contactStatus = ViewModelStatus.Processing;
         private Uri _avatar;
 
         #endregion
@@ -35,8 +34,8 @@ namespace CallWall.ProfileDashboard
         {
             _profileDashboard = profileDashboard;
             _schedulerProvider = schedulerProvider;
-            _roMessages = new ReadOnlyObservableCollection<Message>(_messages);
-            _roPictureAlbums = new ReadOnlyObservableCollection<Album>(_pictureAlbums);
+            _messages = new DashboardCollection<Message>(_profileDashboard.Messages.ObserveOn(_schedulerProvider.Async));
+            _pictureAlbums = new DashboardCollection<Album>(_profileDashboard.PictureAlbums.ObserveOn(_schedulerProvider.Async));
         }
 
         //HACK: Temp hack until I can merge without full updates (which I imagine will force another call to the web to load the avatars
@@ -63,15 +62,27 @@ namespace CallWall.ProfileDashboard
                 OnPropertyChanged("Contact");
             }
         }
-
-        public ReadOnlyObservableCollection<Message> Messages
+        public ViewModelStatus ContactStatus
         {
-            get { return _roMessages; }
+            get { return _contactStatus; }
+            private set
+            {
+                if (_contactStatus != value)
+                {
+                    _contactStatus = value;
+                    OnPropertyChanged("ContactStatus");
+                }
+            }
         }
 
-        public ReadOnlyObservableCollection<Album> PictureAlbums
+        public DashboardCollection<Message> Messages
         {
-            get { return _roPictureAlbums; }
+            get { return _messages; }
+        }
+
+        public DashboardCollection<Album> PictureAlbums
+        {
+            get { return _pictureAlbums; }
         }
 
         public DelegateCommand CloseCommand
@@ -87,8 +98,6 @@ namespace CallWall.ProfileDashboard
         public void Load(IProfile profile)
         {
             _subscriptions.Add(SubscribeToContact());
-            _subscriptions.Add(SubscribeToMessages());
-            _subscriptions.Add(SubscribeToPictures());
             _profileDashboard.Load(profile);
         }
 
@@ -96,21 +105,9 @@ namespace CallWall.ProfileDashboard
         {
             return _profileDashboard.Contact
                                     .ObserveOn(_schedulerProvider.Async)
-                                    .Subscribe(c => Contact = c);
-        }
-
-        private IDisposable SubscribeToMessages()
-        {
-            return _profileDashboard.Messages
-                                    .ObserveOn(_schedulerProvider.Async)
-                                    .Subscribe(_messages.Add);
-        }
-
-        private IDisposable SubscribeToPictures()
-        {
-            return _profileDashboard.PictureAlbums
-                                    .ObserveOn(_schedulerProvider.Async)
-                                    .Subscribe(_pictureAlbums.Add);
+                                    .Subscribe(c => Contact = c,
+                                    ex=>ContactStatus = ViewModelStatus.Error(ex.Message),
+                                    ()=>ContactStatus = ViewModelStatus.Idle);
         }
 
         #region INotifyPropertyChanged implementation
@@ -135,6 +132,8 @@ namespace CallWall.ProfileDashboard
         public void Dispose()
         {
             _subscriptions.Dispose();
+            _messages.Dispose();
+            _pictureAlbums.Dispose();
             _profileDashboard.Dispose();
         }
 

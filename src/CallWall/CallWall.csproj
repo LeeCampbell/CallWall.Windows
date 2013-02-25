@@ -147,6 +147,7 @@
     <Compile Include="PrismExtensions\AccordionRegionAdapter.cs" />
     <Compile Include="PrismExtensions\UnityContainerExtensions.cs" />
     <Compile Include="ProfileDashboard\Communication\CommunicationQueryAggregator.cs" />
+    <Compile Include="ProfileDashboard\DashboardCollection.cs" />
     <Compile Include="ProfileDashboard\DateTimeOffsetConverter.cs" />
     <Compile Include="ProfileDashboard\ICommunicationQueryAggregator.cs" />
     <Compile Include="ProfileDashboard\Communication\Message.cs" />
@@ -183,7 +184,7 @@
     <Compile Include="Settings\Connectivity\Bluetooth\IBluetoothDeviceInfo.cs" />
     <Compile Include="Settings\Connectivity\Bluetooth\IBluetoothSetupView.cs" />
     <Compile Include="Settings\Connectivity\Bluetooth\IBluetoothSetupViewModel.cs" />
-    <Compile Include="Settings\Connectivity\Bluetooth\ViewModelStatus.cs" />
+    <Compile Include="ViewModelStatus.cs" />
     <Compile Include="Settings\Connectivity\ConnectivitySettingsModel.cs" />
     <Compile Include="Settings\Connectivity\ConnectivitySettingsView.xaml.cs">
       <DependentUpon>ConnectivitySettingsView.xaml</DependentUpon>

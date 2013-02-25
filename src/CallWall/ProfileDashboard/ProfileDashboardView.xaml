@@ -17,7 +17,7 @@
                                        Text="{TemplateBinding Header}"
                                        Style="{StaticResource ContentHeading1Style}" />
                             <ContentPresenter Content="{TemplateBinding Content}" 
-                                              Margin="0,10,0,20"
+                                              Margin="0,5,0,20"
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                         </DockPanel>
                     </ControlTemplate>
@@ -47,17 +47,17 @@
             </Setter>
         </Style>
 
-        <CollectionViewSource x:Key="SortedMessages" Source="{Binding Messages}">
+        <!--<CollectionViewSource x:Key="SortedMessages" Source="{Binding Messages}">
             <CollectionViewSource.SortDescriptions>
                 <ComponentModel:SortDescription PropertyName="Timestamp" Direction="Descending"/>
             </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
+        </CollectionViewSource>-->
 
-        <CollectionViewSource x:Key="SortedPictureAlbums" Source="{Binding PictureAlbums}">
+        <!--<CollectionViewSource x:Key="SortedPictureAlbums" Source="{Binding PictureAlbums}">
             <CollectionViewSource.SortDescriptions>
                 <ComponentModel:SortDescription PropertyName="LastUpdate" Direction="Descending"/>
             </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
+        </CollectionViewSource>-->
     </Control.Resources>
     <DockPanel VerticalAlignment="Stretch">
         <Border DockPanel.Dock="Top" 
@@ -72,7 +72,7 @@
                     <Image Source="pack://application:,,,/CallWall;component/Images/CallWallLogo.png" 
                            Stretch="Uniform" 
                            Height="64"/>
-                    
+
                     <!--TODO: Create an ImageCarousel that rotates through collections of images-->
                     <Image VerticalAlignment="Bottom"
                            Stretch="Uniform"
@@ -116,9 +116,54 @@
 
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
             <StackPanel Orientation="Horizontal">
-                <HeaderedContentControl Header="Details" Content="{Binding Contact}" Style="{StaticResource ContentSection}"/>
-                <HeaderedItemsControl Header="Comunication" ItemsSource="{Binding Source={StaticResource SortedMessages}}" Style="{StaticResource ContentItemsSection}"/>
-                <HeaderedItemsControl Header="Pictures" ItemsSource="{Binding Source={StaticResource SortedPictureAlbums}}" Style="{StaticResource ContentItemsSection}"/>
+                <!--<HeaderedContentControl Header="Details" Content="{Binding Contact}" Style="{StaticResource ContentSection}"/>-->
+                <HeaderedContentControl Header="Details" Style="{StaticResource ContentSection}">
+                    <DockPanel>
+                        <Border DockPanel.Dock="Top" Height="2" Margin="0,0,0,5">
+                            <ProgressBar IsIndeterminate="True"
+                                         Height="2"
+                                         Visibility="{Binding ContactStatus.IsProcessing, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        </Border>
+                        <ContentControl Content="{Binding Contact}"/>
+                    </DockPanel>
+                </HeaderedContentControl>
+                
+                
+                <HeaderedContentControl Header="Communication" Style="{StaticResource ContentSection}">
+                    <HeaderedContentControl.Resources>
+                        <CollectionViewSource x:Key="SortedMessages" Source="{Binding Messages.Items}">
+                            <CollectionViewSource.SortDescriptions>
+                                <ComponentModel:SortDescription PropertyName="Timestamp" Direction="Descending"/>
+                            </CollectionViewSource.SortDescriptions>
+                        </CollectionViewSource>
+                    </HeaderedContentControl.Resources>
+                    <DockPanel>
+                        <Border DockPanel.Dock="Top" Height="2" Margin="0,0,0,5">
+                            <ProgressBar IsIndeterminate="True"
+                                         Height="2"
+                                         Visibility="{Binding Messages.Status.IsProcessing, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        </Border>
+                        <ItemsControl ItemsSource="{Binding Source={StaticResource SortedMessages}}"/>
+                    </DockPanel>
+                </HeaderedContentControl>
+
+                <HeaderedContentControl Header="Pictures" Style="{StaticResource ContentSection}">
+                    <HeaderedContentControl.Resources>
+                        <CollectionViewSource x:Key="SortedPictureAlbums" Source="{Binding PictureAlbums.Items}">
+                            <CollectionViewSource.SortDescriptions>
+                                <ComponentModel:SortDescription PropertyName="LastUpdate" Direction="Descending"/>
+                            </CollectionViewSource.SortDescriptions>
+                        </CollectionViewSource>
+                    </HeaderedContentControl.Resources>
+                    <DockPanel>
+                        <Border DockPanel.Dock="Top" Height="2" Margin="0,0,0,5">
+                            <ProgressBar IsIndeterminate="True"
+                                         Height="2"
+                                         Visibility="{Binding PictureAlbums.Status.IsProcessing, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        </Border>
+                        <ItemsControl ItemsSource="{Binding Source={StaticResource SortedPictureAlbums}}"/>
+                    </DockPanel>
+                </HeaderedContentControl>
                 <HeaderedContentControl Header="Calendar" Style="{StaticResource ContentSection}"/>
                 <HeaderedContentControl Header="Map" Style="{StaticResource ContentSection}"/>
                 <HeaderedContentControl Header="Collaboration" Style="{StaticResource ContentSection}"/>

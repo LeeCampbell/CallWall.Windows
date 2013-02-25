@@ -40,8 +40,10 @@ namespace CallWall.FakeProvider.Providers
                             }
                     };
                     o.OnNext(xmasDay);
+                    o.OnCompleted();
                     return Disposable.Empty;
-                });
+                })
+                .Zip(Observable.Interval(TimeSpan.FromMilliseconds(500)), (album, l) => album);
         }
 
         private sealed class Album : IAlbum
