@@ -31,7 +31,8 @@ namespace CallWall
                     return subscription;
                 };
 
-                var scheduled = ImmediateScheduler.Instance.Schedule(enumerator, loop);
+                //var scheduled = ImmediateScheduler.Instance.Schedule(enumerator, loop);
+                var scheduled = CurrentThreadScheduler.Instance.Schedule(enumerator, loop);
 
                 return new CompositeDisposable(cancelFlag, scheduled);
             });

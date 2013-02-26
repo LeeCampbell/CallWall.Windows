@@ -1,3 +1,4 @@
+
 using System.Collections.Generic;
 using System.Reactive;
 using CallWall.Google.AccountConfiguration;
@@ -33,7 +34,7 @@ namespace CallWall.Google.Authorization
         private readonly IPersonalizationSettings _localStore;
         private readonly IGoogleOAuthService _oAuthService;
         private readonly ILogger _logger;
-        private readonly List<GoogleResource> _authorizedResources = new List<GoogleResource>();
+        private readonly HashSet<Uri> _authorizedResources = new HashSet<Uri>();
         private AuthorizationStatus _status = AuthorizationStatus.Uninitialized;
 
         private RequestAuthorizationCode _callback;
@@ -117,7 +118,8 @@ namespace CallWall.Google.Authorization
             return Observable.Create<Unit>(
                 o =>
                 {
-                    if (Status.IsAuthorized)
+                    var requestedResources = resources.Select(r => r.Resource).ToArray();
+                    if (Status.IsAuthorized && _authorizedResources.SetEquals(requestedResources))
                         return Observable.Return(Unit.Default).Subscribe(o);
                     if (!Status.IsInitialized)
                     {
@@ -125,7 +127,7 @@ namespace CallWall.Google.Authorization
                         return Disposable.Empty;
                     }
                     Status = AuthorizationStatus.Processing;
-                    var requestedResources = resources.ToArray();
+                    
                     if (!requestedResources.Any())
                     {
                         var errorMessage = "No resources have been enabled.";
@@ -150,6 +152,9 @@ namespace CallWall.Google.Authorization
                                 else
                                 {
                                     _authorizedResources.AddRange(requestedResources);
+                                    //TODO:Save selected resources
+                                    var resourceString = string.Join(";", _authorizedResources.Select(r => r.ToString()));
+                                    _localStore.Put("Google.AuthorizedResources", resourceString);
                                     Status = AuthorizationStatus.Authorized;
                                 }
 
@@ -169,7 +174,7 @@ namespace CallWall.Google.Authorization
                         o.OnError(new InvalidOperationException("Can not request access token until authorized."));
                         return Disposable.Empty;
                     }
-                    if (!_authorizedResources.Contains(resource))
+                    if (!_authorizedResources.Contains(resource.Resource))
                         return Observable.Empty<string>().Subscribe(o);
 
                     var currentSession = Observable.Return(CurrentSession);
@@ -196,17 +201,23 @@ namespace CallWall.Google.Authorization
             if (accessToken == null || strExpires == null || refreshToken == null)
                 return null;
             var expires = DateTimeOffset.Parse(strExpires);
+
+            var lastSessionResources = (_localStore.Get("Google.AuthorizedResources") ?? string.Empty)
+                .Split(new[]{';'}, StringSplitOptions.RemoveEmptyEntries)
+                .Select(path=>new Uri(path));
+            _authorizedResources.AddRange(lastSessionResources);
+
             return new Session(accessToken, refreshToken, expires);
         }
 
-        private IObservable<ISession> CreateSession(IEnumerable<GoogleResource> requestedResources)
+        private IObservable<ISession> CreateSession(IEnumerable<Uri> requestedResources)
         {
             return (from authCode in GetAuthorizationCode(requestedResources)
                     from accessToken in _oAuthService.RequestAccessToken(authCode)
                     select accessToken).Log(_logger, "createSession()");
         }
 
-        private IObservable<string> GetAuthorizationCode(IEnumerable<GoogleResource> requestedResources)
+        private IObservable<string> GetAuthorizationCode(IEnumerable<Uri> requestedResources)
         {
             return Observable.Create<string>(
                 o =>
@@ -226,14 +237,14 @@ namespace CallWall.Google.Authorization
                 .Log(_logger, "getAuthorizationCode()");
         }
 
-        private IObservable<string> RequestAuthorizationCode(IEnumerable<GoogleResource> requestedResources)
+        private IObservable<string> RequestAuthorizationCode(IEnumerable<Uri> requestedResources)
         {
             return Observable.Create<string>(
                 o =>
                 {
                     if (_callback == null)
                         throw new InvalidOperationException("No call-back has been registered via the RegisterAuthorizationCallback method");
-                    var uri = _oAuthService.BuildAuthorizationUri(requestedResources.Select(r => r.Resource));
+                    var uri = _oAuthService.BuildAuthorizationUri(requestedResources);
                     return _callback(uri).Subscribe(o);
                 })
                 .Log(_logger, "requestAuthorizationCode()");

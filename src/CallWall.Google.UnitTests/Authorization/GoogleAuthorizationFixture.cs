@@ -1,4 +1,5 @@
-﻿using CallWall.Google.AccountConfiguration;
+﻿using System.Collections.Generic;
+using CallWall.Google.AccountConfiguration;
 using CallWall.Google.Authorization;
 using Microsoft.Reactive.Testing;
 using Moq;
@@ -37,9 +38,9 @@ namespace CallWall.Google.UnitTests.Authorization
 
         #endregion
         protected virtual void SetupLocalStoreMock()
-        {}
+        { }
 
-        
+
         public abstract class Given_current_Session_has_been_persisted : Given_a_newly_constructed_GoogleAuthorization
         {
             private string _savedAccessToken = "savedAccessToken";
@@ -49,25 +50,150 @@ namespace CallWall.Google.UnitTests.Authorization
             protected override void SetupLocalStoreMock()
             {
                 base.SetupLocalStoreMock();
-                _savedTokenExpiryDate = DateTimeOffset.Now.AddHours(1).ToString("o");
                 _localStoreMock.Setup(ls => ls.Get("Google.AccessToken")).Returns(_savedAccessToken);
-                _localStoreMock.Setup(ls => ls.Get("Google.AccessTokenExpires")).Returns(_savedTokenExpiryDate);
                 _localStoreMock.Setup(ls => ls.Get("Google.RefreshToken")).Returns(_savedRefreshToken);
             }
-            
-            [TestFixture]
-            public sealed class When_requesting_access_token : Given_current_Session_has_been_persisted
+
+            public abstract class And_Session_is_still_valid : Given_current_Session_has_been_persisted
             {
-                [Test]
-                public void Should_not_call_OAuthService_for_new_session()
+                private string _authCode;
+                private static readonly GoogleResource _authorizedResource = GoogleResource.Contacts;
+
+                public override void SetUp()
                 {
-                    RequestAuthorizationCode callback = uri => Observable.Return("");
+                    base.SetUp();
+                    var requestedResources = new[] { _authorizedResource };
+                    _authCode = "theAuthCode";
+                    var _sessionMock = new Mock<ISession>();
+                    RequestAuthorizationCode callback = uri => Observable.Return(_authCode);
+                    _oAuthServiceMock.Setup(oa => oa.BuildAuthorizationUri(It.IsAny<IEnumerable<Uri>>()));  //Should match a single value array of _authorizedResource.Resource
+                    _oAuthServiceMock.Setup(oa => oa.RequestRefreshedAccessToken(_savedRefreshToken)).Returns(Observable.Return(_sessionMock.Object));
                     _sut.RegisterAuthorizationCallback(callback);
-                    _sut.Authorize(new[] {GoogleResource.Contacts}).Subscribe();
-                    _sut.RequestAccessToken(GoogleResource.Contacts).Subscribe();
-                    _oAuthServiceMock.Verify(oauth=>oauth.RequestAccessToken(It.IsAny<string>()), Times.Never());
+                    _sut.Authorize(requestedResources).Subscribe();
+                }
+                protected override void SetupLocalStoreMock()
+                {
+                    base.SetupLocalStoreMock();
+                    _savedTokenExpiryDate = DateTimeOffset.Now.AddHours(1).ToString("o");
+                    _localStoreMock.Setup(ls => ls.Get("Google.AccessTokenExpires"))
+                                   .Returns(_savedTokenExpiryDate);
+                    _localStoreMock.Setup(ls => ls.Get("Google.AuthorizedResources"))
+                                   .Returns(_authorizedResource.Resource.ToString());
+                }
+
+                [TestFixture]
+                public sealed class When_Authorizing_with_authorized_resources : And_Session_is_still_valid
+                {
+                    [Test]
+                    public void Should_not_attempt_to_call_OAuth_to_reAuthorize()
+                    {
+                        _sut.Authorize(new[] { GoogleResource.Contacts }).Subscribe();
+                        _oAuthServiceMock.Verify(oauth => oauth.BuildAuthorizationUri(It.IsAny<IEnumerable<Uri>>()), Times.Never());
+                        _oAuthServiceMock.Verify(oauth => oauth.RequestAccessToken(It.IsAny<string>()), Times.Never());
+                        _oAuthServiceMock.Verify(oauth => oauth.RequestRefreshedAccessToken(It.IsAny<string>()), Times.Never());
+                    }
+                }
+                [TestFixture]
+                public sealed class When_requesting_access_token_for_authorized_resource : And_Session_is_still_valid
+                {
+                    [Test]
+                    public void Should_not_call_OAuthService_for_new_session()  //i.e. should just return the cached access code.
+                    {
+                        _sut.Authorize(new[] { GoogleResource.Contacts }).Subscribe();
+                        var actualAccessToken = _sut.RequestAccessToken(GoogleResource.Contacts).Single();
+
+                        Assert.AreEqual(_savedAccessToken, actualAccessToken);
+                        _oAuthServiceMock.Verify(oauth => oauth.RequestAccessToken(It.IsAny<string>()), Times.Never());
+                        _oAuthServiceMock.Verify(oauth => oauth.RequestRefreshedAccessToken(It.IsAny<string>()), Times.Never());
+                    }
+
                 }
             }
+
+            public abstract class And_Session_has_expired : Given_current_Session_has_been_persisted
+            {
+                protected override void SetupLocalStoreMock()
+                {
+                    base.SetupLocalStoreMock();
+                    _savedTokenExpiryDate = DateTimeOffset.Now.AddHours(-1).ToString("o");
+                    _localStoreMock.Setup(ls => ls.Get("Google.AccessTokenExpires")).Returns(_savedTokenExpiryDate);
+                }
+
+                [TestFixture]
+                public sealed class When_requesting_access_token_for_authorized_resource : And_Session_has_expired
+                {
+                    private string _authCode;
+                    private static readonly GoogleResource _authorizedResource = GoogleResource.Contacts;
+
+                    public override void SetUp()
+                    {
+                        base.SetUp();
+                        var requestedResources = new[] { _authorizedResource };
+                        _authCode = "theAuthCode";
+                        var _sessionMock = new Mock<ISession>();
+                        RequestAuthorizationCode callback = uri => Observable.Return(_authCode);
+                        _oAuthServiceMock.Setup(oa => oa.BuildAuthorizationUri(It.IsAny<IEnumerable<Uri>>()));  //Should match a single value array of _authorizedResource.Resource
+                        _oAuthServiceMock.Setup(oa => oa.RequestRefreshedAccessToken(_savedRefreshToken)).Returns(Observable.Return(_sessionMock.Object));
+                        _sut.RegisterAuthorizationCallback(callback);
+                        _sut.Authorize(requestedResources).Subscribe();
+                    }
+                    protected override void SetupLocalStoreMock()
+                    {
+                        base.SetupLocalStoreMock();
+
+                        _localStoreMock.Setup(ls => ls.Get("Google.AuthorizedResources"))
+                                       .Returns(_authorizedResource.Resource.ToString());
+                    }
+
+                    [Test]
+                    public void Should_call_OAuthService_for_new_session_with_refreshed_accesstoken()
+                    {
+                        var authCode = "AuthCode";
+                        RequestAuthorizationCode callback = uri => Observable.Return(authCode);
+                        _sut.RegisterAuthorizationCallback(callback);
+                        _sut.Authorize(new[] { GoogleResource.Contacts }).Subscribe();
+                        _sut.RequestAccessToken(GoogleResource.Contacts).Subscribe();
+                        _oAuthServiceMock.Verify(oauth => oauth.RequestRefreshedAccessToken(_savedRefreshToken), Times.Once());
+                    }
+
+                }
+
+                [TestFixture]
+                public sealed class When_requesting_access_token_for_unauthorized_resource : And_Session_has_expired
+                {
+                    private string _authCode;
+                    private static readonly GoogleResource _authorizedResource = GoogleResource.Contacts;
+                    private static readonly GoogleResource _unauthorizedResource = GoogleResource.Gmail;
+
+                    public override void SetUp()
+                    {
+                        base.SetUp();
+                        var requestedResources = new[] { _unauthorizedResource, _authorizedResource };
+                        _authCode = "theAuthCode";
+                        RequestAuthorizationCode callback = uri => Observable.Return(_authCode);
+                        _oAuthServiceMock.Setup(oauth => oauth.RequestAccessToken(_authCode)).Returns(Observable.Return(new Mock<ISession>().Object));
+
+                        _oAuthServiceMock.Setup(oa => oa.BuildAuthorizationUri(It.IsAny<IEnumerable<Uri>>()));
+                        _sut.RegisterAuthorizationCallback(callback);
+                        _sut.Authorize(requestedResources).Subscribe();
+                    }
+                    protected override void SetupLocalStoreMock()
+                    {
+                        base.SetupLocalStoreMock();
+
+                        _localStoreMock.Setup(ls => ls.Get("Google.AuthorizedResources"))
+                                       .Returns(_authorizedResource.Resource.ToString());
+                    }
+
+                    [Test]
+                    public void Should_ReAuthoize()
+                    {
+                        _sut.RequestAccessToken(_unauthorizedResource).Subscribe();
+                        _oAuthServiceMock.Verify(oauth => oauth.RequestAccessToken(_authCode), Times.Once());
+                    }
+                }
+            }
+
         }
 
         [TestFixture]
