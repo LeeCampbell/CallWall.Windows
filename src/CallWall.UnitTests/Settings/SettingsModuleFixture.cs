@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using CallWall.Activators;
 using CallWall.Settings;
 using CallWall.Settings.Accounts;
 using CallWall.Settings.Connectivity;
@@ -120,20 +121,20 @@ namespace CallWall.UnitTests.Settings
              
              */
             [Test]
-            public void Should_register_DemoActivatedIdentityListener_to_container_as_IDemoActivatedIdentityListener()
+            public void Should_register_DemoActivatedIdentityListener_to_container_as_IDemoProfileActivator()
             {
                 _container.RegisteredTypes
-                    .Where(rt => rt.From == typeof(IDemoActivatedIdentityListener))
+                    .Where(rt => rt.From == typeof(IDemoProfileActivator))
                     .Where(rt => rt.To == typeof(DemoActivatedIdentityListener))
                     .Where(rt => rt.Name == null)
                     .Where(rt => rt.LifetimeManager is ContainerControlledLifetimeManager)
                     .Single();
             }
             [Test]
-            public void Should_register_DemoActivatedIdentityListener_to_container_as_named_IActivatedIdentityListener()
+            public void Should_register_DemoActivatedIdentityListener_to_container_as_named_IProfileActivator()
             {
                 _container.RegisteredTypes
-                    .Where(rt => rt.From == typeof(IActivatedIdentityListener))
+                    .Where(rt => rt.From == typeof(IProfileActivator))
                     .Where(rt => rt.To == typeof(DemoActivatedIdentityListener))
                     .Where(rt => rt.Name == "DemoActivatedIdentityListener")
                     .Where(rt => rt.LifetimeManager is ExternallyControlledLifetimeManager) //} HACK: A poor way of checking if the instance is registered

@@ -16,6 +16,7 @@ namespace CallWall.FakeProvider.Providers
                         o.OnNext(new SMS(DateTimeOffset.Now.AddHours(-1), MessageDirection.Inbound, "On my way"));
                         o.OnNext(new SMS(DateTimeOffset.Now.AddHours(-1.5), MessageDirection.Outbound, "Dude, where are you."));
                         o.OnNext(new SMS(DateTimeOffset.Now.AddDays(-10), MessageDirection.Outbound, "Happy Birthday"));
+                        o.OnCompleted();
                         return Disposable.Empty;
                     });
 

@@ -28,10 +28,12 @@ namespace CallWall.FakeProvider
             _container.RegisterType<IAccountConfiguration, AccountConfiguration.YahooAccountConfiguration>("YahooAccountConfiguration", new ContainerControlledLifetimeManager());
             _container.RegisterType<IAccountConfiguration, AccountConfiguration.GithubAccountConfiguration>("GithubAccountConfiguration", new ContainerControlledLifetimeManager());
             
-            //_container.RegisterType<IContactQueryProvider, Providers.FakeGoogleContactQueryProvider>("FakeGoogleContactQueryProvider", new ContainerControlledLifetimeManager());
-            //_container.RegisterType<ICommunicationQueryProvider, Providers.GmailCommunicationQueryProvider>("FakeGmailCommunicationQueryProvider", new ContainerControlledLifetimeManager());
-            //_container.RegisterType<ICommunicationQueryProvider, Providers.SmsCommunicationQueryProvider>("FakeSmsCommunicationQueryProvider", new ContainerControlledLifetimeManager());
-            //_container.RegisterType<ICommunicationQueryProvider, Providers.TwitterCommunicationQueryProvider>("FakeTwitterCommunicationQueryProvider", new ContainerControlledLifetimeManager());
+            _container.RegisterType<IContactQueryProvider, Providers.FakeGoogleContactQueryProvider>("FakeGoogleContactQueryProvider", new ContainerControlledLifetimeManager());
+
+            _container.RegisterType<ICommunicationQueryProvider, Providers.GmailCommunicationQueryProvider>("FakeGmailCommunicationQueryProvider", new ContainerControlledLifetimeManager());
+            _container.RegisterType<ICommunicationQueryProvider, Providers.SmsCommunicationQueryProvider>("FakeSmsCommunicationQueryProvider", new ContainerControlledLifetimeManager());
+            _container.RegisterType<ICommunicationQueryProvider, Providers.TwitterCommunicationQueryProvider>("FakeTwitterCommunicationQueryProvider", new ContainerControlledLifetimeManager());
+
             _container.RegisterType<IPictureQueryProvider, Providers.SkydrivePictureQueryProvider>("SkydrivePictureQueryProvider", new ContainerControlledLifetimeManager());
             _container.RegisterType<IPictureQueryProvider, Providers.FacebookPictureQueryProvider>("FacebookPictureQueryProvider", new ContainerControlledLifetimeManager());
         }

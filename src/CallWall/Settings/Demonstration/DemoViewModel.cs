@@ -7,11 +7,11 @@ namespace CallWall.Settings.Demonstration
 {
     public sealed class DemoViewModel : INotifyPropertyChanged
     {
-        private readonly IDemoActivatedIdentityListener _demoListener;
+        private readonly IDemoProfileActivator _demoListener;
         private readonly DelegateCommand _activateIdentityCommand;
         private string _identity;
 
-        public DemoViewModel(IDemoActivatedIdentityListener demoListener)
+        public DemoViewModel(IDemoProfileActivator demoListener)
         {
             _demoListener = demoListener;
             _activateIdentityCommand = new DelegateCommand(ActivateIdentity, IsIdentityValid);

@@ -202,7 +202,7 @@
     <Compile Include="Settings\Accounts\AccountSettingsViewModel.cs" />
     <Compile Include="Settings\Demonstration\DemoActivatedIdentityListener.cs" />
     <Compile Include="Settings\Demonstration\DemoViewModel.cs" />
-    <Compile Include="Settings\Demonstration\IDemoActivatedIdentityListener.cs" />
+    <Compile Include="Settings\Demonstration\IDemoProfileActivator.cs" />
     <Compile Include="Settings\SettingsModule.cs" />
     <Compile Include="Settings\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>

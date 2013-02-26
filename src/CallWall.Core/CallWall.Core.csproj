@@ -124,7 +124,6 @@
     <Compile Include="SetsExtensions.cs" />
     <Compile Include="GrayScaleConverter.cs" />
     <Compile Include="IAccountConfiguration.cs" />
-    <Compile Include="IActivatedIdentityListener.cs" />
     <Compile Include="IConnectionConfiguration.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="ILoggerFactory.cs" />

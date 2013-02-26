@@ -17,6 +17,7 @@ namespace CallWall.FakeProvider.Providers
                         o.OnNext(new Tweet(DateTimeOffset.Now.AddDays(-3).AddHours(-2), MessageDirection.Inbound, "Good luck for the big game #COYQ"));
                         o.OnNext(new Tweet(DateTimeOffset.Now.AddDays(-10), MessageDirection.Inbound, "New blog post out today #RxNet"));
                         o.OnNext(new Tweet(DateTimeOffset.Now.AddDays(-10), MessageDirection.Inbound, "IntroToRx.com has been updated with new content. Async/Await, testing Hot and Cold observables and a new cookbook section. Retweet and share the love! #RxNet"));
+                        o.OnCompleted();
                         return Disposable.Empty;
                     });
 

@@ -16,6 +16,7 @@ namespace CallWall.FakeProvider.Providers
                     o.OnNext(new GmailEmail(DateTimeOffset.Now.AddDays(-1), MessageDirection.Inbound, "Pricing a Cross example", "Here is that sample we were talking about the other day. If you want to be able to price a cross, first you need to gets the component..."));
                     o.OnNext(new GmailEmail(DateTimeOffset.Now.AddDays(-4), MessageDirection.Outbound, "Oz Travel plans?", "Are you guys planning a trip to Ozzie yet?"));
                     o.OnNext(new GmailEmail(DateTimeOffset.Now.AddDays(-10), MessageDirection.Outbound, "Happy Birthday", "Quick happy birthday note."));
+                    o.OnCompleted();
                     return Disposable.Empty;
                 });
 
