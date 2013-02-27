@@ -46,8 +46,40 @@
                            Source="{Binding Avatar}"/>
 
                     <TextBlock VerticalAlignment="Bottom"
-                               Text="{Binding Contact.Title}"
-                               Style="{StaticResource PageHeaderStyle}"/>
+                               Text="{Binding Contact.Title}">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource PageHeaderStyle}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Contact.Title}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                        </TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Contact.Title}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <TextBlock VerticalAlignment="Bottom"
+                                   Text="Incoming call:"
+                                   Style="{StaticResource PageHeaderStyle}"/>
+
+                        <TextBlock VerticalAlignment="Bottom"
+                                   Margin="20,0,0,5"
+                                   Foreground="{StaticResource SecondaryForeground}"
+                                   Text="{Binding ActivatedIdentity}"
+                                   Style="{StaticResource PageSubHeaderStyle}"/>
+                    </StackPanel>
+                    
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal"

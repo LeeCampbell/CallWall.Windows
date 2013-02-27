@@ -9,7 +9,7 @@ namespace CallWall.FakeProvider.Providers
     {
         public IObservable<IContactProfile> LoadContact(IProfile activeProfile)
         {
-            return Observable.Return(new GoogleContactProfile());
+            return Observable.Return(new GoogleContactProfile()).Delay(TimeSpan.FromSeconds(3));
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -39,6 +40,7 @@ namespace CallWall.ProfileDashboard
 
         #region Implementation of IProfileDashboard
 
+
         public IObservable<IContactProfile> Contact
         {
             get { return _contact.AsObservable(); }
@@ -56,12 +58,17 @@ namespace CallWall.ProfileDashboard
 
         public void Load(IProfile profile)
         {
+            ActivatedIdentity = profile.Identifiers.Where(id => id.IdentifierType == "phone")
+                                       .Concat(profile.Identifiers)
+                                       .Select(id => id.Value)
+                                       .FirstOrDefault();
             _querySubscriptions.Add(QueryContacts(profile));
             _querySubscriptions.Add(QueryMessages(profile));
             _querySubscriptions.Add(QueryPictureAlbums(profile));
         }
 
-        
+        public string ActivatedIdentity { get; private set; }
+
         #endregion
 
         private IDisposable QueryContacts(IProfile profile)

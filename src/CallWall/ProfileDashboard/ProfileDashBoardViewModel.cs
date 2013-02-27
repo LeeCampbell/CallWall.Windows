@@ -1,11 +1,9 @@
 using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using CallWall.Contract;
-using CallWall.Contract.Communication;
 using CallWall.Contract.Contact;
 using CallWall.ProfileDashboard.Communication;
 using CallWall.ProfileDashboard.Pictures;
@@ -36,6 +34,11 @@ namespace CallWall.ProfileDashboard
             _schedulerProvider = schedulerProvider;
             _messages = new DashboardCollection<Message>(_profileDashboard.Messages.ObserveOn(_schedulerProvider.Async));
             _pictureAlbums = new DashboardCollection<Album>(_profileDashboard.PictureAlbums.ObserveOn(_schedulerProvider.Async));
+        }
+
+        public string ActivatedIdentity
+        {
+            get { return _profileDashboard.ActivatedIdentity; }
         }
 
         //HACK: Temp hack until I can merge without full updates (which I imagine will force another call to the web to load the avatars
@@ -99,6 +102,7 @@ namespace CallWall.ProfileDashboard
         {
             _subscriptions.Add(SubscribeToContact());
             _profileDashboard.Load(profile);
+            OnPropertyChanged("ActivatedIdentity");
         }
 
         private IDisposable SubscribeToContact()

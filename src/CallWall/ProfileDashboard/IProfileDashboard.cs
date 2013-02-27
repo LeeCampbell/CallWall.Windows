@@ -10,7 +10,8 @@ namespace CallWall.ProfileDashboard
     {
         void Load(IProfile profile);
 
-        //Status Status { get; }
+        string ActivatedIdentity { get; }
+
         IObservable<IContactProfile> Contact { get; }
 
         IObservable<Message> Messages { get; }
