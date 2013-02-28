@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:Pictures="clr-namespace:CallWall.ProfileDashboard.Pictures"
-                    xmlns:profileDashboard="clr-namespace:CallWall.ProfileDashboard">
+                    xmlns:profileDashboard="clr-namespace:CallWall.ProfileDashboard"
+                    xmlns:controls="clr-namespace:CallWall.Controls">
     <DataTemplate DataType="{x:Type Pictures:Album}">
         <DataTemplate.Resources>
             <Style TargetType="Image" x:Key="CoverStyle">
@@ -40,7 +41,7 @@
                                    Style="{StaticResource SubTextStyle}"/>
                     </StackPanel>
                 </DockPanel>
-                <Grid Height="200" Width="300">
+                <!--<Grid Height="200" Width="300">
                     <Border Margin="20,20,0,0"
                             Style="{StaticResource ImageBorderStyle}">
                         <Image Source="{Binding Pictures[2].Source}"
@@ -56,8 +57,18 @@
                         <Image Source="{Binding Pictures[0].Source}"
                                Style="{StaticResource CoverStyle}" />
                     </Border>
-
-                </Grid>
+                </Grid>-->
+                <controls:ItemsStack ItemsSource="{Binding Pictures}"
+                                     Height="200" Width="300">
+                        <controls:ItemsStack.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{StaticResource ImageBorderStyle}">
+                                    <Image Source="{Binding Source}" Style="{StaticResource CoverStyle}" />
+                                </Border>
+                            </DataTemplate>
+                        </controls:ItemsStack.ItemTemplate>
+                    </controls:ItemsStack>
+                
             </StackPanel>
         </Border>
     </DataTemplate>

@@ -140,6 +140,7 @@
     <Compile Include="Activators\IBluetoothProfileActivator.cs" />
     <Compile Include="Activators\IProfileActivator.cs" />
     <Compile Include="Controls\BirthdayTextConverter.cs" />
+    <Compile Include="Controls\ItemsStack.cs" />
     <Compile Include="Logging\Log4NetLogger.cs" />
     <Compile Include="Logging\LoggerFactory.cs" />
     <Compile Include="PrismExtensions\AccordionItemsSourceSyncBehavior.cs" />
@@ -292,6 +293,10 @@
     <Page Include="Settings\Demonstration\DemoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Welcome\WelcomeStep1View.xaml">
       <SubType>Designer</SubType>
