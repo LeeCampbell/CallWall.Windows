@@ -7,7 +7,7 @@ namespace CallWall.Testing
     {
         private readonly TestScheduler _async = new TestScheduler();
         private readonly TestScheduler _concurrent = new TestScheduler();
-        private readonly TestScheduler _longRunning = new TestScheduler();
+        private readonly LongRunningTestScheudler _longRunning = new LongRunningTestScheudler(new TestScheduler());
 
         IScheduler ISchedulerProvider.Async
         {
@@ -27,13 +27,18 @@ namespace CallWall.Testing
             get { return _concurrent; }
         }
 
-        IScheduler ISchedulerProvider.LongRunning
+        ISchedulerLongRunning ISchedulerProvider.LongRunning
         {
             get { return _longRunning; }
         }
-        public TestScheduler LongRunning
+        public LongRunningTestScheudler LongRunning
         {
             get { return _longRunning; }
+        }
+
+        public IEventLoopScheduler CreateEventLoopScheduler(string name)
+        {
+            return new EventLoopTestScheduler(new TestScheduler());
         }
     }
 }

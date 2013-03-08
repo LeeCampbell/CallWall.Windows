@@ -1,5 +1,4 @@
 using System.Reactive.Concurrency;
-using System.Threading;
 
 namespace CallWall
 {
@@ -20,13 +19,17 @@ namespace CallWall
 
         public IScheduler Concurrent
         {
-            //get { return ThreadPoolScheduler.Instance; }
             get { return TaskPoolScheduler.Default; }
         }
 
-        public IScheduler LongRunning
+        public ISchedulerLongRunning LongRunning
         {
-            get { return new NewThreadScheduler(ts => new Thread(ts) { IsBackground = true }); }
+            get { return TaskPoolScheduler.Default; }
+        }
+
+        public IEventLoopScheduler CreateEventLoopScheduler(string name)
+        {
+            return new EventLoopSchedulerWrapper(name);
         }
     }
 }

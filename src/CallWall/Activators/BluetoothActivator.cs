@@ -11,13 +11,14 @@ using JetBrains.Annotations;
 
 namespace CallWall.Activators
 {
-    public sealed class BluetoothProfileActivator : IBluetoothProfileActivator
+    public sealed class BluetoothProfileActivator : IBluetoothProfileActivator, IDisposable
     {
         private readonly IBluetoothService _bluetoothService;
         private readonly ISchedulerProvider _schedulerProvider;
         private readonly ILogger _logger;
+        private readonly IEventLoopScheduler _bluetoothEventLoop;
         private readonly IConnectableObservable<IProfile> _profileActivated;
-        private readonly SerialDisposable _connection = new SerialDisposable();
+        private readonly SerialDisposable _connection = new SerialDisposable();      
         private bool _isEnabled;
 
         public BluetoothProfileActivator(IBluetoothService bluetoothService, ISchedulerProvider schedulerProvider, ILoggerFactory loggerFactory)
@@ -25,10 +26,10 @@ namespace CallWall.Activators
             _bluetoothService = bluetoothService;
             _schedulerProvider = schedulerProvider;
             _logger = loggerFactory.CreateLogger();
-
+            _bluetoothEventLoop = _schedulerProvider.CreateEventLoopScheduler("BluetoothActivator");
             _logger.Verbose("BluetoothProfileActivator.ctor();");
-            //TODO: Potentially this should be using it's own BluetoothListener thread i.e. EventLoopScheduler? -LC
-            _profileActivated = _bluetoothService.IdentitiesActivated(_schedulerProvider.LongRunning)
+
+            _profileActivated = _bluetoothService.IdentitiesActivated(_bluetoothEventLoop)
                 .Retry()
                 .Repeat()
                 .Log(_logger, "IdentitiesActivated")
@@ -91,6 +92,12 @@ namespace CallWall.Activators
             {
                 get { return new Uri("pack://application:,,,/CallWall.FakeProvider;component/Images/Connectivity/Cloud_72x72.png"); }
             }
+        }
+
+        public void Dispose()
+        {
+            _connection.Dispose();
+            _bluetoothEventLoop.Dispose();          
         }
     }
 }

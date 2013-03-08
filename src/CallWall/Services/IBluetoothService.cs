@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Reactive.Concurrency;
 using CallWall.Settings.Connectivity.Bluetooth;
 
 namespace CallWall.Services
 {
-    public interface IBluetoothService : INotifyPropertyChanged
+    public interface IBluetoothService
     {
         bool IsSupported { get; }
 
