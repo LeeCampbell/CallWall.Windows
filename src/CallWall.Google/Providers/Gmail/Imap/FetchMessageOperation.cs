@@ -51,7 +51,15 @@ namespace CallWall.Google.Providers.Gmail.Imap
             }
             if(kvp.ContainsKey("Date"))
             {
-                date = DateTimeOffset.ParseExact(kvp["Date"], "ddd, d MMM yyyy HH:mm:ss zzz", CultureInfo.InvariantCulture);
+                //date = DateTimeOffset.ParseExact(kvp["Date"], "ddd, d MMM yyyy HH:mm:ss zzz", CultureInfo.InvariantCulture);
+                date = DateTimeOffset.ParseExact(kvp["Date"],
+                    new[]
+                        {
+                          "ddd, d MMM yyyy HH:mm:ss zzz", 
+                          "d MMM yyyy HH:mm:ss zzz"  
+                        }, 
+                        CultureInfo.InvariantCulture,
+                        DateTimeStyles.None);
                 isDateSet = true; 
             }
             if (kvp.ContainsKey("Subject"))
