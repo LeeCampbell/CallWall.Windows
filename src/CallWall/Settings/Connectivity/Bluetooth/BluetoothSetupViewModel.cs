@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
 using CallWall.Activators;
+using CallWall.Properties;
 using CallWall.Services;
 using JetBrains.Annotations;
 using Microsoft.Practices.Prism.Commands;
@@ -38,7 +39,7 @@ namespace CallWall.Settings.Connectivity.Bluetooth
             _schedulerProvider = schedulerProvider;
             _roDevices = new ReadOnlyObservableCollection<IBluetoothDevice>(_devices);
             _scanForDevicesCommand = new DelegateCommand(ScanForDevices, CanScanForDevices);
-            _status = ViewModelStatus.Error("No devices. Scan to discover Bluetooth devices in the area.");
+            _status = ViewModelStatus.Error(Resources.Bluetooth_NoDevices_RequiresScan);
             _bluetoothProfileActivator.WhenPropertyChanges(bs => bs.IsEnabled)
                              .Subscribe(_ =>
                                             {
@@ -99,8 +100,7 @@ namespace CallWall.Settings.Connectivity.Bluetooth
                         {
                             Status = _devices.Any() 
                                 ? ViewModelStatus.Idle 
-                                //TODO: Convert error message to Localised string.
-                                : ViewModelStatus.Error("No devices were found. Ensure that Bluetooth is enabled on both your phone and your computer, and that the device is in range. You may also have to enable Bluetooth discovery on your phone.");
+                                : ViewModelStatus.Error(Resources.Bluetooth_NoDevicesFound);
                             
                         });
         }

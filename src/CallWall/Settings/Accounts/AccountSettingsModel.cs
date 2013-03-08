@@ -4,8 +4,6 @@ namespace CallWall.Settings.Accounts
 {
     public sealed class AccountSettingsModel : IAccountSettingsModel
     {
-        private const string RequiresSetupKey = @"CallWall.Settings.Accounts.AccountSettingsModel.RequiresSetup";
-
         private readonly IEnumerable<IAccountConfiguration> _accountConfigurations;
         private readonly IPersonalizationSettings _settings;
 
@@ -17,7 +15,7 @@ namespace CallWall.Settings.Accounts
 
         public bool RequiresSetup
         {
-            get { return _settings.GetAsBool(RequiresSetupKey, true); }
+            get { return _settings.GetAsBool(LocalStoreKeys.AccountsRequireSetup, true); }
         }
 
         public IEnumerable<IAccountConfiguration> AccountConfigurations

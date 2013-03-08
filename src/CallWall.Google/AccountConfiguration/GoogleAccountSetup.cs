@@ -1,14 +1,12 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using CallWall.Google.Authorization;
 
 namespace CallWall.Google.AccountConfiguration
 {
     public sealed class GoogleAccountSetup : IGoogleAccountSetup
     {
-        private const string IsEnabledKey = "CallWall.Google.AccountConfiguration.GoogleAccountSetup.IsEnabled";
         private readonly IPersonalizationSettings _settings;
         private readonly IGoogleAuthorization _authorization;
         private readonly ObservableCollection<GoogleResource> _selectedResources = new ObservableCollection<GoogleResource>();
@@ -44,10 +42,10 @@ namespace CallWall.Google.AccountConfiguration
 
         public bool IsEnabled
         {
-            get { return _settings.GetAsBool(IsEnabledKey, false); }
+            get { return _settings.GetAsBool(LocalStoreKeys.GoogleIsEnabled, false); }
             set
             {
-                _settings.SetAsBool(IsEnabledKey, value);
+                _settings.SetAsBool(LocalStoreKeys.GoogleIsEnabled, value);
                 OnPropertyChanged("IsEnabled");
             }
         }

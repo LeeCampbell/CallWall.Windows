@@ -1,12 +1,12 @@
-
-using System.Collections.Generic;
-using System.Reactive;
 using CallWall.Google.AccountConfiguration;
+using CallWall.Google.Properties;
 using JetBrains.Annotations;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
@@ -69,8 +69,8 @@ namespace CallWall.Google.Authorization
 
         private string AuthorizationCode
         {
-            get { return _localStore.Get("Google.AuthorizationCode"); }
-            set { _localStore.Put("Google.AuthorizationCode", value); }
+            get { return _localStore.Get(LocalStoreKeys.AuthorizationCode); }
+            set { _localStore.Put(LocalStoreKeys.AuthorizationCode, value); }
         }
 
         private ISession CurrentSession
@@ -89,15 +89,15 @@ namespace CallWall.Google.Authorization
 
                 if (_currentSession == null)
                 {
-                    _localStore.Remove("Google.AccessToken");
-                    _localStore.Remove("Google.AccessTokenExpires");
-                    _localStore.Remove("Google.RefreshToken");
+                    _localStore.Remove(LocalStoreKeys.AccessToken);
+                    _localStore.Remove(LocalStoreKeys.AccessTokenExpires);
+                    _localStore.Remove(LocalStoreKeys.RefreshToken);
                 }
                 else
                 {
-                    _localStore.Put("Google.AccessToken", _currentSession.AccessToken);
-                    _localStore.Put("Google.AccessTokenExpires", _currentSession.Expires.ToString("o"));
-                    _localStore.Put("Google.RefreshToken", _currentSession.RefreshToken);
+                    _localStore.Put(LocalStoreKeys.AccessToken, _currentSession.AccessToken);
+                    _localStore.Put(LocalStoreKeys.AccessTokenExpires, _currentSession.Expires.ToString("o"));
+                    _localStore.Put(LocalStoreKeys.RefreshToken, _currentSession.RefreshToken);
                     Status = AuthorizationStatus.Authorized;
                 }
             }
@@ -130,9 +130,9 @@ namespace CallWall.Google.Authorization
                     
                     if (!requestedResources.Any())
                     {
-                        var errorMessage = "No resources have been enabled.";
-                        Status = AuthorizationStatus.Error(errorMessage);
-                        o.OnError(new InvalidOperationException(errorMessage));
+                        
+                        Status = AuthorizationStatus.Error(Resources.Authorization_NoResourcesSelected);
+                        o.OnError(new InvalidOperationException(Resources.Authorization_NoResourcesSelected));
                         return Disposable.Empty;
                     }
 
@@ -147,14 +147,14 @@ namespace CallWall.Google.Authorization
                                 if (session == null)
                                 {
                                     _authorizedResources.Clear();
-                                    Status = AuthorizationStatus.Error("Failed to Authorize");
+                                    Status = AuthorizationStatus.Error(Resources.Authorization_FailedToAuthorize);
                                 }
                                 else
                                 {
                                     _authorizedResources.AddRange(requestedResources);
                                     //TODO:Save selected resources
                                     var resourceString = string.Join(";", _authorizedResources.Select(r => r.ToString()));
-                                    _localStore.Put("Google.AuthorizedResources", resourceString);
+                                    _localStore.Put(LocalStoreKeys.AuthorizedResources, resourceString);
                                     Status = AuthorizationStatus.Authorized;
                                 }
 
@@ -195,14 +195,14 @@ namespace CallWall.Google.Authorization
 
         private Session LoadSession()
         {
-            var accessToken = _localStore.Get("Google.AccessToken");
-            var strExpires = _localStore.Get("Google.AccessTokenExpires");
-            var refreshToken = _localStore.Get("Google.RefreshToken");
+            var accessToken = _localStore.Get(LocalStoreKeys.AccessToken);
+            var strExpires = _localStore.Get(LocalStoreKeys.AccessTokenExpires);
+            var refreshToken = _localStore.Get(LocalStoreKeys.RefreshToken);
             if (accessToken == null || strExpires == null || refreshToken == null)
                 return null;
             var expires = DateTimeOffset.Parse(strExpires);
 
-            var lastSessionResources = (_localStore.Get("Google.AuthorizedResources") ?? string.Empty)
+            var lastSessionResources = (_localStore.Get(LocalStoreKeys.AuthorizedResources) ?? string.Empty)
                 .Split(new[]{';'}, StringSplitOptions.RemoveEmptyEntries)
                 .Select(path=>new Uri(path));
             _authorizedResources.AddRange(lastSessionResources);

@@ -141,6 +141,7 @@
     <Compile Include="Activators\IProfileActivator.cs" />
     <Compile Include="Controls\BirthdayTextConverter.cs" />
     <Compile Include="Controls\ItemsStack.cs" />
+    <Compile Include="LocalStoreKeys.cs" />
     <Compile Include="Logging\Log4NetLogger.cs" />
     <Compile Include="Logging\LoggerFactory.cs" />
     <Compile Include="PrismExtensions\AccordionItemsSourceSyncBehavior.cs" />

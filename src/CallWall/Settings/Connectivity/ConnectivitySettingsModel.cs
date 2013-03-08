@@ -4,8 +4,6 @@ namespace CallWall.Settings.Connectivity
 {
     public sealed class ConnectivitySettingsModel : IConnectivitySettingsModel
     {
-        private const string RequiresSetupKey = @"CallWall.Settings.Connectivity.ConnectivitySettingsModel.RequiresSetup";
-
         private readonly IEnumerable<IConnectionConfiguration> _connectionConfigurations;
         private readonly IPersonalizationSettings _settings;
 
@@ -19,7 +17,7 @@ namespace CallWall.Settings.Connectivity
 
         public bool RequiresSetup
         {
-            get { return _settings.GetAsBool(RequiresSetupKey, true); }
+            get { return _settings.GetAsBool(LocalStoreKeys.ConnectivityRequireSetup, true); }
         }
 
         public IEnumerable<IConnectionConfiguration> ConnectionConfigurations

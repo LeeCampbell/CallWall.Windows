@@ -6,7 +6,7 @@ using Microsoft.Practices.Unity;
 
 namespace CallWall.Google
 {
-    public sealed class GoogleModule :IModule
+    public sealed class GoogleModule : IModule
     {
         private readonly IUnityContainer _container;
 
@@ -23,17 +23,17 @@ namespace CallWall.Google
             _container.RegisterType<Authorization.IGoogleAuthorization, Authorization.GoogleAuthorization>(new ContainerControlledLifetimeManager());
             _container.RegisterType<Authorization.Login.IGoogleLoginView, Authorization.Login.GoogleLoginView>(new ContainerControlledLifetimeManager());
             _container.RegisterType<Authorization.Login.ILoginController, Authorization.Login.LoginController>(new ContainerControlledLifetimeManager());
-            
+
             _container.RegisterType<AccountConfiguration.IGoogleAccountSetupView, AccountConfiguration.GoogleAccountSetupView>(new ContainerControlledLifetimeManager());
             _container.RegisterType<AccountConfiguration.IGoogleAccountSetup, AccountConfiguration.GoogleAccountSetup>(new ContainerControlledLifetimeManager());
 
             _container.RegisterType<IGoogleContactProfileTranslator, GoogleContactProfileTranslator>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IContactQueryProvider, GoogleContactQueryProvider>("GoogleContactQueryProvider", new ContainerControlledLifetimeManager());
             //Contacts
-            
+
             //Mail
             _container.RegisterType<ICommunicationQueryProvider, Providers.Gmail.GmailCommunicationQueryProvider>("GmailCommunicationQueryProvider", new ContainerControlledLifetimeManager());
-            _container.RegisterType< Providers.Gmail.Imap.IImapClient, Providers.Gmail.Imap.ImapClient>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<Providers.Gmail.Imap.IImapClient, Providers.Gmail.Imap.ImapClient>(new ContainerControlledLifetimeManager());
 
             //Talk
             //Images??
