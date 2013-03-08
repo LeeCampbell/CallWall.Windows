@@ -20,8 +20,7 @@ namespace CallWall.Settings.Accounts
             get { return _accountSettingsModel.RequiresSetup; }
         }
 
-        //TODO: Rename to AccountConfigurators
-        public IEnumerable<IAccountConfiguration> ConnectivityConfigurators
+        public IEnumerable<IAccountConfiguration> AccountConfigurations
         {
             get { return _accountSettingsModel.AccountConfigurations; }
         }

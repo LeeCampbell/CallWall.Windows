@@ -25,7 +25,7 @@
         </TextBlock>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <TabControl ItemsSource="{Binding ConnectivityConfigurators}" 
+            <TabControl ItemsSource="{Binding AccountConfigurations}" 
                         TabStripPlacement="Left"
                         BorderThickness="0"
                         Background="#800080">
