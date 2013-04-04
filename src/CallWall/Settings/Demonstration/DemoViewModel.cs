@@ -16,7 +16,7 @@ namespace CallWall.Settings.Demonstration
             _demoListener = demoListener;
             _activateIdentityCommand = new DelegateCommand(ActivateIdentity, IsIdentityValid);
 
-            this.WhenPropertyChanges(vm => vm.Identity).Subscribe(_ => _activateIdentityCommand.RaiseCanExecuteChanged());
+            this.PropertyChanges(vm => vm.Identity).Subscribe(_ => _activateIdentityCommand.RaiseCanExecuteChanged());
         }
 
         public string Identity

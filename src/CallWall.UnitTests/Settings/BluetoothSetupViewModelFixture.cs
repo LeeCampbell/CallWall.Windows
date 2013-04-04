@@ -65,7 +65,7 @@ namespace CallWall.UnitTests.Settings
             public void Should_raise_propertychanged(bool expected)
             {
                 var wasRaised = false;
-                _viewModel.WhenPropertyChanges(vm => vm.IsEnabled).Subscribe(_ => wasRaised = true);
+                _viewModel.PropertyChanges(vm => vm.IsEnabled).Subscribe(_ => wasRaised = true);
 
                 _bluetoothProfileActivator.Raise(bs => bs.PropertyChanged += null, new PropertyChangedEventArgs("IsEnabled"));
 

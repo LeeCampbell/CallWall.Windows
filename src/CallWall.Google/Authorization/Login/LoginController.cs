@@ -42,7 +42,7 @@ namespace CallWall.Google.Authorization.Login
                         h => _loginView.IsActiveChanged -= h);
 
                     var authorizationCodeChanged = _loginView.ViewModel
-                        .WhenPropertyChanges(vm => vm.AuthorizationCode)
+                        .PropertyChanges(vm => vm.AuthorizationCode)
                         .TakeUntil(isActiveChanged.Where(_ => !_loginView.IsActive))
                         .Take(1)
                         .Log(_logger, "ShowGoogleLogin");

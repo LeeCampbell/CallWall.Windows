@@ -67,7 +67,7 @@ namespace CallWall.UnitTests.Settings
         public void Should_raise_propertyChanged_when_View_IsEnabled_changes()
         {
             var wasRaised = false;
-            _sut.WhenPropertyChanges(s => s.IsEnabled).Subscribe(_ => wasRaised = true);
+            _sut.PropertyChanges(s => s.IsEnabled).Subscribe(_ => wasRaised = true);
 
             _viewModelMock.Raise(vm => vm.PropertyChanged += null, new PropertyChangedEventArgs("IsEnabled"));
 

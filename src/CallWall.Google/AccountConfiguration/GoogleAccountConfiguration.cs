@@ -17,7 +17,7 @@ namespace CallWall.Google.AccountConfiguration
         public GoogleAccountConfiguration(IGoogleAccountSetupView view)
         {
             _view = view;
-            _view.ViewModel.WhenPropertyChanges(vm => vm.IsEnabled).Subscribe(_ => OnPropertyChanged("IsEnabled"));
+            _view.ViewModel.PropertyChanges(vm => vm.IsEnabled).Subscribe(_ => OnPropertyChanged("IsEnabled"));
         }
         
         public string Name { get { return "Google"; } }

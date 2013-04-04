@@ -40,7 +40,7 @@ namespace CallWall.Settings.Connectivity.Bluetooth
             _roDevices = new ReadOnlyObservableCollection<IBluetoothDevice>(_devices);
             _scanForDevicesCommand = new DelegateCommand(ScanForDevices, CanScanForDevices);
             _status = ViewModelStatus.Error(Resources.Bluetooth_NoDevices_RequiresScan);
-            _bluetoothProfileActivator.WhenPropertyChanges(bs => bs.IsEnabled)
+            _bluetoothProfileActivator.PropertyChanges(bs => bs.IsEnabled)
                              .Subscribe(_ =>
                                             {
                                                 OnPropertyChanged("IsEnabled");

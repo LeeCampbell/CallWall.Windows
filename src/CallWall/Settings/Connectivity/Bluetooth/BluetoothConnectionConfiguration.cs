@@ -17,7 +17,7 @@ namespace CallWall.Settings.Connectivity.Bluetooth
         public BluetoothConnectionConfiguration(IBluetoothSetupView view)
         {
             _view = view;
-            _view.ViewModel.WhenPropertyChanges(vm => vm.IsEnabled).Subscribe(_ => OnPropertyChanged("IsEnabled"));
+            _view.ViewModel.PropertyChanges(vm => vm.IsEnabled).Subscribe(_ => OnPropertyChanged("IsEnabled"));
         }
 
         #region Implementation of IConnectionConfiguration

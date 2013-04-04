@@ -16,8 +16,8 @@ namespace CallWall.Google.AccountConfiguration
             _model = model;
 
             _authorizeCommand = new DelegateCommand(_model.Authorize, () => !_model.IsAuthorized && _model.IsEnabled);
-            _model.WhenPropertyChanges(m => m.IsAuthorized).Subscribe(_ => _authorizeCommand.RaiseCanExecuteChanged());
-            _model.WhenPropertyChanges(m => m.IsEnabled).Subscribe(_ =>
+            _model.PropertyChanges(m => m.IsAuthorized).Subscribe(_ => _authorizeCommand.RaiseCanExecuteChanged());
+            _model.PropertyChanges(m => m.IsEnabled).Subscribe(_ =>
                                                                        {
                                                                            OnPropertyChanged("IsEnabled");
                                                                            _authorizeCommand.RaiseCanExecuteChanged();

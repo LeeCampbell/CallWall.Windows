@@ -15,7 +15,7 @@ namespace CallWall.Google.AccountConfiguration
         {
             _settings = settings;
             _authorization = authorization;
-            _authorization.WhenPropertyChanges(a => a.Status).Subscribe(
+            _authorization.PropertyChanges(a => a.Status).Subscribe(
                 _ =>
                 {
                     OnPropertyChanged("IsAuthorized");
