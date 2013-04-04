@@ -25,21 +25,18 @@ namespace CallWall
                     {
                         var cur = (IObservable<T>)e.Current;
                         subscription = cur.Subscribe(
-                            i => o.OnNext(i),
-                            ex => o.OnError(ex),
-                            () => { s.Schedule(e, loop); });
+                            o.OnNext,
+                            o.OnError,
+                            () => s.Schedule(e, loop));
                     }
                     return subscription;
                 };
 
-                //var scheduled = ImmediateScheduler.Instance.Schedule(enumerator, loop);
                 var scheduled = CurrentThreadScheduler.Instance.Schedule(enumerator, loop);
 
                 return new CompositeDisposable(cancelFlag, scheduled);
             });
         }
-
-        //TODO: Could potentially upgrade to using tasks/Await-LC
 
         public static IObservable<byte> ToObservable(
             this Stream source,
