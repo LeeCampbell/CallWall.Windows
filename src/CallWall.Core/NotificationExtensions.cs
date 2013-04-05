@@ -21,24 +21,23 @@ namespace CallWall
         /// <param name="property">An expression that describes which property to observe.</param>
         /// <returns>Returns an observable sequence of property values when the property changes.</returns>
         public static IObservable<TProperty> PropertyChanges<T, TProperty>(this T source, Expression<Func<T, TProperty>> property)
-            where T : INotifyPropertyChanged
+            where T : class, INotifyPropertyChanged
         {
-            return Observable.Create<TProperty>(
-                o =>
-                    {
-                        var propertyName = property.GetPropertyInfo().Name;
-                        var propertySelector = property.Compile();
+            if (source == null) throw new ArgumentNullException("source");
 
-                        return Observable.FromEventPattern
-                            <PropertyChangedEventHandler, PropertyChangedEventArgs>
-                            (
-                                h => source.PropertyChanged += h,
-                                h => source.PropertyChanged -= h
-                            )
-                            .Where(e => e.EventArgs.PropertyName == propertyName)
-                            .Select(e => propertySelector(source))
-                            .Subscribe(o);
-                    });
+            var propertyName = property.GetPropertyInfo().Name;
+            var propertySelector = property.Compile();
+
+            return Observable.Create<TProperty>(
+                o => Observable.FromEventPattern
+                         <PropertyChangedEventHandler, PropertyChangedEventArgs>
+                         (
+                             h => source.PropertyChanged += h,
+                             h => source.PropertyChanged -= h
+                         )
+                         .Where(e => e.EventArgs.PropertyName == propertyName)
+                         .Select(e => propertySelector(source))
+                         .Subscribe(o));
         }
 
         /// <summary>
@@ -48,8 +47,10 @@ namespace CallWall
         /// <param name="source">The object to observe property changes on.</param>
         /// <returns>Returns an observable sequence with the source as its value. Values are produced each time the PropertyChanged event is raised.</returns>
         public static IObservable<T> AnyPropertyChanges<T>(this T source)
-            where T : INotifyPropertyChanged
+            where T : class, INotifyPropertyChanged
         {
+            if (source == null) throw new ArgumentNullException("source");
+
             return Observable.FromEventPattern
                 <PropertyChangedEventHandler, PropertyChangedEventArgs>
                 (
