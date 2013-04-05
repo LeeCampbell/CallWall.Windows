@@ -299,6 +299,17 @@ namespace CallWall.Core.UnitTests
 
                 Assert.AreEqual(expected, _logger.Message);
             }
+
+            [Test]
+            public void Should_throw_if_logger_is_null()
+            {
+                var arg1 = "A";
+                var arg2 = new DateTime(2001, 12, 31, 13, 45, 27);
+
+                var model = new SampleLogConsumer(null);
+                var ex = Assert.Throws<ArgumentNullException>(()=> model.Action(arg1, arg2));
+                Assert.AreEqual("logger", ex.ParamName);
+            }
         }
 
 
