@@ -100,6 +100,20 @@ namespace CallWall.Core.UnitTests
                 Assert.AreEqual(expected, _logger.Exception);
             }
 
+            [Test]
+            public void Should_throw_if_logger_is_null()
+            {
+                var ex = Assert.Throws<ArgumentNullException>(()=> Log(null, FormatMessage, Arg1, Arg2));
+                Assert.AreEqual("logger", ex.ParamName);
+            }
+            [Test]
+            public void Should_throw_if_logger_is_null_when_logging_exception()
+            {
+                var exception = new Exception("Expected exception");
+                var ex = Assert.Throws<ArgumentNullException>(() => Log(null, exception, FormatMessage, Arg1, Arg2));
+                Assert.AreEqual("logger", ex.ParamName);
+            }
+
             [TestFixture]
             public sealed class For_Fatal : When_logging_messages_via_extension_methods
             {
