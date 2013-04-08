@@ -196,6 +196,7 @@ namespace CallWall.UnitTests.Settings
                 Assert.AreEqual(1, changeCount);
             }
 
+            //TODO: Possible non-deterministic test. Failed in build #0.1.112.0 with no changes before or after. -LC
             [Test]
             public void Should_refresh_PairDeviceCommand_on_completion()
             {
