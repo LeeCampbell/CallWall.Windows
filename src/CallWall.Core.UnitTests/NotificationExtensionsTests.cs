@@ -186,8 +186,6 @@ namespace CallWall.Core.UnitTests
         }
     }
 
-
-
     public abstract class Given_an_ObservableCollection
     {
         private Given_an_ObservableCollection()
@@ -447,23 +445,28 @@ namespace CallWall.Core.UnitTests
         {
             _sut = new ObservableCollection<SampleDto>();
         }
+
+
+        private static SampleDto CreateJohn()
+        {
+            return new SampleDto { Name = "John", Age = 27, FriendsCount = 5 };
+        }
+        private static SampleDto CreateJack()
+        {
+            return new SampleDto { Name = "Jack", Age = 21, FriendsCount = 30 };
+        }
+
         public abstract class When_observing_CollectionItemsChange : Given_an_ObservableCollection_of_INotifyPropertyChanged_items
         {
             private IObservable<CollectionChangedData<SampleDto>> _changes;
+
+            private When_observing_CollectionItemsChange()
+            {}
 
             public override void SetUp()
             {
                 base.SetUp();
                 _changes = _sut.CollectionItemsChange();
-            }
-
-            private static SampleDto CreateJohn()
-            {
-                return new SampleDto { Name = "John", Age = 27, FriendsCount = 5 };
-            }
-            private static SampleDto CreateJack()
-            {
-                return new SampleDto { Name = "Jack", Age = 21, FriendsCount = 30 };
             }
 
             [TestFixture]
@@ -484,8 +487,6 @@ namespace CallWall.Core.UnitTests
                     _message = _observer.Messages.Single();
                     _data = _message.Value.Value;
                 }
-
-                
 
                 [Test]
                 public void Should_push_a_notification_with_the_new_Item()
@@ -634,7 +635,6 @@ namespace CallWall.Core.UnitTests
                 }
             }
 
-
             [TestFixture]
             public sealed class When_item_value_changes : When_observing_CollectionItemsChange
             {
@@ -703,22 +703,278 @@ namespace CallWall.Core.UnitTests
 
                     Assert.AreEqual(2, _observer.Messages.Count);
                 }
-
             }
-
         }
 
-        //public abstract class When_observing_ItemsPropertyChange : Given_an_ObservableCollection_of_INotifyPropertyChanged_items
-        //{
-        //    private IObservable<CollectionChangedData<SampleDto>> _changes;
+        public abstract class When_observing_ItemsPropertyChange : Given_an_ObservableCollection_of_INotifyPropertyChanged_items
+        {
+            private IObservable<CollectionChangedData<SampleDto>> _ageChanges;
 
-        //    public override void SetUp()
-        //    {
-        //        base.SetUp();
-        //        _sut.ItemsPropertyChange(item=>item.Age)
-        //    }
-        //}
+            public override void SetUp()
+            {
+                base.SetUp();
+                _ageChanges = _sut.ItemsPropertyChange(item => item.Age);
+            }
 
+            [TestFixture]
+            public sealed class When_item_added : When_observing_ItemsPropertyChange
+            {
+                private SampleDto _expected;
+                private ITestableObserver<CollectionChangedData<SampleDto>> _observer;
+                private Recorded<Notification<CollectionChangedData<SampleDto>>> _message;
+                private CollectionChangedData<SampleDto> _data;
+
+                public override void SetUp()
+                {
+                    base.SetUp();
+                    _observer = new TestScheduler().CreateObserver<CollectionChangedData<SampleDto>>();
+                    _ageChanges.Subscribe(_observer);
+                    _expected = CreateJohn();
+                    _sut.Add(_expected);
+                    _message = _observer.Messages.Single();
+                    _data = _message.Value.Value;
+                }
+
+                [Test]
+                public void Should_push_a_notification_with_the_new_Item()
+                {
+                    Assert.AreEqual(_expected, _data.NewItems.Single());
+                }
+
+                [Test]
+                public void Should_push_a_notification_with_no_OldItems()
+                {
+                    Assert.IsFalse(_data.OldItems.Any());
+                }
+
+                [Test]
+                public void Should_push_a_notification_with_Add_as_the_Action()
+                {
+                    Assert.AreEqual(System.Collections.Specialized.NotifyCollectionChangedAction.Add, _data.Action);
+                }
+            }
+
+            [TestFixture]
+            public sealed class When_Item_removed : When_observing_ItemsPropertyChange
+            {
+                private SampleDto _expected;
+                private ITestableObserver<CollectionChangedData<SampleDto>> _observer;
+                private Recorded<Notification<CollectionChangedData<SampleDto>>> _message;
+                private CollectionChangedData<SampleDto> _data;
+
+                public override void SetUp()
+                {
+                    base.SetUp();
+                    _expected = CreateJohn();
+                    _sut.Add(_expected);
+
+                    _observer = new TestScheduler().CreateObserver<CollectionChangedData<SampleDto>>();
+                    _ageChanges.Subscribe(_observer);
+                    _sut.RemoveAt(0);
+                    _message = _observer.Messages.Single();
+                    _data = _message.Value.Value;
+                }
+
+                [Test]
+                public void Should_push_a_notification_with_the_oldItem()
+                {
+                    Assert.AreEqual(_expected, _data.OldItems.Single());
+                }
+
+                [Test]
+                public void Should_push_a_notification_with_no_NewItems()
+                {
+                    Assert.IsFalse(_data.NewItems.Any());
+                }
+
+                [Test]
+                public void Should_push_a_notification_with_Remove_as_the_Action()
+                {
+                    Assert.AreEqual(System.Collections.Specialized.NotifyCollectionChangedAction.Remove, _data.Action);
+                }
+            }
+
+            [TestFixture]
+            public sealed class When_Item_replaced : When_observing_ItemsPropertyChange
+            {
+                private SampleDto _expectedOld;
+                private SampleDto _expectedNew;
+                private ITestableObserver<CollectionChangedData<SampleDto>> _observer;
+                private Recorded<Notification<CollectionChangedData<SampleDto>>> _message;
+                private CollectionChangedData<SampleDto> _data;
+
+                public override void SetUp()
+                {
+                    base.SetUp();
+                    _expectedOld = CreateJohn();
+                    _expectedNew = CreateJack();
+                    _sut.Add(_expectedOld);
+
+                    _observer = new TestScheduler().CreateObserver<CollectionChangedData<SampleDto>>();
+                    _ageChanges.Subscribe(_observer);
+                    _sut[0] = _expectedNew;
+                    _message = _observer.Messages.Single();
+                    _data = _message.Value.Value;
+                }
+
+                [Test]
+                public void Should_push_a_notification_with_the_oldItem()
+                {
+                    Assert.AreEqual(_expectedOld, _data.OldItems.Single());
+                }
+
+                [Test]
+                public void Should_push_a_notification_with_the_newItem()
+                {
+                    Assert.AreEqual(_expectedNew, _data.NewItems.Single());
+                }
+
+                [Test]
+                public void Should_push_a_notification_with_Remove_as_the_Action()
+                {
+                    Assert.AreEqual(System.Collections.Specialized.NotifyCollectionChangedAction.Replace, _data.Action);
+                }
+            }
+
+            [TestFixture]
+            public sealed class When_Collection_cleared : When_observing_ItemsPropertyChange
+            {
+                private IList<SampleDto> _expected;
+                private ITestableObserver<CollectionChangedData<SampleDto>> _observer;
+                private Recorded<Notification<CollectionChangedData<SampleDto>>> _message;
+                private CollectionChangedData<SampleDto> _data;
+
+                public override void SetUp()
+                {
+                    base.SetUp();
+                    _expected = new[] { CreateJohn(), CreateJack(), new SampleDto() { Name = "Jill", Age = 19, FriendsCount = 30 } };
+                    foreach (var i in _expected)
+                    {
+                        _sut.Add(i);
+                    }
+
+                    _observer = new TestScheduler().CreateObserver<CollectionChangedData<SampleDto>>();
+                    _ageChanges.Subscribe(_observer);
+                    _sut.Clear();
+                    _message = _observer.Messages.Single();
+                    _data = _message.Value.Value;
+                }
+
+                //No current requirement for this 
+                //TODO: Potentially push the old items on a collection reset -LC
+                //[Test]
+                //public void Should_push_a_notification_with_the_OldItems()
+                //{
+                //    CollectionAssert.AreEquivalent(_expected, _data.OldItems);
+                //}
+
+                [Test]
+                public void Should_push_a_notification_with_no_NewItems()
+                {
+                    Assert.IsFalse(_data.NewItems.Any());
+                }
+
+                [Test]
+                public void Should_push_a_notification_with_Reset_as_the_Action()
+                {
+                    Assert.AreEqual(System.Collections.Specialized.NotifyCollectionChangedAction.Reset, _data.Action);
+                }
+            }
+
+            [TestFixture]
+            public sealed class When_item_value_changes_for_given_property : When_observing_ItemsPropertyChange
+            {
+                private SampleDto _expected;
+                private const int _expectedAge = 49;
+                private ITestableObserver<CollectionChangedData<SampleDto>> _observer;
+                private Recorded<Notification<CollectionChangedData<SampleDto>>> _message;
+                private CollectionChangedData<SampleDto> _data;
+                private IDisposable _subscription;
+
+                public override void SetUp()
+                {
+                    base.SetUp();
+                    _expected = CreateJohn();
+                    _sut.Add(_expected);
+
+                    _observer = new TestScheduler().CreateObserver<CollectionChangedData<SampleDto>>();
+                    _subscription = _ageChanges.Subscribe(_observer);
+                    Assume.That(_sut[0].Age != _expectedAge);
+                    _sut[0].Age = _expectedAge;
+                    _message = _observer.Messages.Single();
+                    _data = _message.Value.Value;
+                }
+
+                [Test]
+                public void Should_push_a_notification_with_the_changed_item_as_a_NewItem()
+                {
+                    var actual = _data.NewItems.Single();
+                    Assert.AreEqual(_expected, actual);
+                    Assert.AreEqual(_expectedAge, actual.Age);
+                }
+
+                [Test]
+                public void Should_push_a_notification_with_no_OldItems()
+                {
+                    Assert.IsFalse(_data.OldItems.Any());
+                }
+
+                [Test]
+                public void Should_push_a_notification_with_Replace_as_the_Action()
+                {
+                    Assert.AreEqual(System.Collections.Specialized.NotifyCollectionChangedAction.Replace, _data.Action);
+                }
+
+                [Test]
+                public void Should_not_notify_when_subscription_is_disposed()
+                {
+                    Assume.That(_observer.Messages.Count == 1);
+                    Assume.That(_sut[0].Age != -1);
+                    _subscription.Dispose();
+                    _sut[0].Age = -1;
+
+                    Assert.AreEqual(1, _observer.Messages.Count);
+                }
+
+                [Test]
+                public void Should_not_notify_when_item_was_removed()
+                {
+                    var removedItem = _sut[0];
+                    _sut.Remove(removedItem);
+                    Assume.That(_observer.Messages.Count == 2); //updated, then removed.
+                    Assume.That(removedItem.Age != -1);
+
+                    removedItem.Age = -1;
+
+                    Assert.AreEqual(2, _observer.Messages.Count);
+                }
+            }
+
+            [TestFixture]
+            public sealed class When_item_value_changes_for_other_property : When_observing_ItemsPropertyChange
+            {
+                private ITestableObserver<CollectionChangedData<SampleDto>> _observer;
+
+                public override void SetUp()
+                {
+                    base.SetUp();
+                    _sut.Add(CreateJohn());
+                    _observer = new TestScheduler().CreateObserver<CollectionChangedData<SampleDto>>();
+                }
+
+                [Test]
+                public void Should_not_push_a_notification()
+                {
+                    var newName = "Mark";
+                    Assume.That(_sut[0].Name != newName);
+
+                    _ageChanges.Subscribe(_observer);
+                    _sut[0].Name = newName; //Change Name, not Age which is being observed.
+
+                    Assert.AreEqual(0, _observer.Messages.Count);
+                }
+            }
+        }
     }
 
     /*
