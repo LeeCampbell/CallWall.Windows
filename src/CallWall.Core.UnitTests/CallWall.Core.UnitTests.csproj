@@ -106,6 +106,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="BooleanToInvisibilityConverterTests.cs" />
     <Compile Include="LogExtensionTests.cs" />
     <Compile Include="NotificationExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
