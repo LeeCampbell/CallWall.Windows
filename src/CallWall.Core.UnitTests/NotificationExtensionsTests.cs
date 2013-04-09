@@ -634,8 +634,7 @@ namespace CallWall.Core.UnitTests
                 }
             }
 
-            //When_item_value_changes
-            //  should
+
             [TestFixture]
             public sealed class When_item_value_changes : When_observing_CollectionItemsChange
             {
@@ -644,6 +643,7 @@ namespace CallWall.Core.UnitTests
                 private ITestableObserver<CollectionChangedData<SampleDto>> _observer;
                 private Recorded<Notification<CollectionChangedData<SampleDto>>> _message;
                 private CollectionChangedData<SampleDto> _data;
+                private IDisposable _subscription;
 
                 public override void SetUp()
                 {
@@ -652,7 +652,7 @@ namespace CallWall.Core.UnitTests
                     _sut.Add(_expected);
 
                     _observer = new TestScheduler().CreateObserver<CollectionChangedData<SampleDto>>();
-                    _changes.Subscribe(_observer);
+                    _subscription = _changes.Subscribe(_observer);
                     Assume.That(_sut[0].Age != _expectedAge);
                     _sut[0].Age = _expectedAge;
                     _message = _observer.Messages.Single();
@@ -680,10 +680,29 @@ namespace CallWall.Core.UnitTests
                     Assert.AreEqual(System.Collections.Specialized.NotifyCollectionChangedAction.Replace, _data.Action);
                 }
                 
-                //TODO: Test negative scenarios
-                //Should not notify when subscription is disposed
-                //Should not notify when removed item is changed
+                [Test]
+                public void Should_not_notify_when_subscription_is_disposed()
+                {
+                    Assume.That(_observer.Messages.Count == 1);
+                    Assume.That(_sut[0].Age != -1);
+                    _subscription.Dispose();
+                    _sut[0].Age = -1;
 
+                    Assert.AreEqual(1, _observer.Messages.Count);
+                }
+
+                [Test]
+                public void Should_not_notify_when_item_was_removed()
+                {
+                    var removedItem = _sut[0];
+                    _sut.Remove(removedItem);
+                    Assume.That(_observer.Messages.Count == 2); //updated, then removed.
+                    Assume.That(removedItem.Age != -1);
+
+                    removedItem.Age = -1;
+
+                    Assert.AreEqual(2, _observer.Messages.Count);
+                }
 
             }
 
