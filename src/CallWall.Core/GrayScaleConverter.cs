@@ -68,16 +68,18 @@ namespace CallWall
         private static readonly BitmapPalette _bitmapPalette = null;    //Only useful for index palettes.
 
         private BgrGrayScaleConverter()
-        {}
+        { }
 
         public static readonly IBitmapSourceGrayScaleConverter Instance = new BgrGrayScaleConverter();
 
         public BitmapSource Convert(BitmapSource source)
         {
-            var orgPixels = new byte[source.PixelHeight * source.PixelWidth * Depth];
-            var newPixels = new byte[orgPixels.Length];
-            source.CopyPixels(orgPixels, source.PixelWidth * Depth, 0);
-            for (int i = 3; i < orgPixels.Length; i += Depth)
+            var stride = source.PixelWidth * Depth;
+            var size = source.PixelHeight * stride;
+            var orgPixels = new byte[size];
+            var newPixels = new byte[size];
+            source.CopyPixels(orgPixels, stride, 0);
+            for (int i = 3; i < size; i += Depth)
             {
                 var grayVal = GrayscaleConverter.ToGray(orgPixels[i - 3], orgPixels[i - 2], orgPixels[i - 1]);
 
@@ -87,12 +89,11 @@ namespace CallWall
                 newPixels[i] = orgPixels[i]; //Set AlphaChannel
             }
             return BitmapSource.Create(source.PixelWidth, source.PixelHeight,
-                                       source.DpiX, source.DpiY, //Not sure why we don't do this?
-                                       //DpiX, DpiY, 
+                                       source.DpiX, source.DpiY, //DpiX, DpiY, 
                                        PixelFormats.Bgra32, //} There seems to be no built in support for 256 gray values with 256alpha. Instead you
                                        _bitmapPalette,      //}     have to recreate the gray with RGB and maintain the alpha from the source.
                                        newPixels,
-                                       source.PixelWidth * Depth);
+                                       stride);
 
         }
     }
