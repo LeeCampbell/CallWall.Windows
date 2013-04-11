@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using NUnit.Framework;
 using System.Globalization;
 
+// ReSharper disable InconsistentNaming
 namespace CallWall.Core.UnitTests
 {
     public abstract class Given_a_GrayscaleConverter
@@ -27,44 +24,72 @@ namespace CallWall.Core.UnitTests
         [TestFixture]
         public sealed class When_converting_a_Bgra32_BitmapSource : Given_a_GrayscaleConverter
         {
-            private static readonly byte[] _allByteValues;
-
-            static When_converting_a_Bgra32_BitmapSource()
-            {
-                _allByteValues = Enumerable.Range(0, 255)
-                                           .Select(i => (byte)i)
-                                           .ToArray();
-            }
+            const int Depth = 4; //ie 4 byte values per pixel r,g,b & a
 
             protected override BitmapSource CreateBitmap(int width, int height, int dpiX, int dpiY, uint indexOffset = 0)
             {
-                var depth = 4; //ie 4 byte values per pixel r,g,b & a
-                var stride = width * depth;
-
                 //now map to each pixel from 0,0 to width,height
                 uint maxlength;
                 checked
                 {
                     maxlength = (uint)width * (uint)height;
                 }
-                var arraySize = maxlength * depth;
-                byte[] imageData = new byte[arraySize];
-                for (int i = 0; i < maxlength; i++)
-                {
-                    var pixelIdx = indexOffset + i;
 
-                    byte red = (byte)(pixelIdx / 16581375);
-                    byte green = (byte)((pixelIdx / 65025) % 255);
-                    byte blue = (byte)((pixelIdx / 255) % 255);
-                    byte alpha = (byte)(pixelIdx % 255);
-                    var arrayOffset = i * depth;
-                    imageData[arrayOffset] = red;
-                    imageData[arrayOffset + 1] = green;
-                    imageData[arrayOffset + 2] = blue;
-                    imageData[arrayOffset + 3] = alpha;
-                }
+                var imageData = CreatePixelData(maxlength, indexOffset);
+                //var imageData = CreatePixelDataSafe(maxlength, indexOffset);
+
+                var stride = width * Depth;
                 return BitmapSource.Create(width, height, dpiX, dpiY, PixelFormats.Bgra32, null, imageData, stride);
             }
+
+            //private static byte[] CreatePixelDataSafe(uint maxlength, uint indexOffset)
+            //{
+            //    var arraySize = maxlength * Depth;
+            //    byte[] imageData = new byte[arraySize];
+
+            //    for (int i = 0; i < maxlength; i++)
+            //    {
+            //        var pixelIdx = indexOffset + i;
+
+            //        byte red = (byte)(pixelIdx / 16581375);
+            //        byte green = (byte)((pixelIdx / 65025) % 255);
+            //        byte blue = (byte)((pixelIdx / 255) % 255);
+            //        byte alpha = (byte)(pixelIdx % 255);
+            //        var arrayOffset = i * Depth;
+            //        imageData[arrayOffset] = red;
+            //        imageData[arrayOffset + 1] = green;
+            //        imageData[arrayOffset + 2] = blue;
+            //        imageData[arrayOffset + 3] = alpha;
+            //    }
+
+            //    return imageData;
+            //}
+
+            //Unsafe for raw speed. If you can see a faster way make it so. -LC
+            private static unsafe byte[] CreatePixelData(uint maxlength, uint indexOffset)
+            {
+                var arraySize = maxlength * Depth;
+                byte[] imageData = new byte[arraySize];
+                fixed (byte* pImageData = imageData)
+                {
+                    byte* ptr = pImageData + 0;
+
+                    var limit = maxlength + indexOffset;
+                    for (var pixelIdx = indexOffset; pixelIdx < limit; pixelIdx++)
+                    {
+                        *ptr = (byte)(pixelIdx / 16581375);//Red
+                        ptr++;
+                        *ptr = (byte)((pixelIdx / 65025) % 255);//Green
+                        ptr++;
+                        *ptr = (byte)((pixelIdx / 255) % 255);//Blue;
+                        ptr++;
+                        *ptr = (byte)(pixelIdx % 255);//Alpha;
+                        ptr++;
+                    }
+                }
+                return imageData;
+            }
+
         }
 
 
@@ -91,23 +116,20 @@ namespace CallWall.Core.UnitTests
         [Test]
         public void Full_color_spectrum_test([Range(0, 1024)]int loop)
         {
-            using (new Timer(loop.ToString()))
-            {
-                var width = 1024;
-                var height = 1024;
-                var dpi = 96;
+            var width = 1024;
+            var height = 1024;
+            var dpi = 96;
 
-                uint indexOffset = (uint)loop * ((uint)width * (uint)height);
+            uint indexOffset = (uint)loop * ((uint)width * (uint)height);
 
-                var source = CreateBitmap(width, height, dpi, dpi, indexOffset);
-                var actual =
-                    (BitmapSource)_sut.Convert(source, typeof(BitmapSource), null, CultureInfo.InvariantCulture);
-                Assert.AreEqual(width, actual.Width);
-                Assert.AreEqual(height, actual.Height);
-                Assert.AreEqual(dpi, actual.DpiX);
-                Assert.AreEqual(dpi, actual.DpiY);
-            }
+            BitmapSource source, actual;
+            source = CreateBitmap(width, height, dpi, dpi, indexOffset);
+            actual = (BitmapSource)_sut.Convert(source, typeof(BitmapSource), null, CultureInfo.InvariantCulture);
 
+            Assert.AreEqual(width, actual.Width);
+            Assert.AreEqual(height, actual.Height);
+            Assert.AreEqual(dpi, actual.DpiX);
+            Assert.AreEqual(dpi, actual.DpiY);
         }
 
         //TODO: Test various dimensions. Should really test for CallWall values up to 512x512 (the biggest Icon)
@@ -170,59 +192,5 @@ namespace CallWall.Core.UnitTests
             WebPaletteTransparent
          */
     }
-
-    public static class EnumEx
-    {
-        public static IEnumerable<TSource> Skip<TSource>(this IEnumerable<TSource> source, uint count)
-        {
-            if (source == null) throw new System.ArgumentNullException("source");
-            return SkipIterator(source, count);
-        }
-
-        static IEnumerable<TSource> SkipIterator<TSource>(IEnumerable<TSource> source, uint count)
-        {
-            using (var e = source.GetEnumerator())
-            {
-                while (count > 0 && e.MoveNext()) count--;
-                if (count > 0) yield break;
-                while (e.MoveNext()) yield return e.Current;
-            }
-        }
-
-        public static IEnumerable<TSource> Take<TSource>(this IEnumerable<TSource> source, uint count)
-        {
-            if (source == null) throw new System.ArgumentNullException("source");
-            return TakeIterator(source, count);
-        }
-
-        static IEnumerable<TSource> TakeIterator<TSource>(IEnumerable<TSource> source, uint count)
-        {
-            using (var e = source.GetEnumerator())
-            {
-                while (count > 0 && e.MoveNext())
-                {
-                    yield return e.Current;
-                    count--;
-                }
-            }
-        }
-    }
-
-    sealed class Timer : IDisposable
-    {
-        private readonly string _name;
-        private readonly Stopwatch _stopwatch;
-
-        public Timer(string name)
-        {
-            _name = name;
-            _stopwatch = Stopwatch.StartNew();
-        }
-
-        public void Dispose()
-        {
-            _stopwatch.Stop();
-            Console.WriteLine("{0} took {1}", _name, _stopwatch.Elapsed);
-        }
-    }
 }
+// ReSharper restore InconsistentNaming
