@@ -123,6 +123,7 @@
     <Compile Include="Ensure.cs" />
     <Compile Include="EventLoopSchedulerWrapper.cs" />
     <Compile Include="IEventLoopScheduler.cs" />
+    <Compile Include="PrismExtensions\UnityContainerExtensions.cs" />
     <Compile Include="SetsExtensions.cs" />
     <Compile Include="GrayScaleConverter.cs" />
     <Compile Include="IAccountConfiguration.cs" />

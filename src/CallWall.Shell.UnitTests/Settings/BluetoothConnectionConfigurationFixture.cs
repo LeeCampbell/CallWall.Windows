@@ -35,7 +35,7 @@ namespace CallWall.UnitTests.Settings
         [Test]
         public void Should_return_Bluetooth_image_from_Image()
         {
-            var expected = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth_72x72.png");
+            var expected = new Uri("pack://application:,,,/CallWall.Shell;component/Images/Bluetooth_72x72.png");
             Assert.AreEqual(expected, _sut.Image);
         }
 

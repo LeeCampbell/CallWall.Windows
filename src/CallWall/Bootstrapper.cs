@@ -42,6 +42,7 @@ namespace CallWall
             base.ConfigureModuleCatalog();
 
             ModuleCatalog.Add<HostModule>();
+            ModuleCatalog.Add<Shell.ShellModule>();
             ModuleCatalog.Add<Settings.SettingsModule>();
 
             ModuleCatalog.Add<GoogleModule>();

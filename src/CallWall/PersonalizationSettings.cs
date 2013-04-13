@@ -3,7 +3,7 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using Newtonsoft.Json;
 
-namespace CallWall.Services
+namespace CallWall
 {
     public sealed class PersonalizationSettings : IPersonalizationSettings
     {

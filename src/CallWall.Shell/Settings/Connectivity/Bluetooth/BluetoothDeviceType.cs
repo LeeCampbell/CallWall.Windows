@@ -18,13 +18,13 @@ namespace CallWall.Settings.Connectivity.Bluetooth
         static BluetoothDeviceType()
         {
             Ensure.PackUriIsRegistered();
-            _audioVisualImageUri = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/AudioVisual.png");
-            _computerImageUri = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Computer.png");
-            _imagingImageUri = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Imaging.png");
-            _miscellaneousImageUri = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Miscellaneous.png");
-            _networkImageUri = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Network.png");
-            _phoneImageUri = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Phone.png");
-            _peripheralImageUri = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Peripheral.png");
+            _audioVisualImageUri = new Uri("pack://application:,,,/CallWall.Shell;component/Images/Bluetooth/AudioVisual.png");
+            _computerImageUri = new Uri("pack://application:,,,/CallWall.Shell;component/Images/Bluetooth/Computer.png");
+            _imagingImageUri = new Uri("pack://application:,,,/CallWall.Shell;component/Images/Bluetooth/Imaging.png");
+            _miscellaneousImageUri = new Uri("pack://application:,,,/CallWall.Shell;component/Images/Bluetooth/Miscellaneous.png");
+            _networkImageUri = new Uri("pack://application:,,,/CallWall.Shell;component/Images/Bluetooth/Network.png");
+            _phoneImageUri = new Uri("pack://application:,,,/CallWall.Shell;component/Images/Bluetooth/Phone.png");
+            _peripheralImageUri = new Uri("pack://application:,,,/CallWall.Shell;component/Images/Bluetooth/Peripheral.png");
         }
 
         #endregion

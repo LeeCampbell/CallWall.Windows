@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CallWall.Properties {
+namespace CallWall.Shell.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace CallWall.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CallWall.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CallWall.Shell.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,24 @@ namespace CallWall.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No devices. Scan to discover Bluetooth devices in the area..
+        /// </summary>
+        internal static string Bluetooth_NoDevices_RequiresScan {
+            get {
+                return ResourceManager.GetString("Bluetooth_NoDevices_RequiresScan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No devices were found. Ensure that Bluetooth is enabled on both your phone and your computer, and that the device is in range. You may also have to enable Bluetooth discovery on your phone..
+        /// </summary>
+        internal static string Bluetooth_NoDevicesFound {
+            get {
+                return ResourceManager.GetString("Bluetooth_NoDevicesFound", resourceCulture);
             }
         }
     }

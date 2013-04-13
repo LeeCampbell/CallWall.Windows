@@ -57,7 +57,7 @@ namespace CallWall.UnitTests.Settings
                 case DeviceClass.CordlessPhone:
                 case DeviceClass.SmartPhone:
                 case DeviceClass.WiredPhone:
-                    expected = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Phone.png");
+                    expected = new Uri("pack://application:,,,/CallWall.Shell;component/Images/Bluetooth/Phone.png");
                     break;
                 //Computers
                 case DeviceClass.Computer:
@@ -67,7 +67,7 @@ namespace CallWall.UnitTests.Settings
                 case DeviceClass.HandheldComputer:
                 case DeviceClass.PdaComputer:
                 case DeviceClass.WearableComputer:
-                    expected = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Computer.png");
+                    expected = new Uri("pack://application:,,,/CallWall.Shell;component/Images/Bluetooth/Computer.png");
                     break;
                 //Network
                 case DeviceClass.IsdnAccess:
@@ -79,7 +79,7 @@ namespace CallWall.UnitTests.Settings
                 case DeviceClass.AccessPoint67To83:
                 case DeviceClass.AccessPoint83To99:
                 case DeviceClass.AccessPointNoService:
-                    expected =new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Network.png");
+                    expected =new Uri("pack://application:,,,/CallWall.Shell;component/Images/Bluetooth/Network.png");
                     break;
                 //AV
                 case DeviceClass.AudioVideoUnclassified:
@@ -99,7 +99,7 @@ namespace CallWall.UnitTests.Settings
                 case DeviceClass.AudioVideoDisplayLoudSpeaker:
                 case DeviceClass.AudioVideoVideoConferencing:
                 case DeviceClass.AudioVideoGaming:
-                    expected = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/AudioVisual.png");
+                    expected = new Uri("pack://application:,,,/CallWall.Shell;component/Images/Bluetooth/AudioVisual.png");
                     break;
                 //Peripheral/Accessories
                 case DeviceClass.Peripheral:
@@ -112,7 +112,7 @@ namespace CallWall.UnitTests.Settings
                 case DeviceClass.PeripheralKeyboard:
                 case DeviceClass.PeripheralPointingDevice:
                 case DeviceClass.PeripheralCombinedKeyboardPointingDevice:
-                    expected = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Peripheral.png");
+                    expected = new Uri("pack://application:,,,/CallWall.Shell;component/Images/Bluetooth/Peripheral.png");
                     break;
                 //Imaging/Printers/Cameras
                 case DeviceClass.Imaging:
@@ -120,7 +120,7 @@ namespace CallWall.UnitTests.Settings
                 case DeviceClass.ImagingCamera:
                 case DeviceClass.ImagingScanner:
                 case DeviceClass.ImagingPrinter:
-                    expected = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Imaging.png");
+                    expected = new Uri("pack://application:,,,/CallWall.Shell;component/Images/Bluetooth/Imaging.png");
                     break;
                 //Wearable
                 case DeviceClass.Wearable:
@@ -149,7 +149,7 @@ namespace CallWall.UnitTests.Settings
                 case DeviceClass.Uncategorized:
                 case DeviceClass.Miscellaneous:
                 default:
-                    expected = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth/Miscellaneous.png");
+                    expected = new Uri("pack://application:,,,/CallWall.Shell;component/Images/Bluetooth/Miscellaneous.png");
                     break;
             }
 

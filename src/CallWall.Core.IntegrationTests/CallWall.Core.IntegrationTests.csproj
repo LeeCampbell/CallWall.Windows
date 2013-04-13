@@ -82,9 +82,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="..\CallWall\Images\Bluetooth_72x72.png">
-      <Link>Images\Bluetooth_72x72.png</Link>
-    </Resource>
+    <Folder Include="Images\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

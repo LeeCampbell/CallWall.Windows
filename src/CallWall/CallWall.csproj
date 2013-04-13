@@ -135,101 +135,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Activators\BluetoothActivator.cs" />
-    <Compile Include="Activators\FakeProfileActivator.cs" />
-    <Compile Include="Activators\IBluetoothProfileActivator.cs" />
-    <Compile Include="Activators\IProfileActivator.cs" />
-    <Compile Include="Controls\BirthdayTextConverter.cs" />
-    <Compile Include="Controls\ItemsStack.cs" />
-    <Compile Include="LocalStoreKeys.cs" />
     <Compile Include="Logging\Log4NetLogger.cs" />
     <Compile Include="Logging\LoggerFactory.cs" />
+    <Compile Include="PersonalizationSettings.cs" />
     <Compile Include="PrismExtensions\AccordionItemsSourceSyncBehavior.cs" />
     <Compile Include="PrismExtensions\ModuleCatalogExtensions.cs" />
     <Compile Include="PrismExtensions\AccordionRegionAdapter.cs" />
-    <Compile Include="PrismExtensions\UnityContainerExtensions.cs" />
-    <Compile Include="ProfileDashboard\Communication\CommunicationQueryAggregator.cs" />
-    <Compile Include="ProfileDashboard\DashboardCollection.cs" />
-    <Compile Include="ProfileDashboard\DateTimeOffsetConverter.cs" />
-    <Compile Include="ProfileDashboard\ICommunicationQueryAggregator.cs" />
-    <Compile Include="ProfileDashboard\Communication\Message.cs" />
-    <Compile Include="ProfileDashboard\Contact\AggregatedContact.cs" />
-    <Compile Include="ProfileDashboard\Contact\ContactQueryAggregator.cs" />
-    <Compile Include="ProfileDashboard\Contact\NullContactProfile.cs" />
-    <Compile Include="ProfileDashboard\DashboardModule.cs" />
-    <Compile Include="ProfileDashboard\Contact\IContactQueryAggregator.cs" />
-    <Compile Include="ProfileDashboard\IProfileActivatorAggregator.cs" />
-    <Compile Include="ProfileDashboard\IProfileDashboard.cs" />
-    <Compile Include="ProfileDashboard\IProfileDashboardView.cs" />
-    <Compile Include="ProfileDashboard\Pictures\Album.cs" />
-    <Compile Include="ProfileDashboard\Pictures\IPictureQueryAggregator.cs" />
-    <Compile Include="ProfileDashboard\Pictures\PictureQueryAggregator.cs" />
-    <Compile Include="ProfileDashboard\ProfileActivatorAggregator.cs" />
-    <Compile Include="ProfileDashboard\ProfileDashboard.cs" />
-    <Compile Include="ProfileDashboard\ProfileDashboardView.xaml.cs">
-      <DependentUpon>ProfileDashboardView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ProfileDashboard\ProfileDashBoardViewModel.cs" />
-    <Compile Include="Services\BluetoothService.cs" />
-    <Compile Include="Services\IBluetoothService.cs" />
-    <Compile Include="Services\PersonalizationSettings.cs" />
-    <Compile Include="Services\WrappedBluetoothInfo.cs" />
-    <Compile Include="Settings\Accounts\AccountSettingsModel.cs" />
-    <Compile Include="Settings\Connectivity\Bluetooth\BluetoothConnectionConfiguration.cs" />
-    <Compile Include="Settings\Connectivity\Bluetooth\BluetoothDevice.cs" />
-    <Compile Include="Settings\Connectivity\Bluetooth\BluetoothDeviceType.cs" />
-    <Compile Include="Settings\Connectivity\Bluetooth\BluetoothSetupView.xaml.cs">
-      <DependentUpon>BluetoothSetupView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\Connectivity\Bluetooth\BluetoothSetupViewModel.cs" />
-    <Compile Include="Settings\Connectivity\Bluetooth\IBluetoothDevice.cs" />
-    <Compile Include="Settings\Connectivity\Bluetooth\IBluetoothDeviceInfo.cs" />
-    <Compile Include="Settings\Connectivity\Bluetooth\IBluetoothSetupView.cs" />
-    <Compile Include="Settings\Connectivity\Bluetooth\IBluetoothSetupViewModel.cs" />
-    <Compile Include="ViewModelStatus.cs" />
-    <Compile Include="Settings\Connectivity\ConnectivitySettingsModel.cs" />
-    <Compile Include="Settings\Connectivity\ConnectivitySettingsView.xaml.cs">
-      <DependentUpon>ConnectivitySettingsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\Connectivity\ConnectivitySettingsViewModel.cs" />
-    <Compile Include="Settings\Connectivity\IConnectivitySettingsModel.cs" />
-    <Compile Include="Settings\Connectivity\IConnectivitySettingsView.cs" />
-    <Compile Include="Settings\Connectivity\IConnectivitySettingsViewModel.cs" />
-    <Compile Include="Settings\Accounts\IAccountSettingsModel.cs" />
-    <Compile Include="Settings\Accounts\IAccountSettingsView.cs" />
-    <Compile Include="Settings\Accounts\IAccountSettingsViewModel.cs" />
-    <Compile Include="Settings\Accounts\AccountSettingsView.xaml.cs">
-      <DependentUpon>AccountSettingsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\Accounts\AccountSettingsViewModel.cs" />
-    <Compile Include="Settings\Demonstration\DemoActivatedIdentityListener.cs" />
-    <Compile Include="Settings\Demonstration\DemoViewModel.cs" />
-    <Compile Include="Settings\Demonstration\IDemoProfileActivator.cs" />
-    <Compile Include="Settings\SettingsModule.cs" />
-    <Compile Include="Settings\SettingsView.xaml.cs">
-      <DependentUpon>SettingsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\SettingsViewModel.cs" />
-    <Compile Include="Settings\SubView.cs" />
-    <Compile Include="ShellRegionNames.cs" />
-    <Compile Include="Settings\Demonstration\DemoView.xaml.cs">
-      <DependentUpon>DemoView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\Demonstration\IDemoView.cs" />
-    <Compile Include="Welcome\IWelcomeController.cs" />
-    <Compile Include="Welcome\IWelcomeStep1.cs" />
-    <Compile Include="Welcome\IWelcomeView.cs" />
-    <Compile Include="Welcome\WelcomeController.cs" />
-    <Compile Include="Welcome\WelcomeModule.cs" />
-    <Compile Include="Welcome\WelcomeSettingStepBackgroundConverter.cs" />
-    <Compile Include="Welcome\WelcomeSettingStepHeaderConverter.cs" />
-    <Compile Include="Welcome\WelcomeStep1View.xaml.cs">
-      <DependentUpon>WelcomeStep1View.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Welcome\WelcomeView.xaml.cs">
-      <DependentUpon>WelcomeView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Welcome\WelcomeViewModel.cs" />
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
@@ -239,74 +150,6 @@
     </Compile>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="HostModule.cs" />
-    <Page Include="ProfileDashboard\Communication\MessageDataTemplate.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ProfileDashboard\Contact\ContactProfileDataTemplate.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ProfileDashboard\Pictures\AlbumDataTemplate.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ProfileDashboard\ProfileDashboardView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Settings\Connectivity\Bluetooth\BluetoothSetupView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Settings\Connectivity\ConnectivitySettingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Settings\Accounts\AccountSettingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Settings\SettingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\Button.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\TabControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\Text.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\Window.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\WpfToolkit.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Settings\Demonstration\DemoView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Welcome\WelcomeStep1View.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Welcome\WelcomeView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PrismExtensions\DialogActivationBehavior.cs" />
@@ -374,47 +217,13 @@
       <Project>{62351821-7438-4898-987e-8debab0d66ee}</Project>
       <Name>CallWall.Google</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Bluetooth_72x72.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Bluetooth\AudioVisual.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Bluetooth\Computer.png" />
-    <Resource Include="Images\Bluetooth\Imaging.png" />
-    <Resource Include="Images\Bluetooth\Miscellaneous.png" />
-    <Resource Include="Images\Bluetooth\Network.png" />
-    <Resource Include="Images\Bluetooth\Peripheral.png" />
-    <Resource Include="Images\Bluetooth\Phone.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Settings_40x40.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Actions\IncomingCall_60x60.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Actions\MissedCall_60x60.png" />
-    <Resource Include="Images\Actions\OutgoingCall_60x60.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Actions\LeftArrow_32x32.png" />
-    <Resource Include="Images\Actions\RightArrow_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Actions\Inbound_27x27.png" />
-    <Resource Include="Images\Actions\Outbound_27x27.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Birthday_64x64.png" />
+    <ProjectReference Include="..\CallWall.Shell\CallWall.Shell.csproj">
+      <Project>{ce5e5740-c22a-49b2-99d6-63e01cd78f96}</Project>
+      <Name>CallWall.Shell</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="CallWall.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\CallWallLogo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

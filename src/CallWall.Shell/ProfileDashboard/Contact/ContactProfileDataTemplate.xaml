@@ -73,7 +73,7 @@
                 <!-- DateOfBirth TODO: Create a Birthday control. -->
                 <StackPanel Orientation="Horizontal"
                             Margin="10,10,0,0">
-                    <Image Source="pack://application:,,,/CallWall;component/Images/Birthday_64x64.png"
+                    <Image Source="pack://application:,,,/CallWall.Shell;component/Images/Birthday_64x64.png"
                            MaxWidth="20"
                            Stretch="Uniform"/>
                     <TextBlock Text="{Binding DateOfBirth, StringFormat=dd-MMM}"

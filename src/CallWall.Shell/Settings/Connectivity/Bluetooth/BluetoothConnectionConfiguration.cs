@@ -11,7 +11,7 @@ namespace CallWall.Settings.Connectivity.Bluetooth
         static BluetoothConnectionConfiguration()
         {
             Ensure.PackUriIsRegistered();
-            _image = new Uri("pack://application:,,,/CallWall;component/Images/Bluetooth_72x72.png");
+            _image = new Uri("pack://application:,,,/CallWall.Shell;component/Images/Bluetooth_72x72.png");
         }
 
         public BluetoothConnectionConfiguration(IBluetoothSetupView view)

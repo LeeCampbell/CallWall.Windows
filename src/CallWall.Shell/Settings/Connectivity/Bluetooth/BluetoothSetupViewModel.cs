@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
 using CallWall.Activators;
-using CallWall.Properties;
+using CallWall.Shell.Properties;
 using CallWall.Services;
 using JetBrains.Annotations;
 using Microsoft.Practices.Prism.Commands;

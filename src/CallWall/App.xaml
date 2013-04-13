@@ -9,15 +9,15 @@
                     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
                     <CallWall:BooleanToInvisibilityConverter x:Key="BooleanToInvisibilityConverter"/>
                 </ResourceDictionary>
-                <ResourceDictionary Source="Styles/Text.xaml"/>
-                <ResourceDictionary Source="Styles/Button.xaml"/>
-                <ResourceDictionary Source="Styles/TabControl.xaml"/>
-                <ResourceDictionary Source="Styles/Window.xaml"/>
-                <ResourceDictionary Source="Styles/WpfToolkit.xaml"/>
-                
-                <ResourceDictionary Source="ProfileDashboard/Contact/ContactProfileDataTemplate.xaml"/>
-                <ResourceDictionary Source="ProfileDashboard/Communication/MessageDataTemplate.xaml"/>
-                <ResourceDictionary Source="ProfileDashboard/Pictures/AlbumDataTemplate.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/CallWall.Shell;component/Styles/Text.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/CallWall.Shell;component/Styles/Button.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/CallWall.Shell;component/Styles/TabControl.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/CallWall.Shell;component/Styles/Window.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/CallWall.Shell;component/Styles/WpfToolkit.xaml"/>
+
+                <ResourceDictionary Source="pack://application:,,,/CallWall.Shell;component/ProfileDashboard/Contact/ContactProfileDataTemplate.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/CallWall.Shell;component/ProfileDashboard/Communication/MessageDataTemplate.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/CallWall.Shell;component/ProfileDashboard/Pictures/AlbumDataTemplate.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

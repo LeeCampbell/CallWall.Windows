@@ -33,7 +33,7 @@
                 <StackPanel Orientation="Horizontal"
                             DockPanel.Dock="Left"
                             VerticalAlignment="Center">
-                    <Image Source="pack://application:,,,/CallWall;component/Images/CallWallLogo.png" 
+                    <Image Source="pack://application:,,,/CallWall.Shell;component/Images/CallWallLogo.png" 
                            Stretch="Uniform" 
                            Height="64"
                            Margin="0,0,10,0"/>
