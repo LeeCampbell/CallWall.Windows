@@ -1,10 +1,11 @@
-﻿using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using System;
 using System.Globalization;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 // ReSharper disable InconsistentNaming
-namespace CallWall.Core.UnitTests
+namespace CallWall.Core.IntegrationTests
 {
     public abstract class Given_a_GrayscaleConverter
     {
@@ -19,14 +20,31 @@ namespace CallWall.Core.UnitTests
             _sut = new GrayscaleConverter();
         }
 
-        protected abstract BitmapSource CreateBitmap(int width, int height, int dpiX, int dpiY, uint indexOffset = 0);
-
         [TestFixture]
         public sealed class When_converting_a_Bgra32_BitmapSource : Given_a_GrayscaleConverter
         {
             const int Depth = 4; //ie 4 byte values per pixel r,g,b & a
 
-            protected override BitmapSource CreateBitmap(int width, int height, int dpiX, int dpiY, uint indexOffset = 0)
+            [Test]
+            public void Full_color_spectrum_test([Range(0, 1024)]int loop)
+            {
+                var width = 1024;
+                var height = 1024;
+                var dpi = 96;
+
+                uint indexOffset = (uint)loop * ((uint)width * (uint)height);
+
+                BitmapSource source, actual;
+                source = CreateBitmap(width, height, dpi, dpi, indexOffset);
+                actual = (BitmapSource)_sut.Convert(source, typeof(BitmapSource), null, CultureInfo.InvariantCulture);
+
+                Assert.AreEqual(width, actual.Width);
+                Assert.AreEqual(height, actual.Height);
+                Assert.AreEqual(dpi, actual.DpiX);
+                Assert.AreEqual(dpi, actual.DpiY);
+            }
+
+            private BitmapSource CreateBitmap(int width, int height, int dpiX, int dpiY, uint indexOffset = 0)
             {
                 //now map to each pixel from 0,0 to width,height
                 uint maxlength;
@@ -35,76 +53,51 @@ namespace CallWall.Core.UnitTests
                     maxlength = (uint)width * (uint)height;
                 }
 
-                var imageData = CreatePixelDataSafe(maxlength, indexOffset);
+                var imageData = CreatePixelData(maxlength, indexOffset);
 
                 var stride = width * Depth;
                 return BitmapSource.Create(width, height, dpiX, dpiY, PixelFormats.Bgra32, null, imageData, stride);
             }
 
-            private static byte[] CreatePixelDataSafe(uint maxlength, uint indexOffset)
+            //Unsafe for raw speed. If you can see a faster way make it so. -LC
+            private static unsafe byte[] CreatePixelData(uint maxlength, uint indexOffset)
             {
                 var arraySize = maxlength * Depth;
                 byte[] imageData = new byte[arraySize];
-
-                for (int i = 0; i < maxlength; i++)
+                fixed (byte* pImageData = imageData)
                 {
-                    var pixelIdx = indexOffset + i;
+                    byte* ptr = pImageData + 0;
 
-                    byte red = (byte)(pixelIdx / 16581375);
-                    byte green = (byte)((pixelIdx / 65025) % 255);
-                    byte blue = (byte)((pixelIdx / 255) % 255);
-                    byte alpha = (byte)(pixelIdx % 255);
-                    var arrayOffset = i * Depth;
-                    imageData[arrayOffset] = red;
-                    imageData[arrayOffset + 1] = green;
-                    imageData[arrayOffset + 2] = blue;
-                    imageData[arrayOffset + 3] = alpha;
+                    var limit = maxlength + indexOffset;
+                    for (var pixelIdx = indexOffset; pixelIdx < limit; pixelIdx++)
+                    {
+                        *ptr = (byte)(pixelIdx / 16581375);//Red
+                        ptr++;
+                        *ptr = (byte)((pixelIdx / 65025) % 255);//Green
+                        ptr++;
+                        *ptr = (byte)((pixelIdx / 255) % 255);//Blue;
+                        ptr++;
+                        *ptr = (byte)(pixelIdx % 255);//Alpha;
+                        ptr++;
+                    }
                 }
-
                 return imageData;
             }
         }
 
-
-        [Test]
-        public void Should_Convert_to_bitmap_with_same_width_height(
-            [Values(1, 100, 255, 256, 257, 1024)]int width,
-            [Values(1, 10, 255, 256, 257, 1024)] int height)
+        [TestFixture]
+        public sealed class When_converting_known_images : Given_a_GrayscaleConverter
         {
-            var source = CreateBitmap(width, height, 96, 96);
-            var actual = (BitmapSource)_sut.Convert(source, typeof(BitmapSource), null, CultureInfo.InvariantCulture);
-            Assert.AreEqual(width, actual.Width);
-            Assert.AreEqual(height, actual.Height);
+            [Test]
+            public void Should_convert_bluetooth_icon_to_expected_grayscale()
+            {
+                Assert.Inconclusive();
+                //Ensure.PackUriIsRegistered();
+                //var uri = new Uri("pack://application:,,,/CallWall.Shell;component/Images/Bluetooth_72x72.png");
+                //var actual = _sut.Convert(uri, typeof (BitmapSource), null, CultureInfo.InvariantCulture);
+                //Assert.IsAssignableFrom<BitmapSource>(actual);
+            }
         }
-
-        [Test]
-        public void Should_convert_to_bitmap_with_same_dpi([Values(1, 32, 72, 96, 128)]int dpix, [Values(1, 32, 72, 96, 128)]int dpiy)
-        {
-            var source = CreateBitmap(128, 128, dpix, dpiy);
-            var actual = (BitmapSource)_sut.Convert(source, typeof(BitmapSource), null, CultureInfo.InvariantCulture);
-            Assert.AreEqual(dpix, actual.DpiX);
-            Assert.AreEqual(dpiy, actual.DpiY);
-        }
-
-        //Moved to integration test
-        //[Test]
-        //public void Full_color_spectrum_test([Range(0, 1024)]int loop)
-        //{
-        //    var width = 1024;
-        //    var height = 1024;
-        //    var dpi = 96;
-
-        //    uint indexOffset = (uint)loop * ((uint)width * (uint)height);
-
-        //    BitmapSource source, actual;
-        //    source = CreateBitmap(width, height, dpi, dpi, indexOffset);
-        //    actual = (BitmapSource)_sut.Convert(source, typeof(BitmapSource), null, CultureInfo.InvariantCulture);
-
-        //    Assert.AreEqual(width, actual.Width);
-        //    Assert.AreEqual(height, actual.Height);
-        //    Assert.AreEqual(dpi, actual.DpiX);
-        //    Assert.AreEqual(dpi, actual.DpiY);
-        //}
 
         //TODO: Test various dimensions. Should really test for CallWall values up to 512x512 (the biggest Icon)
 
