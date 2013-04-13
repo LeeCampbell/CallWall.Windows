@@ -100,6 +100,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="LocalStoreKeys.cs" />
     <Compile Include="Services\BluetoothService.cs" />
     <Compile Include="Services\IBluetoothService.cs" />

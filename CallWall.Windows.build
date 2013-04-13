@@ -11,8 +11,8 @@
   <ItemGroup>
     <Projects Include=".\src\CallWall\CallWall.csproj"/>
     <Projects Include=".\src\CallWall.UnitTests\CallWall.UnitTests.csproj"/>
-    <Projects Include=".\src\CallWall.UnitTests\CallWall.UnitTests.csproj"/>
     <Projects Include=".\src\CallWall.Core.UnitTests\CallWall.Core.UnitTests.csproj"/>
+    <Projects Include=".\src\CallWall.Shell.UnitTests\CallWall.Shell.UnitTests.csproj"/>
     <Projects Include=".\src\CallWall.Google.UnitTests\CallWall.Google.UnitTests.csproj"/>
   </ItemGroup>
   
@@ -38,7 +38,7 @@
                   AssemblyFileVersion="$(BuildVersion)"
                   AssemblyCompany="Campbell Consultancy London Ltd"
                   AssemblyProduct="CallWall"
-                  AssemblyCopyright="Copyright © Campbell Consultancy London Ltd 2012"
+                  AssemblyCopyright="Copyright © Campbell Consultancy London Ltd 2013"
                 />
   </Target>
   

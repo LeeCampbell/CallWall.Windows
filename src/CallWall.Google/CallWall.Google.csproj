@@ -89,6 +89,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Authorization\GoogleOAuthService.cs" />
     <Compile Include="Authorization\IGoogleOAuthService.cs" />
     <Compile Include="Controls\Behaviours.cs" />
