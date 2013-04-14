@@ -1,34 +1,11 @@
 using System;
 using InTheHand.Net.Bluetooth;
+using CallWall.Shell.Images;
 
 namespace CallWall.Settings.Connectivity.Bluetooth
 {
     public sealed class BluetoothDeviceType
     {
-        #region Static fields and constructor
-
-        private static readonly Uri _audioVisualImageUri;
-        private static readonly Uri _phoneImageUri;
-        private static readonly Uri _computerImageUri;
-        private static readonly Uri _networkImageUri;
-        private static readonly Uri _peripheralImageUri;
-        private static readonly Uri _imagingImageUri;
-        private static readonly Uri _miscellaneousImageUri;
-
-        static BluetoothDeviceType()
-        {
-            Ensure.PackUriIsRegistered();
-            _audioVisualImageUri = new Uri("pack://application:,,,/CallWall.Shell;component/Images/Bluetooth/AudioVisual.png");
-            _computerImageUri = new Uri("pack://application:,,,/CallWall.Shell;component/Images/Bluetooth/Computer.png");
-            _imagingImageUri = new Uri("pack://application:,,,/CallWall.Shell;component/Images/Bluetooth/Imaging.png");
-            _miscellaneousImageUri = new Uri("pack://application:,,,/CallWall.Shell;component/Images/Bluetooth/Miscellaneous.png");
-            _networkImageUri = new Uri("pack://application:,,,/CallWall.Shell;component/Images/Bluetooth/Network.png");
-            _phoneImageUri = new Uri("pack://application:,,,/CallWall.Shell;component/Images/Bluetooth/Phone.png");
-            _peripheralImageUri = new Uri("pack://application:,,,/CallWall.Shell;component/Images/Bluetooth/Peripheral.png");
-        }
-
-        #endregion
-
         private readonly string _name;
         private readonly Uri _image;
         private readonly bool _isValid;
@@ -57,7 +34,7 @@ namespace CallWall.Settings.Connectivity.Bluetooth
                 case DeviceClass.CordlessPhone:
                 case DeviceClass.SmartPhone:
                 case DeviceClass.WiredPhone:
-                    return new BluetoothDeviceType(deviceClass.ToString(), _phoneImageUri, true, 1);
+                    return new BluetoothDeviceType(deviceClass.ToString(), BluetoothImages.PhoneIconUri, true, 1);
                 //Computers
                 case DeviceClass.Computer:
                 case DeviceClass.DesktopComputer:
@@ -66,7 +43,7 @@ namespace CallWall.Settings.Connectivity.Bluetooth
                 case DeviceClass.HandheldComputer:
                 case DeviceClass.PdaComputer:
                 case DeviceClass.WearableComputer:
-                    return new BluetoothDeviceType(deviceClass.ToString(), _computerImageUri, false, 2);
+                    return new BluetoothDeviceType(deviceClass.ToString(), BluetoothImages.ComputerIconUri, false, 2);
                 //Network
                 case DeviceClass.IsdnAccess:
                 case DeviceClass.AccessPointAvailable:
@@ -77,7 +54,7 @@ namespace CallWall.Settings.Connectivity.Bluetooth
                 case DeviceClass.AccessPoint67To83:
                 case DeviceClass.AccessPoint83To99:
                 case DeviceClass.AccessPointNoService:
-                    return new BluetoothDeviceType(deviceClass.ToString(), _networkImageUri, false, 3);
+                    return new BluetoothDeviceType(deviceClass.ToString(), BluetoothImages.NetworkIconUri, false, 3);
                 //AV
                 case DeviceClass.AudioVideoUnclassified:
                 case DeviceClass.AudioVideoHeadset:
@@ -96,7 +73,7 @@ namespace CallWall.Settings.Connectivity.Bluetooth
                 case DeviceClass.AudioVideoDisplayLoudSpeaker:
                 case DeviceClass.AudioVideoVideoConferencing:
                 case DeviceClass.AudioVideoGaming:
-                    return new BluetoothDeviceType(deviceClass.ToString(), _audioVisualImageUri, false, 3);
+                    return new BluetoothDeviceType(deviceClass.ToString(), BluetoothImages.AudioVisualIconUri, false, 3);
                 //Peripheral/Accessories
                 case DeviceClass.Peripheral:
                 case DeviceClass.PeripheralJoystick:
@@ -108,14 +85,14 @@ namespace CallWall.Settings.Connectivity.Bluetooth
                 case DeviceClass.PeripheralKeyboard:
                 case DeviceClass.PeripheralPointingDevice:
                 case DeviceClass.PeripheralCombinedKeyboardPointingDevice:
-                    return new BluetoothDeviceType(deviceClass.ToString(), _peripheralImageUri, false, 3);
+                    return new BluetoothDeviceType(deviceClass.ToString(), BluetoothImages.PeripheralIconUri, false, 3);
                 //Imaging/Printers/Cameras
                 case DeviceClass.Imaging:
                 case DeviceClass.ImagingDisplay:
                 case DeviceClass.ImagingCamera:
                 case DeviceClass.ImagingScanner:
                 case DeviceClass.ImagingPrinter:
-                    return new BluetoothDeviceType(deviceClass.ToString(), _imagingImageUri, false, 3);
+                    return new BluetoothDeviceType(deviceClass.ToString(), BluetoothImages.ImagingIconUri, false, 3);
                 ////Wearable
                 //case DeviceClass.Wearable:
                 //case DeviceClass.WearableWristWatch:
@@ -143,7 +120,7 @@ namespace CallWall.Settings.Connectivity.Bluetooth
                 //case DeviceClass.Uncategorized:
                 //case DeviceClass.Miscellaneous:
                 default:
-                    return new BluetoothDeviceType(deviceClass.ToString(), _miscellaneousImageUri, false, 3);
+                    return new BluetoothDeviceType(deviceClass.ToString(), BluetoothImages.MiscellaneousIconUri, false, 3);
             }
         }
     }

@@ -1,18 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
+using CallWall.Shell.Images;
 
 namespace CallWall.Settings.Connectivity.Bluetooth
 {
     public sealed class BluetoothConnectionConfiguration : IConnectionConfiguration
     {
         private readonly IBluetoothSetupView _view;
-        private static readonly Uri _image;
-
-        static BluetoothConnectionConfiguration()
-        {
-            Ensure.PackUriIsRegistered();
-            _image = new Uri("pack://application:,,,/CallWall.Shell;component/Images/Bluetooth_72x72.png");
-        }
 
         public BluetoothConnectionConfiguration(IBluetoothSetupView view)
         {
@@ -35,7 +29,7 @@ namespace CallWall.Settings.Connectivity.Bluetooth
 
         public Uri Image
         {
-            get { return _image; }
+            get { return BluetoothImages.BluetoothIconUri; }
         }
 
         public object View

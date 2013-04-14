@@ -11,6 +11,12 @@ namespace CallWall.UnitTests.Settings
     [TestFixture]
     public sealed class BluetoothDeviceTypeFixture
     {
+        [TestFixtureSetUp]
+        public void TestFixtureSetUp()
+        {
+            Ensure.PackUriIsRegistered();
+        }
+
         [Test]
         public void Should_return_IsValid_for_phone_types(
             [AllEnumValues(typeof(DeviceClass))] DeviceClass deviceClass)

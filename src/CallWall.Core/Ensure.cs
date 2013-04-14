@@ -1,4 +1,5 @@
 using System;
+using System.IO.Packaging;
 
 namespace CallWall
 {
@@ -8,7 +9,8 @@ namespace CallWall
         {
             if (!UriParser.IsKnownScheme("pack"))
             {
-                UriParser.Register(new GenericUriParser(GenericUriParserOptions.GenericAuthority), "pack", -1);
+                //UriParser.Register(new GenericUriParser(GenericUriParserOptions.GenericAuthority), "pack", -1);
+                var _ = PackUriHelper.UriSchemePack;    //NoOp to make the PackUriHelper type run its static ctor/cctor.
             }
         }
     }

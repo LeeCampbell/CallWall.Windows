@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:CallWall.ProfileDashboard.Communication"
                     xmlns:Communication="clr-namespace:CallWall.Contract.Communication;assembly=CallWall.Core"
-                    xmlns:profileDashboard="clr-namespace:CallWall.ProfileDashboard">
+                    xmlns:profileDashboard="clr-namespace:CallWall.ProfileDashboard"
+                    xmlns:Images="clr-namespace:CallWall.Shell.Images">
     <DataTemplate DataType="{x:Type local:Message}">
         <DataTemplate.Resources>
             <profileDashboard:DateTimeOffsetConverter x:Key="DateTimeOffsetConverter"/>
@@ -32,7 +33,7 @@
                             <Image.Style>
                                 <Style TargetType="Image">
                                     <Setter Property="HorizontalAlignment" Value="Left"/>
-                                    <Setter Property="Source" Value="\Images\Actions\RightArrow_32x32.png"/>
+                                    <Setter Property="Source" Value="{x:Static Images:ActionImages.RightArrow}"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Direction}" Value="{x:Static Communication:MessageDirection.Outbound}">
                                             <Setter Property="HorizontalAlignment" Value="Right"/>

@@ -57,6 +57,7 @@
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\..\packages\Rx-PlatformServices.2.0.21114\lib\Net45\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -73,9 +74,17 @@
       <Project>{aca46894-eb1c-448b-92d2-24d003b26f07}</Project>
       <Name>CallWall.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CallWall.Shell\CallWall.Shell.csproj">
+      <Project>{ce5e5740-c22a-49b2-99d6-63e01cd78f96}</Project>
+      <Name>CallWall.Shell</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CallWall.Testing\CallWall.Testing.csproj">
       <Project>{9139a9af-dc48-4650-87d2-0eca65abfb90}</Project>
       <Name>CallWall.Testing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CallWall\CallWall.csproj">
+      <Project>{06d674a4-36f1-4fab-b23c-fd4d0a0b7e57}</Project>
+      <Name>CallWall</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

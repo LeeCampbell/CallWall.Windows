@@ -7,10 +7,12 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using CallWall.Contract;
 using CallWall.Services;
+using CallWall.Shell.Images;
 using JetBrains.Annotations;
 
 namespace CallWall.Activators
 {
+    //TODO: Upgrade the BT contract to have kvps sent over the wire "ActivatedBy: mobile\t+4412345689\r\nProfileIncludes: email\tblah@blah.com\r\nProfileIncludes: email\t+6412345678"
     public sealed class BluetoothProfileActivator : IBluetoothProfileActivator, IDisposable
     {
         private readonly IBluetoothService _bluetoothService;
@@ -61,7 +63,8 @@ namespace CallWall.Activators
 
         private IProfile Translate(IEnumerable<string> phoneNumbers)
         {
-            var ids = phoneNumbers.Select(pn => new PersonalIdentifier("mobile", pn, FakeProviderDescription.Instance));
+            //TODO: When contract is updated, look up the source e.g. "mobile, email, homephone" for providerDesc, else fail over to BTProvDesc. -LC
+            var ids = phoneNumbers.Select(pn => new PersonalIdentifier("mobile", pn, BluetoothProviderDescription.Instance));
             return new Profile(ids);
         }
 
@@ -79,18 +82,18 @@ namespace CallWall.Activators
 
         #endregion
 
-        private sealed class FakeProviderDescription : IProviderDescription
+        private sealed class BluetoothProviderDescription : IProviderDescription
         {
-            public static readonly IProviderDescription Instance = new FakeProviderDescription();
+            public static readonly IProviderDescription Instance = new BluetoothProviderDescription();
 
-            private FakeProviderDescription()
+            private BluetoothProviderDescription()
             {}
 
-            public string Name { get { return "Test"; } }
+            public string Name { get { return "Bluetooth"; } }
 
             public Uri Image
             {
-                get { return new Uri("pack://application:,,,/CallWall.FakeProvider;component/Images/Connectivity/Cloud_72x72.png"); }
+                get { return BluetoothImages.BluetoothIconUri; }
             }
         }
 

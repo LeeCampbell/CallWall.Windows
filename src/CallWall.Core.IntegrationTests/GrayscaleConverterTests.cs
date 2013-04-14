@@ -1,8 +1,13 @@
-﻿using NUnit.Framework;
+﻿using System.IO.Packaging;
+using System.Windows;
+using CallWall.Shell.Images;
+using NUnit.Framework;
 using System;
 using System.Globalization;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+
+//TODO: Incomplete because these test are just proving too low value and too high cost. -LC
 
 // ReSharper disable InconsistentNaming
 namespace CallWall.Core.IntegrationTests
@@ -86,16 +91,24 @@ namespace CallWall.Core.IntegrationTests
         }
 
         [TestFixture]
+        [RequiresSTA] 
         public sealed class When_converting_known_images : Given_a_GrayscaleConverter
         {
+            public override void SetUp()
+            {
+                base.SetUp();
+                //Magic to get PackUris resolved for the convert tests.
+                PackUriHelper.Create(new Uri("reliable://0"));
+                new FrameworkElement();
+                Application.ResourceAssembly = typeof(App).Assembly;
+            }
+
             [Test]
             public void Should_convert_bluetooth_icon_to_expected_grayscale()
             {
-                Assert.Inconclusive();
-                //Ensure.PackUriIsRegistered();
-                //var uri = new Uri("pack://application:,,,/CallWall.Shell;component/Images/Bluetooth_72x72.png");
-                //var actual = _sut.Convert(uri, typeof (BitmapSource), null, CultureInfo.InvariantCulture);
-                //Assert.IsAssignableFrom<BitmapSource>(actual);
+                Uri uri = BluetoothImages.BluetoothIconUri;
+                var actual = _sut.Convert(uri, typeof(BitmapSource), null, CultureInfo.InvariantCulture);
+                Assert.IsInstanceOf<BitmapSource>(actual);
             }
         }
 

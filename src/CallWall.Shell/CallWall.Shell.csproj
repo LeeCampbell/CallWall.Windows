@@ -103,6 +103,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Images\ActionImages.cs" />
     <Compile Include="LocalStoreKeys.cs" />
     <Compile Include="Services\BluetoothService.cs" />
     <Compile Include="Services\IBluetoothService.cs" />
@@ -290,7 +291,6 @@
   <ItemGroup>
     <Resource Include="Images\Actions\Inbound_27x27.png" />
     <Resource Include="Images\Actions\IncomingCall_60x60.png" />
-    <Resource Include="Images\Actions\LeftArrow_32x32.png" />
     <Resource Include="Images\Actions\MissedCall_60x60.png" />
     <Resource Include="Images\Actions\Outbound_27x27.png" />
     <Resource Include="Images\Actions\OutgoingCall_60x60.png" />

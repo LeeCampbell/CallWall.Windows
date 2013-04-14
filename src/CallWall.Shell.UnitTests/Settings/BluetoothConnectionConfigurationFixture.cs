@@ -17,6 +17,12 @@ namespace CallWall.UnitTests.Settings
         private BluetoothConnectionConfiguration _sut;
         private Mock<IBluetoothSetupViewModel> _viewModelMock;
 
+        [TestFixtureSetUp]
+        public void TestFixtureSetUp()
+        {
+            Ensure.PackUriIsRegistered();
+        }
+
         [SetUp]
         public void SetUp()
         {
