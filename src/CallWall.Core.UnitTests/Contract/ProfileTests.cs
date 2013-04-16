@@ -20,6 +20,19 @@ namespace CallWall.Core.UnitTests.Contract
             CollectionAssert.AreEqual(values, sut.Identifiers);
         }
 
+        [Test]
+        public void Should_return_copy_of_values_to_ctor_from_Identifiers_property()
+        {
+            var value1 = CreatePersonalIdentifier();
+            var value2 = CreatePersonalIdentifier();
+            var values = new List<IPersonalIdentifier> { value1, value2 };
+            var sut = new Profile(values);
+            var expected = values.ToArray();
+            values.Add(CreatePersonalIdentifier());
+
+            CollectionAssert.AreEqual(expected, sut.Identifiers);
+        }
+
         private static IPersonalIdentifier CreatePersonalIdentifier()
         {
             return new Mock<IPersonalIdentifier>().Object;
