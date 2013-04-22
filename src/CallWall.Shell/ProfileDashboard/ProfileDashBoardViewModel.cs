@@ -32,8 +32,8 @@ namespace CallWall.ProfileDashboard
         {
             _profileDashboard = profileDashboard;
             _schedulerProvider = schedulerProvider;
-            _messages = new DashboardCollection<Message>(_profileDashboard.Messages.ObserveOn(_schedulerProvider.Async));
-            _pictureAlbums = new DashboardCollection<Album>(_profileDashboard.PictureAlbums.ObserveOn(_schedulerProvider.Async));
+            _messages = new DashboardCollection<Message>(_profileDashboard.Messages.ObserveOn(_schedulerProvider.Dispatcher));
+            _pictureAlbums = new DashboardCollection<Album>(_profileDashboard.PictureAlbums.ObserveOn(_schedulerProvider.Dispatcher));
         }
 
         public string ActivatedIdentity
@@ -108,7 +108,7 @@ namespace CallWall.ProfileDashboard
         private IDisposable SubscribeToContact()
         {
             return _profileDashboard.Contact
-                                    .ObserveOn(_schedulerProvider.Async)
+                                    .ObserveOn(_schedulerProvider.Dispatcher)
                                     .Subscribe(c => Contact = c,
                                     ex=>ContactStatus = ViewModelStatus.Error(ex.Message),
                                     ()=>ContactStatus = ViewModelStatus.Idle);

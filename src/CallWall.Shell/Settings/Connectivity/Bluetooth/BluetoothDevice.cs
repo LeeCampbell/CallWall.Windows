@@ -80,7 +80,7 @@ namespace CallWall.Settings.Connectivity.Bluetooth
 
             actionResult
                 .SubscribeOn(_schedulerProvider.Concurrent)
-                .ObserveOn(_schedulerProvider.Async)
+                .ObserveOn(_schedulerProvider.Dispatcher)
                 .Subscribe(success =>
                 {
                     Status = ViewModelStatus.Idle;

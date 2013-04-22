@@ -92,7 +92,7 @@ namespace CallWall.Settings.Connectivity.Bluetooth
             Status = ViewModelStatus.Processing;
             _bluetoothService.ScanForDevices()
                 .SubscribeOn(_schedulerProvider.Concurrent)
-                .ObserveOn(_schedulerProvider.Async)
+                .ObserveOn(_schedulerProvider.Dispatcher)
                 .Subscribe(
                     device => _devices.Add(device),
                     ex => { Status = ViewModelStatus.Error(ex.Message); },

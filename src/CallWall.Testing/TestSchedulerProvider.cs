@@ -5,17 +5,19 @@ namespace CallWall.Testing
 {
     public sealed class TestSchedulerProvider : ISchedulerProvider
     {
-        private readonly TestScheduler _async = new TestScheduler();
+        private readonly TestScheduler _dispatcher = new TestScheduler();
         private readonly TestScheduler _concurrent = new TestScheduler();
-        private readonly LongRunningTestScheudler _longRunning = new LongRunningTestScheudler(new TestScheduler());
+        private readonly TestScheduler _longRunning = new TestScheduler();
+        private readonly TestScheduler _periodic = new TestScheduler();
 
-        IScheduler ISchedulerProvider.Async
+
+        IScheduler ISchedulerProvider.Dispatcher
         {
-            get { return _async; }
+            get { return _dispatcher; }
         }
-        public TestScheduler Async
+        public TestScheduler Dispatcher
         {
-            get { return _async; }
+            get { return _dispatcher; }
         }
 
         IScheduler ISchedulerProvider.Concurrent
@@ -29,16 +31,26 @@ namespace CallWall.Testing
 
         ISchedulerLongRunning ISchedulerProvider.LongRunning
         {
-            get { return _longRunning; }
+            get { return _longRunning.AsLongRunning(); }
         }
-        public LongRunningTestScheudler LongRunning
+        public TestScheduler LongRunning
         {
             get { return _longRunning; }
         }
 
+        ISchedulerPeriodic ISchedulerProvider.Periodic
+        {
+            get { return _periodic.AsPeriodic(); }
+        }
+        public TestScheduler Periodic
+        {
+            get { return _periodic; }
+        }
+
+        
         public IEventLoopScheduler CreateEventLoopScheduler(string name)
         {
-            return new EventLoopTestScheduler(new TestScheduler());
+            return new EventLoopTestScheduler(name, new TestScheduler());
         }
     }
 }

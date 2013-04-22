@@ -205,7 +205,7 @@ namespace CallWall.UnitTests.Settings
 
                 var changeCount = 0;
                 _sut.PairDeviceCommand.CanExecuteChanged += (s, e) => { changeCount++; };
-                _testSchedulerProvider.Async.AdvanceBy(1);
+                _testSchedulerProvider.Dispatcher.AdvanceBy(1);
 
                 Assert.AreEqual(1, changeCount);
             }
@@ -218,7 +218,7 @@ namespace CallWall.UnitTests.Settings
 
                 var changeCount = 0;
                 _sut.RemoveDeviceCommand.CanExecuteChanged += (s, e) => { changeCount++; };
-                _testSchedulerProvider.Async.AdvanceBy(1);
+                _testSchedulerProvider.Dispatcher.AdvanceBy(1);
 
                 Assert.AreEqual(1, changeCount);
             }
@@ -231,7 +231,7 @@ namespace CallWall.UnitTests.Settings
 
                 var statusChangeCount = 0;
                 _sut.PropertyChanged += (s, e) => { if (e.PropertyName == "Status") statusChangeCount++; };
-                _testSchedulerProvider.Async.AdvanceBy(1);
+                _testSchedulerProvider.Dispatcher.AdvanceBy(1);
 
                 Assert.IsFalse(_sut.Status.IsProcessing);
                 Assert.AreEqual(1, statusChangeCount);

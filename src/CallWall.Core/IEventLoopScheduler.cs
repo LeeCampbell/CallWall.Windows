@@ -8,6 +8,7 @@ namespace CallWall
     /// </summary>
     public interface IEventLoopScheduler : IScheduler, IDisposable
     {
-        
+        bool IsBackgroundThread { get; }
+        string ThreadName { get; }
     }
 }

@@ -10,10 +10,24 @@ namespace CallWall
     public sealed class EventLoopSchedulerWrapper : IEventLoopScheduler
     {
         private readonly EventLoopScheduler _els;
+        private readonly string _threadName;
+        private readonly bool _isBackgroundThread;
 
         public EventLoopSchedulerWrapper(string name)
         {
-            _els = new EventLoopScheduler((ThreadStart ts) => new Thread(ts) {Name = name, IsBackground = true});
+            _threadName = name;
+            _isBackgroundThread = true;
+            _els = new EventLoopScheduler((ThreadStart ts) => new Thread(ts) {Name = _threadName, IsBackground = _isBackgroundThread});
+        }
+
+        public bool IsBackgroundThread
+        {
+            get { return _isBackgroundThread; }
+        }
+
+        public string ThreadName
+        {
+            get { return _threadName; }
         }
 
         public DateTimeOffset Now
@@ -40,5 +54,7 @@ namespace CallWall
         {
             _els.Dispose();
         }
+
+        
     }
 }

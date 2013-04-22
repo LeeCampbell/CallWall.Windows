@@ -7,10 +7,12 @@ namespace CallWall.Testing
 {
     public sealed class EventLoopTestScheduler : IEventLoopScheduler
     {
+        private readonly string _name;
         private readonly TestScheduler _testScheduler;
 
-        public EventLoopTestScheduler(TestScheduler testScheduler)
+        public EventLoopTestScheduler(string name, TestScheduler testScheduler)
         {
+            _name = name;
             _testScheduler = testScheduler;
         }
 
@@ -106,6 +108,16 @@ namespace CallWall.Testing
         public IStopwatch StartStopwatch()
         {
             return _testScheduler.StartStopwatch();
+        }
+
+        public bool IsBackgroundThread
+        {
+            get { return true; }
+        }
+
+        public string ThreadName
+        {
+            get { return _name; }
         }
     }
 }

@@ -12,10 +12,11 @@ namespace CallWall
             _dispatcherScheduler = new DispatcherScheduler(currentDispatcher);
         }
 
-        public IScheduler Async
+        public IScheduler Dispatcher
         {
             get { return _dispatcherScheduler; }
         }
+
 
         public IScheduler Concurrent
         {
@@ -24,7 +25,12 @@ namespace CallWall
 
         public ISchedulerLongRunning LongRunning
         {
-            get { return TaskPoolScheduler.Default; }
+            get { return TaskPoolScheduler.Default.AsLongRunning(); }
+        }
+
+        public ISchedulerPeriodic Periodic
+        {
+            get { return TaskPoolScheduler.Default.AsPeriodic(); }
         }
 
         public IEventLoopScheduler CreateEventLoopScheduler(string name)

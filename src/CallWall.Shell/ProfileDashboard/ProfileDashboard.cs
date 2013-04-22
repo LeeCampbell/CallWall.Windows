@@ -76,7 +76,7 @@ namespace CallWall.ProfileDashboard
             //TODO: What to do when a failure occurs?
             return _contactQueryAggregator.Search(profile)
                                           .SubscribeOn(_schedulerProvider.Concurrent)
-                                          .ObserveOn(_schedulerProvider.Async)
+                                          .ObserveOn(_schedulerProvider.Dispatcher)
                                           .Subscribe(_contact);
         }
 
@@ -86,7 +86,7 @@ namespace CallWall.ProfileDashboard
             return _communicationQueryAggregator.Search(profile)
                                                 .Log(_logger, "QueryMessages")
                                                 .SubscribeOn(_schedulerProvider.Concurrent)
-                                                .ObserveOn(_schedulerProvider.Async)
+                                                .ObserveOn(_schedulerProvider.Dispatcher)
                                                 .Subscribe(_messages);
         }
 
@@ -94,7 +94,7 @@ namespace CallWall.ProfileDashboard
         {
             return _pictureQueryAggregator.Search(profile)
                                           .SubscribeOn(_schedulerProvider.Concurrent)
-                                          .ObserveOn(_schedulerProvider.Async)
+                                          .ObserveOn(_schedulerProvider.Dispatcher)
                                           .Subscribe(_pictureAlbums);
         }
 

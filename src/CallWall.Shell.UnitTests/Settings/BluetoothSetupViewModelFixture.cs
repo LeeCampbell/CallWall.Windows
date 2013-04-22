@@ -94,7 +94,7 @@ namespace CallWall.UnitTests.Settings
                 _bluetoothServiceMock.Setup(bs => bs.ScanForDevices()).Returns(sequence);
                 _viewModel.ScanForDevicesCommand.Execute();
                 _testSchedulerProvider.Concurrent.Start();
-                _testSchedulerProvider.Async.Start();
+                _testSchedulerProvider.Dispatcher.Start();
                 Assume.That(_viewModel.Devices.Count, Is.EqualTo(3));
                 Assume.That(_viewModel.Status.IsProcessing, Is.False);
 
@@ -140,7 +140,7 @@ namespace CallWall.UnitTests.Settings
                     _bluetoothServiceMock.Setup(bs => bs.ScanForDevices()).Returns(sequence);
                     _viewModel.ScanForDevicesCommand.Execute();
                     _testSchedulerProvider.Concurrent.AdvanceBy(5); //1xSubscribe, 3xOnNext, 1xOnCompleted
-                    _testSchedulerProvider.Async.AdvanceBy(5);
+                    _testSchedulerProvider.Dispatcher.AdvanceBy(5);
                 }
 
                 [Test]
@@ -162,7 +162,7 @@ namespace CallWall.UnitTests.Settings
                         Observable.Throw<IBluetoothDevice>(new Exception(_expectedMessage)));
                     _viewModel.ScanForDevicesCommand.Execute();
                     _testSchedulerProvider.Concurrent.AdvanceBy(1);
-                    _testSchedulerProvider.Async.AdvanceBy(1);
+                    _testSchedulerProvider.Dispatcher.AdvanceBy(1);
                 }
 
                 [Test]
@@ -185,7 +185,7 @@ namespace CallWall.UnitTests.Settings
                         Observable.Empty<IBluetoothDevice>());
                     _viewModel.ScanForDevicesCommand.Execute();
                     _testSchedulerProvider.Concurrent.AdvanceBy(1);
-                    _testSchedulerProvider.Async.AdvanceBy(1);
+                    _testSchedulerProvider.Dispatcher.AdvanceBy(1);
                 }
 
                 [Test]

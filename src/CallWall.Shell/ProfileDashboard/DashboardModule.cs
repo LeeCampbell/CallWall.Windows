@@ -44,7 +44,7 @@ namespace CallWall.ProfileDashboard
         {
             var activator = _container.Resolve<IProfileActivatorAggregator>();
             _activationSubscription.Disposable = activator.ProfileActivated()
-                .ObserveOn(_schedulerProvider.Async)
+                .ObserveOn(_schedulerProvider.Dispatcher)
                 .Subscribe(ShowProfile);
         }
 
