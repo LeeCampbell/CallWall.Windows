@@ -111,6 +111,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="AuthorizationStatusTests.cs" />
     <Compile Include="BooleanToInvisibilityConverterTests.cs" />
     <Compile Include="Contract\ProfileTests.cs" />
     <Compile Include="PersonalizationSettingsExtensionsTests.cs" />
