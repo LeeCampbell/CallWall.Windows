@@ -113,6 +113,7 @@
   <ItemGroup>
     <Compile Include="AuthorizationStatusTests.cs" />
     <Compile Include="BooleanToInvisibilityConverterTests.cs" />
+    <Compile Include="Contract\PersonalIdentifierTests.cs" />
     <Compile Include="Contract\ProfileTests.cs" />
     <Compile Include="PersonalizationSettingsExtensionsTests.cs" />
     <Compile Include="GrayscaleConverterTests.cs" />
