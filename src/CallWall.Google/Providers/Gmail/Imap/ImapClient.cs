@@ -84,8 +84,8 @@ namespace CallWall.Google.Providers.Gmail.Imap
                     var searchOp = new SearchEmailAddressOperation(emailAddress, _loggerFactory);
                     if (Execute(searchOp))
                     {
-                        var msgIds = searchOp.MessageIds();
-                        o.OnNext(msgIds.ToArray());
+                        var msgIds = searchOp.MessageIds().ToArray();
+                        o.OnNext(msgIds);
                         o.OnCompleted();
                         return Disposable.Empty;
                     }
