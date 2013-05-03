@@ -67,6 +67,7 @@
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\..\packages\Rx-PlatformServices.2.0.21114\lib\Net45\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -78,6 +79,7 @@
   <ItemGroup>
     <Compile Include="GrayscaleConverterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Web\HttpRequestParametersTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CallWall.Core\CallWall.Core.csproj">
