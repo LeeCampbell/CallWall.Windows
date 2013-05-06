@@ -1,6 +1,6 @@
 ﻿using System.Collections.Specialized;
-using System.IO;
 using System.Net;
+using System.Web.Http;
 using CallWall.Testing;
 using CallWall.Web;
 using NUnit.Framework;
@@ -11,10 +11,26 @@ namespace CallWall.Core.IntegrationTests.Web
     public abstract class Given_a_HttpRequestParameters_instance
     {
         private HttpRequestParameters _sut;
-        private string _endpoint = "http://localhost:????";//"http://www.callwall.com";
+        private string _baseAddress = "http://localhost:8080/";
+        private string _endpoint = "http://localhost:8080/api/test";
+        private InProcessWebServer _server;
 
         private Given_a_HttpRequestParameters_instance()
         { }
+
+        [TestFixtureSetUp]
+        public void FixtureSetup()
+        {
+            _server = new InProcessWebServer();
+            _server.Start(_baseAddress);
+        }
+        [TestFixtureTearDown]
+        public void FixtureTearDown()
+        {
+            _server.Dispose();
+        }
+
+
 
         [SetUp]
         public virtual void Setup()
@@ -31,35 +47,47 @@ namespace CallWall.Core.IntegrationTests.Web
             public override void Setup()
             {
                 base.Setup();
+
                 _expectedPostParams = new NameValueCollection { { "code", "ABCDEF" }, { "client_id", "bob123" } };
                 foreach (var key in _expectedPostParams.AllKeys)
                 {
                     _sut.PostParameters.Add(key, _expectedPostParams[key]);
                 }
-                _webRequest = _sut.CreateRequest(NullLogger.Instance);
             }
 
-            [Test, Ignore("Need to implement a callback loop/host a site to validate with")]
+            [Test]
             public void Should_return_webrequest_with_Method_as_post()
             {
+                _webRequest = _sut.CreateRequest(NullLogger.Instance);
                 Assert.AreEqual("POST", _webRequest.Method);
             }
 
-            [Test, Ignore("Need to implement a callback loop/host a site to validate with")]
+            [Test]
             public void Should_return_webrequest_with_ContentType_set()
             {
+                _webRequest = _sut.CreateRequest(NullLogger.Instance);
                 Assert.AreEqual("application/x-www-form-urlencoded", _webRequest.ContentType);
             }
 
             [Test, Ignore("Need to implement a callback loop/host a site to validate with")]
             public void Should_return_webrequest_with_post_params_written_to_requestStream()
             {
-                var expected = PostParamsAsString(_expectedPostParams);
-                var stream = _webRequest.GetRequestStream();
-                var reader = new StreamReader(stream);
-                var actual = reader.ReadToEnd();
+                //var expected = PostParamsAsString(_expectedPostParams);
+                //var stream = _webRequest.GetRequestStream();
+                //var reader = new StreamReader(stream);    //Fail, stream CanRead=false;
+                //var actual = reader.ReadToEnd();
+                //Assert.AreEqual(expected, actual);
 
-                Assert.AreEqual(expected, actual);
+
+                //using (var handler = new MyHandler())
+                //using (var server = new InProcessWebServer())
+                //{
+                //    server.Start(_baseAddress, handler);
+                //    _webRequest = _sut.CreateRequest(NullLogger.Instance);
+                //    var response = _webRequest.GetResponseAsync().Wait(TimeSpan.FromSeconds(5));
+
+                //    Console.WriteLine(response);
+                //}
             }
 
             private static string PostParamsAsString(NameValueCollection kvps)
@@ -71,6 +99,14 @@ namespace CallWall.Core.IntegrationTests.Web
                 }
                 return result.ToString();
             }
+        }
+    }
+
+    public class TestController : ApiController
+    {
+        public int Test()
+        {
+            return 1;
         }
     }
 }
