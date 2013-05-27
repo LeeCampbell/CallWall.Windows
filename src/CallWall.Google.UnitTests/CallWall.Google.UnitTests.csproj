@@ -105,6 +105,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountConfiguration\GoogleAccountConfigurationFixture.cs" />
+    <Compile Include="AccountConfiguration\GoogleResourceFixture.cs" />
     <Compile Include="Authorization\SessionFactoryFixture.cs" />
     <Compile Include="Authorization\GoogleAuthorizationFixture.cs" />
     <Compile Include="Authorization\OAuthUriFactoryFixture.cs" />
