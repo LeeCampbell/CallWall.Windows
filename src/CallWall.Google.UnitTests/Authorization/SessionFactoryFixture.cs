@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using CallWall.Google.Authorization;
 using NUnit.Framework;
 
@@ -77,6 +78,22 @@ namespace CallWall.Google.UnitTests.Authorization
         {
             var actual = _factory.Create(_refreshTokenResponse, DateTimeOffset.Now, _expectedRefreshToken);
             Assert.IsFalse(actual.HasExpired());
+        }
+
+        [Test]
+        public void Session_ToString_specifies_each_property()
+        {
+            var now = DateTimeOffset.Now;
+
+            var expected = new StringBuilder();
+            expected.Append("Session { ");
+            expected.AppendFormat("AccessToken : '{0}', ", _expectedAccessToken);
+            expected.AppendFormat("RefreshToken : '{0}', ", _expectedRefreshToken);
+            expected.AppendFormat("Expires : '{0:o}'", now.AddSeconds(_expectedExpiresIn));
+            expected.Append("}");
+
+            var actual = _factory.Create(_refreshTokenResponse, now, _expectedRefreshToken);
+            Assert.AreEqual(expected.ToString(), actual.ToString());
         }
     }
 }
