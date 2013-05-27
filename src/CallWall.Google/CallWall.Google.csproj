@@ -103,6 +103,8 @@
     </Compile>
     <Compile Include="Authorization\GoogleOAuthService.cs" />
     <Compile Include="Authorization\IGoogleOAuthService.cs" />
+    <Compile Include="Authorization\IOAuthUriFactory.cs" />
+    <Compile Include="Authorization\OAuthUriFactory.cs" />
     <Compile Include="Controls\Behaviours.cs" />
     <Compile Include="LocalStoreKeys.cs" />
     <Compile Include="Providers\Contacts\ContactAssociation.cs" />
