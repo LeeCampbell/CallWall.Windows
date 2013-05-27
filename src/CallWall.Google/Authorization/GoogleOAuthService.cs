@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using CallWall.Web;
-using Newtonsoft.Json.Linq;
 
 namespace CallWall.Google.Authorization
 {
@@ -11,12 +10,14 @@ namespace CallWall.Google.Authorization
     {
         private readonly IHttpClient _httpClient;
         private readonly IOAuthUriFactory _oAuthUriFactory;
+        private readonly ISessionFactory _sessionFactory;
         private readonly ILogger _logger;
 
-        public GoogleOAuthService(IHttpClient httpClient, ILoggerFactory loggerFactory, IOAuthUriFactory oAuthUriFactory)
+        public GoogleOAuthService(IHttpClient httpClient, ILoggerFactory loggerFactory, IOAuthUriFactory oAuthUriFactory, ISessionFactory sessionFactory)
         {
             _httpClient = httpClient;
             _oAuthUriFactory = oAuthUriFactory;
+            _sessionFactory = sessionFactory;
             _logger = loggerFactory.CreateLogger();
         }
 
@@ -35,13 +36,8 @@ namespace CallWall.Google.Authorization
                         var request = _oAuthUriFactory.CreateAccessTokenWebRequest(authorizationCode);
                         var requestedAt = DateTimeOffset.Now;
                         return _httpClient.GetResponse(request)
-                            .Select(JObject.Parse)
-                            .Select(json => new Session(
-                                                (string)json["access_token"],
-                                                (string)json["refresh_token"],
-                                                TimeSpan.FromSeconds((int)json["expires_in"]),
-                                                requestedAt))
-                            .Subscribe(o);
+                                          .Select(response => _sessionFactory.Create(response, requestedAt))
+                                          .Subscribe(o);
                     }
                     catch (Exception e)
                     {
@@ -61,15 +57,9 @@ namespace CallWall.Google.Authorization
                     {
                         var request = _oAuthUriFactory.CreateRefreshTokenWebRequest(refreshToken);
                         var requestedAt = DateTimeOffset.Now;
-
                         return _httpClient.GetResponse(request)
-                            .Select(JObject.Parse)
-                            .Select(payload => new Session(
-                                                   (string)payload["access_token"],
-                                                   refreshToken,
-                                                   TimeSpan.FromSeconds((int)payload["expires_in"]),
-                                                   requestedAt))
-                            .Subscribe(o);
+                                          .Select(response => _sessionFactory.Create(response, requestedAt, refreshToken))
+                                          .Subscribe(o);
                     }
                     catch (Exception e)
                     {

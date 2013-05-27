@@ -2,14 +2,6 @@ using System;
 
 namespace CallWall.Google.Authorization
 {
-    public interface ISession
-    {
-        string AccessToken { get; }
-        string RefreshToken { get; }
-        DateTimeOffset Expires { get; }
-        bool HasExpired();
-    }
-
     public sealed class Session : ISession
     {
         private readonly string _accessToken;

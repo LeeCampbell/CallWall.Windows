@@ -20,6 +20,7 @@ namespace CallWall.Google
             _container.RegisterType<IAccountConfiguration, AccountConfiguration.GoogleAccountConfiguration>("GoogleAccountConfiguration", new ContainerControlledLifetimeManager());
 
             _container.RegisterType<Authorization.IOAuthUriFactory, Authorization.OAuthUriFactory>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<Authorization.ISessionFactory, Authorization.SessionFactory>(new ContainerControlledLifetimeManager());
             _container.RegisterType<Authorization.IGoogleOAuthService, Authorization.GoogleOAuthService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<Authorization.IGoogleAuthorization, Authorization.GoogleAuthorization>(new ContainerControlledLifetimeManager());
             _container.RegisterType<Authorization.Login.IGoogleLoginView, Authorization.Login.GoogleLoginView>(new ContainerControlledLifetimeManager());
