@@ -44,7 +44,7 @@ namespace CallWall.Core.UnitTests
         {
             var expectedName = "TheName";
             var eventLoopScheduler = _sut.CreateEventLoopScheduler(expectedName);
-            
+
             Assert.IsTrue(eventLoopScheduler.IsBackgroundThread);
             Assert.AreEqual(expectedName, eventLoopScheduler.ThreadName);
         }
