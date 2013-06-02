@@ -153,6 +153,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ILocalStoragePersistence.cs" />
+    <Compile Include="ITwoWayTranslator.cs" />
+    <Compile Include="JsonTranslator.cs" />
     <Compile Include="Logging\Log4NetLogger.cs" />
     <Compile Include="Logging\LoggerFactory.cs" />
     <Compile Include="PersonalizationSettings.cs" />

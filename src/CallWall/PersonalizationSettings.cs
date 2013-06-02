@@ -1,31 +1,25 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using System.IO.IsolatedStorage;
-using Newtonsoft.Json;
 
 namespace CallWall
 {
     public sealed class PersonalizationSettings : IPersonalizationSettings
     {
+        private readonly ILocalStoragePersistence _localStorage;
+        private readonly ITwoWayTranslator<Dictionary<string, string>, string> _translator;
         private readonly object _gate = new object();
         private const string FileKey = "LocalStoreSettings";
         private readonly Dictionary<string, string> _data = new Dictionary<string, string>();
+        private bool _loaded;
 
-        public PersonalizationSettings()
+        public PersonalizationSettings(ILocalStoragePersistence localStorage, ITwoWayTranslator<Dictionary<string, string>, string> translator)
         {
-            var isolatedStorage = IsolatedStorageFile.GetUserStoreForAssembly();
-            using (var srReader = new StreamReader(new IsolatedStorageFileStream(FileKey, FileMode.OpenOrCreate, isolatedStorage)))
-            {
-                string payload = srReader.ReadToEnd();
-                _data = JsonConvert.DeserializeObject<Dictionary<string, string>>(payload)
-                    ?? new Dictionary<string, string>();
-                _data = new Dictionary<string, string>();
-                srReader.Close();
-            }
+            _localStorage = localStorage;
+            _translator = translator;
         }
 
         public string Get(string key)
         {
+            LoadIfRequired();
             string value;
             lock (_gate)
             {
@@ -36,6 +30,7 @@ namespace CallWall
 
         public void Put(string key, string value)
         {
+            LoadIfRequired();
             lock (_gate)
             {
                 _data[key] = value;
@@ -45,6 +40,8 @@ namespace CallWall
 
         public void Remove(string key)
         {
+            LoadIfRequired();
+
             lock (_gate)
             {
                 _data.Remove(key);
@@ -52,19 +49,33 @@ namespace CallWall
             }
         }
 
-        private void SaveData()
-        {
-            var isolatedStorage = IsolatedStorageFile.GetUserStoreForAssembly();
 
-            //create a stream writer object to write content in the location
-            using (var srWriter = new StreamWriter(new IsolatedStorageFileStream(FileKey, FileMode.Create, isolatedStorage)))
+        private void LoadIfRequired()
+        {
+            if (_loaded)
+                return;
+            lock (_gate)
             {
-                var payload = JsonConvert.SerializeObject(_data, Formatting.Indented);
-                srWriter.Write(payload);
-                srWriter.Flush();
-                srWriter.Close();
+                if (_loaded)
+                    return;
+
+                var payload = _localStorage.Read(FileKey);
+                var data = _translator.TranslateBack(payload) ?? new Dictionary<string, string>();
+
+                _data.Clear();
+                foreach (var key in data.Keys)
+                {
+                    _data[key] = data[key];
+                }
+
+                _loaded = true;
             }
         }
-   
+
+        private void SaveData()
+        {
+            var payload = _translator.Translate(_data);
+            _localStorage.Write(FileKey, payload);
+        }
     }
 }
