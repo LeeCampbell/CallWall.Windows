@@ -18,7 +18,7 @@ namespace CallWall
             _container.RegisterType<ISchedulerProvider, SchedulerProvider>(new ContainerControlledLifetimeManager());
 
             _container.RegisterType<ILocalStoragePersistence, LocalStoragePersistence>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<ITwoWayTranslator<Dictionary<string, string>, string>, JsonTranslator<Dictionary<string,string>>>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IJsonSerializer, JsonSerializer>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IPersonalizationSettings, PersonalizationSettings>(new ContainerControlledLifetimeManager());
             _container.RegisterType<Web.IHttpClient, Web.HttpClient>(new ContainerControlledLifetimeManager());
         }

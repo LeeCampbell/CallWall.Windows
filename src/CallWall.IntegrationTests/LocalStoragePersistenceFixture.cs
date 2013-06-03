@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace CallWall.IntegrationTests
 {
     [TestFixture]
-    public sealed class PersonalizationSettingsFixture
+    public sealed class LocalStoragePersistenceFixture
     {
         [Test]
         public void Should_save_values_to_disk()

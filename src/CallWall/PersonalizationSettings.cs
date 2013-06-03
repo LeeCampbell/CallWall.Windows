@@ -5,13 +5,13 @@ namespace CallWall
     public sealed class PersonalizationSettings : IPersonalizationSettings
     {
         private readonly ILocalStoragePersistence _localStorage;
-        private readonly ITwoWayTranslator<Dictionary<string, string>, string> _translator;
+        private readonly IJsonSerializer _translator;
         private readonly object _gate = new object();
         private const string FileKey = "LocalStoreSettings";
         private readonly Dictionary<string, string> _data = new Dictionary<string, string>();
         private bool _loaded;
 
-        public PersonalizationSettings(ILocalStoragePersistence localStorage, ITwoWayTranslator<Dictionary<string, string>, string> translator)
+        public PersonalizationSettings(ILocalStoragePersistence localStorage, IJsonSerializer translator)
         {
             _localStorage = localStorage;
             _translator = translator;
@@ -60,7 +60,7 @@ namespace CallWall
                     return;
 
                 var payload = _localStorage.Read(FileKey);
-                var data = _translator.TranslateBack(payload) ?? new Dictionary<string, string>();
+                var data = _translator.Deserialize<Dictionary<string, string>>(payload) ?? new Dictionary<string, string>();
 
                 _data.Clear();
                 foreach (var key in data.Keys)
@@ -74,7 +74,7 @@ namespace CallWall
 
         private void SaveData()
         {
-            var payload = _translator.Translate(_data);
+            var payload = _translator.Serialize(_data);
             _localStorage.Write(FileKey, payload);
         }
     }

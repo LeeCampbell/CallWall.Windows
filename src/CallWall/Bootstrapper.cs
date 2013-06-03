@@ -1,4 +1,6 @@
-﻿using CallWall.FakeProvider;
+﻿#if FAKE
+using CallWall.FakeProvider;
+#endif
 using CallWall.Google;
 using CallWall.Logging;
 using CallWall.PrismExtensions;
