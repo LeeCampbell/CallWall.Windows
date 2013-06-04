@@ -123,6 +123,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="HostModuleTests.cs" />
+    <Compile Include="JsonSerializerFixture.cs" />
     <Compile Include="Logging\LogFactoryTests.cs" />
     <Compile Include="PersonalizationSettingsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
