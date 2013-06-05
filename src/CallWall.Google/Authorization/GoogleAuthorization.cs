@@ -34,7 +34,7 @@ namespace CallWall.Google.Authorization
         private readonly IPersonalizationSettings _localStore;
         private readonly IGoogleOAuthService _oAuthService;
         private readonly ILogger _logger;
-        private readonly HashSet<Uri> _authorizedResources = new HashSet<Uri>();
+        //private readonly HashSet<Uri> _authorizedResources = new HashSet<Uri>();
         private AuthorizationStatus _status = AuthorizationStatus.Uninitialized;
 
         private RequestAuthorizationCode _callback;
@@ -48,7 +48,7 @@ namespace CallWall.Google.Authorization
             _currentSession = LoadSession();
             if (_currentSession != null)
             {
-                Status = AuthorizationStatus.Authorized;
+                Status = AuthorizationStatus.Authorized(_currentSession.AuthorizedResources);
             }
         }
 
@@ -92,13 +92,18 @@ namespace CallWall.Google.Authorization
                     _localStore.Remove(LocalStoreKeys.AccessToken);
                     _localStore.Remove(LocalStoreKeys.AccessTokenExpires);
                     _localStore.Remove(LocalStoreKeys.RefreshToken);
+                    _localStore.Remove(LocalStoreKeys.AuthorizedResources);
+
+                    Status = AuthorizationStatus.Error(Resources.Authorization_FailedToAuthorize);
                 }
                 else
                 {
                     _localStore.Put(LocalStoreKeys.AccessToken, _currentSession.AccessToken);
                     _localStore.Put(LocalStoreKeys.AccessTokenExpires, _currentSession.Expires.ToString("o"));
                     _localStore.Put(LocalStoreKeys.RefreshToken, _currentSession.RefreshToken);
-                    Status = AuthorizationStatus.Authorized;
+                    _localStore.Put(LocalStoreKeys.AuthorizedResources, string.Join(";", _currentSession.AuthorizedResources));
+
+                    Status = AuthorizationStatus.Authorized(_currentSession.AuthorizedResources);
                 }
             }
         }
@@ -119,7 +124,7 @@ namespace CallWall.Google.Authorization
                 o =>
                 {
                     var requestedResources = resources.Select(r => r.Resource).ToArray();
-                    if (Status.IsAuthorized && _authorizedResources.SetEquals(requestedResources))
+                    if (Status.IsAuthorized && CurrentSession != null && CurrentSession.AuthorizedResources.SetEquals(requestedResources))
                         return Observable.Return(Unit.Default).Subscribe(o);
                     if (!Status.IsInitialized)
                     {
@@ -127,10 +132,10 @@ namespace CallWall.Google.Authorization
                         return Disposable.Empty;
                     }
                     Status = AuthorizationStatus.Processing;
-                    
+
                     if (!requestedResources.Any())
                     {
-                        
+
                         Status = AuthorizationStatus.Error(Resources.Authorization_NoResourcesSelected);
                         o.OnError(new InvalidOperationException(Resources.Authorization_NoResourcesSelected));
                         return Disposable.Empty;
@@ -144,20 +149,8 @@ namespace CallWall.Google.Authorization
                             session =>
                             {
                                 CurrentSession = session;
-                                if (session == null)
-                                {
-                                    _authorizedResources.Clear();
-                                    Status = AuthorizationStatus.Error(Resources.Authorization_FailedToAuthorize);
-                                }
-                                else
-                                {
-                                    _authorizedResources.AddRange(requestedResources);
-                                    //TODO:Save selected resources
-                                    var resourceString = string.Join(";", _authorizedResources.Select(r => r.ToString()));
-                                    _localStore.Put(LocalStoreKeys.AuthorizedResources, resourceString);
-                                    Status = AuthorizationStatus.Authorized;
-                                }
-
+                                if (Status.IsProcessing)
+                                    Status = AuthorizationStatus.NotAuthorized;
                                 o.OnCompleted();
                             },
                             ex => { Status = AuthorizationStatus.NotAuthorized; o.OnError(ex); });
@@ -174,7 +167,7 @@ namespace CallWall.Google.Authorization
                         o.OnError(new InvalidOperationException("Can not request access token until authorized."));
                         return Disposable.Empty;
                     }
-                    if (!_authorizedResources.Contains(resource.Resource))
+                    if (!CurrentSession.AuthorizedResources.Contains(resource.Resource))
                         return Observable.Empty<string>().Subscribe(o);
 
                     var currentSession = Observable.Return(CurrentSession);
@@ -203,17 +196,17 @@ namespace CallWall.Google.Authorization
             var expires = DateTimeOffset.Parse(strExpires);
 
             var lastSessionResources = (_localStore.Get(LocalStoreKeys.AuthorizedResources) ?? string.Empty)
-                .Split(new[]{';'}, StringSplitOptions.RemoveEmptyEntries)
-                .Select(path=>new Uri(path));
-            _authorizedResources.AddRange(lastSessionResources);
+                .Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(path => new Uri(path));
 
-            return new Session(accessToken, refreshToken, expires);
+            return new Session(accessToken, refreshToken, expires, lastSessionResources);
         }
 
         private IObservable<ISession> CreateSession(IEnumerable<Uri> requestedResources)
         {
-            return (from authCode in GetAuthorizationCode(requestedResources)
-                    from accessToken in _oAuthService.RequestAccessToken(authCode)
+            var resources = requestedResources.ToArray();
+            return (from authCode in GetAuthorizationCode(resources)
+                    from accessToken in _oAuthService.RequestAccessToken(authCode, resources)
                     select accessToken).Log(_logger, "createSession()");
         }
 
@@ -254,7 +247,7 @@ namespace CallWall.Google.Authorization
         {
             if (CurrentSession == null)
                 return Observable.Empty<Session>().Log(_logger, "refreshSession()");
-            return (from newSession in _oAuthService.RequestRefreshedAccessToken(CurrentSession.RefreshToken)
+            return (from newSession in _oAuthService.RequestRefreshedAccessToken(CurrentSession.RefreshToken, CurrentSession.AuthorizedResources)
                     select newSession).Log(_logger, "refreshSession()");
         }
 

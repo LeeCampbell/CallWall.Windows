@@ -26,7 +26,7 @@ namespace CallWall.Google.Authorization
             return _oAuthUriFactory.BuildAuthorizationUri(requestedResources);
         }
 
-        public IObservable<ISession> RequestAccessToken(string authorizationCode)
+        public IObservable<ISession> RequestAccessToken(string authorizationCode, IEnumerable<Uri> requestedResources)
         {
             return Observable.Create<ISession>(
                 o =>
@@ -36,7 +36,7 @@ namespace CallWall.Google.Authorization
                         var request = _oAuthUriFactory.CreateAccessTokenWebRequest(authorizationCode);
                         var requestedAt = DateTimeOffset.Now;
                         return _httpClient.GetResponse(request)
-                                          .Select(response => _sessionFactory.Create(response, requestedAt))
+                                          .Select(response => _sessionFactory.Create(response, requestedAt, requestedResources))
                                           .Subscribe(o);
                     }
                     catch (Exception e)
@@ -48,7 +48,7 @@ namespace CallWall.Google.Authorization
                 .Log(_logger, string.Format("requestAccessToken({0})", authorizationCode));
         }
 
-        public IObservable<ISession> RequestRefreshedAccessToken(string refreshToken)
+        public IObservable<ISession> RequestRefreshedAccessToken(string refreshToken, IEnumerable<Uri> authorizedResources)
         {
             return Observable.Create<ISession>(
                 o =>
@@ -58,7 +58,7 @@ namespace CallWall.Google.Authorization
                         var request = _oAuthUriFactory.CreateRefreshTokenWebRequest(refreshToken);
                         var requestedAt = DateTimeOffset.Now;
                         return _httpClient.GetResponse(request)
-                                          .Select(response => _sessionFactory.Create(response, requestedAt, refreshToken))
+                                          .Select(response => _sessionFactory.Create(response, requestedAt, refreshToken, authorizedResources))
                                           .Subscribe(o);
                     }
                     catch (Exception e)

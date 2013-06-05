@@ -58,7 +58,9 @@ namespace CallWall.Google.UnitTests.Providers
             public override void Setup()
             {
                 base.Setup();
-                _authorizationMock.SetupGet(a => a.Status).Returns(Google.Authorization.AuthorizationStatus.Authorized);
+                var authorizedResources = new HashSet<Uri>(new[] {GoogleResource.Contacts.Resource});
+                _authorizationMock.SetupGet(a => a.Status)
+                                  .Returns(Google.Authorization.AuthorizationStatus.Authorized(authorizedResources));
                 _authorizationMock.Setup(a => a.RequestAccessToken(GoogleResource.Contacts))
                     .Returns(Observable.Return(_accessToken));
                 _contactProfileMock = new Mock<IGoogleContactProfile>();

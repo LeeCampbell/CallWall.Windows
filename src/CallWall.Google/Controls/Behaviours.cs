@@ -291,8 +291,11 @@ namespace CallWall.Google.Controls
                 ListenForChangeEvents(_masterList);
                 ListenForChangeEvents(_targetList);
 
+
+                //TODO: Should this update from the Control to the Bound Collection, or from the Bound Collection to the Control? -LC
                 // Update the Target list from the Master list
-                SetListValuesFromSource(_masterList, _targetList);
+                //SetListValuesFromSource(_masterList, _targetList);
+                SetListValuesFromSource(_targetList, _masterList);
             }
 
             /// <summary>

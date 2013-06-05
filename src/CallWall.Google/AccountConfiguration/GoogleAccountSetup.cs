@@ -16,24 +16,30 @@ namespace CallWall.Google.AccountConfiguration
         {
             _settings = settings;
             _authorization = authorization;
-            _authorization.PropertyChanges(a => a.Status).Subscribe(
-                _ =>
-                {
-                    OnPropertyChanged("IsAuthorized");
-                    OnPropertyChanged("IsProcessing");
-                });
+            _authorization.PropertyChanges(a => a.Status)
+                          .Subscribe(status =>
+                            {
+                                OnPropertyChanged("IsAuthorized");
+                                OnPropertyChanged("IsProcessing");
+                                SetSelectedResources(status);   //TODO: Could supress IsAuth INPC event.
+                            });
+            SelectedResources.CollectionChanges()
+                             .Subscribe(_ => OnPropertyChanged("IsAuthorized"));
 
-            //TODO: Know what we are and are not Authenticated for. 
-            //  A change to this state should be reflected in the Model
-            //  Save state to disk (can I encrypt this? Will LocalStorage providers protect i for me?)
+            SetSelectedResources(_authorization.Status);
         }
 
+        
         public ReadOnlyCollection<GoogleResource> Resources { get { return _authorization.AvailableResourceScopes; } }
         public ObservableCollection<GoogleResource> SelectedResources { get { return _selectedResources; } }
 
         public bool IsAuthorized
         {
-            get { return _authorization.Status.IsAuthorized; }
+            get
+            {
+                return _authorization.Status.IsAuthorized 
+                    && _authorization.Status.AuthorizedUris.SetEquals(SelectedResources.Select(r=>r.Resource));
+            }
         }
 
         public bool IsProcessing
@@ -55,6 +61,19 @@ namespace CallWall.Google.AccountConfiguration
         {
             _authorization.Authorize(SelectedResources)
                 .Subscribe(i => { }, ex => { });
+        }
+
+        private void SetSelectedResources(Authorization.AuthorizationStatus status)
+        {
+            SelectedResources.Clear();
+            if (status.IsAuthorized)
+            {
+                foreach (var authorizedUri in status.AuthorizedUris)
+                {
+                    var resource = Resources.Single(r => r.Resource == authorizedUri);
+                    SelectedResources.Add(resource);
+                }
+            }
         }
 
         #region INotifyPropertyChanged implementation

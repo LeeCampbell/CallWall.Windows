@@ -1,15 +1,24 @@
-﻿namespace CallWall.Google.Authorization
+﻿using System;
+using System.Collections.Generic;
+
+namespace CallWall.Google.Authorization
 {
     public abstract class AuthorizationStatus
     {
         public static readonly AuthorizationStatus Uninitialized = new UninitializedStatus();
         public static readonly AuthorizationStatus NotAuthorized = new NotAuthorizedStatus();
-        public static readonly AuthorizationStatus Authorized = new AuthorizedStatus();
+
         public static readonly AuthorizationStatus Processing = new ProcessingStatus();
+
+        public static AuthorizationStatus Authorized(ISet<Uri> authorizedUris)
+        {
+            return new AuthorizedStatus(authorizedUris);
+        }
         public static AuthorizationStatus Error(string errorMessage)
         {
             return new ErrorStatus(errorMessage);
         }
+
 
         private AuthorizationStatus()
         { }
@@ -19,6 +28,7 @@
         public virtual bool IsProcessing { get { return false; } }
         public virtual bool HasError { get { return false; } }
         public virtual string ErrorMessage { get { return null; } }
+        public virtual ISet<Uri> AuthorizedUris { get { return EmptySet<Uri>.Instance; } }
 
         private sealed class UninitializedStatus : AuthorizationStatus
         {
@@ -32,8 +42,16 @@
         }
         private sealed class AuthorizedStatus : AuthorizationStatus
         {
+            private readonly ISet<Uri> _authorizedUris;
+
+            public AuthorizedStatus(ISet<Uri> authorizedUris)
+            {
+                _authorizedUris = authorizedUris;
+            }
+
             public override bool IsInitialized { get { return true; } }
             public override bool IsAuthorized { get { return true; } }
+            public override ISet<Uri> AuthorizedUris { get { return _authorizedUris; } }
         }
 
         private sealed class ProcessingStatus : AuthorizationStatus

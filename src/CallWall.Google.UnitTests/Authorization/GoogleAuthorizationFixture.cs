@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using CallWall.Google.AccountConfiguration;
 using CallWall.Google.Authorization;
 using Microsoft.Reactive.Testing;
@@ -67,7 +68,7 @@ namespace CallWall.Google.UnitTests.Authorization
                     var _sessionMock = new Mock<ISession>();
                     RequestAuthorizationCode callback = uri => Observable.Return(_authCode);
                     _oAuthServiceMock.Setup(oa => oa.BuildAuthorizationUri(It.IsAny<IEnumerable<Uri>>()));  //Should match a single value array of _authorizedResource.Resource
-                    _oAuthServiceMock.Setup(oa => oa.RequestRefreshedAccessToken(_savedRefreshToken)).Returns(Observable.Return(_sessionMock.Object));
+                    _oAuthServiceMock.Setup(oa => oa.RequestRefreshedAccessToken(_savedRefreshToken, It.IsAny<IEnumerable<Uri>>())).Returns(Observable.Return(_sessionMock.Object));
                     _sut.RegisterAuthorizationCallback(callback);
                     _sut.Authorize(requestedResources).Subscribe();
                 }
@@ -89,8 +90,8 @@ namespace CallWall.Google.UnitTests.Authorization
                     {
                         _sut.Authorize(new[] { GoogleResource.Contacts }).Subscribe();
                         _oAuthServiceMock.Verify(oauth => oauth.BuildAuthorizationUri(It.IsAny<IEnumerable<Uri>>()), Times.Never());
-                        _oAuthServiceMock.Verify(oauth => oauth.RequestAccessToken(It.IsAny<string>()), Times.Never());
-                        _oAuthServiceMock.Verify(oauth => oauth.RequestRefreshedAccessToken(It.IsAny<string>()), Times.Never());
+                        _oAuthServiceMock.Verify(oauth => oauth.RequestAccessToken(It.IsAny<string>(), It.IsAny<IEnumerable<Uri>>()), Times.Never());
+                        _oAuthServiceMock.Verify(oauth => oauth.RequestRefreshedAccessToken(It.IsAny<string>(), It.IsAny<IEnumerable<Uri>>()), Times.Never());
                     }
                 }
                 [TestFixture]
@@ -103,8 +104,8 @@ namespace CallWall.Google.UnitTests.Authorization
                         var actualAccessToken = _sut.RequestAccessToken(GoogleResource.Contacts).Single();
 
                         Assert.AreEqual(_savedAccessToken, actualAccessToken);
-                        _oAuthServiceMock.Verify(oauth => oauth.RequestAccessToken(It.IsAny<string>()), Times.Never());
-                        _oAuthServiceMock.Verify(oauth => oauth.RequestRefreshedAccessToken(It.IsAny<string>()), Times.Never());
+                        _oAuthServiceMock.Verify(oauth => oauth.RequestAccessToken(It.IsAny<string>(), It.IsAny<IEnumerable<Uri>>()), Times.Never());
+                        _oAuthServiceMock.Verify(oauth => oauth.RequestRefreshedAccessToken(It.IsAny<string>(), It.IsAny<IEnumerable<Uri>>()), Times.Never());
                     }
 
                 }
@@ -131,9 +132,11 @@ namespace CallWall.Google.UnitTests.Authorization
                         var requestedResources = new[] { _authorizedResource };
                         _authCode = "theAuthCode";
                         var _sessionMock = new Mock<ISession>();
+                        _sessionMock.SetupGet(s => s.AuthorizedResources).Returns(new HashSet<Uri>(requestedResources.Select(r => r.Resource)));
+
                         RequestAuthorizationCode callback = uri => Observable.Return(_authCode);
                         _oAuthServiceMock.Setup(oa => oa.BuildAuthorizationUri(It.IsAny<IEnumerable<Uri>>()));  //Should match a single value array of _authorizedResource.Resource
-                        _oAuthServiceMock.Setup(oa => oa.RequestRefreshedAccessToken(_savedRefreshToken)).Returns(Observable.Return(_sessionMock.Object));
+                        _oAuthServiceMock.Setup(oa => oa.RequestRefreshedAccessToken(_savedRefreshToken, It.IsAny<IEnumerable<Uri>>())).Returns(Observable.Return(_sessionMock.Object));
                         _sut.RegisterAuthorizationCallback(callback);
                         _sut.Authorize(requestedResources).Subscribe();
                     }
@@ -153,7 +156,7 @@ namespace CallWall.Google.UnitTests.Authorization
                         _sut.RegisterAuthorizationCallback(callback);
                         _sut.Authorize(new[] { GoogleResource.Contacts }).Subscribe();
                         _sut.RequestAccessToken(GoogleResource.Contacts).Subscribe();
-                        _oAuthServiceMock.Verify(oauth => oauth.RequestRefreshedAccessToken(_savedRefreshToken), Times.Once());
+                        _oAuthServiceMock.Verify(oauth => oauth.RequestRefreshedAccessToken(_savedRefreshToken, It.IsAny<IEnumerable<Uri>>()), Times.Once());
                     }
 
                 }
@@ -171,7 +174,11 @@ namespace CallWall.Google.UnitTests.Authorization
                         var requestedResources = new[] { _unauthorizedResource, _authorizedResource };
                         _authCode = "theAuthCode";
                         RequestAuthorizationCode callback = uri => Observable.Return(_authCode);
-                        _oAuthServiceMock.Setup(oauth => oauth.RequestAccessToken(_authCode)).Returns(Observable.Return(new Mock<ISession>().Object));
+                        var sessionMock = new Mock<ISession>();
+                        sessionMock.SetupGet(s => s.AuthorizedResources).Returns(new HashSet<Uri>(requestedResources.Select(r => r.Resource)));
+
+                        _oAuthServiceMock.Setup(oauth => oauth.RequestAccessToken(_authCode, It.IsAny<IEnumerable<Uri>>()))
+                                         .Returns(Observable.Return(sessionMock.Object));
 
                         _oAuthServiceMock.Setup(oa => oa.BuildAuthorizationUri(It.IsAny<IEnumerable<Uri>>()));
                         _sut.RegisterAuthorizationCallback(callback);
@@ -189,7 +196,7 @@ namespace CallWall.Google.UnitTests.Authorization
                     public void Should_ReAuthoize()
                     {
                         _sut.RequestAccessToken(_unauthorizedResource).Subscribe();
-                        _oAuthServiceMock.Verify(oauth => oauth.RequestAccessToken(_authCode), Times.Once());
+                        _oAuthServiceMock.Verify(oauth => oauth.RequestAccessToken(_authCode, It.IsAny<IEnumerable<Uri>>()), Times.Once());
                     }
                 }
             }
@@ -363,7 +370,8 @@ namespace CallWall.Google.UnitTests.Authorization
                     base.SetUp();
 
                     _sessionMock = new Mock<ISession>();
-                    _oAuthServiceMock.Setup(oaSvc => oaSvc.RequestAccessToken(_authCode))
+                    _sessionMock.SetupGet(s => s.AuthorizedResources).Returns(new HashSet<Uri>(_requestedResources.Select(r=>r.Resource)));
+                    _oAuthServiceMock.Setup(oaSvc => oaSvc.RequestAccessToken(_authCode, It.IsAny<IEnumerable<Uri>>()))
                                      .Returns(Observable.Return(_sessionMock.Object));
                 }
 
@@ -415,10 +423,12 @@ namespace CallWall.Google.UnitTests.Authorization
                 var sessionMock = new Mock<ISession>();
                 sessionMock.Setup(s => s.AccessToken).Returns(_accessToken);
                 sessionMock.Setup(s => s.HasExpired()).Returns(false);
+                sessionMock.SetupGet(s => s.AuthorizedResources).Returns(new HashSet<Uri>(new[]{_authorizedResource.Resource}));
+
 
                 _oAuthServiceMock.Setup(oaSvc => oaSvc.BuildAuthorizationUri(It.IsAny<Uri[]>()))
                                  .Returns(new Uri("http://someuri.com"));
-                _oAuthServiceMock.Setup(oaSvc => oaSvc.RequestAccessToken(authCode))
+                _oAuthServiceMock.Setup(oaSvc => oaSvc.RequestAccessToken(authCode, It.IsAny<IEnumerable<Uri>>()))
                                  .Returns(Observable.Return(sessionMock.Object));
 
                 RequestAuthorizationCode callback = uri => Observable.Return(authCode);

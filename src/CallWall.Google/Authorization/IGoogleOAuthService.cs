@@ -6,7 +6,7 @@ namespace CallWall.Google.Authorization
     public interface IGoogleOAuthService
     {
         Uri BuildAuthorizationUri(IEnumerable<Uri> requestedResources);
-        IObservable<ISession> RequestAccessToken(string authorizationCode);
-        IObservable<ISession> RequestRefreshedAccessToken(string refreshToken);
+        IObservable<ISession> RequestAccessToken(string authorizationCode, IEnumerable<Uri> requestedResources);
+        IObservable<ISession> RequestRefreshedAccessToken(string refreshToken, IEnumerable<Uri> authorizedResources);
     }
 }
