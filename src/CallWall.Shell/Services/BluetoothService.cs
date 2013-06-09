@@ -90,7 +90,6 @@ namespace CallWall.Services
                         _logger.Debug("bluetoothClient.GetStream();");
                         var ns = bluetoothClient.GetStream();
 
-                        //TODO: Should this be a recursive call, or should I just continue on the same scheduler path? -LC
                         var subscription = ns.ToObservable(1, scheduler)
                                  .Aggregate(new List<byte>(),
                                             (acc, cur) =>

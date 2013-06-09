@@ -51,6 +51,7 @@ namespace CallWall.Google.Providers.Gmail.Imap
             }
             if(kvp.ContainsKey("Date"))
             {
+                //BUG: This needs to be abstracted, corrected and tested. Dates like Mon, 1 Jan 2000 12:00:00 +12:00 DST break due to the 'DST' suffix.
                 //date = DateTimeOffset.ParseExact(kvp["Date"], "ddd, d MMM yyyy HH:mm:ss zzz", CultureInfo.InvariantCulture);
                 date = DateTimeOffset.ParseExact(kvp["Date"],
                     new[]
