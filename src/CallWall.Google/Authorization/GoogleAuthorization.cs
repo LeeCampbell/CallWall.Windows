@@ -13,9 +13,9 @@ using System.Reactive.Linq;
 //Was fun getting kicked around by the tesco interview today. This class clearly does way too much. Time to carve stuff off it. -LC
 namespace CallWall.Google.Authorization
 {
-    //TODO: Should set to not-Authorized when the Enabled/Selected Resources differs from the ones that were actually authorized.
-    //TODO: Bug when hit Authorize, then cancel/close the browser. Hitting Authorize again, does nothing.
-    //TODO: Bug that only one resource is requested
+    //TODO:What if the AuthCode has since been rejected? -LC
+    //BUG: when hit Authorize, then cancel/close the browser. Hitting Authorize again, does nothing.
+    //BUG: that only one resource is requested
     //TODO: Appears to unnecessarily refresh the access token. Note this log snippet where we refresh 4 distinct times 3, 8 & 13 seconds apart (clearly not enough time for the token to lapse).
     /*	
     158	2013-02-16 10:13:23,815 [12 ] TRACE GoogleAuthorization - refreshSession().OnNext(Session { AccessToken : 'ya29.AHES6ZRXmyBLEN4WQnhwOZxYPgka4xLgfN-N9J0tavEXCpk', RefreshToken : '1/vR5Ql9nq23cmJo_u-wQMNudYoSlDkixf1y-evmsTXc8', Expires : '2013-02-16T11:13:22.8208044+00:00'})
@@ -34,9 +34,7 @@ namespace CallWall.Google.Authorization
         private readonly IPersonalizationSettings _localStore;
         private readonly IGoogleOAuthService _oAuthService;
         private readonly ILogger _logger;
-        //private readonly HashSet<Uri> _authorizedResources = new HashSet<Uri>();
         private AuthorizationStatus _status = AuthorizationStatus.Uninitialized;
-
         private RequestAuthorizationCode _callback;
         private ISession _currentSession;
 
@@ -45,7 +43,7 @@ namespace CallWall.Google.Authorization
             _localStore = localStore;
             _oAuthService = oAuthService;
             _logger = loggerFactory.CreateLogger();
-            _currentSession = LoadSession();
+            _currentSession = LoadSession();    
             if (_currentSession != null)
             {
                 Status = AuthorizationStatus.Authorized(_currentSession.AuthorizedResources);
@@ -215,17 +213,17 @@ namespace CallWall.Google.Authorization
             return Observable.Create<string>(
                 o =>
                 {
+                    var resourceList = requestedResources.ToList();
+                    
                     //If we have an Authorization code from a previous session, we can continue to use that.
-                    //TODO:What if the AuthCode has since been rejected? -LC
-                    //TODO: What if the requestedResouces dont match the ones from the stored AuthCode -LC (if we store them, then order them, lower case them and comma delimit them for fast comparison)
-                    if (AuthorizationCode != null)
+                    if (AuthorizationCode != null && CurrentSession.AuthorizedResources.SetEquals(resourceList))
                     {
                         return Observable.Return(AuthorizationCode)
-                            .Subscribe(o);
+                                         .Subscribe(o);
                     }
-                    return RequestAuthorizationCode(requestedResources)
-                        .Do(newCode => AuthorizationCode = newCode)
-                        .Subscribe(o);
+                    return RequestAuthorizationCode(resourceList)
+                                .Do(newCode => AuthorizationCode = newCode)
+                                .Subscribe(o);
                 })
                 .Log(_logger, "getAuthorizationCode()");
         }
