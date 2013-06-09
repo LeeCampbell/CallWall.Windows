@@ -122,7 +122,9 @@
     <Compile Include="Providers\Gmail\GmailProviderDescription.cs" />
     <Compile Include="Providers\Gmail\Imap\CapabilityOperation.cs" />
     <Compile Include="Providers\Gmail\Imap\IImapClient.cs" />
+    <Compile Include="Providers\Gmail\Imap\IImapDateTranslator.cs" />
     <Compile Include="Providers\Gmail\Imap\ImapClient.cs" />
+    <Compile Include="Providers\Gmail\Imap\ImapDateTranslator.cs" />
     <Compile Include="Providers\Gmail\Imap\ImapOperationBase.cs" />
     <Compile Include="Providers\Gmail\Imap\FetchMessageOperation.cs" />
     <Compile Include="Providers\Gmail\Imap\IIMapOperation.cs" />

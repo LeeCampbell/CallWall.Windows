@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using CallWall.Contract.Communication;
 
@@ -10,6 +9,7 @@ namespace CallWall.Google.Providers.Gmail.Imap
     internal sealed class FetchMessageOperation : ImapOperationBase
     {
         private readonly string _command;
+        private readonly IImapDateTranslator _dateTranslator = new ImapDateTranslator();
 
         public FetchMessageOperation(ulong messageId, ILoggerFactory loggerFactory)
             : base(loggerFactory)
@@ -51,16 +51,7 @@ namespace CallWall.Google.Providers.Gmail.Imap
             }
             if(kvp.ContainsKey("Date"))
             {
-                //BUG: This needs to be abstracted, corrected and tested. Dates like Mon, 1 Jan 2000 12:00:00 +12:00 DST break due to the 'DST' suffix.
-                //date = DateTimeOffset.ParseExact(kvp["Date"], "ddd, d MMM yyyy HH:mm:ss zzz", CultureInfo.InvariantCulture);
-                date = DateTimeOffset.ParseExact(kvp["Date"],
-                    new[]
-                        {
-                          "ddd, d MMM yyyy HH:mm:ss zzz", 
-                          "d MMM yyyy HH:mm:ss zzz"  
-                        }, 
-                        CultureInfo.InvariantCulture,
-                        DateTimeStyles.None);
+                date = _dateTranslator.Translate(kvp["Date"]);
                 isDateSet = true; 
             }
             if (kvp.ContainsKey("Subject"))

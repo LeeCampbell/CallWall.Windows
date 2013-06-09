@@ -121,6 +121,7 @@
     <Compile Include="Authorization\OAuthUriFactoryFixture.cs" />
     <Compile Include="GoogleModuleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\Gmail\ImapDateTranslatorTests.cs" />
     <Compile Include="Providers\GoogleContactProfileTranslatorTests.cs" />
     <Compile Include="Providers\GoogleContactQueryProviderTests.cs" />
   </ItemGroup>
