@@ -94,7 +94,8 @@ namespace CallWall.Google.UnitTests.Authorization
             expected.Append("Session { ");
             expected.AppendFormat("AccessToken : '{0}', ", _expectedAccessToken);
             expected.AppendFormat("RefreshToken : '{0}', ", _expectedRefreshToken);
-            expected.AppendFormat("Expires : '{0:o}'", now.AddSeconds(_expectedExpiresIn));
+            expected.AppendFormat("Expires : '{0:o}', ", now.AddSeconds(_expectedExpiresIn));
+            expected.AppendFormat("AuthorizedResources : '{0:o}'", string.Join(";", _expectedAuthorizedUris));
             expected.Append("}");
 
             var actual = _factory.Create(_refreshTokenResponse, now, _expectedRefreshToken, _expectedAuthorizedUris);

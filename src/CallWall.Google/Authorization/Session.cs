@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace CallWall.Google.Authorization
 {
-    //TODO: Add DebugDisplay to Session -LC
+    //TODO: Add ensure Debug dispaly actaul shows the list of Resources -LC
+    [System.Diagnostics.DebuggerDisplay("Expires={Expires}, AuthorizedResources='{AuthorizedResources}'")]
     public sealed class Session : ISession
     {
         private readonly string _accessToken;
@@ -40,10 +41,9 @@ namespace CallWall.Google.Authorization
             get { return _authorizedResources; }
         }
 
-        //TODO: Add AuthorizedUris to the ToString
         public override string ToString()
         {
-            return string.Format("Session {{ AccessToken : '{0}', RefreshToken : '{1}', Expires : '{2:o}'}}", AccessToken, RefreshToken, Expires);
+            return string.Format("Session {{ AccessToken : '{0}', RefreshToken : '{1}', Expires : '{2:o}', AuthorizedResources : '{3}'}}", AccessToken, RefreshToken, Expires, string.Join(";", AuthorizedResources));
         }
     }
 }
