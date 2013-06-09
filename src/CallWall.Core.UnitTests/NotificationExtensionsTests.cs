@@ -667,7 +667,6 @@ namespace CallWall.Core.UnitTests
                     Assert.AreEqual(_expectedAge, actual.Age);
                 }
 
-
                 [Test]
                 public void Should_push_a_notification_with_no_OldItems()
                 {
@@ -680,6 +679,77 @@ namespace CallWall.Core.UnitTests
                     Assert.AreEqual(System.Collections.Specialized.NotifyCollectionChangedAction.Replace, _data.Action);
                 }
                 
+                [Test]
+                public void Should_not_notify_when_subscription_is_disposed()
+                {
+                    Assume.That(_observer.Messages.Count == 1);
+                    Assume.That(_sut[0].Age != -1);
+                    _subscription.Dispose();
+                    _sut[0].Age = -1;
+
+                    Assert.AreEqual(1, _observer.Messages.Count);
+                }
+
+                [Test]
+                public void Should_not_notify_when_item_was_removed()
+                {
+                    var removedItem = _sut[0];
+                    _sut.Remove(removedItem);
+                    Assume.That(_observer.Messages.Count == 2); //updated, then removed.
+                    Assume.That(removedItem.Age != -1);
+
+                    removedItem.Age = -1;
+
+                    Assert.AreEqual(2, _observer.Messages.Count);
+                }
+            }
+
+            [TestFixture]
+            public sealed class When_item_resets : When_observing_CollectionItemsChange
+            {
+                private SampleDto _expected;
+                private const int _expectedAge = 0;
+                private ITestableObserver<CollectionChangedData<SampleDto>> _observer;
+                private Recorded<Notification<CollectionChangedData<SampleDto>>> _message;
+                private CollectionChangedData<SampleDto> _data;
+                private IDisposable _subscription;
+
+                public override void SetUp()
+                {
+                    base.SetUp();
+                    _expected = CreateJohn();
+                    _sut.Add(_expected);
+
+                    _observer = new TestScheduler().CreateObserver<CollectionChangedData<SampleDto>>();
+                    _subscription = _changes.Subscribe(_observer);
+                    Assume.That(_sut[0].Age != _expectedAge);
+                    
+                    _sut[0].Reset();
+
+                    _message = _observer.Messages.Single();
+                    _data = _message.Value.Value;
+                }
+
+                [Test]
+                public void Should_push_a_notification_with_the_changed_item_as_a_NewItem()
+                {
+                    var actual = _data.NewItems.Single();
+                    Assert.AreEqual(_expected, actual);
+                    Assert.AreEqual(_expectedAge, actual.Age);
+                }
+
+                [Test]
+                public void Should_push_a_notification_with_no_OldItems()
+                {
+                    Assert.IsFalse(_data.OldItems.Any());
+                }
+
+                [Test]
+                public void Should_push_a_notification_with_Replace_as_the_Action()
+                {
+                    Assert.AreEqual(System.Collections.Specialized.NotifyCollectionChangedAction.Replace, _data.Action);
+                }
+
                 [Test]
                 public void Should_not_notify_when_subscription_is_disposed()
                 {
@@ -974,6 +1044,79 @@ namespace CallWall.Core.UnitTests
                     Assert.AreEqual(0, _observer.Messages.Count);
                 }
             }
+
+            [TestFixture]
+            public sealed class When_item_raises_property_changed_for_all_properties : When_observing_ItemsPropertyChange
+            {
+                private SampleDto _expected;
+                private const int _expectedAge = 0;
+                private ITestableObserver<CollectionChangedData<SampleDto>> _observer;
+                private Recorded<Notification<CollectionChangedData<SampleDto>>> _message;
+                private CollectionChangedData<SampleDto> _data;
+                private IDisposable _subscription;
+
+                public override void SetUp()
+                {
+                    base.SetUp();
+                    _expected = CreateJohn();
+                    _sut.Add(_expected);
+
+                    _observer = new TestScheduler().CreateObserver<CollectionChangedData<SampleDto>>();
+                    _subscription = _ageChanges.Subscribe(_observer);
+                    Assume.That(_sut[0].Age != _expectedAge);
+                    
+                    //ACT
+                    _sut[0].Reset();
+                    
+                    _message = _observer.Messages.Single();
+                    _data = _message.Value.Value;
+                }
+
+                [Test]
+                public void Should_push_a_notification_with_the_changed_item_as_a_NewItem()
+                {
+                    var actual = _data.NewItems.Single();
+                    Assert.AreEqual(_expected, actual);
+                    Assert.AreEqual(_expectedAge, actual.Age);
+                }
+
+                [Test]
+                public void Should_push_a_notification_with_no_OldItems()
+                {
+                    Assert.IsFalse(_data.OldItems.Any());
+                }
+
+                [Test]
+                public void Should_push_a_notification_with_Replace_as_the_Action()
+                {
+                    Assert.AreEqual(System.Collections.Specialized.NotifyCollectionChangedAction.Replace, _data.Action);
+                }
+
+                [Test]
+                public void Should_not_notify_when_subscription_is_disposed()
+                {
+                    Assume.That(_observer.Messages.Count == 1);
+                    Assume.That(_sut[0].Age != -1);
+                    _subscription.Dispose();
+                    _sut[0].Age = -1;
+
+                    Assert.AreEqual(1, _observer.Messages.Count);
+                }
+
+                [Test]
+                public void Should_not_notify_when_item_was_removed()
+                {
+                    var removedItem = _sut[0];
+                    _sut.Remove(removedItem);
+                    Assume.That(_observer.Messages.Count == 2); //updated, then removed.
+                    Assume.That(removedItem.Age != -1);
+
+                    removedItem.Age = -1;
+
+                    Assert.AreEqual(2, _observer.Messages.Count);
+                }
+            }
+
         }
     }
 
@@ -1028,6 +1171,13 @@ namespace CallWall.Core.UnitTests
             return 0;
         }
 
+        public void Reset()
+        {
+            _name = null;
+            _age = 0;
+            _friendsCount = 0;
+            OnPropertyChanged("");
+        }
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string propertyName)

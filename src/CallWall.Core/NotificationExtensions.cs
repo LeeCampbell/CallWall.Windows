@@ -35,7 +35,7 @@ namespace CallWall
                              h => source.PropertyChanged += h,
                              h => source.PropertyChanged -= h
                          )
-                         .Where(e => e.EventArgs.PropertyName == propertyName)
+                         .Where(e => e.EventArgs.PropertyName == propertyName)// || string.IsNullOrEmpty(e.EventArgs.PropertyName))
                          .Select(e => propertySelector(source))
                          .Subscribe(o));
         }
@@ -85,7 +85,6 @@ namespace CallWall
 
 
         //TODO: Allow the ability to push which property changed on underlying Item. (string.Empty for entire object)
-        //TODO: Make Rx. Should allow filter by PropName (which would still push on string.Empty?)
         /// <summary>
         /// Returns an observable sequence of that represents modifications to a collection as they happen.
         /// </summary>
@@ -104,7 +103,7 @@ namespace CallWall
             where TItem : INotifyPropertyChanged
         {
             var propertyName = property.GetPropertyInfo().Name;
-            return ItemsPropertyChange<ObservableCollection<TItem>, TItem>(collection, propName => propName == propertyName);
+            return ItemsPropertyChange<ObservableCollection<TItem>, TItem>(collection, propName => propName == propertyName || string.IsNullOrEmpty(propName));
         }
 
         public static IObservable<CollectionChangedData<TItem>> ItemsPropertyChange<TItem, TProperty>(
@@ -113,7 +112,7 @@ namespace CallWall
             where TItem : INotifyPropertyChanged
         {
             var propertyName = property.GetPropertyInfo().Name;
-            return ItemsPropertyChange<ReadOnlyObservableCollection<TItem>, TItem>(collection, propName => propName == propertyName);
+            return ItemsPropertyChange<ReadOnlyObservableCollection<TItem>, TItem>(collection, propName => propName == propertyName || string.IsNullOrEmpty(propName));
         }
 
         private static IObservable<CollectionChangedData<TItem>> ItemsPropertyChange<TCollection, TItem>(
