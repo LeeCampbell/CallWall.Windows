@@ -9,7 +9,7 @@ namespace CallWall.Google.Providers.Gmail.Imap
         bool Connect(string sHost, int nPort);
         bool Authenticate(string user, string accessToken);
         bool SelectFolder(string folder);
-        IObservable<IList<ulong>> FindEmailIds(string emailAddress);
+        IObservable<IList<ulong>> FindEmailIds(string query);
         IObservable<IMessage> FetchEmailSummaries(IEnumerable<ulong> messageIds);
     }
 }

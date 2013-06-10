@@ -49,16 +49,25 @@ namespace CallWall.Google.Providers.Gmail
                         {
                             if (_imapClient.SelectFolder("[Gmail]/All Mail"))
                             {
-                                var distinctOrderedIds = activeProfile.Identifiers
-                                    .Select(id => _imapClient.FindEmailIds(id.Value))
-                                    .Merge(_schedulerProvider.Concurrent)
-                                    .Aggregate(
-                                        new SortedSet<ulong>(),
-                                        (set, newValues) =>
-                                        {
-                                            set.UnionWith(newValues);
-                                            return set;
-                                        })
+                                //TODO: Potentially this could be a single serach instead of sending n requests.
+                                //var distinctOrderedIds = activeProfile.Identifiers
+                                //    .Select(id => _imapClient.FindEmailIds(id.Value))
+                                //    .Merge(_schedulerProvider.Concurrent)
+                                //    .Aggregate(
+                                //        new SortedSet<ulong>(),
+                                //        (set, newValues) =>
+                                //        {
+                                //            set.UnionWith(newValues);
+                                //            return set;
+                                //        })
+                                //        .Log(_logger, "distinctOrderedIds");
+
+
+                                var searchQuery = string.Join(" OR ",
+                                                              activeProfile.Identifiers.Select(
+                                                                  id => string.Format("\"{0}\"", id.Value)));
+
+                                var distinctOrderedIds = _imapClient.FindEmailIds(searchQuery)
                                         .Log(_logger, "distinctOrderedIds");
 
                                 var q = from allIds in distinctOrderedIds

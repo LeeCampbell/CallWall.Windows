@@ -76,12 +76,12 @@ namespace CallWall.Google.Providers.Gmail.Imap
             return Execute(op);
         }
 
-        public IObservable<IList<ulong>> FindEmailIds(string emailAddress)
+        public IObservable<IList<ulong>> FindEmailIds(string query)
         {
             return Observable.Create<IList<ulong>>(
                 o =>
                 {
-                    var searchOp = new SearchEmailAddressOperation(emailAddress, _loggerFactory);
+                    var searchOp = new SearchOperation(query, _loggerFactory);
                     if (Execute(searchOp))
                     {
                         var msgIds = searchOp.MessageIds().ToArray();
@@ -92,7 +92,7 @@ namespace CallWall.Google.Providers.Gmail.Imap
                     o.OnError(new IOException("IMAP search failed"));
                     return Disposable.Empty;
                 })
-                .Log(_logger, string.Format("FindEmailIds('{0}')", emailAddress));
+                .Log(_logger, string.Format("FindEmailIds('{0}')", query));
         }
 
         public IObservable<IMessage> FetchEmailSummaries(IEnumerable<ulong> messageIds)
