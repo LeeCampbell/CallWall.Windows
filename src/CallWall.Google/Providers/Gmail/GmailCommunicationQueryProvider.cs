@@ -36,9 +36,13 @@ namespace CallWall.Google.Providers.Gmail
 
         private IObservable<IMessage> SearchImap(IProfile activeProfile, string accessToken)
         {
+            //TODO: Get the imapClient via a factory, attach it to the lifetime of this query.
+            //ie return Observable.Using(_imapFactory.Create, imapClient=>obs.Create(o=>....
+
             return Observable.Create<IMessage>(
                 o =>
                 {
+                 
                     if (_imapClient.Connect("imap.gmail.com", 993))
                     {
                         //HACK:This user account needs to be sourced from the Google Contacts end point https://www.google.com/m8/feeds/contacts/default/full
