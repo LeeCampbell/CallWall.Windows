@@ -17,15 +17,12 @@ namespace CallWall.Google.Providers.Gmail
     {
         private readonly IImapClient _imapClient;
         private readonly IGoogleAuthorization _authorization;
-        private readonly ISchedulerProvider _schedulerProvider;
         private readonly ILogger _logger;
 
-        //TODO: Inject an ImapClientFactory
-        public GmailCommunicationQueryProvider(IImapClient imapClient, IGoogleAuthorization authorization, ISchedulerProvider schedulerProvider, ILoggerFactory loggerFactory)
+        public GmailCommunicationQueryProvider(IImapClient imapClient, IGoogleAuthorization authorization, ILoggerFactory loggerFactory)
         {
             _imapClient = imapClient;
             _authorization = authorization;
-            _schedulerProvider = schedulerProvider;
             _logger = loggerFactory.CreateLogger();
         }
 
@@ -49,20 +46,6 @@ namespace CallWall.Google.Providers.Gmail
                         {
                             if (_imapClient.SelectFolder("[Gmail]/All Mail"))
                             {
-                                //TODO: Potentially this could be a single serach instead of sending n requests.
-                                //var distinctOrderedIds = activeProfile.Identifiers
-                                //    .Select(id => _imapClient.FindEmailIds(id.Value))
-                                //    .Merge(_schedulerProvider.Concurrent)
-                                //    .Aggregate(
-                                //        new SortedSet<ulong>(),
-                                //        (set, newValues) =>
-                                //        {
-                                //            set.UnionWith(newValues);
-                                //            return set;
-                                //        })
-                                //        .Log(_logger, "distinctOrderedIds");
-
-
                                 var searchQuery = string.Join(" OR ",
                                                               activeProfile.Identifiers.Select(
                                                                   id => string.Format("\"{0}\"", id.Value)));

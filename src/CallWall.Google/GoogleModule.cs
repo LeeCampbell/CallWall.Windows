@@ -35,7 +35,7 @@ namespace CallWall.Google
 
             //Mail
             _container.RegisterType<ICommunicationQueryProvider, Providers.Gmail.GmailCommunicationQueryProvider>("GmailCommunicationQueryProvider", new ContainerControlledLifetimeManager());
-            _container.RegisterType<Providers.Gmail.Imap.IImapClient, Providers.Gmail.Imap.ImapClient>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<Providers.Gmail.Imap.IImapClient, Providers.Gmail.Imap.ImapClient>(new TransientLifetimeManager());
 
             //Talk
             //Images??

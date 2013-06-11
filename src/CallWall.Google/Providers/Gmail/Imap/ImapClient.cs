@@ -12,6 +12,7 @@ using CallWall.Contract.Communication;
 
 namespace CallWall.Google.Providers.Gmail.Imap
 {
+    //TODO: I think that this ImapClient should have its own EventLoopScheduler. Based on that I also think now that it should be a short lived object, e.g. Connect, Search for some emails, get the emails then die. -LC
     public sealed class ImapClient : IImapClient
     {
         #region Private fields
@@ -105,6 +106,7 @@ namespace CallWall.Google.Providers.Gmail.Imap
                 .Log(_logger, "FetchEmailSummaries");
         }
 
+
         private IObservable<GmailEmail> LoadMessage(ulong messageId)
         {
             return Observable.Create<GmailEmail>(
@@ -122,8 +124,7 @@ namespace CallWall.Google.Providers.Gmail.Imap
                 })
                 .Log(_logger, string.Format("LoadMessage({0})", messageId));
         }
-
-
+        
         private bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
             if (sslPolicyErrors == SslPolicyErrors.None)
