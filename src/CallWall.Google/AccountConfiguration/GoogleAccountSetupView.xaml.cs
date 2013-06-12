@@ -7,12 +7,12 @@ namespace CallWall.Google.AccountConfiguration
     /// </summary>
     public partial class GoogleAccountSetupView : UserControl, IGoogleAccountSetupView
     {
-        public GoogleAccountSetupView(GoogleAccountSetupViewModel viewModel)
+        public GoogleAccountSetupView(IGoogleAccountSetupViewModel viewModel)
         {
             DataContext = ViewModel = viewModel;
             InitializeComponent();
         }
 
-        public GoogleAccountSetupViewModel ViewModel { get; private set; }
+        public IGoogleAccountSetupViewModel ViewModel { get; private set; }
     }
 }

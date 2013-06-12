@@ -107,6 +107,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AccountConfiguration\IGoogleAccountSetupViewModel.cs" />
     <Compile Include="Authorization\GoogleOAuthService.cs" />
     <Compile Include="Authorization\IGoogleOAuthService.cs" />
     <Compile Include="Authorization\IOAuthUriFactory.cs" />
@@ -149,13 +150,11 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="AccountConfiguration\GoogleAccountConfiguration.cs" />
-    <Compile Include="AccountConfiguration\GoogleAccountSetup.cs" />
     <Compile Include="AccountConfiguration\GoogleAccountSetupView.xaml.cs">
       <DependentUpon>GoogleAccountSetupView.xaml</DependentUpon>
     </Compile>
     <Compile Include="AccountConfiguration\GoogleAccountSetupViewModel.cs" />
     <Compile Include="AccountConfiguration\GoogleResource.cs" />
-    <Compile Include="AccountConfiguration\IGoogleAccountSetup.cs" />
     <Compile Include="AccountConfiguration\IGoogleAccountSetupView.cs" />
     <Compile Include="Authorization\GoogleAuthorization.cs" />
     <Compile Include="Authorization\AuthorizationStatus.cs" />

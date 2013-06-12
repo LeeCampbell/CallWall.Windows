@@ -12,17 +12,16 @@ namespace CallWall.Google.UnitTests.AccountConfiguration
     {
         private GoogleAccountConfiguration _googleAccountConfiguration;
         private IGoogleAccountSetupView _googleAccountSetupView;
-        private GoogleAccountSetupViewModel _googleAccountSetupViewModel;
-        private Mock<IGoogleAccountSetup> _accountSetupMock;
+        private Mock<IGoogleAccountSetupViewModel> _googleAccountSetupViewModelMock;
 
         [SetUp]
         public void SetUp()
         {
             var viewMock = new Mock<IGoogleAccountSetupView>();
-            _accountSetupMock = new Mock<IGoogleAccountSetup>();
-            _accountSetupMock.SetupAllProperties();
-            _googleAccountSetupViewModel = new GoogleAccountSetupViewModel(_accountSetupMock.Object);
-            viewMock.Setup(v => v.ViewModel).Returns(_googleAccountSetupViewModel);
+            
+            _googleAccountSetupViewModelMock = new Mock<IGoogleAccountSetupViewModel>();
+            _googleAccountSetupViewModelMock.SetupAllProperties();
+            viewMock.Setup(v => v.ViewModel).Returns(_googleAccountSetupViewModelMock.Object);
             _googleAccountSetupView = viewMock.Object;
             _googleAccountConfiguration = new GoogleAccountConfiguration(_googleAccountSetupView);
         }
@@ -51,14 +50,15 @@ namespace CallWall.Google.UnitTests.AccountConfiguration
         {
             _googleAccountConfiguration.IsEnabled = expected;
             Assert.AreEqual(expected, _googleAccountConfiguration.IsEnabled);
+            Assert.AreEqual(expected, _googleAccountSetupViewModelMock.Object.IsEnabled);
         }
 
         [TestCase(false)]
         [TestCase(true)]
         public void Should_get_IsEnabled_from_ViewModel_IsEnabled(bool expected)
         {
-            _googleAccountSetupViewModel.IsEnabled = expected;
-            Assert.AreEqual(expected, _accountSetupMock.Object.IsEnabled);
+            _googleAccountSetupViewModelMock.Object.IsEnabled = expected;
+            Assert.AreEqual(expected, _googleAccountConfiguration.IsEnabled);
         }
 
         [Test]
@@ -66,11 +66,11 @@ namespace CallWall.Google.UnitTests.AccountConfiguration
         {
             var propertyNameRaised = string.Empty;
             _googleAccountConfiguration.PropertyChanged += (s, e) => { propertyNameRaised = e.PropertyName; };
-            _accountSetupMock.Raise(a=>a.PropertyChanged+=null, new PropertyChangedEventArgs("IsEnabled"));
-            
+            _googleAccountSetupViewModelMock.Raise(a => a.PropertyChanged += null, new PropertyChangedEventArgs("IsEnabled"));
+
             Assert.AreEqual("IsEnabled", propertyNameRaised);
         }
-        
+
     }
 }
 // ReSharper restore InconsistentNaming

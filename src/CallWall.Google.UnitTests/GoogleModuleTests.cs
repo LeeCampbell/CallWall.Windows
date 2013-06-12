@@ -3,7 +3,6 @@ using CallWall.Contract.Contact;
 using CallWall.Google.AccountConfiguration;
 using CallWall.Google.Authorization;
 using CallWall.Google.Authorization.Login;
-using CallWall.Google.Providers;
 using CallWall.Google.Providers.Contacts;
 using Microsoft.Practices.Unity;
 using Moq;
@@ -76,11 +75,11 @@ namespace CallWall.Google.UnitTests
             }
 
             [Test]
-            public void Should_register_GoogleAccountSetup_instance()
+            public void Should_register_GoogleAccountSetupViewModel_instance()
             {
-                _containerMock.Verify(c => c.RegisterType(typeof(IGoogleAccountSetup), typeof(GoogleAccountSetup), (string)null, It.IsAny<ContainerControlledLifetimeManager>()), Times.Once());
+                _containerMock.Verify(c => c.RegisterType(typeof(IGoogleAccountSetupViewModel), typeof(GoogleAccountSetupViewModel), (string)null, It.IsAny<ContainerControlledLifetimeManager>()), Times.Once());
             }
-
+            
             [Test]
             public void Should_register_GoogleContactQueryProvider_instance()
             {
