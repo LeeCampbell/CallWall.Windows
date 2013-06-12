@@ -208,6 +208,12 @@ namespace CallWall
             return string.Format(CultureInfo.CurrentCulture, format, args);
         }
 
+        public static string TrimTo(this string source, int maxLength)
+        {
+            if (string.IsNullOrEmpty(source) || source.Length <= maxLength) return source;
+            return source.Substring(0, maxLength)+"...";
+        }
+
         /// <summary>
         /// Logs the entry to a method as a string like "MyType.MyMethod(1, ABC)". 
         /// Ensure the method being logged is not in-lined by the compiler/jitter with the

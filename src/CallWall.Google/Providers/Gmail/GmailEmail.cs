@@ -28,5 +28,10 @@ namespace CallWall.Google.Providers.Gmail
         public string Content { get { return _content; } }
 
         public IProviderDescription Provider { get { return GmailProviderDescription.Instance; } }
+
+        public override string ToString()
+        {
+            return string.Format("Gmail {{{0:o} {1} Subject:'{2}'}}", Timestamp, Direction, Subject.TrimTo(50));
+        }
     }
 }

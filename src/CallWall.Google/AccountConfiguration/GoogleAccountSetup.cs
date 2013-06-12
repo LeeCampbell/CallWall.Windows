@@ -65,6 +65,7 @@ namespace CallWall.Google.AccountConfiguration
 
         private void SetSelectedResources(Authorization.AuthorizationStatus status)
         {
+            //BUG: Reentrancy problem here. Not sure how -LC
             SelectedResources.Clear();
             if (status.IsAuthorized)
             {

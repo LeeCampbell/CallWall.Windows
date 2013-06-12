@@ -93,7 +93,7 @@ namespace CallWall.Google.Providers.Gmail.Imap
                     while (canExpectMoreLines)
                     {
                         var line = receiveStream.ReadLine();
-                        Logger.Trace("[<--]{0}", line);
+                        Logger.Trace("[<--]{0}", line.TrimTo(100)); //Has tried to log 256KB of text before. Not so fast :-(
 
                         if (line != null)
                         {

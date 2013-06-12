@@ -6,9 +6,9 @@ namespace CallWall.Google.Providers.Gmail.Imap
 {
     public interface IImapClient : IDisposable
     {
-        bool Connect(string sHost, int nPort);
-        bool Authenticate(string user, string accessToken);
-        bool SelectFolder(string folder);
+        IObservable<bool> Connect(string sHost, int nPort);
+        IObservable<bool> Authenticate(string user, string accessToken);
+        IObservable<bool> SelectFolder(string folder);
         IObservable<IList<ulong>> FindEmailIds(string query);
         IObservable<IMessage> FetchEmailSummaries(IEnumerable<ulong> messageIds);
     }

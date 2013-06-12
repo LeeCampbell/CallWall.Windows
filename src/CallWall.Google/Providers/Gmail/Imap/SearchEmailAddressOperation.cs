@@ -10,12 +10,12 @@ namespace CallWall.Google.Providers.Gmail.Imap
     {
         private readonly string _searchQuery;
         private const string Prefix = "* SEARCH ";
-        private static readonly char[] _splitChars = new[] { ' ' };
+        private static readonly char[] SplitChars = new[] { ' ' };
 
         public SearchOperation(string searchQuery, ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
-            _searchQuery = searchQuery.Replace("\\", "\\\\").Replace("\"", "\\\"");//TODO: Escape \ and "
+            _searchQuery = searchQuery.Replace("\\", "\\\\").Replace("\"", "\\\"");
         }
 
         protected override string Command
@@ -36,7 +36,7 @@ namespace CallWall.Google.Providers.Gmail.Imap
                     messageIdString = response.Substring(Prefix.Length);
                 }
 
-                return messageIdString.Split(_splitChars, StringSplitOptions.RemoveEmptyEntries)
+                return messageIdString.Split(SplitChars, StringSplitOptions.RemoveEmptyEntries)
                     .Select(ulong.Parse);
             }
         }

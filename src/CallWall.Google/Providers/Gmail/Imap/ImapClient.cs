@@ -16,23 +16,63 @@ namespace CallWall.Google.Providers.Gmail.Imap
     public sealed class ImapClient : IImapClient
     {
         #region Private fields
-
-        private readonly ILoggerFactory _loggerFactory;
         private const string Prefix = "CW0";
+        private readonly ILoggerFactory _loggerFactory;
+        private readonly IEventLoopScheduler _dedicatedScheduler;
         private readonly ILogger _logger;
+
         private SslStream _imapSslStream;
         private StreamReader _imapSslStreamReader;
         private int _commandCount;
 
         #endregion
 
-        public ImapClient(ILoggerFactory loggerFactory)
+        public ImapClient(ISchedulerProvider schedulerProvider, ILoggerFactory loggerFactory)
         {
+            _dedicatedScheduler = schedulerProvider.CreateEventLoopScheduler("IMAP");
             _loggerFactory = loggerFactory;
             _logger = loggerFactory.CreateLogger();
         }
 
-        public bool Connect(string sHost, int nPort)
+        public IObservable<bool> Connect(string sHost, int nPort)
+        {
+            return Observable.Start(() => ConnectSync(sHost, nPort), _dedicatedScheduler);
+        }
+
+        public IObservable<bool> Authenticate(string user, string accessToken)
+        {
+            return Observable.Start(() => AuthenticateSync(user, accessToken), _dedicatedScheduler);
+        }
+
+        public IObservable<bool> SelectFolder(string folder)
+        {
+            return Observable.Start(() => SelectFolderSync(folder), _dedicatedScheduler);
+        }
+
+        public IObservable<IList<ulong>> FindEmailIds(string query)
+        {
+            return Observable.Start(() => FindEmailIdsSync(query), _dedicatedScheduler)
+                             .Log(_logger, string.Format("FindEmailIds('{0}')", query));
+        }
+
+        public IObservable<IMessage> FetchEmailSummaries(IEnumerable<ulong> messageIds)
+        {
+            _logger.Debug("FetchEmailSummaries({0})", string.Join(", ", messageIds));
+            return messageIds
+                .Select(LoadMessage)
+                .Concat()
+                .Where(msg => msg != null)
+                .Log(_logger, "FetchEmailSummaries");
+        }
+
+
+        private IObservable<GmailEmail> LoadMessage(ulong messageId)
+        {
+            return Observable.Start(()=>LoadMessageSync(messageId), _dedicatedScheduler)
+                             .Log(_logger, string.Format("LoadMessage({0})", messageId));
+        }
+
+        private bool ConnectSync(string sHost, int nPort)
         {
             bool result = false;
             try
@@ -65,66 +105,40 @@ namespace CallWall.Google.Providers.Gmail.Imap
             return result;
         }
 
-        public bool Authenticate(string user, string accessToken)
+        private bool AuthenticateSync(string user, string accessToken)
         {
             var authenticate = new OAuthOperation(user, accessToken, _loggerFactory);
             return Execute(authenticate);
         }
 
-        public bool SelectFolder(string folder)
+        private bool SelectFolderSync(string folder)
         {
             var op = new SelectFolderOperation(folder, _loggerFactory);
             return Execute(op);
         }
 
-        public IObservable<IList<ulong>> FindEmailIds(string query)
+        private IList<ulong> FindEmailIdsSync(string query)
         {
-            return Observable.Create<IList<ulong>>(
-                o =>
-                {
-                    var searchOp = new SearchOperation(query, _loggerFactory);
-                    if (Execute(searchOp))
-                    {
-                        var msgIds = searchOp.MessageIds().ToArray();
-                        o.OnNext(msgIds);
-                        o.OnCompleted();
-                        return Disposable.Empty;
-                    }
-                    o.OnError(new IOException("IMAP search failed"));
-                    return Disposable.Empty;
-                })
-                .Log(_logger, string.Format("FindEmailIds('{0}')", query));
+            var searchOp = new SearchOperation(query, _loggerFactory);
+            if (Execute(searchOp))
+            {
+                var msgIds = searchOp.MessageIds().ToArray();
+                return msgIds;
+            }
+            throw new IOException("IMAP search failed");
         }
 
-        public IObservable<IMessage> FetchEmailSummaries(IEnumerable<ulong> messageIds)
+        private GmailEmail LoadMessageSync(ulong messageId)
         {
-            _logger.Debug("FetchEmailSummaries({0})", string.Join(", ", messageIds));
-            return messageIds
-                .Select(LoadMessage)
-                .Concat()
-                .Where(msg => msg != null)
-                .Log(_logger, "FetchEmailSummaries");
+            var op = new FetchMessageOperation(messageId, _loggerFactory);
+            if (Execute(op))
+            {
+                var email = op.ExtractMessage();
+                return email;
+            }
+            throw new IOException("Loading email failed");
         }
 
-
-        private IObservable<GmailEmail> LoadMessage(ulong messageId)
-        {
-            return Observable.Create<GmailEmail>(
-                o =>
-                {
-                    var op = new FetchMessageOperation(messageId, _loggerFactory);
-                    if (Execute(op))
-                    {
-                        var email = op.ExtractMessage();
-                        o.OnNext(email);
-                        o.OnCompleted();
-                    }
-                    o.OnError(new IOException("Loading email failed"));
-                    return Disposable.Empty;
-                })
-                .Log(_logger, string.Format("LoadMessage({0})", messageId));
-        }
-        
         private bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
             if (sslPolicyErrors == SslPolicyErrors.None)
@@ -153,6 +167,10 @@ namespace CallWall.Google.Providers.Gmail.Imap
 
         public void Dispose()
         {
+            if (_dedicatedScheduler != null)
+            {
+                _dedicatedScheduler.Dispose();
+            }
             if (_imapSslStream != null)
             {
                 _imapSslStream.Dispose();
