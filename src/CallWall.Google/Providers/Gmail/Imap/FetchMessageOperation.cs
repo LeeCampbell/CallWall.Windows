@@ -8,14 +8,17 @@ namespace CallWall.Google.Providers.Gmail.Imap
     //http://tools.ietf.org/search/rfc3501#page-54
     internal sealed class FetchMessageOperation : ImapOperationBase
     {
+        private readonly IEnumerable<string> _currentUserEmailAddressList;
         private readonly string _command;
         private readonly IImapDateTranslator _dateTranslator = new ImapDateTranslator();
 
-        public FetchMessageOperation(ulong messageId, ILoggerFactory loggerFactory)
+        public FetchMessageOperation(ulong messageId, IEnumerable<string> currentUserEmailAddressList, ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             _command = string.Format("FETCH {0} BODY.PEEK[HEADER.FIELDS (FROM TO Message-ID Subject Date)]", messageId);
+            _currentUserEmailAddressList = currentUserEmailAddressList.Select(add => add.ToLowerInvariant()).ToArray();
         }
+
         protected override string Command
         {
             get { return _command; }
@@ -23,8 +26,8 @@ namespace CallWall.Google.Providers.Gmail.Imap
 
         public GmailEmail ExtractMessage()
         {
-            bool isDateSet, isSubjectSet;
-            isDateSet = isSubjectSet = false;
+            var isDateSet = false;
+            var isSubjectSet = false;
             var date = DateTimeOffset.MinValue;
             string subject = null;
             var direction = MessageDirection.Inbound;
@@ -43,7 +46,7 @@ namespace CallWall.Google.Providers.Gmail.Imap
                 }
                 else
                 {
-                    var indexOf = line.IndexOf(":");
+                    var indexOf = line.IndexOf(":", StringComparison.Ordinal);
                     var key = line.Substring(0, indexOf);
                     kvp[key] = line.Substring(indexOf + 2);
                     lastKey = key;
@@ -61,8 +64,8 @@ namespace CallWall.Google.Providers.Gmail.Imap
             }
             if (kvp.ContainsKey("From"))
             {
-                //HACK: Need to have this provided
-                if(kvp["From"].ToLower().Contains("lee.ryan.campbell@gmail.com"))
+                var fromAddress = kvp["From"].ToLowerInvariant();
+                if(_currentUserEmailAddressList.Any(fromAddress.Contains))
                 {
                     direction = MessageDirection.Outbound;
                 }

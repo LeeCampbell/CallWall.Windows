@@ -4,5 +4,6 @@ namespace CallWall.Google.Providers.Contacts
     {
         IGoogleContactProfile Translate(string response, string accessToken);
         IGoogleContactProfile AddTags(IGoogleContactProfile contactProfile, string response);
+        GoogleUser GetUser(string response);
     }
 }

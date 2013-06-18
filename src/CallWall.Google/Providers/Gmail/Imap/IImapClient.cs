@@ -10,6 +10,6 @@ namespace CallWall.Google.Providers.Gmail.Imap
         IObservable<bool> Authenticate(string user, string accessToken);
         IObservable<bool> SelectFolder(string folder);
         IObservable<IList<ulong>> FindEmailIds(string query);
-        IObservable<IMessage> FetchEmailSummaries(IEnumerable<ulong> messageIds);
+        IObservable<IMessage> FetchEmailSummaries(IEnumerable<ulong> messageIds, IEnumerable<string> fromAddresses);
     }
 }

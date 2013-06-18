@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Practices.Unity;
 
 namespace CallWall.Testing
@@ -30,7 +31,9 @@ namespace CallWall.Testing
 
         public object Resolve(Type t, string name, params ResolverOverride[] resolverOverrides)
         {
-            return null;
+            return _registeredInstances.Where(i=>i.Type == t && i.Name == name)
+                                       .Select(i=>i.Instance)
+                                       .FirstOrDefault();
         }
 
         public IEnumerable<object> ResolveAll(Type t, params ResolverOverride[] resolverOverrides)

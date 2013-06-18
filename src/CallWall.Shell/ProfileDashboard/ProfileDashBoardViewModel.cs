@@ -42,6 +42,7 @@ namespace CallWall.ProfileDashboard
         }
 
         //HACK: Temp hack until I can merge without full updates (which I imagine will force another call to the web to load the avatars
+        //  I think I want this to be another rotating image control bound to Contact.Avatars, making this property redundant.
         public Uri Avatar
         {
             get { return _avatar; }

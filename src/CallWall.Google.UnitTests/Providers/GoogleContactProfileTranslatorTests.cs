@@ -139,5 +139,77 @@ namespace CallWall.Google.UnitTests.Providers
 </feed>
 ";
         }
+
+        //When user is Lee Campbell
+        public static string DefaultUserFullResponse()
+        {
+            return @"<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns='http://www.w3.org/2005/Atom' 
+      xmlns:openSearch='http://a9.com/-/spec/opensearch/1.1/' 
+      xmlns:gContact='http://schemas.google.com/contact/2008' 
+      xmlns:batch='http://schemas.google.com/gdata/batch' 
+      xmlns:gd='http://schemas.google.com/g/2005' 
+      gd:etag='W/&quot;CEQNQHgyeCt7I2A9WhFSEEs.&quot;'>
+  <id>lee.ryan.campbell@gmail.com</id>
+  <updated>2013-06-12T18:39:51.690Z</updated>
+  <category scheme='http://schemas.google.com/g/2005#kind' term='http://schemas.google.com/contact/2008#contact'/>
+  <title>Lee Campbell's Contacts</title>
+  <link rel='alternate' type='text/html' href='http://www.google.com/'/>
+  <link rel='http://schemas.google.com/g/2005#feed' type='application/atom+xml' href='https://www.google.com/m8/feeds/contacts/lee.ryan.campbell%40gmail.com/full'/>
+  <link rel='http://schemas.google.com/g/2005#post' type='application/atom+xml' href='https://www.google.com/m8/feeds/contacts/lee.ryan.campbell%40gmail.com/full'/>
+  <link rel='http://schemas.google.com/g/2005#batch' type='application/atom+xml' href='https://www.google.com/m8/feeds/contacts/lee.ryan.campbell%40gmail.com/full/batch'/>
+  <link rel='self' type='application/atom+xml' href='https://www.google.com/m8/feeds/contacts/lee.ryan.campbell%40gmail.com/full?q=lee.ryan.campbell%40gmail.com&amp;max-results=25'/>
+  <author>
+    <name>Lee Campbell</name>
+    <email>lee.ryan.campbell@gmail.com</email>
+  </author>
+  <generator version='1.0' uri='http://www.google.com/m8/feeds'>Contacts</generator>
+  <openSearch:totalResults>1</openSearch:totalResults>
+  <openSearch:startIndex>1</openSearch:startIndex>
+  <openSearch:itemsPerPage>25</openSearch:itemsPerPage>
+  <entry gd:etag='&quot;RXs7fDdaKyt7I2A9WhFTFEwOQAI.&quot;'>
+    <id>http://www.google.com/m8/feeds/contacts/lee.ryan.campbell%40gmail.com/base/2ed8d2af8b2b72ef</id>
+    <updated>2013-06-05T06:46:04.504Z</updated>
+    <app:edited xmlns:app='http://www.w3.org/2007/app'>2013-06-05T06:46:04.504Z</app:edited>
+    <category scheme='http://schemas.google.com/g/2005#kind' term='http://schemas.google.com/contact/2008#contact'/>
+    <title>Lee Campbell</title>
+    <link rel='http://schemas.google.com/contacts/2008/rel#photo' type='image/*' href='https://www.google.com/m8/feeds/photos/media/lee.ryan.campbell%40gmail.com/2ed8d2af8b2b72ef' gd:etag='&quot;TmhdYGwyWit7I2BUORMhFi9XEGNIKHp6YjI.&quot;'/>
+    <link rel='self' type='application/atom+xml' href='https://www.google.com/m8/feeds/contacts/lee.ryan.campbell%40gmail.com/full/2ed8d2af8b2b72ef'/>
+    <link rel='edit' type='application/atom+xml' href='https://www.google.com/m8/feeds/contacts/lee.ryan.campbell%40gmail.com/full/2ed8d2af8b2b72ef'/>
+    <gd:name>
+      <gd:fullName>Lee Campbell</gd:fullName>
+      <gd:givenName>Lee</gd:givenName>
+      <gd:familyName>Campbell</gd:familyName>
+    </gd:name>
+    <gContact:birthday when='1979-12-27'/>
+    <gd:organization primary='true' rel='http://schemas.google.com/g/2005#other'>
+      <gd:orgName>Lab 49</gd:orgName>
+    </gd:organization>
+    <gd:email rel='http://schemas.google.com/g/2005#other' address='lee.ryan.campbell@gmail.com' primary='true'/>
+    <gd:email rel='http://schemas.google.com/g/2005#other' address='leeryancampbell@gmail.com'/>
+    <gd:email rel='http://schemas.google.com/g/2005#other' address='leec@artemiswest.com'/>
+    <gd:email rel='http://schemas.google.com/g/2005#other' address='lee.campbell@sgcib.com'/>
+    <gd:phoneNumber rel='http://schemas.google.com/g/2005#work'>07584148498</gd:phoneNumber>
+    <gd:structuredPostalAddress rel='http://schemas.google.com/g/2005#home'>
+      <gd:formattedAddress>
+        6/31 warwick road
+        Earl's Court
+        London SW5 9UL
+        Uk
+      </gd:formattedAddress>
+      <gd:street>
+        6/31 warwick road
+        Earl's Court
+      </gd:street>
+      <gd:postcode>SW5 9UL</gd:postcode>
+      <gd:city>London</gd:city>
+      <gd:country>Uk</gd:country>
+    </gd:structuredPostalAddress>
+    <gContact:website href='http://leecampbell.blogspot.com' primary='true' rel='home'/>
+    <gContact:groupMembershipInfo deleted='false' href='http://www.google.com/m8/feeds/groups/lee.ryan.campbell%40gmail.com/base/6'/>
+  </entry>
+</feed>
+";
+        }
     }
 }

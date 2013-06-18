@@ -1,6 +1,7 @@
 ﻿using CallWall.Contract.Communication;
 using CallWall.Contract.Contact;
 using CallWall.Google.Providers.Contacts;
+using CallWall.PrismExtensions;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Unity;
 
@@ -30,7 +31,7 @@ namespace CallWall.Google
             _container.RegisterType<AccountConfiguration.IGoogleAccountSetupViewModel, AccountConfiguration.GoogleAccountSetupViewModel>(new ContainerControlledLifetimeManager());
 
             _container.RegisterType<IGoogleContactProfileTranslator, GoogleContactProfileTranslator>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IContactQueryProvider, GoogleContactQueryProvider>("GoogleContactQueryProvider", new ContainerControlledLifetimeManager());
+            _container.RegisterComposite<IContactQueryProvider, IGoogleContactQueryProvider, GoogleContactQueryProvider>();
             //Contacts
 
             //Mail
