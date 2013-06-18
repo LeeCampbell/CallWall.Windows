@@ -7,6 +7,7 @@ using CallWall.Google.Authorization;
 using JetBrains.Annotations;
 using Microsoft.Practices.Prism.Commands;
 
+//BUG: If Email is selected, Contacts must be selected too. We need the ContactId and their Email addresses for Gmail to work properly. -LC
 namespace CallWall.Google.AccountConfiguration
 {
     public sealed class GoogleAccountSetupViewModel : IGoogleAccountSetupViewModel
