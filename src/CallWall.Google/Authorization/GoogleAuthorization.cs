@@ -43,7 +43,7 @@ namespace CallWall.Google.Authorization
             _localStore = localStore;
             _oAuthService = oAuthService;
             _logger = loggerFactory.CreateLogger();
-            _currentSession = LoadSession();    
+            _currentSession = LoadSession();
             if (_currentSession != null)
             {
                 Status = AuthorizationStatus.Authorized(_currentSession.AuthorizedResources);
@@ -138,8 +138,7 @@ namespace CallWall.Google.Authorization
                         o.OnError(new InvalidOperationException(Resources.Authorization_NoResourcesSelected));
                         return Disposable.Empty;
                     }
-
-
+                    
                     return CreateSession(requestedResources)
                         .Concat(Observable.Return<ISession>(null))
                         .Take(1)
@@ -178,9 +177,9 @@ namespace CallWall.Google.Authorization
                         .Do(session => CurrentSession = session)
                         .Take(1)
                         .Select(session => session.AccessToken);
-                    return sequence.Log(_logger, "RequestAccessToken()")
-                                   .Subscribe(o);
-                });
+                    return sequence.Subscribe(o);
+                })
+                .Log(_logger, string.Format("RequestAccessToken({0})", resource));
         }
 
 
@@ -214,7 +213,7 @@ namespace CallWall.Google.Authorization
                 o =>
                 {
                     var resourceList = requestedResources.ToList();
-                    
+
                     //If we have an Authorization code from a previous session, we can continue to use that.
                     if (AuthorizationCode != null && CurrentSession.AuthorizedResources.SetEquals(resourceList))
                     {

@@ -16,16 +16,21 @@ namespace CallWall.Activators
     public sealed class BluetoothProfileActivator : IBluetoothProfileActivator, IDisposable
     {
         private readonly IBluetoothService _bluetoothService;
+        private readonly IPersonalizationSettings _personalizationSettings;
         private readonly ISchedulerProvider _schedulerProvider;
         private readonly ILogger _logger;
         private readonly IEventLoopScheduler _bluetoothEventLoop;
         private readonly IConnectableObservable<IProfile> _profileActivated;
-        private readonly SerialDisposable _connection = new SerialDisposable();      
+        private readonly SerialDisposable _connection = new SerialDisposable();
         private bool _isEnabled;
 
-        public BluetoothProfileActivator(IBluetoothService bluetoothService, ISchedulerProvider schedulerProvider, ILoggerFactory loggerFactory)
+        public BluetoothProfileActivator(IBluetoothService bluetoothService,
+            IPersonalizationSettings personalizationSettings,
+            ISchedulerProvider schedulerProvider,
+            ILoggerFactory loggerFactory)
         {
             _bluetoothService = bluetoothService;
+            _personalizationSettings = personalizationSettings;
             _schedulerProvider = schedulerProvider;
             _logger = loggerFactory.CreateLogger();
             _bluetoothEventLoop = _schedulerProvider.CreateEventLoopScheduler("BluetoothActivator");
@@ -37,21 +42,33 @@ namespace CallWall.Activators
                 .Log(_logger, "IdentitiesActivated")
                 .Select(Translate)
                 .Publish();
+
+            if (IsEnabled)
+                _connection.Disposable = _profileActivated.Connect();
         }
 
         public bool IsEnabled
         {
-            get { return _isEnabled; }
+            //get { return _isEnabled; }
+            get { return _personalizationSettings.GetAsBool(LocalStoreKeys.BluetoothIsEnabled, false); }
+            //set
+            //{
+            //    if (_isEnabled == value)
+            //        return;
+
+            //    _connection.Disposable = value
+            //        ? _profileActivated.Connect()
+            //        : Disposable.Empty;
+
+            //    _isEnabled = value;
+            //    OnPropertyChanged("IsEnabled");
+            //}
             set
             {
-                if (_isEnabled == value)
-                    return;
-
-                _connection.Disposable = value 
-                    ? _profileActivated.Connect() 
+                _personalizationSettings.SetAsBool(LocalStoreKeys.BluetoothIsEnabled, value);
+                _connection.Disposable = value
+                    ? _profileActivated.Connect()
                     : Disposable.Empty;
-                
-                _isEnabled = value;
                 OnPropertyChanged("IsEnabled");
             }
         }
@@ -87,7 +104,7 @@ namespace CallWall.Activators
             public static readonly IProviderDescription Instance = new BluetoothProviderDescription();
 
             private BluetoothProviderDescription()
-            {}
+            { }
 
             public string Name { get { return "Bluetooth"; } }
 
@@ -100,7 +117,7 @@ namespace CallWall.Activators
         public void Dispose()
         {
             _connection.Dispose();
-            _bluetoothEventLoop.Dispose();          
+            _bluetoothEventLoop.Dispose();
         }
     }
 }

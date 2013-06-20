@@ -47,5 +47,10 @@ namespace CallWall.Google.AccountConfiguration
         public Uri Resource { get { return _resource; } }
 
         public Uri Image { get { return _image; } }
+
+        public override string ToString()
+        {
+            return string.Format("GoogleResource{{{0}}}", Name);
+        }
     }
 }

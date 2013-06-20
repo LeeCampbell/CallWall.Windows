@@ -75,31 +75,20 @@ namespace CallWall.Services
                         return Disposable.Empty;
                     }
 
-                    var encoder = new ASCIIEncoding();
                     var resources = new CompositeDisposable();
-
                     try
                     {
                         var listener = StartBluetoothListener();
                         resources.Add(Disposable.Create(listener.Stop));
 
-                        _logger.Debug("_listener.AcceptBluetoothClient();");
-                        var bluetoothClient = listener.AcceptBluetoothClient();
-                        resources = new CompositeDisposable(bluetoothClient, resources);
+                        var subscription = Task.Factory.FromAsync<BluetoothClient>(listener.BeginAcceptBluetoothClient,
+                                                                                   listener.EndAcceptBluetoothClient,
+                                                                                   null, TaskCreationOptions.None)
+                                               .ToObservable()
+                                               .Log(_logger, "AcceptBluetoothClient")
+                                               .SelectMany(btClient => this.GetIdentities(btClient, scheduler))
+                                               .Subscribe(o);
 
-                        _logger.Debug("bluetoothClient.GetStream();");
-                        var ns = bluetoothClient.GetStream();
-
-                        var subscription = ns.ToObservable(1, scheduler)
-                                 .Aggregate(new List<byte>(),
-                                            (acc, cur) =>
-                                            {
-                                                acc.Add(cur);
-                                                return acc;
-                                            })
-                                 .Select(bytes => encoder.GetString(bytes.ToArray()))
-                                 .Select(data => data.Split('\n'))
-                                 .Subscribe(o);
                         resources = new CompositeDisposable(subscription, resources);
                     }
                     catch (Exception ex)
@@ -107,7 +96,33 @@ namespace CallWall.Services
                         o.OnError(ex);
                     }
                     return resources;
-                }).SubscribeOn(scheduler);
+                })
+                .Log(_logger, "IdentitiesActivated")
+                .SubscribeOn(scheduler);
+        }
+
+        private IObservable<IList<string>> GetIdentities(BluetoothClient bluetoothClient, IScheduler scheduler)
+        {
+            return Observable.Using(() => bluetoothClient,
+                                    btClient =>
+                                        {
+                                            var encoder = new ASCIIEncoding();
+                                            _logger.Debug("bluetoothClient.GetStream()...;");
+                                            var ns = btClient.GetStream();
+                                            _logger.Debug("bluetoothClient.GetStream().;");
+
+
+
+                                            return ns.ToObservable(1, scheduler)
+                                                     .Aggregate(new List<byte>(),
+                                                                (acc, cur) =>
+                                                                    {
+                                                                        acc.Add(cur);
+                                                                        return acc;
+                                                                    })
+                                                     .Select(bytes => encoder.GetString(bytes.ToArray()))
+                                                     .Select(data => data.Split('\n'));
+                                        });
         }
 
         private static IObservable<IList<BluetoothDeviceInfo>> DiscoverDevices(BluetoothClient bluetoothClient)
@@ -192,6 +207,6 @@ namespace CallWall.Services
                           device.IsConnected ? "now" : "not");
         }
 
-       
+
     }
 }

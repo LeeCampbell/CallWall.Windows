@@ -17,20 +17,23 @@ namespace CallWall.Google.Providers.Gmail
         private readonly Func<IImapClient> _imapClientFactory;
         private readonly IGoogleAuthorization _authorization;
         private readonly IGoogleContactQueryProvider _contactQueryProvider;
+        private ILogger _logger;
 
-        public GmailCommunicationQueryProvider(Func<IImapClient> imapClientFactory, IGoogleAuthorization authorization, Contacts.IGoogleContactQueryProvider contactQueryProvider)
+        public GmailCommunicationQueryProvider(Func<IImapClient> imapClientFactory, IGoogleAuthorization authorization, IGoogleContactQueryProvider contactQueryProvider, ILoggerFactory loggerFactory)
         {
             _imapClientFactory = imapClientFactory;
             _authorization = authorization;
             _contactQueryProvider = contactQueryProvider;
+            _logger = loggerFactory.CreateLogger();
         }
 
         public IObservable<IMessage> LoadMessages(IProfile activeProfile)
         {
-            return from hasAccess in Observable.Return(_authorization.Status.IsAuthorized).Where(isAuth => isAuth)
+            return (from hasAccess in Observable.Return(_authorization.Status.IsAuthorized).Where(isAuth => isAuth)
                    from token in _authorization.RequestAccessToken(GoogleResource.Gmail)
                    from message in SearchImap(activeProfile, token)
-                   select message;
+                   select message)
+                   .Log(_logger, "LoadMessages");
         }
 
         private IObservable<IMessage> SearchImap(IProfile activeProfile, string accessToken)
