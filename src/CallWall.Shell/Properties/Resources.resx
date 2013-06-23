@@ -125,4 +125,8 @@
     <value>No devices. Scan to discover Bluetooth devices in the area.</value>
     <comment>Message to show when a scan has yet to be done, so no devices have been found.</comment>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="CallWall" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CallWall.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

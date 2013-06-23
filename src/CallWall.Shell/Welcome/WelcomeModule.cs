@@ -1,5 +1,4 @@
-﻿using CallWall.Settings.Demonstration;
-using Microsoft.Practices.Prism.Modularity;
+﻿using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Unity;
 
 namespace CallWall.Welcome

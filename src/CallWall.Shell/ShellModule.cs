@@ -1,15 +1,18 @@
-﻿using CallWall.Activators;
+﻿using System;
+using CallWall.Activators;
 using CallWall.PrismExtensions;
 using CallWall.ProfileDashboard;
 using CallWall.Services;
+using CallWall.Toolbar;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Unity;
 
 namespace CallWall.Shell
 {
-    public sealed class ShellModule : IModule
+    public sealed class ShellModule : IModule, IDisposable
     {
         private readonly IUnityContainer _container;
+        private IToolbarController _toolbarController;
 
         public ShellModule(IUnityContainer container)
         {
@@ -28,6 +31,15 @@ namespace CallWall.Shell
             //_container.RegisterComposite<IProfileActivator, IIsdnIdentityActivator, CloudIdentityActivator>();
 
             _container.RegisterType<IProfileActivatorAggregator, ProfileActivatorAggregator>(new ContainerControlledLifetimeManager());
+
+            _container.RegisterType<Toolbar.IToolbarController, Toolbar.ToolbarController>(new ContainerControlledLifetimeManager());
+            _toolbarController = _container.Resolve<Toolbar.IToolbarController>();
+            _toolbarController.Start();
+        }
+
+        public void Dispose()
+        {
+            //_toolbarController.Dispose();
         }
     }
 }

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Unity;
 

@@ -42,7 +42,6 @@ namespace CallWall
         protected override void ConfigureModuleCatalog()
         {
             base.ConfigureModuleCatalog();
-
             ModuleCatalog.Add<HostModule>();
             ModuleCatalog.Add<Shell.ShellModule>();
             ModuleCatalog.Add<Settings.SettingsModule>();
@@ -105,13 +104,6 @@ namespace CallWall
 
         protected override DependencyObject CreateShell()
         {
-            //var shell = new MainWindow();
-
-            //Application.Current.MainWindow = shell;
-            //shell.Show();
-            //return shell;
-            
-            
             //Yeah pretty weird huh, this app doesn't have a shell. Technically it is a service that can show visuals (which end up being windows.) However closing a window doesn't indicate the end of the process. -LC
             return null;
         }
