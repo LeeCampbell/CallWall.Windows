@@ -47,6 +47,15 @@ namespace CallWall.Web
                 request.Headers.Add(key, Headers[key]);
             }
 
+            AppendPostData(request);
+
+            logger.Debug("Created HttpWebRequest {0}", ToString());
+            return request;
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
+        private void AppendPostData(HttpWebRequest request)
+        {
             if (PostParameters.Count > 0)
             {
                 request.Method = "POST";
@@ -57,15 +66,14 @@ namespace CallWall.Web
                 {
                     postArguments[key] = PostParameters[key];
                 }
+                //Disposing of the writer will dispose the requestStream, but I still think it is better practice to 
+                //  explicitly wrap the requestStream in its own using block. -LC
                 using (var requestStream = request.GetRequestStream())
                 using (var writer = new StreamWriter(requestStream))
                 {
                     writer.Write(postArguments.ToString());
                 }
             }
-
-            logger.Debug("Created HttpWebRequest {0}", ToString());
-            return request;
         }
 
         public Uri ConstructUri()
