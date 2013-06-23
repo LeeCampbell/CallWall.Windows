@@ -24,7 +24,7 @@ namespace CallWall.Google.Providers.Gmail
             _imapClientFactory = imapClientFactory;
             _authorization = authorization;
             _contactQueryProvider = contactQueryProvider;
-            _logger = loggerFactory.CreateLogger();
+            _logger = loggerFactory.CreateLogger(GetType());
         }
 
         public IObservable<IMessage> LoadMessages(IProfile activeProfile)

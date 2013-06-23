@@ -27,7 +27,7 @@ namespace CallWall.Services
         public BluetoothService(ISchedulerProvider schedulerProvider, ILoggerFactory loggerFactory)
         {
             _schedulerProvider = schedulerProvider;
-            _logger = loggerFactory.CreateLogger();
+            _logger = loggerFactory.CreateLogger(GetType());
         }
 
         public bool IsSupported
@@ -71,6 +71,7 @@ namespace CallWall.Services
                 {
                     if (!IsSupported)
                     {
+                        return Observable.Empty<IList<string>>().Subscribe(o);
                         o.OnError(new InvalidOperationException("Bluetooth not currently supported on this device."));
                         return Disposable.Empty;
                     }

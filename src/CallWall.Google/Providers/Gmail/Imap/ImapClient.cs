@@ -31,7 +31,7 @@ namespace CallWall.Google.Providers.Gmail.Imap
         {
             _dedicatedScheduler = schedulerProvider.CreateEventLoopScheduler("IMAP");
             _loggerFactory = loggerFactory;
-            _logger = loggerFactory.CreateLogger();
+            _logger = loggerFactory.CreateLogger(GetType());
         }
 
         public IObservable<bool> Connect(string sHost, int nPort)

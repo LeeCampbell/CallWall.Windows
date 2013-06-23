@@ -22,7 +22,6 @@ namespace CallWall.Activators
         private readonly IEventLoopScheduler _bluetoothEventLoop;
         private readonly IConnectableObservable<IProfile> _profileActivated;
         private readonly SerialDisposable _connection = new SerialDisposable();
-        private bool _isEnabled;
 
         public BluetoothProfileActivator(IBluetoothService bluetoothService,
             IPersonalizationSettings personalizationSettings,
@@ -32,7 +31,7 @@ namespace CallWall.Activators
             _bluetoothService = bluetoothService;
             _personalizationSettings = personalizationSettings;
             _schedulerProvider = schedulerProvider;
-            _logger = loggerFactory.CreateLogger();
+            _logger = loggerFactory.CreateLogger(GetType());
             _bluetoothEventLoop = _schedulerProvider.CreateEventLoopScheduler("BluetoothActivator");
             _logger.Verbose("BluetoothProfileActivator.ctor();");
 
@@ -43,26 +42,13 @@ namespace CallWall.Activators
                 .Select(Translate)
                 .Publish();
 
-            if (IsEnabled)
+            if (_bluetoothService.IsSupported && IsEnabled)
                 _connection.Disposable = _profileActivated.Connect();
         }
 
         public bool IsEnabled
         {
-            //get { return _isEnabled; }
             get { return _personalizationSettings.GetAsBool(LocalStoreKeys.BluetoothIsEnabled, false); }
-            //set
-            //{
-            //    if (_isEnabled == value)
-            //        return;
-
-            //    _connection.Disposable = value
-            //        ? _profileActivated.Connect()
-            //        : Disposable.Empty;
-
-            //    _isEnabled = value;
-            //    OnPropertyChanged("IsEnabled");
-            //}
             set
             {
                 _personalizationSettings.SetAsBool(LocalStoreKeys.BluetoothIsEnabled, value);

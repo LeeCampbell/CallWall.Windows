@@ -24,7 +24,7 @@ namespace CallWall
         {
             Thread.CurrentThread.Name = "UI";
             _loggerFactory = new LoggerFactory();
-            _logger = _loggerFactory.CreateLogger();
+            _logger = _loggerFactory.CreateLogger(GetType());
             _logger.Info("-------------------------------------------------------------------------------");
             _logger.Info("Starting application");
         }

@@ -1,6 +1,7 @@
 using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Runtime.CompilerServices;
 using Microsoft.Practices.Prism.Regions;
 
 namespace CallWall.Google.Authorization.Login
@@ -20,7 +21,7 @@ namespace CallWall.Google.Authorization.Login
             _regionManager = regionManager;
             _googleAuthorization = googleAuthorization;
             _loginView = loginView;
-            _logger = loggerFactory.CreateLogger();
+            _logger = loggerFactory.CreateLogger(GetType());
         }
 
         public void Start()

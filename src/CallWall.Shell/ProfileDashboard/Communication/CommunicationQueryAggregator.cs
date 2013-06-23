@@ -13,7 +13,7 @@ namespace CallWall.ProfileDashboard.Communication
 
         public CommunicationQueryAggregator(ILoggerFactory loggerFactory, IEnumerable<ICommunicationQueryProvider> communicationQueryProviders)
         {
-            _logger = loggerFactory.CreateLogger();
+            _logger = loggerFactory.CreateLogger(GetType());
             _communicationQueryProviders = communicationQueryProviders;
         }
 

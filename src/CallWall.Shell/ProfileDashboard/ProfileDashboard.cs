@@ -35,7 +35,7 @@ namespace CallWall.ProfileDashboard
             _communicationQueryAggregator = communicationQueryAggregator;
             _pictureQueryAggregator = pictureQueryAggregator;
             _schedulerProvider = schedulerProvider;
-            _logger = loggerFactory.CreateLogger();
+            _logger = loggerFactory.CreateLogger(GetType());
         }
 
         #region Implementation of IProfileDashboard

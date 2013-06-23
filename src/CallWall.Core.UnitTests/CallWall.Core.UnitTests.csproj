@@ -133,7 +133,6 @@
     <Compile Include="PersonalizationSettingsExtensionsTests.cs" />
     <Compile Include="GrayscaleConverterTests.cs" />
     <Compile Include="LogExtensionTests.cs" />
-    <Compile Include="LogFactoryExtensionsTests.cs" />
     <Compile Include="NotificationExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ObservableExtensionTests.cs" />

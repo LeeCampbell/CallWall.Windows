@@ -11,7 +11,7 @@ namespace CallWall.Web
 
         public HttpClient(ILoggerFactory loggerFactory)
         {
-            _logger = loggerFactory.CreateLogger();
+            _logger = loggerFactory.CreateLogger(GetType());
         }
 
         public IObservable<string> GetResponse(HttpRequestParameters requestParameters)

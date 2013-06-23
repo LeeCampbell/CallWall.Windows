@@ -159,6 +159,12 @@ namespace CallWall.Google.UnitTests.Authorization
                         _oAuthServiceMock.Verify(oauth => oauth.RequestRefreshedAccessToken(_savedRefreshToken, It.IsAny<IEnumerable<Uri>>()), Times.Once());
                     }
 
+
+                    //TODO: When second request for access token is made for authorized resource before first request is complete
+                    //          Should only send one request to oAuthService
+                    //          Second request should use value from first response
+
+
                 }
 
                 [TestFixture]

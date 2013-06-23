@@ -28,7 +28,7 @@ namespace CallWall.Google.Providers.Contacts
             _authorization = authorization;
             _httpClient = httpClient;
             _translator = translator;
-            _logger = loggerFactory.CreateLogger();
+            _logger = loggerFactory.CreateLogger(GetType());
 
             //HACK: Don't do work in ctors
             _currentUserSubscription = _authorization.PropertyChanges(a => a.Status)

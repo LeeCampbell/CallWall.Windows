@@ -18,7 +18,7 @@ namespace CallWall.Google.Authorization
             _httpClient = httpClient;
             _oAuthUriFactory = oAuthUriFactory;
             _sessionFactory = sessionFactory;
-            _logger = loggerFactory.CreateLogger();
+            _logger = loggerFactory.CreateLogger(GetType());
         }
 
         public Uri BuildAuthorizationUri(IEnumerable<Uri> requestedResources)

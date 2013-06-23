@@ -34,6 +34,7 @@ namespace CallWall.Google.Authorization
         private readonly IPersonalizationSettings _localStore;
         private readonly IGoogleOAuthService _oAuthService;
         private readonly ILogger _logger;
+        private readonly IObservable<ISession> _refreshingSession;
         private AuthorizationStatus _status = AuthorizationStatus.Uninitialized;
         private RequestAuthorizationCode _callback;
         private ISession _currentSession;
@@ -42,7 +43,13 @@ namespace CallWall.Google.Authorization
         {
             _localStore = localStore;
             _oAuthService = oAuthService;
-            _logger = loggerFactory.CreateLogger();
+            _logger = loggerFactory.CreateLogger(GetType());
+
+            _refreshingSession = Observable.Defer(() => _oAuthService.RequestRefreshedAccessToken(CurrentSession.RefreshToken, CurrentSession.AuthorizedResources))
+                .Take(1)
+                .Publish()
+                .RefCount();
+
             _currentSession = LoadSession();
             if (_currentSession != null)
             {
@@ -138,7 +145,7 @@ namespace CallWall.Google.Authorization
                         o.OnError(new InvalidOperationException(Resources.Authorization_NoResourcesSelected));
                         return Disposable.Empty;
                     }
-                    
+
                     return CreateSession(requestedResources)
                         .Concat(Observable.Return<ISession>(null))
                         .Take(1)
@@ -167,12 +174,10 @@ namespace CallWall.Google.Authorization
                     if (!CurrentSession.AuthorizedResources.Contains(resource.Resource))
                         return Observable.Empty<string>().Subscribe(o);
 
-                    var currentSession = Observable.Return(CurrentSession);
-                    var refreshSession = Observable.Defer(RefreshSession);
+                    if (CurrentSession != null && !CurrentSession.HasExpired())
+                        return Observable.Return(CurrentSession.AccessToken).Subscribe(o);
 
-                    var sessionPriorities = ObservableExtensions.LazyConcat(currentSession, refreshSession);
-
-                    var sequence = sessionPriorities
+                    var sequence = RefreshSession
                         .Where(session => session != null && !session.HasExpired())
                         .Do(session => CurrentSession = session)
                         .Take(1)
@@ -239,13 +244,10 @@ namespace CallWall.Google.Authorization
                 })
                 .Log(_logger, "requestAuthorizationCode()");
         }
-
-        private IObservable<ISession> RefreshSession()
+        
+        private IObservable<ISession> RefreshSession
         {
-            if (CurrentSession == null)
-                return Observable.Empty<Session>().Log(_logger, "refreshSession()");
-            return (from newSession in _oAuthService.RequestRefreshedAccessToken(CurrentSession.RefreshToken, CurrentSession.AuthorizedResources)
-                    select newSession).Log(_logger, "refreshSession()");
+            get { return _refreshingSession.Log(_logger, "refreshSession()"); }
         }
 
         #region INotifyPropertyChanged implementation
