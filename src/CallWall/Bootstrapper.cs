@@ -46,14 +46,19 @@ namespace CallWall
             base.ConfigureModuleCatalog();
             ModuleCatalog.Add<HostModule>();
             ModuleCatalog.Add<Shell.ShellModule>();
-            ModuleCatalog.Add<Settings.SettingsModule>();
+            ModuleCatalog.Define<Settings.SettingsModule>()
+                         .DependsOn<Shell.ShellModule>()
+                         .Add();
 
-            ModuleCatalog.Add<GoogleModule>();
+            ModuleCatalog.Define<GoogleModule>()
+                         .DependsOn<HostModule>()
+                         .Add();
 #if FAKE
             ModuleCatalog.Add<FakeModule>();
 #endif
 
             ModuleCatalog.Define<ProfileDashboard.DashboardModule>()
+                         .DependsOn<Shell.ShellModule>()
                          .DependsOn<Settings.SettingsModule>()
                          .Add();
 
