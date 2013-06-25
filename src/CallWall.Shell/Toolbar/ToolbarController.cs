@@ -1,27 +1,49 @@
-﻿using System;
+﻿using System.Windows;
+using System.Windows.Controls;
 using CallWall.Properties;
+using CallWall.Settings;
+using CallWall.Settings.Accounts;
+using CallWall.Settings.Connectivity;
+using CallWall.Settings.Demonstration;
 using Hardcodet.Wpf.TaskbarNotification;
+using Microsoft.Practices.Prism.Commands;
+using Microsoft.Practices.Prism.Regions;
 
 namespace CallWall.Toolbar
 {
-    internal interface IToolbarController : IDisposable
+    public class ToolbarController : IToolbarController
     {
-        void Start();
-    }
+        private readonly IRegionManager _regionManager;
+        private readonly ISettingsView _settingsView;
+        private readonly IConnectivitySettingsView _connectivitySettingsView;
+        private readonly IAccountSettingsView _accountSettingsView;
+        private readonly IDemoView _demoView;
+        private readonly TaskbarIcon _taksTaskbarIcon;
 
-    class ToolbarController : IToolbarController
-    {
-        private readonly TaskbarIcon _tb;
-
-        public ToolbarController()
+        public ToolbarController(IRegionManager regionManager,
+            ISettingsView settingsView,
+            IConnectivitySettingsView connectivitySettingsView,
+            IAccountSettingsView accountSettingsView,
+            IDemoView demoView)
         {
-            _tb = new TaskbarIcon();
+            _regionManager = regionManager;
+            _settingsView = settingsView;
+            _connectivitySettingsView = connectivitySettingsView;
+            _accountSettingsView = accountSettingsView;
+            _demoView = demoView;
+            _taksTaskbarIcon = new TaskbarIcon();
         }
 
         public void Start()
         {
-            //tb.Icon = new System.Drawing.Icon("CallWall.ico")
-            _tb.Icon = Resources.CallWall;
+            SetupViews();
+
+            SetupToolbar();
+        }
+
+        private void SetupToolbar()
+        {
+            _taksTaskbarIcon.Icon = Resources.CallWall;
             //tb.CloseBalloon();
             //tb.CustomBalloon
             //tb.Dispose();
@@ -36,7 +58,7 @@ namespace CallWall.Toolbar
             //tb.ShowBalloonTip(..);
             //tb.ShowCustomBalloon();
             //tb.SupportsCustomToolTips
-            _tb.ToolTipText = "CallWall\r\nIncoming call monitor";
+            _taksTaskbarIcon.ToolTipText = "CallWall\r\nIncoming call monitor";
             //tb.TrayBalloonTipClicked
             //tb.TrayBalloonTipClosed
             //tb.TrayBalloonTipShown
@@ -56,11 +78,56 @@ namespace CallWall.Toolbar
             //tb.TrayToolTipClose
             //tb.TrayToolTipOpen
             //tb.TrayToolTipResolved
+
+            var openConnectionSettingsCommand = new DelegateCommand(OpenConnectionSettings);
+            var openAccountSettingsCommand = new DelegateCommand(OpenAccountSettings);
+            var shutDownAppCommand = new DelegateCommand(ShutDownApp);
+            _taksTaskbarIcon.ContextMenu = new ContextMenu
+                {
+                    Items =
+                        {
+                            new MenuItem {Header = "Connection Settings...", Command = openConnectionSettingsCommand},
+                            new MenuItem {Header = "Account Settings...", Command = openAccountSettingsCommand},
+                            new MenuItem {Header = "Exit", Command = shutDownAppCommand},
+                        }
+                };
         }
+
+        private void SetupViews()
+        {
+            _settingsView.ViewModel.CloseCommand = new DelegateCommand(() => _regionManager.Regions[RegionNames.WindowRegion].Deactivate(_settingsView));
+            _regionManager.AddToRegion(RegionNames.WindowRegion, _settingsView);
+
+            var welcomeSettingRegion = _regionManager.Regions[ShellRegionNames.SettingsRegion];
+            welcomeSettingRegion.Add(_connectivitySettingsView);
+            welcomeSettingRegion.Add(_accountSettingsView);
+            welcomeSettingRegion.Add(_demoView);
+
+            _connectivitySettingsView.ViewModel.Closed += (s, e) => welcomeSettingRegion.Activate(_accountSettingsView);
+            _accountSettingsView.ViewModel.Closed += (s, e) => welcomeSettingRegion.Activate(_demoView);
+        }
+
+        private void ShutDownApp()
+        {
+            Application.Current.Shutdown(0);
+        }
+
+        private void OpenConnectionSettings()
+        {
+            _regionManager.Regions[RegionNames.WindowRegion].Activate(_settingsView);
+            _regionManager.Regions[ShellRegionNames.SettingsRegion].Activate(_connectivitySettingsView);
+        }
+
+        private void OpenAccountSettings()
+        {
+            _regionManager.Regions[RegionNames.WindowRegion].Activate(_settingsView);
+            _regionManager.Regions[ShellRegionNames.SettingsRegion].Activate(_accountSettingsView);
+        }
+
 
         public void Dispose()
         {
-            _tb.Dispose();
+            _taksTaskbarIcon.Dispose();
         }
     }
 }

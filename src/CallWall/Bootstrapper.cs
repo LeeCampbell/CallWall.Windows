@@ -46,11 +46,19 @@ namespace CallWall
             ModuleCatalog.Add<Shell.ShellModule>();
             ModuleCatalog.Add<Settings.SettingsModule>();
 
+            //ModuleCatalog.Add<Toolbar.ToolbarModule>();
+            ModuleCatalog.Define<Toolbar.ToolbarModule>()
+                         .DependsOn<Settings.SettingsModule>()
+                         .DependsOn<GoogleModule>()
+                         .Add();
+
             ModuleCatalog.Add<GoogleModule>();
 #if FAKE
             ModuleCatalog.Add<FakeModule>();
 #endif
 
+            //Need to be registered last?
+            //TODO: Really be set up with dependencies on the Provider modules.
             ModuleCatalog.Add<ProfileDashboard.DashboardModule>();
             ModuleCatalog.Add<Welcome.WelcomeModule>();
         }

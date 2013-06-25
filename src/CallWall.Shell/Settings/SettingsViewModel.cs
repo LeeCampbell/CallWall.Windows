@@ -1,35 +1,33 @@
-using System.Collections.Generic;
-using System.Linq;
-using CallWall.Contract;
-using Microsoft.Practices.Prism.Regions;
+using System.ComponentModel;
+using JetBrains.Annotations;
+using Microsoft.Practices.Prism.Commands;
 
 namespace CallWall.Settings
 {
-    public sealed class SettingsViewModel
+    public sealed class SettingsViewModel : INotifyPropertyChanged
     {
-        private readonly IEnumerable<SubView> _connectivityConfigurators;
-        private readonly IEnumerable<SubView> _providers;
-
-        public SettingsViewModel(IRegionManager regionManager, IEnumerable<IConnectionConfiguration> connectivityConfigurators, IEnumerable<IProvider> providers)
+        private DelegateCommand _closeCommand;
+        public DelegateCommand CloseCommand
         {
-            _connectivityConfigurators = connectivityConfigurators.Select(config => 
-                    new SubView(config.Name, config.Image, () => regionManager.AddToRegion(RegionNames.WindowRegion, config)))
-                .ToList()
-                .AsReadOnly();
-            _providers = providers.Select(config => new SubView(config.Name, config.Image, () => regionManager.AddToRegion(RegionNames.WindowRegion, config)))
-                .ToList()
-                .AsReadOnly();
+            get { return _closeCommand; }
+            set
+            {
+                _closeCommand = value;
+                OnPropertyChanged("CloseCommand");
+            }
         }
 
+        #region INotifyPropertyChanged implementation
 
-        public IEnumerable<SubView> ConnectivityConfigurators
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        private void OnPropertyChanged(string propertyName)
         {
-            get { return _connectivityConfigurators; }
+            var handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public IEnumerable<SubView> Providers
-        {
-            get { return _providers; }
-        }
+        #endregion
     }
 }

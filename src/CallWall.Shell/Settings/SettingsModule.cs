@@ -45,6 +45,7 @@ namespace CallWall.Settings
             //_container.RegisterInstance<Demonstration.IDemoActivatedIdentityListener>(demoListener);
             //_container.RegisterInstance<IActivatedIdentityListener>(demoListener);
 
+            _container.RegisterType<ISettingsView, SettingsView>(new ContainerControlledLifetimeManager());
         }
     }
 

@@ -162,12 +162,18 @@
     <Compile Include="Settings\Demonstration\DemoViewModel.cs" />
     <Compile Include="Settings\Demonstration\IDemoProfileActivator.cs" />
     <Compile Include="Settings\Demonstration\IDemoView.cs" />
+    <Compile Include="Settings\ISettingsView.cs" />
     <Compile Include="Settings\SettingsModule.cs" />
+    <Compile Include="Settings\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Settings\SettingsViewModel.cs" />
     <Compile Include="Settings\SubView.cs" />
     <Compile Include="ShellModule.cs" />
     <Compile Include="ShellRegionNames.cs" />
+    <Compile Include="Toolbar\IToolbarController.cs" />
     <Compile Include="Toolbar\ToolbarController.cs" />
+    <Compile Include="Toolbar\ToolbarModule.cs" />
     <Compile Include="ViewModelStatus.cs" />
     <Compile Include="Welcome\IWelcomeController.cs" />
     <Compile Include="Welcome\IWelcomeStep1.cs" />
@@ -214,6 +220,10 @@
     <Page Include="Settings\Demonstration\DemoView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Settings\SettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\Button.xaml">
       <Generator>MSBuild:Compile</Generator>

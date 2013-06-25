@@ -15,10 +15,8 @@ namespace CallWall
         {
             DispatcherUnhandledException += OnDispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException += OnAppDomainUnhandledException;
-            
+            this.ShutdownMode = ShutdownMode.OnExplicitShutdown;
         }
-
-        
 
         protected override void OnStartup(StartupEventArgs e)
         {
