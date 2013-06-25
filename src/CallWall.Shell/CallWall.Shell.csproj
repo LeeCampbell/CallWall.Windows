@@ -338,9 +338,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ToolbarIcon.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\CallWall.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

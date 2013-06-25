@@ -1,5 +1,61 @@
-Port the Google Contacts code over
-Integrate Google Mail
+Deployment
+	ClickOnce
+		Rename all files to file-->file.deploy
+		Create an Application Manifest (Powershell?) with all the files
+		Create a deployment manifest for each environments
+
+	Env: Local, Staging, Prod
+		Signed
+		Permissions? FullTrust/Internet/LocalInternet/Custom
+		Publisher information
+	Trusted signed certificate (for https, for signed ClickOnce)
+
+
+Mage -New ACallWall.manifest -Algorithm sha256RSA -FromDirectory bin/release	-IconFile CallWall.ico -TrustLevel "Internet" -Version 0.0.0.1
+
+Mage 
+	-Update CallWall.manifest
+	-Algorithm sha256RSA
+	-CertFile CallWall.pfx -Password XXX
+	-FromDirectory bin/release
+	-IconFile CallWall.ico
+	-TrustLevel "Internet"
+	-Version 0.0.1.0
+
+Mage -New CallWall.manifest -Algorithm sha256RSA -FromDirectory bin/release	-IconFile CallWall.ico -TrustLevel "Internet" -Version 0.0.0.1
+	
+
+Mage -Sign CallWall.manifest -CertFile CallWall.pfx -Password XXX
+
+TODO: Calculate the current version. If the provided version is > current, then use it else, use current+1
+
+Mage 
+	-Update CallWall.local.application
+	-Algorithm sha256RSA
+	-AppManifest v0.0.1.0/CallWall.manifest
+	-Install true
+	-Name "CallWall (Local)"
+	-Version 0.0.1.0						-calculated version
+	-MinVersion 0.0.1.0						-calculated
+	-Processor MSIL
+	-IncludeProviderURL true
+	-ProviderURL file://d:/clickOnce/CallWall.application			-or- http://www.CallWall.com/clickonce/CallWall.application -or- http://www.CallWall.com/clickonce/CallWall.staging.application
+	-SupportURL http://www.CallWall.com/Support
+	
+	
+	
+	
+
+===================================================================================================
 Integrate Pictures from Google (Where?). Can I get images from emails?
 
+===================================================================================================
+Create a File handler shim so that when opening a certain file type CallWall opens
+	This could be as simple as using an extension ie. *.contact or preferably as a new Uri type eg. contact://CallWall.com/IncomingCall/?email=lee.ryan.campbell&email=lee.campbell@callwall.com
+	Ensure a single instance is running at a time
+	This should allow the app to run as a Win8 app? Just the tool bar would be a service?
+===================================================================================================
 Backfill the tests!! Coverage is pretty low!
+
+===================================================================================================
+Make CallWall run as a service or, add to start up list.
