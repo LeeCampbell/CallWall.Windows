@@ -1,6 +1,8 @@
 ﻿#if FAKE
 using CallWall.FakeProvider;
 #endif
+using System.Linq;
+using System.Text;
 using CallWall.Google;
 using CallWall.Logging;
 using CallWall.PrismExtensions;
@@ -115,10 +117,24 @@ namespace CallWall
         //    base.InitializeShell();
         //}
 
-        //protected override void InitializeModules()
-        //{
-        //    base.InitializeModules();
-        //}
+        protected override void InitializeModules()
+        {
+            _logger.Debug("InitializeModules()");
+
+            var sb = new StringBuilder();
+            sb.AppendLine("Modules registered are:");
+
+            var modulesDescriptions = ModuleCatalog.Modules.OrderBy(mi => mi.DependsOn.Count);
+            foreach (var modulesDescription in modulesDescriptions)
+            {
+                sb.AppendFormat("'{0}' depends on '{1}'", modulesDescription.ModuleName,
+                                string.Join("', '", modulesDescription.DependsOn));
+                sb.AppendLine();
+            }
+            _logger.Debug(sb.ToString());
+
+            base.InitializeModules();
+        }
 
         protected override DependencyObject CreateShell()
         {
