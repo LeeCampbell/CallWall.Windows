@@ -46,21 +46,31 @@ namespace CallWall
             ModuleCatalog.Add<Shell.ShellModule>();
             ModuleCatalog.Add<Settings.SettingsModule>();
 
-            //ModuleCatalog.Add<Toolbar.ToolbarModule>();
-            ModuleCatalog.Define<Toolbar.ToolbarModule>()
-                         .DependsOn<Settings.SettingsModule>()
-                         .DependsOn<GoogleModule>()
-                         .Add();
-
             ModuleCatalog.Add<GoogleModule>();
 #if FAKE
             ModuleCatalog.Add<FakeModule>();
 #endif
 
-            //Need to be registered last?
-            //TODO: Really be set up with dependencies on the Provider modules.
-            ModuleCatalog.Add<ProfileDashboard.DashboardModule>();
-            ModuleCatalog.Add<Welcome.WelcomeModule>();
+            ModuleCatalog.Define<ProfileDashboard.DashboardModule>()
+                         .DependsOn<Settings.SettingsModule>()
+                         .Add();
+
+            ModuleCatalog.Define<Welcome.WelcomeModule>()
+                         .DependsOn<Settings.SettingsModule>()
+                         .DependsOn<GoogleModule>()
+#if FAKE
+                         .DependsOn<FakeModule>();
+#endif
+                         .Add();
+
+            ModuleCatalog.Define<Toolbar.ToolbarModule>()
+                         .DependsOn<Settings.SettingsModule>()
+                         .DependsOn<GoogleModule>()
+#if FAKE
+                         .DependsOn<FakeModule>();
+#endif
+                         .Add();
+
         }
 
         protected override void ConfigureContainer()
