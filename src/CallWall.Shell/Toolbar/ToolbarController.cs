@@ -1,8 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using CallWall.Properties;
 using CallWall.Settings;
 using CallWall.Settings.Accounts;
 using CallWall.Settings.Connectivity;
@@ -45,10 +42,7 @@ namespace CallWall.Toolbar
 
         private void SetupToolbar()
         {
-            //_taskTaskbarIcon.Icon = Resources.CallWall;
-
-            Stream iconStream = Application.GetResourceStream(new Uri(ImagePaths.CallWallIcon)).Stream;
-            _taskTaskbarIcon.Icon = new System.Drawing.Icon(iconStream);
+            _taskTaskbarIcon.Icon = ImageResources.CallWallIcon;
 
             //tb.CloseBalloon();
             //tb.CustomBalloon

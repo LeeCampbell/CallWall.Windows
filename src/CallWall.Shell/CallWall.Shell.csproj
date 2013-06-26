@@ -123,7 +123,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="ImagePaths.cs" />
+    <Compile Include="ImageResources.cs" />
     <Compile Include="Images\ActionImages.cs" />
     <Compile Include="LocalStoreKeys.cs" />
     <Compile Include="Services\BluetoothService.cs" />

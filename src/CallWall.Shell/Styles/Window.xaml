@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:callWall="clr-namespace:CallWall">
     <Style TargetType="Window" x:Key="WindowRegionStyle">
-        <Setter Property="Icon" Value="pack://application:,,,/CallWall.Shell;component/Resources/CallWall.ico"/>
+        <Setter Property="Icon" Value="{x:Static callWall:ImageResources.CallWallImageSource}"/>
         <Setter Property="WindowState" Value="Maximized"/>
         <Setter Property="WindowStyle" Value="None"/>
         <Setter Property="AllowsTransparency" Value="True"/>
@@ -9,7 +9,7 @@
     </Style>
 
     <Style TargetType="Window" x:Key="PopupRegionStyle">
-        <Setter Property="Icon" Value="pack://application:,,,/CallWall.Shell;component/Resources/CallWall.ico"/>
+        <Setter Property="Icon" Value="{x:Static callWall:ImageResources.CallWallImageSource}"/>
         <Setter Property="WindowState" Value="Normal"/>
         <Setter Property="WindowStyle" Value="ToolWindow"/>
         <Setter Property="AllowsTransparency" Value="False"/>
