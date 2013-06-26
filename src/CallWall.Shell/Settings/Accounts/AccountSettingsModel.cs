@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CallWall.Settings.Accounts
 {
@@ -15,7 +16,8 @@ namespace CallWall.Settings.Accounts
 
         public bool RequiresSetup
         {
-            get { return _settings.GetAsBool(LocalStoreKeys.AccountsRequireSetup, true); }
+            //get { return _settings.GetAsBool(LocalStoreKeys.AccountsRequireSetup, true); }
+            get { return AccountConfigurations.All(ac=>!ac.IsEnabled); }
         }
 
         public IEnumerable<IAccountConfiguration> AccountConfigurations

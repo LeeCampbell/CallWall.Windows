@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CallWall.Settings.Connectivity
 {
@@ -17,7 +18,8 @@ namespace CallWall.Settings.Connectivity
 
         public bool RequiresSetup
         {
-            get { return _settings.GetAsBool(LocalStoreKeys.ConnectivityRequireSetup, true); }
+            //get { return _settings.GetAsBool(LocalStoreKeys.ConnectivityRequireSetup, true); }
+            get { return ConnectionConfigurations.All(cc => !cc.IsEnabled); }
         }
 
         public IEnumerable<IConnectionConfiguration> ConnectionConfigurations

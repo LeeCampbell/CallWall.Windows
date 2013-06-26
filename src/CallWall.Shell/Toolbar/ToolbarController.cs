@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.IO;
+using System.Windows;
 using System.Windows.Controls;
 using CallWall.Properties;
 using CallWall.Settings;
@@ -18,7 +20,7 @@ namespace CallWall.Toolbar
         private readonly IConnectivitySettingsView _connectivitySettingsView;
         private readonly IAccountSettingsView _accountSettingsView;
         private readonly IDemoView _demoView;
-        private readonly TaskbarIcon _taksTaskbarIcon;
+        private readonly TaskbarIcon _taskTaskbarIcon;
 
         public ToolbarController(IRegionManager regionManager,
             ISettingsView settingsView,
@@ -31,7 +33,7 @@ namespace CallWall.Toolbar
             _connectivitySettingsView = connectivitySettingsView;
             _accountSettingsView = accountSettingsView;
             _demoView = demoView;
-            _taksTaskbarIcon = new TaskbarIcon();
+            _taskTaskbarIcon = new TaskbarIcon();
         }
 
         public void Start()
@@ -43,7 +45,11 @@ namespace CallWall.Toolbar
 
         private void SetupToolbar()
         {
-            _taksTaskbarIcon.Icon = Resources.CallWall;
+            //_taskTaskbarIcon.Icon = Resources.CallWall;
+
+            Stream iconStream = Application.GetResourceStream(new Uri(ImagePaths.CallWallIcon)).Stream;
+            _taskTaskbarIcon.Icon = new System.Drawing.Icon(iconStream);
+
             //tb.CloseBalloon();
             //tb.CustomBalloon
             //tb.Dispose();
@@ -58,7 +64,7 @@ namespace CallWall.Toolbar
             //tb.ShowBalloonTip(..);
             //tb.ShowCustomBalloon();
             //tb.SupportsCustomToolTips
-            _taksTaskbarIcon.ToolTipText = "CallWall\r\nIncoming call monitor";
+            _taskTaskbarIcon.ToolTipText = "CallWall\r\nIncoming call monitor";
             //tb.TrayBalloonTipClicked
             //tb.TrayBalloonTipClosed
             //tb.TrayBalloonTipShown
@@ -82,7 +88,7 @@ namespace CallWall.Toolbar
             var openConnectionSettingsCommand = new DelegateCommand(OpenConnectionSettings);
             var openAccountSettingsCommand = new DelegateCommand(OpenAccountSettings);
             var shutDownAppCommand = new DelegateCommand(ShutDownApp);
-            _taksTaskbarIcon.ContextMenu = new ContextMenu
+            _taskTaskbarIcon.ContextMenu = new ContextMenu
                 {
                     Items =
                         {
@@ -127,7 +133,7 @@ namespace CallWall.Toolbar
 
         public void Dispose()
         {
-            _taksTaskbarIcon.Dispose();
+            _taskTaskbarIcon.Dispose();
         }
     }
 }

@@ -11,7 +11,9 @@ Deployment
 	Trusted signed certificate (for https, for signed ClickOnce)
 
 
-Mage -New ACallWall.manifest -Algorithm sha256RSA -FromDirectory bin/release	-IconFile CallWall.ico -TrustLevel "Internet" -Version 0.0.0.1
+Mage -New Application -ToFile CallWall.manifest -FromDirectory . -Name CallWall -IconFile CallWall.ico -Version 0.0.0.1
+	ideally we set the TrustLevel and sign this
+	May need to run sigcheck to see if any UAC information is present in the app (See Help->Mage.exe->Manual clickonce deployments)
 
 Mage 
 	-Update CallWall.manifest
