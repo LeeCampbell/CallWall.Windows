@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Reactive.Concurrency;
+using System.Windows;
 using System.Windows.Controls;
 using CallWall.Settings;
 using CallWall.Settings.Accounts;
@@ -13,6 +15,7 @@ namespace CallWall.Toolbar
     public class ToolbarController : IToolbarController
     {
         private readonly IRegionManager _regionManager;
+        private readonly ISchedulerProvider _schedulerProvider;
         private readonly ISettingsView _settingsView;
         private readonly IConnectivitySettingsView _connectivitySettingsView;
         private readonly IAccountSettingsView _accountSettingsView;
@@ -20,12 +23,14 @@ namespace CallWall.Toolbar
         private readonly TaskbarIcon _taskTaskbarIcon;
 
         public ToolbarController(IRegionManager regionManager,
+            ISchedulerProvider schedulerProvider,
             ISettingsView settingsView,
             IConnectivitySettingsView connectivitySettingsView,
             IAccountSettingsView accountSettingsView,
             IDemoView demoView)
         {
             _regionManager = regionManager;
+            _schedulerProvider = schedulerProvider;
             _settingsView = settingsView;
             _connectivitySettingsView = connectivitySettingsView;
             _accountSettingsView = accountSettingsView;
@@ -38,6 +43,25 @@ namespace CallWall.Toolbar
             SetupViews();
 
             SetupToolbar();
+
+            if (NoWindowShown())
+            {
+                ShowToolTip();
+            }
+            
+        }
+
+        private void ShowToolTip()
+        {
+            _taskTaskbarIcon.ShowBalloonTip("CallWall", "CallWall has started", BalloonIcon.Info);
+
+            //Works
+            _schedulerProvider.Dispatcher.Schedule(TimeSpan.FromSeconds(5), () => _taskTaskbarIcon.HideBalloonTip());
+        }
+
+        private bool NoWindowShown()
+        {
+            return true;    //HACK:
         }
 
         private void SetupToolbar()
