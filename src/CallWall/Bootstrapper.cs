@@ -66,7 +66,7 @@ namespace CallWall
                          .DependsOn<Settings.SettingsModule>()
                          .DependsOn<GoogleModule>()
 #if FAKE
-                         .DependsOn<FakeModule>();
+                         .DependsOn<FakeModule>()
 #endif
                          .Add();
 
@@ -74,7 +74,7 @@ namespace CallWall
                          .DependsOn<Settings.SettingsModule>()
                          .DependsOn<GoogleModule>()
 #if FAKE
-                         .DependsOn<FakeModule>();
+                         .DependsOn<FakeModule>()
 #endif
                          .Add();
 
