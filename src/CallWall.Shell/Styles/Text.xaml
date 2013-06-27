@@ -22,6 +22,8 @@
     -->
     <SolidColorBrush x:Key="PrimaryForeground" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="SecondaryForeground" Color="#A7A7A7"/>
+    <SolidColorBrush x:Key="HighlightBackground" Color="LawnGreen"/>
+    <SolidColorBrush x:Key="HighlightForeground" Color="Black"/>
 
     <Style TargetType="TextBlock">
         <Setter Property="FontFamily" Value="Segoe UI"/>
@@ -70,6 +72,13 @@
     </Style>
     <Style x:Key="ErrorTextStyle" TargetType="TextBlock" BasedOn="{StaticResource SubTextStyle}"/>
 
+    <Style x:Key="TagStyle" TargetType="TextBlock" BasedOn="{StaticResource ContentHeading2Style}">
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="Background" Value="{StaticResource HighlightBackground}"/>
+        <Setter Property="Foreground" Value="{StaticResource HighlightForeground}"/>
+    </Style>
+    
     <!--<Style TargetType="Hyperlink">
         <Setter Property="Foreground" Value="#26A0DA"/>
     </Style>-->
@@ -79,4 +88,7 @@
         <Setter Property="VerticalContentAlignment" Value="Bottom"/>
         <Setter Property="Padding" Value="4"/>
     </Style>
+
+
+    
 </ResourceDictionary>

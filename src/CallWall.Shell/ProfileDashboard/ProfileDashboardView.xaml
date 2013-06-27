@@ -28,16 +28,14 @@
     <DockPanel VerticalAlignment="Stretch">
         <Border DockPanel.Dock="Top" 
                     Height="120" 
-                    Background="LawnGreen">
+                    Background="{StaticResource HighlightBackground}">
 
             <DockPanel Margin="40,0"  LastChildFill="False">
                 <StackPanel Orientation="Horizontal"
                             VerticalAlignment="Center"
                             DockPanel.Dock="Left">
 
-                    <Image Source="pack://application:,,,/CallWall.Shell;component/Images/CallWallLogo.png" 
-                           Stretch="Uniform" 
-                           Height="64"/>
+                    
 
                     <!--TODO: Create an ImageCarousel that rotates through collections of images-->
                     <Image VerticalAlignment="Bottom"
@@ -46,7 +44,8 @@
                            Source="{Binding Avatar}"/>
 
                     <TextBlock VerticalAlignment="Bottom"
-                               Text="{Binding Contact.Title}">
+                               Text="{Binding Contact.Title}"
+                               Foreground="{StaticResource HighlightForeground}">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock" BasedOn="{StaticResource PageHeaderStyle}">
                                 <Setter Property="Visibility" Value="Visible"/>
@@ -107,6 +106,11 @@
                             Style="{StaticResource ImageButtonStyle}">
                         Close
                     </Button>
+
+                    <Image Source="pack://application:,,,/CallWall.Shell;component/Images/CallWallLogo.png" 
+                           Stretch="Uniform" 
+                           Height="64"
+                           Margin="20,0,0,0"/>
                 </StackPanel>
                 <Grid/>
             </DockPanel>
