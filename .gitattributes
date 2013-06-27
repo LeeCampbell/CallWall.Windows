@@ -1,5 +1,8 @@
 # Auto detect text files and perform LF normalization
-* text=auto
+# Commented out this as it encouraged the flipping between LF and CRLF, which I dont think made much sense.
+#* text=auto
+#  For this	(file:///C:/Program%20Files%20(x86)/Git/doc/git/html/gitattributes.html#_end_of_line_conversion)
+* -text
 
 # Custom for Visual Studio
 *.cs     diff=csharp
