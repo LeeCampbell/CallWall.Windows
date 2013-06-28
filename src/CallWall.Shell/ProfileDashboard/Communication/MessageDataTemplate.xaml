@@ -1,9 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:CallWall.ProfileDashboard.Communication"
-                    xmlns:Communication="clr-namespace:CallWall.Contract.Communication;assembly=CallWall.Core"
-                    xmlns:profileDashboard="clr-namespace:CallWall.ProfileDashboard"
-                    xmlns:Images="clr-namespace:CallWall.Shell.Images">
+                    xmlns:communication="clr-namespace:CallWall.Contract.Communication;assembly=CallWall.Core"
+                    xmlns:profileDashboard="clr-namespace:CallWall.ProfileDashboard">
     <DataTemplate DataType="{x:Type local:Message}">
         <DataTemplate.Resources>
             <profileDashboard:DateTimeOffsetConverter x:Key="DateTimeOffsetConverter"/>
@@ -28,7 +27,7 @@
                                 <Setter Property="HorizontalAlignment" Value="Left"/>
                                 <Setter Property="Text" Value="&#x2937;"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Direction}" Value="{x:Static Communication:MessageDirection.Outbound}">
+                                    <DataTrigger Binding="{Binding Direction}" Value="{x:Static communication:MessageDirection.Outbound}">
                                         <Setter Property="HorizontalAlignment" Value="Right"/>
                                         <Setter Property="Text" Value="&#x2934;"/>
                                     </DataTrigger>
