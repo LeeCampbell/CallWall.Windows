@@ -8,34 +8,42 @@
             <profileDashboard:DateTimeOffsetConverter x:Key="DateTimeOffsetConverter"/>
             <local:MessageTypeToSymbolConterver x:Key="MessageTypeToSymbolConterver"/>
         </DataTemplate.Resources>
-        <Border BorderThickness="0,1,0,0" BorderBrush="Gray">
-            <DockPanel>
-                <Grid x:Name="MessageType"
-                      Height="50" Width="50"
-                      VerticalAlignment="Top">
-                    <TextBlock x:Name="MessageTypeSymbol" 
-                               Text="{Binding MessageType, Converter={StaticResource MessageTypeToSymbolConterver}}" 
-                               VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"
-                               FontSize="26" LineHeight="26"
-                               FontFamily="Segoe UI Symbol"/>
-                    <TextBlock x:Name="DirectionSymbol" 
-                               VerticalAlignment="Bottom"
-                               FontSize="22" LineHeight="22"
-                               FontFamily="Segoe UI Symbol" >
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="HorizontalAlignment" Value="Left"/>
-                                <Setter Property="Text" Value="&#x2937;"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Direction}" Value="{x:Static communication:MessageDirection.Outbound}">
-                                        <Setter Property="HorizontalAlignment" Value="Right"/>
-                                        <Setter Property="Text" Value="&#x2934;"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </Grid>
+
+        <Border BorderThickness="0,0,0,1" BorderBrush="#80808080" Margin="0,0,0,5">
+            <DockPanel Margin="0,0,0,5">
+                <StackPanel>
+                    <Grid x:Name="MessageType"
+                          Height="40" Width="50"
+                          VerticalAlignment="Top">
+                        <TextBlock x:Name="MessageTypeSymbol" 
+                                   Text="{Binding MessageType, Converter={StaticResource MessageTypeToSymbolConterver}}" 
+                                   VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center"
+                                   FontSize="26" LineHeight="26"
+                                   FontFamily="Segoe UI Symbol"/>
+                        <TextBlock x:Name="DirectionSymbol" 
+                                   VerticalAlignment="Bottom"
+                                   FontSize="22" LineHeight="22"
+                                   FontFamily="Segoe UI Symbol" >
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                                    <Setter Property="Text" Value="&#x2937;"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Direction}" Value="{x:Static communication:MessageDirection.Outbound}">
+                                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                                            <Setter Property="Text" Value="&#x2934;"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
+                    <TextBlock Text="{Binding Timestamp, Converter={StaticResource DateTimeOffsetConverter}}"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Top"
+                               Margin="5,0"
+                               Style="{StaticResource SubTextStyle}"/>
+                </StackPanel>
 
                 <StackPanel>
                     <TextBlock Text="{Binding Subject}"
