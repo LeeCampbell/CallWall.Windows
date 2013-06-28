@@ -126,6 +126,7 @@
     <Compile Include="ImageResources.cs" />
     <Compile Include="Images\ActionImages.cs" />
     <Compile Include="LocalStoreKeys.cs" />
+    <Compile Include="ProfileDashboard\Communication\MessageTypeToSymbolConterver.cs" />
     <Compile Include="Services\BluetoothService.cs" />
     <Compile Include="Services\IBluetoothService.cs" />
     <Compile Include="Services\WrappedBluetoothInfo.cs" />

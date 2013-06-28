@@ -45,6 +45,8 @@ namespace CallWall.FakeProvider.Providers
             public string Content { get { return null; } }
 
             public IProviderDescription Provider { get { return TwitterProvider.Instance; } }
+
+            public MessageType MessageType { get { return MessageType.Tweet; } }
         }
 
         private sealed class TwitterProvider : IProviderDescription

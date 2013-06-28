@@ -44,6 +44,8 @@ namespace CallWall.FakeProvider.Providers
             public string Content { get { return null; } }
 
             public IProviderDescription Provider { get { return SmsProvider.Instance; } }
+
+            public MessageType MessageType { get { return MessageType.Sms; } }
         }
 
         private sealed class SmsProvider : IProviderDescription

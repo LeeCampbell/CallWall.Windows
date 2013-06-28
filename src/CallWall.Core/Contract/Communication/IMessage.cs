@@ -31,5 +31,16 @@ namespace CallWall.Contract.Communication
         /// The related provider of the message.
         /// </summary>
         IProviderDescription Provider { get; }
+
+        MessageType MessageType { get; }
+    }
+
+    public enum MessageType
+    {
+        Unknown,
+        Email,
+        InstantMessage,
+        Tweet,   //? Broadcast?
+        Sms
     }
 }

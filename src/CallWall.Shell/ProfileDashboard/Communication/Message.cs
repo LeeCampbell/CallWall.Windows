@@ -39,6 +39,11 @@ namespace CallWall.ProfileDashboard.Communication
             get { return _data.Provider; }
         }
 
+        public MessageType MessageType
+        {
+            get { return _data.MessageType; }
+        }
+
         public override string ToString()
         {
             return string.Format("Message{{Subject='{0}'}}", this.Subject);

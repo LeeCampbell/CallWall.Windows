@@ -46,6 +46,8 @@ namespace CallWall.FakeProvider.Providers
             public string Content { get { return _content; } }
 
             public IProviderDescription Provider { get { return GmailProvider.Instance; } }
+            
+            public MessageType MessageType { get { return MessageType.Email; } }
         }
 
         private sealed class GmailProvider : IProviderDescription
