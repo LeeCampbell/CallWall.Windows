@@ -42,42 +42,40 @@
     </Style>
 
     <DataTemplate DataType="{x:Type Contact:AggregatedContact}">
-        <Border Background="#202020" VerticalAlignment="Stretch">
-            <StackPanel Margin="10,10,0,0">
-                <TextBlock Text="{Binding FullName}" 
+        <StackPanel>
+            <TextBlock Text="{Binding FullName}" 
                            Style="{StaticResource ContentHeading2Style}"/>
 
-                <ItemsControl ItemsSource="{Binding Tags}"
+            <ItemsControl ItemsSource="{Binding Tags}"
                               Margin="0,10,5,0">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}"
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}"
                                        Style="{StaticResource TagStyle}"/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
 
-                <!-- DateOfBirth TODO: Create a Birthday control. -->
-                <StackPanel Orientation="Horizontal"
+            <!-- DateOfBirth TODO: Create a Birthday control. -->
+            <StackPanel Orientation="Horizontal"
                             Margin="0,10,0,0">
-                    <Image Source="pack://application:,,,/CallWall.Shell;component/Images/Birthday_64x64.png"
+                <Image Source="pack://application:,,,/CallWall.Shell;component/Images/Birthday_64x64.png"
                            MaxWidth="20"
                            Stretch="Uniform"/>
-                    <TextBlock Text="{Binding DateOfBirth, StringFormat=dd-MMM}"
+                <TextBlock Text="{Binding DateOfBirth, StringFormat=dd-MMM}"
                                Margin="10,0,0,0"
                                Style="{StaticResource ContentHeading2Style}"/>
-                </StackPanel>
-
-                <HeaderedItemsControl Header="Organizations" ItemsSource="{Binding Organizations}" Style="{StaticResource SubsetStyle}"/>
-                <HeaderedItemsControl Header="Relationships" ItemsSource="{Binding Relationships}" Style="{StaticResource SubsetStyle}"/>
-                <HeaderedItemsControl Header="Phone Numbers" ItemsSource="{Binding PhoneNumbers}" Style="{StaticResource SubsetStyle}"/>
-                <HeaderedItemsControl Header="Email Addresses" ItemsSource="{Binding EmailAddresses}" Style="{StaticResource SubsetStyle}"/>
             </StackPanel>
-            </Border>
+
+            <HeaderedItemsControl Header="Organizations" ItemsSource="{Binding Organizations}" Style="{StaticResource SubsetStyle}"/>
+            <HeaderedItemsControl Header="Relationships" ItemsSource="{Binding Relationships}" Style="{StaticResource SubsetStyle}"/>
+            <HeaderedItemsControl Header="Phone Numbers" ItemsSource="{Binding PhoneNumbers}" Style="{StaticResource SubsetStyle}"/>
+            <HeaderedItemsControl Header="Email Addresses" ItemsSource="{Binding EmailAddresses}" Style="{StaticResource SubsetStyle}"/>
+        </StackPanel>
     </DataTemplate>
 </ResourceDictionary>
