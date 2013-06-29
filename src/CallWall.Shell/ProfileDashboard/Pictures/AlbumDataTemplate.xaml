@@ -13,6 +13,12 @@
                 <Setter Property="HorizontalAlignment" Value="Left"/>
                 <Setter Property="VerticalAlignment" Value="Top"/>
             </Style>
+            <Style TargetType="Image" x:Key="LiveTileStyle">
+                <Setter Property="Stretch" Value="UniformToFill"/>
+                <Setter Property="StretchDirection" Value="DownOnly"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+            </Style>
             <Style TargetType="Border" x:Key="ImageBorderStyle">
                 <Setter Property="HorizontalAlignment" Value="Left"/>
                 <Setter Property="VerticalAlignment" Value="Top"/>
@@ -58,17 +64,45 @@
                                Style="{StaticResource CoverStyle}" />
                     </Border>
                 </Grid>-->
-                <controls:ItemsStack ItemsSource="{Binding Pictures}"
+                <!--<controls:ItemsStack ItemsSource="{Binding Pictures}"
                                      Height="200" Width="300">
-                        <controls:ItemsStack.ItemTemplate>
-                            <DataTemplate>
-                                <Border Style="{StaticResource ImageBorderStyle}">
-                                    <Image Source="{Binding Source}" Style="{StaticResource CoverStyle}" />
-                                </Border>
-                            </DataTemplate>
-                        </controls:ItemsStack.ItemTemplate>
-                    </controls:ItemsStack>
+                    <controls:ItemsStack.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource ImageBorderStyle}">
+                                <Image Source="{Binding Source}" Style="{StaticResource CoverStyle}" />
+                            </Border>
+                        </DataTemplate>
+                    </controls:ItemsStack.ItemTemplate>
+                </controls:ItemsStack>-->
+
                 
+                <Grid Height="150" Width="300">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Image Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="2" 
+                           Source="{Binding Pictures[0].Source}"
+                           Style="{StaticResource LiveTileStyle}" />
+                    <Image Grid.Column="2" Grid.Row="0"
+                           Source="{Binding Pictures[1].Source}"
+                           Style="{StaticResource LiveTileStyle}" />
+                    <Image Grid.Column="3" Grid.Row="0"
+                           Source="{Binding Pictures[2].Source}"
+                           Style="{StaticResource LiveTileStyle}" />
+                    <Image Grid.Column="2" Grid.Row="1"
+                           Source="{Binding Pictures[3].Source}"
+                           Style="{StaticResource LiveTileStyle}" />
+                    <Image Grid.Column="3" Grid.Row="1"
+                           Source="{Binding Pictures[4].Source}"
+                           Style="{StaticResource LiveTileStyle}" />
+                </Grid>
             </StackPanel>
         </Border>
     </DataTemplate>
