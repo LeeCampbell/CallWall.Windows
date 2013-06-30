@@ -17,7 +17,7 @@
                                        Text="{TemplateBinding Header}"
                                        Style="{StaticResource ContentHeading1Style}" />
                             <ContentPresenter Content="{TemplateBinding Content}" 
-                                              Margin="0,5,0,20"
+                                              Margin="0,5,0,0"
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                         </DockPanel>
                     </ControlTemplate>
@@ -25,7 +25,8 @@
             </Setter>
         </Style>
     </Control.Resources>
-    <DockPanel VerticalAlignment="Stretch">
+    <DockPanel VerticalAlignment="Stretch"
+               Margin="0,0,0,20">
         <Border DockPanel.Dock="Top" 
                     Height="120" 
                     Background="{StaticResource HighlightBackground}">
