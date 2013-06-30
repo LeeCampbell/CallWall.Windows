@@ -17,7 +17,7 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Border BorderThickness="0,0,0,0" BorderBrush="White"
-                                            Padding="10,2"
+                                            Padding="10,2,0,2"
                                             SnapsToDevicePixels="True">
                                         <StackPanel>
                                             <TextBlock Text="{Binding Name}"
