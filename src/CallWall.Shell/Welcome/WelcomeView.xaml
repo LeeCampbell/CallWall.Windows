@@ -10,12 +10,10 @@
         <welcome:WelcomeSettingStepHeaderConverter x:Key="stepHeaderConverter"/>
         <welcome:WelcomeSettingStepBackgroundConverter x:Key="stepBackgroundConverter">
             <welcome:WelcomeSettingStepBackgroundConverter.ColorRamp>
-                <!--{StaticResource HighlightBackground}-->
-                <SolidColorBrush Color="#806080"/>
-                <SolidColorBrush Color="#804080"/>
-                <SolidColorBrush Color="#802080"/>
-                <!--{StaticResource TitleBackground}-->
-                <SolidColorBrush Color="#800080"/>
+                <SolidColorBrush Color="{StaticResource ColorRamp4}"/>
+                <SolidColorBrush Color="{StaticResource ColorRamp3}"/>
+                <SolidColorBrush Color="{StaticResource ColorRamp2}"/>
+                <SolidColorBrush Color="{StaticResource ColorRamp1}"/>
             </welcome:WelcomeSettingStepBackgroundConverter.ColorRamp>
         </welcome:WelcomeSettingStepBackgroundConverter>
         <Style TargetType="layoutToolkit:AccordionItem" BasedOn="{StaticResource {x:Type layoutToolkit:AccordionItem}}">
