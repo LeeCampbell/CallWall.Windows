@@ -7,6 +7,7 @@ namespace CallWall.Welcome
 {
     public sealed class WelcomeSettingStepBackgroundConverter : IValueConverter
     {
+        //TODO: Move this to a publicly settable collection
         private static readonly string[] _colorMap = new[] { "#806080", "#804080", "#802080", "#800080", };
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
