@@ -9,6 +9,7 @@
                     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
                     <CallWall:BooleanToInvisibilityConverter x:Key="BooleanToInvisibilityConverter"/>
                 </ResourceDictionary>
+                <ResourceDictionary Source="pack://application:,,,/CallWall.Shell;component/Styles/Brushes.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/CallWall.Shell;component/Styles/Text.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/CallWall.Shell;component/Styles/Button.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/CallWall.Shell;component/Styles/TabControl.xaml"/>
@@ -18,6 +19,7 @@
                 <ResourceDictionary Source="pack://application:,,,/CallWall.Shell;component/ProfileDashboard/Contact/ContactProfileDataTemplate.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/CallWall.Shell;component/ProfileDashboard/Communication/MessageDataTemplate.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/CallWall.Shell;component/ProfileDashboard/Pictures/AlbumDataTemplate.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/CallWall.Shell;component/ProfileDashboard/Calendar/CalendarEventDataTemplate.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

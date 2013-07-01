@@ -126,6 +126,10 @@
     <Compile Include="ImageResources.cs" />
     <Compile Include="Images\ActionImages.cs" />
     <Compile Include="LocalStoreKeys.cs" />
+    <Compile Include="ProfileDashboard\Calendar\CalendarEventBackgroundConverter.cs" />
+    <Compile Include="ProfileDashboard\Calendar\CalendarEventOpacityConverter.cs" />
+    <Compile Include="ProfileDashboard\Calendar\CalendarQueryAggregator.cs" />
+    <Compile Include="ProfileDashboard\Calendar\ICalendarQueryAggregator.cs" />
     <Compile Include="ProfileDashboard\Communication\MessageTypeToSymbolConterver.cs" />
     <Compile Include="Services\BluetoothService.cs" />
     <Compile Include="Services\IBluetoothService.cs" />
@@ -191,6 +195,10 @@
       <DependentUpon>WelcomeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Welcome\WelcomeViewModel.cs" />
+    <Page Include="ProfileDashboard\Calendar\CalendarEventDataTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ProfileDashboard\Communication\MessageDataTemplate.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -224,6 +232,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Settings\SettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Brushes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -342,6 +354,7 @@
   <ItemGroup>
     <Resource Include="Resources\CallWall.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

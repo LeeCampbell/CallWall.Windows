@@ -1,4 +1,5 @@
-﻿using CallWall.Contract.Communication;
+﻿using CallWall.Contract.Calendar;
+using CallWall.Contract.Communication;
 using CallWall.Contract.Contact;
 using CallWall.Contract.Picture;
 using Microsoft.Practices.Prism.Modularity;
@@ -36,6 +37,8 @@ namespace CallWall.FakeProvider
 
             _container.RegisterType<IPictureQueryProvider, Providers.SkydrivePictureQueryProvider>("SkydrivePictureQueryProvider", new ContainerControlledLifetimeManager());
             _container.RegisterType<IPictureQueryProvider, Providers.FacebookPictureQueryProvider>("FacebookPictureQueryProvider", new ContainerControlledLifetimeManager());
+
+            _container.RegisterType<ICalendarQueryProvider, Providers.GoogleCalendarQueryProvider>("GoogleCalendarQueryProvider", new ContainerControlledLifetimeManager());
         }
     }
 }

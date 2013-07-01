@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using CallWall.Contract;
+using CallWall.Contract.Calendar;
 using CallWall.Contract.Contact;
 using CallWall.ProfileDashboard.Communication;
 using CallWall.ProfileDashboard.Pictures;
@@ -21,6 +22,8 @@ namespace CallWall.ProfileDashboard
         private readonly CompositeDisposable _subscriptions = new CompositeDisposable();
         private readonly DashboardCollection<Message> _messages;
         private readonly DashboardCollection<Album> _pictureAlbums;
+        private readonly DashboardCollection<ICalendarEvent> _calendarEvents;
+        
         private DelegateCommand _closeCommand;
         private IContactProfile _contact;
         private ViewModelStatus _contactStatus = ViewModelStatus.Processing;
@@ -34,6 +37,7 @@ namespace CallWall.ProfileDashboard
             _schedulerProvider = schedulerProvider;
             _messages = new DashboardCollection<Message>(_profileDashboard.Messages.ObserveOn(_schedulerProvider.Dispatcher));
             _pictureAlbums = new DashboardCollection<Album>(_profileDashboard.PictureAlbums.ObserveOn(_schedulerProvider.Dispatcher));
+            _calendarEvents = new DashboardCollection<ICalendarEvent>(_profileDashboard.CalendarEvents.ObserveOn(_schedulerProvider.Dispatcher));
         }
 
         public string ActivatedIdentity
@@ -87,6 +91,11 @@ namespace CallWall.ProfileDashboard
         public DashboardCollection<Album> PictureAlbums
         {
             get { return _pictureAlbums; }
+        }
+
+        public DashboardCollection<ICalendarEvent> CalendarEvents
+        {
+            get { return _calendarEvents; }
         }
 
         public DelegateCommand CloseCommand

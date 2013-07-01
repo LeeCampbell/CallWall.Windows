@@ -13,7 +13,7 @@
             <DockPanel Margin="0,0,0,5">
                 <StackPanel>
                     <Grid x:Name="MessageType"
-                          Height="40" Width="50"
+                          Height="40" Width="40"
                           VerticalAlignment="Top">
                         <TextBlock x:Name="MessageTypeSymbol" 
                                    Text="{Binding MessageType, Converter={StaticResource MessageTypeToSymbolConterver}}" 

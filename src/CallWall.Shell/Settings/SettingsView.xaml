@@ -28,7 +28,7 @@
     <DockPanel VerticalAlignment="Stretch">
         <Border DockPanel.Dock="Top" 
                     Height="120" 
-                    Background="Blue">
+                    Background="{StaticResource TitleBackground}">
             <DockPanel Margin="80,0"  LastChildFill="False">
                 <StackPanel Orientation="Horizontal"
                             DockPanel.Dock="Left"

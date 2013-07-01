@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CallWall.Contract.Calendar
 {
     public interface ICalendarQueryProvider
     {
+        IObservable<ICalendarEvent> LoadCalendar(IProfile activeProfile);
     }
 }

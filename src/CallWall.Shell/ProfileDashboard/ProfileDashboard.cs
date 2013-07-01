@@ -4,7 +4,9 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using CallWall.Contract;
+using CallWall.Contract.Calendar;
 using CallWall.Contract.Contact;
+using CallWall.ProfileDashboard.Calendar;
 using CallWall.ProfileDashboard.Communication;
 using CallWall.ProfileDashboard.Contact;
 using CallWall.ProfileDashboard.Pictures;
@@ -17,6 +19,7 @@ namespace CallWall.ProfileDashboard
         private readonly IContactQueryAggregator _contactQueryAggregator;
         private readonly ICommunicationQueryAggregator _communicationQueryAggregator;
         private readonly IPictureQueryAggregator _pictureQueryAggregator;
+        private readonly ICalendarQueryAggregator _calendarQueryAggregator;
         private readonly ISchedulerProvider _schedulerProvider;
         private readonly ILogger _logger;
 
@@ -24,16 +27,19 @@ namespace CallWall.ProfileDashboard
         private readonly ISubject<IContactProfile> _contact = new Subject<IContactProfile>();
         private readonly ISubject<Message> _messages = new Subject<Message>();
         private readonly ISubject<Album> _pictureAlbums = new Subject<Album>();
+        private readonly ISubject<ICalendarEvent> _calendarEvents = new Subject<ICalendarEvent>();
 
         public ProfileDashboard(ILoggerFactory loggerFactory,
             IContactQueryAggregator contactQueryAggregator,
             ICommunicationQueryAggregator communicationQueryAggregator,
             IPictureQueryAggregator pictureQueryAggregator,
+            ICalendarQueryAggregator calendarQueryAggregator,
             ISchedulerProvider schedulerProvider)
         {
             _contactQueryAggregator = contactQueryAggregator;
             _communicationQueryAggregator = communicationQueryAggregator;
             _pictureQueryAggregator = pictureQueryAggregator;
+            _calendarQueryAggregator = calendarQueryAggregator;
             _schedulerProvider = schedulerProvider;
             _logger = loggerFactory.CreateLogger(GetType());
         }
@@ -54,6 +60,11 @@ namespace CallWall.ProfileDashboard
         public IObservable<Album> PictureAlbums
         {
             get { return _pictureAlbums.AsObservable(); }
+        }
+
+        public IObservable<ICalendarEvent> CalendarEvents
+        {
+            get { return _calendarEvents.AsObservable(); }
         } 
 
         public void Load(IProfile profile)
@@ -65,6 +76,7 @@ namespace CallWall.ProfileDashboard
             _querySubscriptions.Add(QueryContacts(profile));
             _querySubscriptions.Add(QueryMessages(profile));
             _querySubscriptions.Add(QueryPictureAlbums(profile));
+            _querySubscriptions.Add(QueryCalendars(profile));
         }
 
         public string ActivatedIdentity { get; private set; }
@@ -98,7 +110,13 @@ namespace CallWall.ProfileDashboard
                                           .Subscribe(_pictureAlbums);
         }
 
-
+        private IDisposable QueryCalendars(IProfile profile)
+        {
+            return _calendarQueryAggregator.Search(profile)
+                                           .SubscribeOn(_schedulerProvider.Concurrent)
+                                           .ObserveOn(_schedulerProvider.Dispatcher)
+                                           .Subscribe(_calendarEvents);
+        }
         #region Implementation of IDisposable
 
         /// <summary>

@@ -1,5 +1,6 @@
 using System;
 using CallWall.Contract;
+using CallWall.Contract.Calendar;
 using CallWall.Contract.Contact;
 using CallWall.ProfileDashboard.Communication;
 using CallWall.ProfileDashboard.Pictures;
@@ -16,6 +17,8 @@ namespace CallWall.ProfileDashboard
 
         IObservable<Message> Messages { get; }
 
-        IObservable<Album> PictureAlbums { get; } 
+        IObservable<Album> PictureAlbums { get; }
+
+        IObservable<ICalendarEvent> CalendarEvents { get; }
     }
 }
