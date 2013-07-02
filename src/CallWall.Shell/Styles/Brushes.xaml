@@ -10,7 +10,12 @@
     <SolidColorBrush x:Key="SecondaryForeground" Color="#A7A7A7"/>
     
     <SolidColorBrush x:Key="TitleBackground" Color="{StaticResource ColorRamp1}"/>
+    <SolidColorBrush x:Key="BackgroundRamp1" Color="{StaticResource ColorRamp1}"/>
+    <SolidColorBrush x:Key="BackgroundRamp2" Color="{StaticResource ColorRamp2}"/>
+    <SolidColorBrush x:Key="BackgroundRamp3" Color="{StaticResource ColorRamp3}"/>
+    <SolidColorBrush x:Key="BackgroundRamp4" Color="{StaticResource ColorRamp4}"/>
     <SolidColorBrush x:Key="HighlightBackground" Color="{StaticResource ColorRamp4}"/>
     <SolidColorBrush x:Key="HighlightForeground" Color="Black"/>
 
+    
 </ResourceDictionary>

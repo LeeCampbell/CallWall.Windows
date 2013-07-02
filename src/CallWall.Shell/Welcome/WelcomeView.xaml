@@ -4,33 +4,7 @@
              xmlns:layoutToolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Layout.Toolkit" 
              xmlns:cal="clr-namespace:Microsoft.Practices.Prism.Regions;assembly=Microsoft.Practices.Prism"
              xmlns:callWall="clr-namespace:CallWall" 
-             xmlns:welcome="clr-namespace:CallWall.Welcome" 
              Foreground="White">
-    <Control.Resources>
-        <welcome:WelcomeSettingStepHeaderConverter x:Key="stepHeaderConverter"/>
-        <welcome:WelcomeSettingStepBackgroundConverter x:Key="stepBackgroundConverter">
-            <welcome:WelcomeSettingStepBackgroundConverter.ColorRamp>
-                <SolidColorBrush Color="{StaticResource ColorRamp4}"/>
-                <SolidColorBrush Color="{StaticResource ColorRamp3}"/>
-                <SolidColorBrush Color="{StaticResource ColorRamp2}"/>
-                <SolidColorBrush Color="{StaticResource ColorRamp1}"/>
-            </welcome:WelcomeSettingStepBackgroundConverter.ColorRamp>
-        </welcome:WelcomeSettingStepBackgroundConverter>
-        <Style TargetType="layoutToolkit:AccordionItem" BasedOn="{StaticResource {x:Type layoutToolkit:AccordionItem}}">
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource stepBackgroundConverter}}"/>
-            <Setter Property="Header" Value="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource stepHeaderConverter}}"/>
-            <Setter Property="HeaderTemplate">
-                <Setter.Value>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}" FontSize="42" VerticalAlignment="Bottom"/>
-                    </DataTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Control.Resources>
 
     <DockPanel VerticalAlignment="Stretch">
         <Border DockPanel.Dock="Top" 

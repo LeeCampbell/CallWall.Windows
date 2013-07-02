@@ -3,8 +3,10 @@
                     xmlns:layoutPrimitivesToolkit="clr-namespace:System.Windows.Controls.Primitives;assembly=System.Windows.Controls.Layout.Toolkit" 
                     xmlns:layoutToolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Layout.Toolkit" 
                     xmlns:vsm="clr-namespace:System.Windows;assembly=WPFToolkit" 
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
-
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:welcome="clr-namespace:CallWall.Welcome">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Brushes.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
     <!--  layoutPrimitivesToolkit:AccordionButton  -->
     <Style TargetType="layoutPrimitivesToolkit:AccordionButton">
         <Setter Property="BorderThickness" Value="0" />
@@ -436,7 +438,7 @@
     </Style>
 
     <!--  layoutToolkit:AccordionItem  -->
-    <Style TargetType="layoutToolkit:AccordionItem">
+    <Style TargetType="layoutToolkit:AccordionItem" x:Key="BaseAccordionItemStyle">
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="BorderBrush" Value="#FFECECEC" />
         <Setter Property="Background" Value="White" />
@@ -911,4 +913,31 @@
     </Style>
 
 
+
+    <!--Customizations -->
+    <welcome:WelcomeSettingStepHeaderConverter x:Key="stepHeaderConverter"/>
+    <welcome:WelcomeSettingStepBackgroundConverter x:Key="stepBackgroundConverter">
+        <welcome:WelcomeSettingStepBackgroundConverter.ColorRamp>
+            <SolidColorBrush Color="{StaticResource ColorRamp4}"/>
+            <SolidColorBrush Color="{StaticResource ColorRamp3}"/>
+            <SolidColorBrush Color="{StaticResource ColorRamp2}"/>
+            <SolidColorBrush Color="{StaticResource ColorRamp1}"/>
+        </welcome:WelcomeSettingStepBackgroundConverter.ColorRamp>
+    </welcome:WelcomeSettingStepBackgroundConverter>
+
+    <Style TargetType="layoutToolkit:AccordionItem" 
+           BasedOn="{StaticResource BaseAccordionItemStyle}">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource stepBackgroundConverter}}"/>
+        <Setter Property="Header" Value="{Binding RelativeSource={RelativeSource Self}, Converter={StaticResource stepHeaderConverter}}"/>
+        <Setter Property="HeaderTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" FontSize="42" VerticalAlignment="Bottom"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
