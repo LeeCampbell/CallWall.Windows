@@ -186,8 +186,8 @@
     <Compile Include="Welcome\IWelcomeView.cs" />
     <Compile Include="Welcome\WelcomeController.cs" />
     <Compile Include="Welcome\WelcomeModule.cs" />
-    <Compile Include="Welcome\WelcomeSettingStepBackgroundConverter.cs" />
-    <Compile Include="Welcome\WelcomeSettingStepHeaderConverter.cs" />
+    <Compile Include="Styles\AccordionItemBackgroundConverter.cs" />
+    <Compile Include="Styles\AccordionItemToIndexConverter.cs" />
     <Compile Include="Welcome\WelcomeStep1View.xaml.cs">
       <DependentUpon>WelcomeStep1View.xaml</DependentUpon>
     </Compile>

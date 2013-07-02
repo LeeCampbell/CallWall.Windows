@@ -3,7 +3,8 @@
                     xmlns:layoutPrimitivesToolkit="clr-namespace:System.Windows.Controls.Primitives;assembly=System.Windows.Controls.Layout.Toolkit" 
                     xmlns:layoutToolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Layout.Toolkit" 
                     xmlns:vsm="clr-namespace:System.Windows;assembly=WPFToolkit" 
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:welcome="clr-namespace:CallWall.Welcome">
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:welcome="clr-namespace:CallWall.Welcome"
+                    xmlns:styles="clr-namespace:CallWall.Styles">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Brushes.xaml"/>
     </ResourceDictionary.MergedDictionaries>
@@ -915,18 +916,20 @@
 
 
     <!--Customizations -->
-    <welcome:WelcomeSettingStepHeaderConverter x:Key="stepHeaderConverter"/>
-    <welcome:WelcomeSettingStepBackgroundConverter x:Key="stepBackgroundConverter">
-        <welcome:WelcomeSettingStepBackgroundConverter.ColorRamp>
-            <SolidColorBrush Color="{StaticResource ColorRamp4}"/>
-            <SolidColorBrush Color="{StaticResource ColorRamp3}"/>
-            <SolidColorBrush Color="{StaticResource ColorRamp2}"/>
-            <SolidColorBrush Color="{StaticResource ColorRamp1}"/>
-        </welcome:WelcomeSettingStepBackgroundConverter.ColorRamp>
-    </welcome:WelcomeSettingStepBackgroundConverter>
 
     <Style TargetType="layoutToolkit:AccordionItem" 
            BasedOn="{StaticResource BaseAccordionItemStyle}">
+        <Style.Resources>
+            <styles:AccordionItemToIndexConverter x:Key="stepHeaderConverter"/>
+            <styles:AccordionItemBackgroundConverter x:Key="stepBackgroundConverter">
+                <styles:AccordionItemBackgroundConverter.ColorRamp>
+                    <SolidColorBrush Color="{StaticResource ColorRamp4}"/>
+                    <SolidColorBrush Color="{StaticResource ColorRamp3}"/>
+                    <SolidColorBrush Color="{StaticResource ColorRamp2}"/>
+                    <SolidColorBrush Color="{StaticResource ColorRamp1}"/>
+                </styles:AccordionItemBackgroundConverter.ColorRamp>
+            </styles:AccordionItemBackgroundConverter>
+        </Style.Resources>
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Padding" Value="10"/>

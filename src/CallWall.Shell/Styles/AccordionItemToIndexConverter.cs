@@ -3,9 +3,9 @@ using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace CallWall.Welcome
+namespace CallWall.Styles
 {
-    public sealed class WelcomeSettingStepHeaderConverter : IValueConverter
+    public sealed class AccordionItemToIndexConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

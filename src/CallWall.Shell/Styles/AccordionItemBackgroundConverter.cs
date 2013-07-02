@@ -5,9 +5,9 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace CallWall.Welcome
+namespace CallWall.Styles
 {
-    public sealed class WelcomeSettingStepBackgroundConverter : IValueConverter
+    public sealed class AccordionItemBackgroundConverter : IValueConverter
     {
         private readonly BrushCollection _colorRamp = new BrushCollection();
 
