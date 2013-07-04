@@ -116,7 +116,8 @@
             </DockPanel>
         </Border>
 
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled"
+                      PanningMode="HorizontalOnly">
             <StackPanel Orientation="Horizontal">
 
                 <HeaderedContentControl Header="Details" Style="{StaticResource ContentSection}">
