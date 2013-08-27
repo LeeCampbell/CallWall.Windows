@@ -2,6 +2,7 @@
 using System.Reactive.Concurrency;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using CallWall.Settings;
 using CallWall.Settings.Accounts;
 using CallWall.Settings.Connectivity;
@@ -16,6 +17,7 @@ namespace CallWall.Toolbar
     {
         private readonly IRegionManager _regionManager;
         private readonly ISchedulerProvider _schedulerProvider;
+        private readonly IPersonalizationSettings _settings;
         private readonly ISettingsView _settingsView;
         private readonly IConnectivitySettingsView _connectivitySettingsView;
         private readonly IAccountSettingsView _accountSettingsView;
@@ -24,6 +26,7 @@ namespace CallWall.Toolbar
 
         public ToolbarController(IRegionManager regionManager,
             ISchedulerProvider schedulerProvider,
+            IPersonalizationSettings settings,
             ISettingsView settingsView,
             IConnectivitySettingsView connectivitySettingsView,
             IAccountSettingsView accountSettingsView,
@@ -31,6 +34,7 @@ namespace CallWall.Toolbar
         {
             _regionManager = regionManager;
             _schedulerProvider = schedulerProvider;
+            _settings = settings;
             _settingsView = settingsView;
             _connectivitySettingsView = connectivitySettingsView;
             _accountSettingsView = accountSettingsView;
@@ -106,16 +110,20 @@ namespace CallWall.Toolbar
             var openConnectionSettingsCommand = new DelegateCommand(OpenConnectionSettings);
             var openAccountSettingsCommand = new DelegateCommand(OpenAccountSettings);
             var shutDownAppCommand = new DelegateCommand(ShutDownApp);
+            var logoutCommand = new DelegateCommand(Logout);
             _taskTaskbarIcon.ContextMenu = new ContextMenu
                 {
                     Items =
                         {
                             new MenuItem {Header = "Connection Settings...", Command = openConnectionSettingsCommand},
                             new MenuItem {Header = "Account Settings...", Command = openAccountSettingsCommand},
+                            new MenuItem {Header = "Log off all accounts", Command = logoutCommand},
                             new MenuItem {Header = "Exit", Command = shutDownAppCommand},
                         }
                 };
         }
+
+        
 
         private void SetupViews()
         {
@@ -131,11 +139,6 @@ namespace CallWall.Toolbar
             _accountSettingsView.ViewModel.Closed += (s, e) => welcomeSettingRegion.Activate(_demoView);
         }
 
-        private void ShutDownApp()
-        {
-            Application.Current.Shutdown(0);
-        }
-
         private void OpenConnectionSettings()
         {
             _regionManager.Regions[RegionNames.WindowRegion].Activate(_settingsView);
@@ -148,6 +151,17 @@ namespace CallWall.Toolbar
             _regionManager.Regions[ShellRegionNames.SettingsRegion].Activate(_accountSettingsView);
         }
 
+        private void Logout()
+        {
+            _settings.ClearAll();
+        }
+
+        private void ShutDownApp()
+        {
+            Application.Current.Shutdown(0);
+        }
+
+        
 
         public void Dispose()
         {

@@ -4,5 +4,6 @@
     {
         string Read(string key);
         void Write(string key, string content);
+        void Reset();
     }
 }

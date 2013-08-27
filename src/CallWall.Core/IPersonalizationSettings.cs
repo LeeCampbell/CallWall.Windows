@@ -5,6 +5,7 @@ namespace CallWall
         string Get(string key);
         void Remove(string key);
         void Put(string key, string value);
+        void ClearAll();
     }
 
     public static class PersonalizationSettingsExtensions

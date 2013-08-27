@@ -38,6 +38,16 @@ namespace CallWall
             }
         }
 
+        public void ClearAll()
+        {
+            LoadIfRequired();
+            lock (_gate)
+            {
+                _data.Clear();
+                _localStorage.Reset();
+            }
+        }
+
         public void Remove(string key)
         {
             LoadIfRequired();

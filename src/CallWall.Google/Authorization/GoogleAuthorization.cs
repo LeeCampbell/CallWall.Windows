@@ -19,12 +19,12 @@ namespace CallWall.Google.Authorization
     //TODO: Appears to unnecessarily refresh the access token. Note this log snippet where we refresh 4 distinct times 3, 8 & 13 seconds apart (clearly not enough time for the token to lapse).
     /*	
     158	2013-02-16 10:13:23,815 [12 ] TRACE GoogleAuthorization - refreshSession().OnNext(Session { AccessToken : 'ya29.AHES6ZRXmyBLEN4WQnhwOZxYPgka4xLgfN-N9J0tavEXCpk', RefreshToken : '1/vR5Ql9nq23cmJo_u-wQMNudYoSlDkixf1y-evmsTXc8', Expires : '2013-02-16T11:13:22.8208044+00:00'})
-	232	2013-02-16 10:13:26,422 [39 ] TRACE GoogleAuthorization - refreshSession().OnNext(Session { AccessToken : 'ya29.AHES6ZRJVLJBz6dMrVAwhv_chwBCiPxJ9NRxpzg7Xm3Ci1M', RefreshToken : '1/vR5Ql9nq23cmJo_u-wQMNudYoSlDkixf1y-evmsTXc8', Expires : '2013-02-16T11:13:24.0174898+00:00'})
-	282	2013-02-16 10:13:27,026 [14 ] TRACE GoogleAuthorization - refreshSession().OnNext(Session { AccessToken : 'ya29.AHES6ZRJVLJBz6dMrVAwhv_chwBCiPxJ9NRxpzg7Xm3Ci1M', RefreshToken : '1/vR5Ql9nq23cmJo_u-wQMNudYoSlDkixf1y-evmsTXc8', Expires : '2013-02-16T11:13:24.6209151+00:00'})
-	387	2013-02-16 10:13:34,852 [37 ] TRACE GoogleAuthorization - refreshSession().OnNext(Session { AccessToken : 'ya29.AHES6ZT8-C62c-wpiaWDHOnoqjMyqvrF-3Y-d7qk2Qbwj1o', RefreshToken : '1/vR5Ql9nq23cmJo_u-wQMNudYoSlDkixf1y-evmsTXc8', Expires : '2013-02-16T11:13:32.6475378+00:00'})
-	388	2013-02-16 10:13:35,050 [12 ] TRACE GoogleAuthorization - refreshSession().OnNext(Session { AccessToken : 'ya29.AHES6ZT8-C62c-wpiaWDHOnoqjMyqvrF-3Y-d7qk2Qbwj1o', RefreshToken : '1/vR5Ql9nq23cmJo_u-wQMNudYoSlDkixf1y-evmsTXc8', Expires : '2013-02-16T11:13:31.6394237+00:00'})
-	551	2013-02-16 10:13:47,720 [40 ] TRACE GoogleAuthorization - refreshSession().OnNext(Session { AccessToken : 'ya29.AHES6ZSTJNul6ZJ8MabdWQPSOkEdobUTaPIdeJnTe4fH1z0', RefreshToken : '1/vR5Ql9nq23cmJo_u-wQMNudYoSlDkixf1y-evmsTXc8', Expires : '2013-02-16T11:13:40.0697386+00:00'})
-	557	2013-02-16 10:13:50,528 [12 ] TRACE GoogleAuthorization - refreshSession().OnNext(Session { AccessToken : 'ya29.AHES6ZSTJNul6ZJ8MabdWQPSOkEdobUTaPIdeJnTe4fH1z0', RefreshToken : '1/vR5Ql9nq23cmJo_u-wQMNudYoSlDkixf1y-evmsTXc8', Expires : '2013-02-16T11:13:40.6731207+00:00'})
+    232	2013-02-16 10:13:26,422 [39 ] TRACE GoogleAuthorization - refreshSession().OnNext(Session { AccessToken : 'ya29.AHES6ZRJVLJBz6dMrVAwhv_chwBCiPxJ9NRxpzg7Xm3Ci1M', RefreshToken : '1/vR5Ql9nq23cmJo_u-wQMNudYoSlDkixf1y-evmsTXc8', Expires : '2013-02-16T11:13:24.0174898+00:00'})
+    282	2013-02-16 10:13:27,026 [14 ] TRACE GoogleAuthorization - refreshSession().OnNext(Session { AccessToken : 'ya29.AHES6ZRJVLJBz6dMrVAwhv_chwBCiPxJ9NRxpzg7Xm3Ci1M', RefreshToken : '1/vR5Ql9nq23cmJo_u-wQMNudYoSlDkixf1y-evmsTXc8', Expires : '2013-02-16T11:13:24.6209151+00:00'})
+    387	2013-02-16 10:13:34,852 [37 ] TRACE GoogleAuthorization - refreshSession().OnNext(Session { AccessToken : 'ya29.AHES6ZT8-C62c-wpiaWDHOnoqjMyqvrF-3Y-d7qk2Qbwj1o', RefreshToken : '1/vR5Ql9nq23cmJo_u-wQMNudYoSlDkixf1y-evmsTXc8', Expires : '2013-02-16T11:13:32.6475378+00:00'})
+    388	2013-02-16 10:13:35,050 [12 ] TRACE GoogleAuthorization - refreshSession().OnNext(Session { AccessToken : 'ya29.AHES6ZT8-C62c-wpiaWDHOnoqjMyqvrF-3Y-d7qk2Qbwj1o', RefreshToken : '1/vR5Ql9nq23cmJo_u-wQMNudYoSlDkixf1y-evmsTXc8', Expires : '2013-02-16T11:13:31.6394237+00:00'})
+    551	2013-02-16 10:13:47,720 [40 ] TRACE GoogleAuthorization - refreshSession().OnNext(Session { AccessToken : 'ya29.AHES6ZSTJNul6ZJ8MabdWQPSOkEdobUTaPIdeJnTe4fH1z0', RefreshToken : '1/vR5Ql9nq23cmJo_u-wQMNudYoSlDkixf1y-evmsTXc8', Expires : '2013-02-16T11:13:40.0697386+00:00'})
+    557	2013-02-16 10:13:50,528 [12 ] TRACE GoogleAuthorization - refreshSession().OnNext(Session { AccessToken : 'ya29.AHES6ZSTJNul6ZJ8MabdWQPSOkEdobUTaPIdeJnTe4fH1z0', RefreshToken : '1/vR5Ql9nq23cmJo_u-wQMNudYoSlDkixf1y-evmsTXc8', Expires : '2013-02-16T11:13:40.6731207+00:00'})
     */
     public sealed class GoogleAuthorization : IGoogleAuthorization
     {
@@ -244,7 +244,7 @@ namespace CallWall.Google.Authorization
                 })
                 .Log(_logger, "requestAuthorizationCode()");
         }
-        
+
         private IObservable<ISession> RefreshSession
         {
             get { return _refreshingSession.Log(_logger, "refreshSession()"); }
@@ -263,4 +263,50 @@ namespace CallWall.Google.Authorization
 
         #endregion
     }
+
+#if FAKE
+    public class FakeGoogleAuthorization : IGoogleAuthorization
+    {
+        private readonly AuthorizationStatus _status;
+        private readonly ReadOnlyCollection<GoogleResource> _availableResourceScopes;
+
+        public FakeGoogleAuthorization()
+        {
+            _availableResourceScopes = GoogleResource.AvailableResourceScopes;
+            _status = AuthorizationStatus.Authorized(new HashSet<Uri>(_availableResourceScopes.Select(r => r.Resource)));
+        }
+        public AuthorizationStatus Status { get { return _status; } }
+
+        public ReadOnlyCollection<GoogleResource> AvailableResourceScopes { get { return _availableResourceScopes; } }
+
+        public void RegisterAuthorizationCallback(RequestAuthorizationCode callback)
+        {
+            //noOp
+        }
+
+        public IObservable<Unit> Authorize(IEnumerable<GoogleResource> resources)
+        {
+            return Observable.Return(Unit.Default);
+        }
+
+        public IObservable<string> RequestAccessToken(GoogleResource resource)
+        {
+            return Observable.Empty<string>();
+        }
+
+
+        #region INotifyPropertyChanged implementation
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        private void OnPropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
+    }
+#endif
 }

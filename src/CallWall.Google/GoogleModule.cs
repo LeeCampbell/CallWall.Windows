@@ -23,21 +23,28 @@ namespace CallWall.Google
             _container.RegisterType<Authorization.IOAuthUriFactory, Authorization.OAuthUriFactory>(new ContainerControlledLifetimeManager());
             _container.RegisterType<Authorization.ISessionFactory, Authorization.SessionFactory>(new ContainerControlledLifetimeManager());
             _container.RegisterType<Authorization.IGoogleOAuthService, Authorization.GoogleOAuthService>(new ContainerControlledLifetimeManager());
+#if FAKE
+            _container.RegisterType<Authorization.IGoogleAuthorization, Authorization.FakeGoogleAuthorization>(new ContainerControlledLifetimeManager());
+#else
             _container.RegisterType<Authorization.IGoogleAuthorization, Authorization.GoogleAuthorization>(new ContainerControlledLifetimeManager());
+#endif
             _container.RegisterType<Authorization.Login.IGoogleLoginView, Authorization.Login.GoogleLoginView>(new ContainerControlledLifetimeManager());
             _container.RegisterType<Authorization.Login.ILoginController, Authorization.Login.LoginController>(new ContainerControlledLifetimeManager());
 
             _container.RegisterType<AccountConfiguration.IGoogleAccountSetupView, AccountConfiguration.GoogleAccountSetupView>(new ContainerControlledLifetimeManager());
             _container.RegisterType<AccountConfiguration.IGoogleAccountSetupViewModel, AccountConfiguration.GoogleAccountSetupViewModel>(new ContainerControlledLifetimeManager());
 
+#if !FAKE
+            //Contacts
             _container.RegisterType<IGoogleContactProfileTranslator, GoogleContactProfileTranslator>(new ContainerControlledLifetimeManager());
             _container.RegisterComposite<IContactQueryProvider, IGoogleContactQueryProvider, GoogleContactQueryProvider>();
-            //Contacts
+#endif
 
+#if !FAKE
             //Mail
             _container.RegisterType<ICommunicationQueryProvider, Providers.Gmail.GmailCommunicationQueryProvider>("GmailCommunicationQueryProvider", new ContainerControlledLifetimeManager());
             _container.RegisterType<Providers.Gmail.Imap.IImapClient, Providers.Gmail.Imap.ImapClient>(new TransientLifetimeManager());
-
+#endif
             //Talk
             //Images??
             //Calendar

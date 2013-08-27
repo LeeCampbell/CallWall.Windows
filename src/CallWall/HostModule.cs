@@ -19,7 +19,9 @@ namespace CallWall
             _container.RegisterType<ILocalStoragePersistence, LocalStoragePersistence>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IJsonSerializer, JsonSerializer>(new ContainerControlledLifetimeManager());
             _container.RegisterType<IPersonalizationSettings, PersonalizationSettings>(new ContainerControlledLifetimeManager());
+#if !FAKE
             _container.RegisterType<Web.IHttpClient, Web.HttpClient>(new ContainerControlledLifetimeManager());
+#endif
         }
     }
 }
