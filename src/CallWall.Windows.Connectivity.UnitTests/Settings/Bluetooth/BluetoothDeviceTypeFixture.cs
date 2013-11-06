@@ -1,6 +1,6 @@
 ﻿using System;
-using CallWall.Testing;
 using CallWall.Windows.Connectivity.Settings.Bluetooth;
+using CallWall.Windows.Testing;
 using InTheHand.Net.Bluetooth;
 using NUnit.Framework;
 

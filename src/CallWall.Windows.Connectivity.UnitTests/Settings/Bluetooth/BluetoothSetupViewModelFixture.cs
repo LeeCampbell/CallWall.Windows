@@ -2,9 +2,9 @@
 using System.ComponentModel;
 using System.Reactive;
 using System.Reactive.Linq;
-using CallWall.Testing;
 using CallWall.Windows.Connectivity.Bluetooth;
 using CallWall.Windows.Connectivity.Settings.Bluetooth;
+using CallWall.Windows.Testing;
 using Microsoft.Reactive.Testing;
 using Moq;
 using NUnit.Framework;

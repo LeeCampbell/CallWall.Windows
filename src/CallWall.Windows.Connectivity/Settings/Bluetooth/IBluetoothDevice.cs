@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using CallWall.Windows.Shell;
 using Microsoft.Practices.Prism.Commands;
 
 namespace CallWall.Windows.Connectivity.Settings.Bluetooth

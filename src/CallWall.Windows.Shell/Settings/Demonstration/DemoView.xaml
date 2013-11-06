@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="CallWall.Windows.Shell.Settings.Demonstration.DemoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DockPanel>
+        <Grid DockPanel.Dock="Bottom" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox Grid.Column="1" Text="{Binding Identity, UpdateSourceTrigger=PropertyChanged}" Width="200" HorizontalAlignment="Right" TextAlignment="Right" Margin="10,0" />
+            <Button Grid.Column="2" Command="{Binding ActivateIdentityCommand}" IsDefault="True">Try me</Button>
+        </Grid>
+
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock Text="Try me"
+                       VerticalAlignment="Top"
+                       Style="{DynamicResource PageHeaderStyle}" />
+
+                <TextBlock TextWrapping="Wrap">
+                    Now that you are set up we will run an example of what you would see when a call is recieved, 
+                    but with your information.</TextBlock>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

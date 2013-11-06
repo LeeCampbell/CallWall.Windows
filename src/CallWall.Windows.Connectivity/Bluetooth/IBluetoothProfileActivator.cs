@@ -1,5 +1,5 @@
 using System.ComponentModel;
-using CallWall.Contract;
+using CallWall.Windows.Contract;
 
 namespace CallWall.Windows.Connectivity.Bluetooth
 {

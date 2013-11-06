@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using CallWall.Windows.Connectivity.Bluetooth;
 using CallWall.Windows.Connectivity.Properties;
-using JetBrains.Annotations;
+using CallWall.Windows.Shell;
 using Microsoft.Practices.Prism.Commands;
 
 namespace CallWall.Windows.Connectivity.Settings.Bluetooth

@@ -1,6 +1,6 @@
-﻿using CallWall.Contract;
-using CallWall.Windows.Connectivity.Bluetooth;
+﻿using CallWall.Windows.Connectivity.Bluetooth;
 using CallWall.Windows.Connectivity.Settings.Bluetooth;
+using CallWall.Windows.Contract;
 using Microsoft.Practices.Prism.Modularity;
 
 namespace CallWall.Windows.Connectivity
