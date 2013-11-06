@@ -2,7 +2,6 @@
 using System.Reactive.Concurrency;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using CallWall.Settings;
 using CallWall.Settings.Accounts;
 using CallWall.Settings.Connectivity;
@@ -122,9 +121,7 @@ namespace CallWall.Toolbar
                         }
                 };
         }
-
         
-
         private void SetupViews()
         {
             _settingsView.ViewModel.CloseCommand = new DelegateCommand(() => _regionManager.Regions[RegionNames.WindowRegion].Deactivate(_settingsView));
@@ -156,13 +153,11 @@ namespace CallWall.Toolbar
             _settings.ClearAll();
         }
 
-        private void ShutDownApp()
+        private static void ShutDownApp()
         {
             Application.Current.Shutdown(0);
         }
-
         
-
         public void Dispose()
         {
             _taskTaskbarIcon.Dispose();

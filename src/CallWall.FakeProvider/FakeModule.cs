@@ -1,44 +1,44 @@
-﻿using CallWall.Contract.Calendar;
+﻿using CallWall.Contract;
+using CallWall.Contract.Calendar;
 using CallWall.Contract.Communication;
 using CallWall.Contract.Contact;
 using CallWall.Contract.Picture;
 using Microsoft.Practices.Prism.Modularity;
-using Microsoft.Practices.Unity;
 
 namespace CallWall.FakeProvider
 {
     public sealed class FakeModule : IModule
     {
-        private readonly IUnityContainer _container;
+        private readonly ITypeRegistry _typeRegistry;
 
-        public FakeModule(IUnityContainer container)
+        public FakeModule(ITypeRegistry typeRegistry)
         {
-            _container = container;
+            _typeRegistry = typeRegistry;
         }
 
         public void Initialize()
         {
-            _container.RegisterType<IConnectionConfiguration, Connectivity.UsbConnectionConfiguration>("UsbConnectionConfiguration", new ContainerControlledLifetimeManager());
-            _container.RegisterType<IConnectionConfiguration, Connectivity.WifiDirectConnectionConfiguration>("WifiDirectConnectionConfiguration", new ContainerControlledLifetimeManager());
-            _container.RegisterType<IConnectionConfiguration, Connectivity.CloudConnectionConfiguration>("CloudConnectionConfiguration", new ContainerControlledLifetimeManager());
+            _typeRegistry.RegisterCompositeAsSingleton<IConnectionConfiguration, Connectivity.UsbConnectionConfiguration>();
+            _typeRegistry.RegisterCompositeAsSingleton<IConnectionConfiguration, Connectivity.WifiDirectConnectionConfiguration>();
+            _typeRegistry.RegisterCompositeAsSingleton<IConnectionConfiguration, Connectivity.CloudConnectionConfiguration>();
 
-            _container.RegisterType<IAccountConfiguration, AccountConfiguration.MicrosoftAccountConfiguration>("MicrosoftAccountConfiguration", new ContainerControlledLifetimeManager());
-            _container.RegisterType<IAccountConfiguration, AccountConfiguration.FacebookAccountConfiguration>("FacebookAccountConfiguration", new ContainerControlledLifetimeManager());
-            _container.RegisterType<IAccountConfiguration, AccountConfiguration.LinkedInAccountConfiguration>("LinkedInAccountConfiguration", new ContainerControlledLifetimeManager());
-            _container.RegisterType<IAccountConfiguration, AccountConfiguration.TwitterAccountConfiguration>("TwitterAccountConfiguration", new ContainerControlledLifetimeManager());
-            _container.RegisterType<IAccountConfiguration, AccountConfiguration.YahooAccountConfiguration>("YahooAccountConfiguration", new ContainerControlledLifetimeManager());
-            _container.RegisterType<IAccountConfiguration, AccountConfiguration.GithubAccountConfiguration>("GithubAccountConfiguration", new ContainerControlledLifetimeManager());
-            
-            _container.RegisterType<IContactQueryProvider, Providers.FakeGoogleContactQueryProvider>("FakeGoogleContactQueryProvider", new ContainerControlledLifetimeManager());
+            _typeRegistry.RegisterCompositeAsSingleton<IAccountConfiguration, AccountConfiguration.MicrosoftAccountConfiguration>();
+            _typeRegistry.RegisterCompositeAsSingleton<IAccountConfiguration, AccountConfiguration.FacebookAccountConfiguration>();
+            _typeRegistry.RegisterCompositeAsSingleton<IAccountConfiguration, AccountConfiguration.LinkedInAccountConfiguration>();
+            _typeRegistry.RegisterCompositeAsSingleton<IAccountConfiguration, AccountConfiguration.TwitterAccountConfiguration>();
+            _typeRegistry.RegisterCompositeAsSingleton<IAccountConfiguration, AccountConfiguration.YahooAccountConfiguration>();
+            _typeRegistry.RegisterCompositeAsSingleton<IAccountConfiguration, AccountConfiguration.GithubAccountConfiguration>();
 
-            _container.RegisterType<ICommunicationQueryProvider, Providers.GmailCommunicationQueryProvider>("FakeGmailCommunicationQueryProvider", new ContainerControlledLifetimeManager());
-            _container.RegisterType<ICommunicationQueryProvider, Providers.SmsCommunicationQueryProvider>("FakeSmsCommunicationQueryProvider", new ContainerControlledLifetimeManager());
-            _container.RegisterType<ICommunicationQueryProvider, Providers.TwitterCommunicationQueryProvider>("FakeTwitterCommunicationQueryProvider", new ContainerControlledLifetimeManager());
+            _typeRegistry.RegisterCompositeAsSingleton<IContactQueryProvider, Providers.FakeGoogleContactQueryProvider>();
 
-            _container.RegisterType<IPictureQueryProvider, Providers.SkydrivePictureQueryProvider>("SkydrivePictureQueryProvider", new ContainerControlledLifetimeManager());
-            _container.RegisterType<IPictureQueryProvider, Providers.FacebookPictureQueryProvider>("FacebookPictureQueryProvider", new ContainerControlledLifetimeManager());
+            _typeRegistry.RegisterCompositeAsSingleton<ICommunicationQueryProvider, Providers.GmailCommunicationQueryProvider>();
+            _typeRegistry.RegisterCompositeAsSingleton<ICommunicationQueryProvider, Providers.SmsCommunicationQueryProvider>();
+            _typeRegistry.RegisterCompositeAsSingleton<ICommunicationQueryProvider, Providers.TwitterCommunicationQueryProvider>();
 
-            _container.RegisterType<ICalendarQueryProvider, Providers.GoogleCalendarQueryProvider>("GoogleCalendarQueryProvider", new ContainerControlledLifetimeManager());
+            _typeRegistry.RegisterCompositeAsSingleton<IPictureQueryProvider, Providers.SkydrivePictureQueryProvider>();
+            _typeRegistry.RegisterCompositeAsSingleton<IPictureQueryProvider, Providers.FacebookPictureQueryProvider>();
+
+            _typeRegistry.RegisterCompositeAsSingleton<ICalendarQueryProvider, Providers.GoogleCalendarQueryProvider>();
         }
     }
 }

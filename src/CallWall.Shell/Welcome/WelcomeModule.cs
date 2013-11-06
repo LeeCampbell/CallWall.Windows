@@ -1,25 +1,27 @@
-﻿using Microsoft.Practices.Prism.Modularity;
-using Microsoft.Practices.Unity;
+﻿using System;
+using CallWall.Contract;
+using Microsoft.Practices.Prism.Modularity;
 
 namespace CallWall.Welcome
 {
     public sealed class WelcomeModule : IModule
     {
-        private readonly IUnityContainer _container;
+        private readonly ITypeRegistry _typeRegistry;
+        private readonly Func<IWelcomeController> _welcomeControllerFactory;
 
-        public WelcomeModule(IUnityContainer container)
+        public WelcomeModule(ITypeRegistry typeRegistry, Func<IWelcomeController> welcomeControllerFactory)
         {
-            _container = container;
+            _typeRegistry = typeRegistry;
+            _welcomeControllerFactory = welcomeControllerFactory;
         }
 
         public void Initialize()
         {
-            _container.RegisterType<IWelcomeController, WelcomeController>(new TransientLifetimeManager());
-            _container.RegisterType<IWelcomeView, WelcomeView>(new TransientLifetimeManager());
-            _container.RegisterType<IWelcomeStep1View, WelcomeStep1View>(new TransientLifetimeManager());
-            
+            _typeRegistry.RegisterTypeAsTransient<IWelcomeController, WelcomeController>();
+            _typeRegistry.RegisterTypeAsTransient<IWelcomeView, WelcomeView>();
+            _typeRegistry.RegisterTypeAsTransient<IWelcomeStep1View, WelcomeStep1View>();
 
-            var welcomeController = _container.Resolve<IWelcomeController>();
+            var welcomeController = _welcomeControllerFactory();
             welcomeController.Start();
         }
     }
