@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall", "src\CallWall\CallWall.csproj", "{06D674A4-36F1-4FAB-B23C-FD4D0A0B7E57}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall", "src\CallWall.Windows\CallWall.Windows.csproj", "{06D674A4-36F1-4FAB-B23C-FD4D0A0B7E57}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D4A3BB64-3266-43BD-B256-8AC98BFF4CE7}"
 	ProjectSection(SolutionItems) = preProject
@@ -11,9 +11,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		todo.txt = todo.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.Core.UnitTests", "src\CallWall.Core.UnitTests\CallWall.Core.UnitTests.csproj", "{1FF86383-9A6D-4D45-A81D-94EFBD6DAE84}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.Windows.Core.UnitTests", "src\CallWall.Windows.Core.UnitTests\CallWall.Windows.Core.UnitTests.csproj", "{1FF86383-9A6D-4D45-A81D-94EFBD6DAE84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.Core", "src\CallWall.Core\CallWall.Core.csproj", "{ACA46894-EB1C-448B-92D2-24D003B26F07}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.Windows.Core", "src\CallWall.Windows.Core\CallWall.Windows.Core.csproj", "{ACA46894-EB1C-448B-92D2-24D003B26F07}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F4E4C9DE-49C4-4C0D-B7A7-EED8FD92D2B2}"
 EndProject
@@ -24,27 +24,27 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{ED891D
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.UnitTests", "src\CallWall.UnitTests\CallWall.UnitTests.csproj", "{578B0A79-92AC-49EE-A8D8-014F98AEEAA7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.Windows.UnitTests", "src\CallWall.Windows.UnitTests\CallWall.Windows.UnitTests.csproj", "{578B0A79-92AC-49EE-A8D8-014F98AEEAA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.Google", "src\CallWall.Google\CallWall.Google.csproj", "{62351821-7438-4898-987E-8DEBAB0D66EE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.Windows.Google", "src\CallWall.Windows.Google\CallWall.Windows.Google.csproj", "{62351821-7438-4898-987E-8DEBAB0D66EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.FakeProvider", "src\CallWall.FakeProvider\CallWall.FakeProvider.csproj", "{54A13F98-B269-4235-8F67-EABB712176A4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.Windows.FakeProvider", "src\CallWall.Windows.FakeProvider\CallWall.Windows.FakeProvider.csproj", "{54A13F98-B269-4235-8F67-EABB712176A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.Google.UnitTests", "src\CallWall.Google.UnitTests\CallWall.Google.UnitTests.csproj", "{0EB323C0-8C83-42CE-97D8-C4722FF94C84}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.Windows.Google.UnitTests", "src\CallWall.Windows.Google.UnitTests\CallWall.Windows.Google.UnitTests.csproj", "{0EB323C0-8C83-42CE-97D8-C4722FF94C84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.Testing", "Src\CallWall.Testing\CallWall.Testing.csproj", "{9139A9AF-DC48-4650-87D2-0ECA65ABFB90}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.Windows.Testing", "Src\CallWall.Windows.Testing\CallWall.Windows.Testing.csproj", "{9139A9AF-DC48-4650-87D2-0ECA65ABFB90}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration", "{DA1D2787-9041-4B14-A214-FC943472524E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit", "Unit", "{D1360393-E693-4B8C-B248-63AFBC37D96D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.Core.IntegrationTests", "src\CallWall.Core.IntegrationTests\CallWall.Core.IntegrationTests.csproj", "{6E842C42-536A-4051-B63A-96F0252C53E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.Windows.Core.IntegrationTests", "src\CallWall.Windows.Core.IntegrationTests\CallWall.Windows.Core.IntegrationTests.csproj", "{6E842C42-536A-4051-B63A-96F0252C53E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.Shell", "src\CallWall.Shell\CallWall.Shell.csproj", "{CE5E5740-C22A-49B2-99D6-63E01CD78F96}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.Windows.Shell", "src\CallWall.Windows.Shell\CallWall.Windows.Shell.csproj", "{CE5E5740-C22A-49B2-99D6-63E01CD78F96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.Shell.UnitTests", "src\CallWall.Shell.UnitTests\CallWall.Shell.UnitTests.csproj", "{30544031-BE0B-4D6C-9731-4861DAA1A585}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.Windows.Shell.UnitTests", "src\CallWall.Windows.Shell.UnitTests\CallWall.Windows.Shell.UnitTests.csproj", "{30544031-BE0B-4D6C-9731-4861DAA1A585}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.IntegrationTests", "src\CallWall.IntegrationTests\CallWall.IntegrationTests.csproj", "{DCEC0E60-F3CB-4D40-B452-4E435CD79849}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.Windows.IntegrationTests", "src\CallWall.Windows.IntegrationTests\CallWall.Windows.IntegrationTests.csproj", "{DCEC0E60-F3CB-4D40-B452-4E435CD79849}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.Windows.Connectivity", "src\CallWall.Windows.Connectivity\CallWall.Windows.Connectivity.csproj", "{99C317FA-BB4D-47FA-9F33-8D0A4513E14E}"
 EndProject
