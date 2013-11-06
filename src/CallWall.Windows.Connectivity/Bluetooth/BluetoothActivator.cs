@@ -5,9 +5,8 @@ using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using CallWall.Contract;
 using CallWall.Windows.Connectivity.Images;
-using JetBrains.Annotations;
+using CallWall.Windows.Contract;
 
 namespace CallWall.Windows.Connectivity.Bluetooth
 {

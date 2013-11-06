@@ -92,17 +92,17 @@
     <Compile Include="Settings\Bluetooth\BluetoothSetupViewModelFixture.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CallWall.Core\CallWall.Core.csproj">
+    <ProjectReference Include="..\CallWall.Windows.Core\CallWall.Windows.Core.csproj">
       <Project>{aca46894-eb1c-448b-92d2-24d003b26f07}</Project>
-      <Name>CallWall.Core</Name>
+      <Name>CallWall.Windows.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CallWall.Shell\CallWall.Shell.csproj">
+    <ProjectReference Include="..\CallWall.Windows.Shell\CallWall.Windows.Shell.csproj">
       <Project>{ce5e5740-c22a-49b2-99d6-63e01cd78f96}</Project>
-      <Name>CallWall.Shell</Name>
+      <Name>CallWall.Windows.Shell</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CallWall.Testing\CallWall.Testing.csproj">
+    <ProjectReference Include="..\CallWall.Windows.Testing\CallWall.Windows.Testing.csproj">
       <Project>{9139a9af-dc48-4650-87d2-0eca65abfb90}</Project>
-      <Name>CallWall.Testing</Name>
+      <Name>CallWall.Windows.Testing</Name>
     </ProjectReference>
     <ProjectReference Include="..\CallWall.Windows.Connectivity\CallWall.Windows.Connectivity.csproj">
       <Project>{99c317fa-bb4d-47fa-9f33-8d0a4513e14e}</Project>

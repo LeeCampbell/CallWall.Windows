@@ -1,0 +1,70 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Pictures="clr-namespace:CallWall.Windows.Shell.ProfileDashboard.Pictures"
+                    xmlns:profileDashboard="clr-namespace:CallWall.Windows.Shell.ProfileDashboard">
+    <DataTemplate DataType="{x:Type Pictures:Album}">
+        <DataTemplate.Resources>
+            <Style TargetType="Image" x:Key="LiveTileStyle">
+                <Setter Property="Stretch" Value="UniformToFill"/>
+                <Setter Property="StretchDirection" Value="DownOnly"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+            </Style>
+            <Style TargetType="Border" x:Key="ImageBorderStyle">
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+                <Setter Property="BorderBrush" Value="#101010"/>
+                <Setter Property="BorderThickness" Value="2"/>
+            </Style>
+            <profileDashboard:DateTimeOffsetConverter x:Key="DateTimeOffsetConverter"/>
+        </DataTemplate.Resources>
+        
+        <StackPanel Margin="0,0,0,20">
+            <DockPanel Margin="0,0,0,5">
+                <Image DockPanel.Dock="Left" 
+                        Source="{Binding Provider.Image}"
+                        MaxWidth="32" MaxHeight="32"
+                        Stretch="Uniform"/>
+                <StackPanel>
+                    <TextBlock Text="{Binding Name}"
+                                Foreground="White"
+                                Margin="5,0"
+                                Style="{StaticResource ContentHeading2Style}"/>
+                    <TextBlock Text="{Binding LastUpdate, Converter={StaticResource DateTimeOffsetConverter}}"
+                                Foreground="White"
+                                Margin="5,0"
+                                Style="{StaticResource SubTextStyle}"/>
+                </StackPanel>
+            </DockPanel>
+
+                
+            <Grid Height="150" Width="300">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Image Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="2" 
+                        Source="{Binding Pictures[0].Source}"
+                        Style="{StaticResource LiveTileStyle}" />
+                <Image Grid.Column="2" Grid.Row="0"
+                        Source="{Binding Pictures[1].Source}"
+                        Style="{StaticResource LiveTileStyle}" />
+                <Image Grid.Column="3" Grid.Row="0"
+                        Source="{Binding Pictures[2].Source}"
+                        Style="{StaticResource LiveTileStyle}" />
+                <Image Grid.Column="2" Grid.Row="1"
+                        Source="{Binding Pictures[3].Source}"
+                        Style="{StaticResource LiveTileStyle}" />
+                <Image Grid.Column="3" Grid.Row="1"
+                        Source="{Binding Pictures[4].Source}"
+                        Style="{StaticResource LiveTileStyle}" />
+            </Grid>
+        </StackPanel>
+    </DataTemplate>
+</ResourceDictionary>

@@ -147,14 +147,14 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CallWall.Core\CallWall.Core.csproj">
+    <ProjectReference Include="..\CallWall.Windows.Core\CallWall.Windows.Core.csproj">
       <Project>{aca46894-eb1c-448b-92d2-24d003b26f07}</Project>
-      <Name>CallWall.Core</Name>
+      <Name>CallWall.Windows.Core</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\CallWall.Shell\CallWall.Shell.csproj">
+    <ProjectReference Include="..\CallWall.Windows.Shell\CallWall.Windows.Shell.csproj">
       <Project>{ce5e5740-c22a-49b2-99d6-63e01cd78f96}</Project>
-      <Name>CallWall.Shell</Name>
+      <Name>CallWall.Windows.Shell</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
