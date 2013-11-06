@@ -1,51 +1,35 @@
-﻿using CallWall.Activators;
-using CallWall.PrismExtensions;
+﻿using CallWall.Contract;
 using CallWall.Settings.Demonstration;
 using Microsoft.Practices.Prism.Modularity;
-using Microsoft.Practices.Unity;
 
 namespace CallWall.Settings
 {
     public sealed class SettingsModule : IModule
     {
-        private readonly IUnityContainer _container;
+        private readonly ITypeRegistry _registry;
 
-        public SettingsModule(IUnityContainer container)
+        public SettingsModule(ITypeRegistry registry)
         {
-            _container = container;
+            _registry = registry;
         }
 
         public void Initialize()
         {
             //Connectivity view
-            _container.RegisterType<Connectivity.IConnectivitySettingsModel, Connectivity.ConnectivitySettingsModel>(new TransientLifetimeManager());
-            _container.RegisterType<Connectivity.IConnectivitySettingsViewModel, Connectivity.ConnectivitySettingsViewModel>(new TransientLifetimeManager());
-            _container.RegisterType<Connectivity.IConnectivitySettingsView, Connectivity.ConnectivitySettingsView>(new TransientLifetimeManager());
-
-            //_container.RegisterType<IConnectionConfiguration, Settings.Usb.UsbConnectivityConfigurator>(new ContainerControlledLifetimeManager());
-            //_container.RegisterType<IConnectionConfiguration, Settings.WifiDirect.WifiDirectConnectivityConfigurator>(new ContainerControlledLifetimeManager());
-            //_container.RegisterType<IConnectionConfiguration, Settings.Cloud.CloudConnectivityConfigurator>(new ContainerControlledLifetimeManager());
-
-            //  Bluetooth Connectivity
-            _container.RegisterType<IConnectionConfiguration, Connectivity.Bluetooth.BluetoothConnectionConfiguration>("BluetoothConnectionConfiguration", new ContainerControlledLifetimeManager());
-            _container.RegisterType<Connectivity.Bluetooth.IBluetoothSetupView, Connectivity.Bluetooth.BluetoothSetupView>(new TransientLifetimeManager());
-            _container.RegisterType<Connectivity.Bluetooth.IBluetoothSetupViewModel, Connectivity.Bluetooth.BluetoothSetupViewModel>(new TransientLifetimeManager());
+            _registry.RegisterTypeAsTransient <Connectivity.IConnectivitySettingsModel, Connectivity.ConnectivitySettingsModel>();
+            _registry.RegisterTypeAsTransient<Connectivity.IConnectivitySettingsViewModel, Connectivity.ConnectivitySettingsViewModel>();
+            _registry.RegisterTypeAsTransient<Connectivity.IConnectivitySettingsView, Connectivity.ConnectivitySettingsView>();
 
             //Accounts view
-            _container.RegisterType<Accounts.IAccountSettingsModel, Accounts.AccountSettingsModel>(new TransientLifetimeManager());
-            _container.RegisterType<Accounts.IAccountSettingsViewModel, Accounts.AccountSettingsViewModel>(new TransientLifetimeManager());
-            _container.RegisterType<Accounts.IAccountSettingsView, Accounts.AccountSettingsView>(new TransientLifetimeManager());
+            _registry.RegisterTypeAsTransient<Accounts.IAccountSettingsModel, Accounts.AccountSettingsModel>();
+            _registry.RegisterTypeAsTransient<Accounts.IAccountSettingsViewModel, Accounts.AccountSettingsViewModel>();
+            _registry.RegisterTypeAsTransient<Accounts.IAccountSettingsView, Accounts.AccountSettingsView>();
 
             //DemoView
-            _container.RegisterType<IDemoView, DemoView>(new TransientLifetimeManager());
-            _container.RegisterComposite<IProfileActivator, IDemoProfileActivator, DemoActivatedIdentityListener>();
-            
+            _registry.RegisterTypeAsTransient<IDemoView, DemoView>();
+            _registry.RegisterCompositeAsSingleton<IProfileActivator, IDemoProfileActivator, DemoActivatedIdentityListener>();
 
-            //var demoListener = new Demonstration.DemoActivatedIdentityListener();
-            //_container.RegisterInstance<Demonstration.IDemoActivatedIdentityListener>(demoListener);
-            //_container.RegisterInstance<IActivatedIdentityListener>(demoListener);
-
-            _container.RegisterType<ISettingsView, SettingsView>(new ContainerControlledLifetimeManager());
+            _registry.RegisterTypeAsSingleton<ISettingsView, SettingsView>();
         }
     }
 

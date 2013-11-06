@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reactive.Linq;
-using CallWall.Activators;
 using CallWall.Contract;
 
 namespace CallWall.ProfileDashboard

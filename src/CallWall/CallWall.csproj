@@ -175,6 +175,7 @@
     </Compile>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="HostModule.cs" />
+    <Compile Include="TypeRegistry.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PrismExtensions\DialogActivationBehavior.cs" />
@@ -245,6 +246,10 @@
     <ProjectReference Include="..\CallWall.Shell\CallWall.Shell.csproj">
       <Project>{ce5e5740-c22a-49b2-99d6-63e01cd78f96}</Project>
       <Name>CallWall.Shell</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CallWall.Windows.Connectivity\CallWall.Windows.Connectivity.csproj">
+      <Project>{99C317FA-BB4D-47FA-9F33-8D0A4513E14E}</Project>
+      <Name>CallWall.Windows.Connectivity</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

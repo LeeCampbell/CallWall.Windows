@@ -1,55 +1,58 @@
-﻿using CallWall.Contract.Communication;
+﻿using System;
+using CallWall.Contract;
+using CallWall.Contract.Communication;
 using CallWall.Contract.Contact;
+using CallWall.Google.Authorization.Login;
 using CallWall.Google.Providers.Contacts;
-using CallWall.PrismExtensions;
 using Microsoft.Practices.Prism.Modularity;
-using Microsoft.Practices.Unity;
 
 namespace CallWall.Google
 {
     public sealed class GoogleModule : IModule
     {
-        private readonly IUnityContainer _container;
+        private readonly ITypeRegistry _container;
+        private readonly Func<ILoginController> _loginControllerFactory;
 
-        public GoogleModule(IUnityContainer container)
+        public GoogleModule(ITypeRegistry container, Func<ILoginController> loginControllerFactory)
         {
             _container = container;
+            _loginControllerFactory = loginControllerFactory;
         }
 
         public void Initialize()
         {
-            _container.RegisterType<IAccountConfiguration, AccountConfiguration.GoogleAccountConfiguration>("GoogleAccountConfiguration", new ContainerControlledLifetimeManager());
+            _container.RegisterCompositeAsSingleton<IAccountConfiguration, AccountConfiguration.GoogleAccountConfiguration>();
 
-            _container.RegisterType<Authorization.IOAuthUriFactory, Authorization.OAuthUriFactory>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<Authorization.ISessionFactory, Authorization.SessionFactory>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<Authorization.IGoogleOAuthService, Authorization.GoogleOAuthService>(new ContainerControlledLifetimeManager());
+            _container.RegisterTypeAsSingleton<Authorization.IOAuthUriFactory, Authorization.OAuthUriFactory>();
+            _container.RegisterTypeAsSingleton<Authorization.ISessionFactory, Authorization.SessionFactory>();
+            _container.RegisterTypeAsSingleton<Authorization.IGoogleOAuthService, Authorization.GoogleOAuthService>();
 #if FAKE
-            _container.RegisterType<Authorization.IGoogleAuthorization, Authorization.FakeGoogleAuthorization>(new ContainerControlledLifetimeManager());
+            _container.RegisterTypeAsSingleton<Authorization.IGoogleAuthorization, Authorization.FakeGoogleAuthorization>();
 #else
-            _container.RegisterType<Authorization.IGoogleAuthorization, Authorization.GoogleAuthorization>(new ContainerControlledLifetimeManager());
+            _container.RegisterTypeAsSingleton<Authorization.IGoogleAuthorization, Authorization.GoogleAuthorization>();
 #endif
-            _container.RegisterType<Authorization.Login.IGoogleLoginView, Authorization.Login.GoogleLoginView>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<Authorization.Login.ILoginController, Authorization.Login.LoginController>(new ContainerControlledLifetimeManager());
+            _container.RegisterTypeAsSingleton<Authorization.Login.IGoogleLoginView, Authorization.Login.GoogleLoginView>();
+            _container.RegisterTypeAsSingleton<Authorization.Login.ILoginController, Authorization.Login.LoginController>();
 
-            _container.RegisterType<AccountConfiguration.IGoogleAccountSetupView, AccountConfiguration.GoogleAccountSetupView>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<AccountConfiguration.IGoogleAccountSetupViewModel, AccountConfiguration.GoogleAccountSetupViewModel>(new ContainerControlledLifetimeManager());
+            _container.RegisterTypeAsSingleton<AccountConfiguration.IGoogleAccountSetupView, AccountConfiguration.GoogleAccountSetupView>();
+            _container.RegisterTypeAsSingleton<AccountConfiguration.IGoogleAccountSetupViewModel, AccountConfiguration.GoogleAccountSetupViewModel>();
 
 #if !FAKE
             //Contacts
-            _container.RegisterType<IGoogleContactProfileTranslator, GoogleContactProfileTranslator>(new ContainerControlledLifetimeManager());
-            _container.RegisterComposite<IContactQueryProvider, IGoogleContactQueryProvider, GoogleContactQueryProvider>();
+            _container.RegisterTypeAsTransient<IGoogleContactProfileTranslator, GoogleContactProfileTranslator>();
+            _container.RegisterCompositeAsSingleton<IContactQueryProvider, IGoogleContactQueryProvider, GoogleContactQueryProvider>();
 #endif
 
 #if !FAKE
             //Mail
-            _container.RegisterType<ICommunicationQueryProvider, Providers.Gmail.GmailCommunicationQueryProvider>("GmailCommunicationQueryProvider", new ContainerControlledLifetimeManager());
-            _container.RegisterType<Providers.Gmail.Imap.IImapClient, Providers.Gmail.Imap.ImapClient>(new TransientLifetimeManager());
+            _container.RegisterCompositeAsSingleton<ICommunicationQueryProvider, Providers.Gmail.GmailCommunicationQueryProvider>();
+            _container.RegisterTypeAsTransient<Providers.Gmail.Imap.IImapClient, Providers.Gmail.Imap.ImapClient>();
 #endif
             //Talk
             //Images??
             //Calendar
 
-            var loginController = _container.Resolve<Authorization.Login.ILoginController>();
+            var loginController = _loginControllerFactory();
             loginController.Start();
         }
     }

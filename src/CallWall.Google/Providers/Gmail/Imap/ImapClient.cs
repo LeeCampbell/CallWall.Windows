@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Net.Security;
 using System.Net.Sockets;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
@@ -12,7 +11,6 @@ using CallWall.Contract.Communication;
 
 namespace CallWall.Google.Providers.Gmail.Imap
 {
-    //TODO: I think that this ImapClient should have its own EventLoopScheduler. Based on that I also think now that it should be a short lived object, e.g. Connect, Search for some emails, get the emails then die. -LC
     public sealed class ImapClient : IImapClient
     {
         #region Private fields
@@ -167,6 +165,8 @@ namespace CallWall.Google.Providers.Gmail.Imap
 
         public void Dispose()
         {
+            //TODO: Protect all public sequences with TakeUntil [isDisposed], so they don't try to schedule work once disposed.
+
             if (_dedicatedScheduler != null)
             {
                 _dedicatedScheduler.Dispose();

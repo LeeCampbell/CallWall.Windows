@@ -90,27 +90,27 @@ namespace CallWall.Core.IntegrationTests
             }
         }
 
-        [TestFixture]
-        [RequiresSTA] 
-        public sealed class When_converting_known_images : Given_a_GrayscaleConverter
-        {
-            public override void SetUp()
-            {
-                base.SetUp();
-                //Magic to get PackUris resolved for the convert tests.
-                PackUriHelper.Create(new Uri("reliable://0"));
-                new FrameworkElement();
-                Application.ResourceAssembly = typeof(App).Assembly;
-            }
+        //[TestFixture]
+        //[RequiresSTA] 
+        //public sealed class When_converting_known_images : Given_a_GrayscaleConverter
+        //{
+        //    public override void SetUp()
+        //    {
+        //        base.SetUp();
+        //        //Magic to get PackUris resolved for the convert tests.
+        //        PackUriHelper.Create(new Uri("reliable://0"));
+        //        new FrameworkElement();
+        //        Application.ResourceAssembly = typeof(App).Assembly;
+        //    }
 
-            [Test]
-            public void Should_convert_bluetooth_icon_to_expected_grayscale()
-            {
-                Uri uri = BluetoothImages.BluetoothIconUri;
-                var actual = _sut.Convert(uri, typeof(BitmapSource), null, CultureInfo.InvariantCulture);
-                Assert.IsInstanceOf<BitmapSource>(actual);
-            }
-        }
+        //    [Test]
+        //    public void Should_convert_bluetooth_icon_to_expected_grayscale()
+        //    {
+        //        Uri uri = BluetoothImages.BluetoothIconUri;
+        //        var actual = _sut.Convert(uri, typeof(BitmapSource), null, CultureInfo.InvariantCulture);
+        //        Assert.IsInstanceOf<BitmapSource>(actual);
+        //    }
+        //}
 
         //TODO: Test various dimensions. Should really test for CallWall values up to 512x512 (the biggest Icon)
 

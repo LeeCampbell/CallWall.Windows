@@ -46,6 +46,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.Shell.UnitTests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.IntegrationTests", "src\CallWall.IntegrationTests\CallWall.IntegrationTests.csproj", "{DCEC0E60-F3CB-4D40-B452-4E435CD79849}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.Windows.Connectivity", "src\CallWall.Windows.Connectivity\CallWall.Windows.Connectivity.csproj", "{99C317FA-BB4D-47FA-9F33-8D0A4513E14E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CallWall.Windows.Connectivity.UnitTests", "src\CallWall.Windows.Connectivity.UnitTests\CallWall.Windows.Connectivity.UnitTests.csproj", "{6E355787-64CA-4211-B2B7-7838B7F875E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug (with Fakes)|Any CPU = Debug (with Fakes)|Any CPU
@@ -125,6 +129,18 @@ Global
 		{DCEC0E60-F3CB-4D40-B452-4E435CD79849}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCEC0E60-F3CB-4D40-B452-4E435CD79849}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCEC0E60-F3CB-4D40-B452-4E435CD79849}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99C317FA-BB4D-47FA-9F33-8D0A4513E14E}.Debug (with Fakes)|Any CPU.ActiveCfg = Debug|Any CPU
+		{99C317FA-BB4D-47FA-9F33-8D0A4513E14E}.Debug (with Fakes)|Any CPU.Build.0 = Debug|Any CPU
+		{99C317FA-BB4D-47FA-9F33-8D0A4513E14E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99C317FA-BB4D-47FA-9F33-8D0A4513E14E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99C317FA-BB4D-47FA-9F33-8D0A4513E14E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99C317FA-BB4D-47FA-9F33-8D0A4513E14E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E355787-64CA-4211-B2B7-7838B7F875E1}.Debug (with Fakes)|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E355787-64CA-4211-B2B7-7838B7F875E1}.Debug (with Fakes)|Any CPU.Build.0 = Debug|Any CPU
+		{6E355787-64CA-4211-B2B7-7838B7F875E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E355787-64CA-4211-B2B7-7838B7F875E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E355787-64CA-4211-B2B7-7838B7F875E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E355787-64CA-4211-B2B7-7838B7F875E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -137,6 +153,7 @@ Global
 		{0EB323C0-8C83-42CE-97D8-C4722FF94C84} = {D1360393-E693-4B8C-B248-63AFBC37D96D}
 		{1FF86383-9A6D-4D45-A81D-94EFBD6DAE84} = {D1360393-E693-4B8C-B248-63AFBC37D96D}
 		{30544031-BE0B-4D6C-9731-4861DAA1A585} = {D1360393-E693-4B8C-B248-63AFBC37D96D}
+		{6E355787-64CA-4211-B2B7-7838B7F875E1} = {D1360393-E693-4B8C-B248-63AFBC37D96D}
 		{6E842C42-536A-4051-B63A-96F0252C53E7} = {DA1D2787-9041-4B14-A214-FC943472524E}
 		{DCEC0E60-F3CB-4D40-B452-4E435CD79849} = {DA1D2787-9041-4B14-A214-FC943472524E}
 	EndGlobalSection

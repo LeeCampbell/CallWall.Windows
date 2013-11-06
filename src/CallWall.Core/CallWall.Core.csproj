@@ -121,6 +121,7 @@
     <Compile Include="CollectionChangedData.cs" />
     <Compile Include="Contract\Calendar\ICalendarEvent.cs" />
     <Compile Include="Contract\Calendar\ICalendarQueryProvider.cs" />
+    <Compile Include="Contract\ITypeRegistry.cs" />
     <Compile Include="Contract\Communication\ICommunicationQueryProvider.cs" />
     <Compile Include="Contract\Communication\IMessage.cs" />
     <Compile Include="Contract\Communication\MessageDirection.cs" />
@@ -130,6 +131,7 @@
     <Compile Include="Contract\IIdentityProvider.cs" />
     <Compile Include="Contract\IPersonalIdentifier.cs" />
     <Compile Include="Contract\IProfile.cs" />
+    <Compile Include="Contract\IProfileActivator.cs" />
     <Compile Include="Contract\PersonalIdentifier.cs" />
     <Compile Include="Contract\Picture\IAlbum.cs" />
     <Compile Include="Contract\Picture\IPicture.cs" />
@@ -139,7 +141,6 @@
     <Compile Include="Ensure.cs" />
     <Compile Include="EventLoopSchedulerWrapper.cs" />
     <Compile Include="IEventLoopScheduler.cs" />
-    <Compile Include="PrismExtensions\UnityContainerExtensions.cs" />
     <Compile Include="SetsExtensions.cs" />
     <Compile Include="GrayScaleConverter.cs" />
     <Compile Include="IAccountConfiguration.cs" />
