@@ -1,5 +1,5 @@
-﻿using CallWall.ProfileDashboard;
-using Microsoft.Practices.Unity;
+﻿using CallWall.Contract;
+using CallWall.ProfileDashboard;
 using Moq;
 using NUnit.Framework;
 
@@ -15,12 +15,12 @@ namespace CallWall.Shell.UnitTests
         }
 
         private ShellModule _hostModule;
-        private Mock<IUnityContainer> _containerMock;
+        private Mock<ITypeRegistry> _containerMock;
 
         [SetUp]
         public virtual void SetUp()
         {
-            _containerMock = new Mock<IUnityContainer>();
+            _containerMock = new Mock<ITypeRegistry>();
             _hostModule = new ShellModule(_containerMock.Object);
         }
 
@@ -38,7 +38,7 @@ namespace CallWall.Shell.UnitTests
             [Test]
             public void Should_register_ProfileActivatorAggregator_instance()
             {
-                _containerMock.Verify(c => c.RegisterType(typeof(IProfileActivatorAggregator), typeof(ProfileActivatorAggregator), (string)null, It.IsAny<ContainerControlledLifetimeManager>()), Times.Once());
+                _containerMock.Verify(c => c.RegisterTypeAsSingleton<IProfileActivatorAggregator,ProfileActivatorAggregator>(), Times.Once());
             }
         }
     }

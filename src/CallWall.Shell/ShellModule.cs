@@ -1,22 +1,22 @@
-﻿using CallWall.ProfileDashboard;
+﻿using CallWall.Contract;
+using CallWall.ProfileDashboard;
 using Microsoft.Practices.Prism.Modularity;
-using Microsoft.Practices.Unity;
 
 namespace CallWall.Shell
 {
     public sealed class ShellModule : IModule
     {
-        private readonly IUnityContainer _container;
+        private readonly ITypeRegistry _typeRegistry;
         
 
-        public ShellModule(IUnityContainer container)
+        public ShellModule(ITypeRegistry typeRegistry)
         {
-            _container = container;
+            _typeRegistry = typeRegistry;
         }
 
         public void Initialize()
         {
-            _container.RegisterType<IProfileActivatorAggregator, ProfileActivatorAggregator>(new ContainerControlledLifetimeManager());
+            _typeRegistry.RegisterTypeAsSingleton<IProfileActivatorAggregator, ProfileActivatorAggregator>();
         }
     }
 }

@@ -140,6 +140,7 @@
     <Compile Include="DependencyObjectExtensions.cs" />
     <Compile Include="Ensure.cs" />
     <Compile Include="EventLoopSchedulerWrapper.cs" />
+    <Compile Include="Guard.cs" />
     <Compile Include="IEventLoopScheduler.cs" />
     <Compile Include="SetsExtensions.cs" />
     <Compile Include="GrayScaleConverter.cs" />

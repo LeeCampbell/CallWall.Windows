@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using CallWall.Contract.Contact;
-using Microsoft.Practices.Unity.Utility;
 
 namespace CallWall.ProfileDashboard.Contact
 {
