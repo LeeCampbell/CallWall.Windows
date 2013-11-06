@@ -3,9 +3,11 @@ using CallWall.FakeProvider;
 #endif
 using System.Linq;
 using System.Text;
+using CallWall.Contract;
 using CallWall.Google;
 using CallWall.Logging;
 using CallWall.PrismExtensions;
+using CallWall.Windows.Connectivity;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.UnityExtensions;
 using Microsoft.Practices.ServiceLocation;
@@ -49,6 +51,7 @@ namespace CallWall
             ModuleCatalog.Define<Settings.SettingsModule>()
                          .DependsOn<Shell.ShellModule>()
                          .Add();
+            ModuleCatalog.Add<BluetoothModule>();
 
             ModuleCatalog.Define<GoogleModule>()
                          .DependsOn<HostModule>()
@@ -85,6 +88,7 @@ namespace CallWall
             base.ConfigureContainer();
             Container.AddNewExtension<GenericSupportExtension>();
             Container.RegisterInstance<ILoggerFactory>(_loggerFactory);
+            Container.RegisterType<ITypeRegistry, TypeRegistry>(new ContainerControlledLifetimeManager());
         }
 
         protected override Microsoft.Practices.Prism.Regions.RegionAdapterMappings ConfigureRegionAdapterMappings()

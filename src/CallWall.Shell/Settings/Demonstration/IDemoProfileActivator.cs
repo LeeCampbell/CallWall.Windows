@@ -1,4 +1,4 @@
-using CallWall.Activators;
+using CallWall.Contract;
 
 namespace CallWall.Settings.Demonstration
 {

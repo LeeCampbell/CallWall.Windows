@@ -167,6 +167,8 @@ namespace CallWall.Google.Providers.Gmail.Imap
 
         public void Dispose()
         {
+            //TODO: Protect all public sequences with TakeUntil [isDisposed], so they dont try to schedule work once disposed.
+
             if (_dedicatedScheduler != null)
             {
                 _dedicatedScheduler.Dispose();

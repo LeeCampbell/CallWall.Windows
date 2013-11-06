@@ -46,9 +46,6 @@
     <Reference Include="Hardcodet.Wpf.TaskbarNotification">
       <HintPath>..\..\packages\Hardcodet.Wpf.TaskbarNotification.1.0.4.0\lib\net40\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
     </Reference>
-    <Reference Include="InTheHand.Net.Personal, Version=3.5.605.0, Culture=neutral, PublicKeyToken=ea38caa273134499, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\32feet.NET.3.5.0.0\lib\net\InTheHand.Net.Personal.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Expression.Interactions">
       <HintPath>..\..\packages\Prism.4.1.0.0\lib\NET40\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
@@ -131,9 +128,6 @@
     <Compile Include="ProfileDashboard\Calendar\CalendarQueryAggregator.cs" />
     <Compile Include="ProfileDashboard\Calendar\ICalendarQueryAggregator.cs" />
     <Compile Include="ProfileDashboard\Communication\MessageTypeToSymbolConterver.cs" />
-    <Compile Include="Services\BluetoothService.cs" />
-    <Compile Include="Services\IBluetoothService.cs" />
-    <Compile Include="Services\WrappedBluetoothInfo.cs" />
     <Compile Include="Settings\Accounts\AccountSettingsModel.cs" />
     <Compile Include="Settings\Accounts\AccountSettingsView.xaml.cs">
       <DependentUpon>AccountSettingsView.xaml</DependentUpon>
@@ -142,17 +136,6 @@
     <Compile Include="Settings\Accounts\IAccountSettingsModel.cs" />
     <Compile Include="Settings\Accounts\IAccountSettingsView.cs" />
     <Compile Include="Settings\Accounts\IAccountSettingsViewModel.cs" />
-    <Compile Include="Settings\Connectivity\Bluetooth\BluetoothConnectionConfiguration.cs" />
-    <Compile Include="Settings\Connectivity\Bluetooth\BluetoothDevice.cs" />
-    <Compile Include="Settings\Connectivity\Bluetooth\BluetoothDeviceType.cs" />
-    <Compile Include="Settings\Connectivity\Bluetooth\BluetoothSetupView.xaml.cs">
-      <DependentUpon>BluetoothSetupView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\Connectivity\Bluetooth\BluetoothSetupViewModel.cs" />
-    <Compile Include="Settings\Connectivity\Bluetooth\IBluetoothDevice.cs" />
-    <Compile Include="Settings\Connectivity\Bluetooth\IBluetoothDeviceInfo.cs" />
-    <Compile Include="Settings\Connectivity\Bluetooth\IBluetoothSetupView.cs" />
-    <Compile Include="Settings\Connectivity\Bluetooth\IBluetoothSetupViewModel.cs" />
     <Compile Include="Settings\Connectivity\ConnectivitySettingsModel.cs" />
     <Compile Include="Settings\Connectivity\ConnectivitySettingsView.xaml.cs">
       <DependentUpon>ConnectivitySettingsView.xaml</DependentUpon>
@@ -219,10 +202,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Settings\Connectivity\Bluetooth\BluetoothSetupView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Settings\Connectivity\ConnectivitySettingsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -259,10 +238,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Activators\BluetoothActivator.cs" />
-    <Compile Include="Activators\FakeProfileActivator.cs" />
-    <Compile Include="Activators\IBluetoothProfileActivator.cs" />
-    <Compile Include="Activators\IProfileActivator.cs" />
     <Compile Include="Controls\BirthdayTextConverter.cs" />
     <Compile Include="Controls\ItemsStack.cs" />
     <Page Include="Themes\Generic.xaml">
@@ -334,14 +309,6 @@
     <Resource Include="Images\Actions\OutgoingCall_60x60.png" />
     <Resource Include="Images\Actions\RightArrow_32x32.png" />
     <Resource Include="Images\Birthday_64x64.png" />
-    <Resource Include="Images\Bluetooth\AudioVisual.png" />
-    <Resource Include="Images\Bluetooth\Computer.png" />
-    <Resource Include="Images\Bluetooth\Imaging.png" />
-    <Resource Include="Images\Bluetooth\Miscellaneous.png" />
-    <Resource Include="Images\Bluetooth\Network.png" />
-    <Resource Include="Images\Bluetooth\Peripheral.png" />
-    <Resource Include="Images\Bluetooth\Phone.png" />
-    <Resource Include="Images\Bluetooth_72x72.png" />
     <Resource Include="Images\CallWallLogo.png" />
     <Resource Include="Images\Settings_40x40.png" />
   </ItemGroup>
