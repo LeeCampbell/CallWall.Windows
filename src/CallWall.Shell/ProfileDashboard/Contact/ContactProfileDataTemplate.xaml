@@ -16,7 +16,7 @@
                                       ItemsSource="{TemplateBinding ItemsSource}" >
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border BorderThickness="0,0,0,0" BorderBrush="White"
+                                    <Border BorderThickness="0"
                                             Padding="10,2,0,2"
                                             SnapsToDevicePixels="True">
                                         <StackPanel>

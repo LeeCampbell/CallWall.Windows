@@ -19,7 +19,7 @@ namespace CallWall.PrismExtensions
         /// <summary>
         /// Initializes a new instance of <see cref="T:CallWall.PrismExtensions.AccordionRegionAdapter"/>.
         /// </summary>
-        /// <param name="regionBehaviorFactory">The factory used to create the region behaviours to attach to the created regions.</param>
+        /// <param name="regionBehaviorFactory">The factory used to create the region behaviors to attach to the created regions.</param>
         public AccordionRegionAdapter(IRegionBehaviorFactory regionBehaviorFactory)
             : base(regionBehaviorFactory)
         {
@@ -35,12 +35,12 @@ namespace CallWall.PrismExtensions
         }
 
         /// <summary>
-        /// Attach new behaviours.
+        /// Attach new behaviors.
         /// </summary>
         /// <param name="region">The region being used.</param>
         /// <param name="regionTarget">The object to adapt.</param>
         /// <remarks>
-        /// This class attaches the base behaviours and also listens for changes in the
+        /// This class attaches the base behaviors and also listens for changes in the
         /// activity of the region or the control selection and keeps the in sync.
         /// </remarks>
         protected override void AttachBehaviors(IRegion region, Accordion regionTarget)

@@ -5,19 +5,19 @@ using Microsoft.Practices.Prism.Regions;
 namespace CallWall.PrismExtensions
 {
     /// <summary>
-    /// Defines a behaviour that creates a Dialog to display the active view of the target <see cref="IRegion"/>.
+    /// Defines a behavior that creates a Dialog to display the active view of the target <see cref="IRegion"/>.
     /// </summary>
     public abstract class DialogActivationBehavior : RegionBehavior
     {
         private readonly Dictionary<object, IWindow> _cache = new Dictionary<object, IWindow>();
 
         /// <summary>
-        /// The key of this behaviour
+        /// The key of this behavior
         /// </summary>
         public const string BehaviorKey = "DialogActivation";
 
         /// <summary>
-        /// Performs the logic after the behaviour has been attached.
+        /// Performs the logic after the behavior has been attached.
         /// </summary>
         protected override void OnAttach()
         {

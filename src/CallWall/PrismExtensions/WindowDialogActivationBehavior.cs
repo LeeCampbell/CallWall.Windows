@@ -1,7 +1,7 @@
 namespace CallWall.PrismExtensions
 {
     /// <summary>
-    /// Specifies the <see cref="DialogActivationBehavior"/> class for using the behaviour on WPF.
+    /// Specifies the <see cref="DialogActivationBehavior"/> class for using the behavior on WPF.
     /// </summary>
     public class WindowDialogActivationBehavior : DialogActivationBehavior
     {
@@ -11,9 +11,7 @@ namespace CallWall.PrismExtensions
         /// <returns>Instance of the <see cref="System.Windows.Window"/> wrapper.</returns>
         protected override IWindow CreateWindow()
         {
-           var window = new WindowWrapper();
-            window.Style = WindowStyle;
-            return window;
+            return new WindowWrapper { Style = WindowStyle };
         }
 
         public System.Windows.Style WindowStyle { get; set; }

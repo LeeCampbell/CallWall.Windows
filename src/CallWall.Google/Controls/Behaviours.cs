@@ -9,7 +9,7 @@ using System.Windows.Input;
 namespace CallWall.Google.Controls
 {
     /// <summary>
-    /// Provides extended control behaviours that seem to be missing from WPF.
+    /// Provides extended control behaviors that seem to be missing from WPF.
     /// </summary>
     public static class Behaviors
     {

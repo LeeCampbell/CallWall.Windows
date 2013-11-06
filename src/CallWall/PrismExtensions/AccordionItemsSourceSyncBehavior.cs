@@ -10,10 +10,10 @@ using Microsoft.Practices.Prism.Regions.Behaviors;
 namespace CallWall.PrismExtensions
 {
     /// <summary>
-    /// Defines the attached behaviour that keeps the items of the <see cref="T:System.Windows.Controls.Accordion"/> 
+    /// Defines the attached behavior that keeps the items of the <see cref="T:System.Windows.Controls.Accordion"/> 
     /// host control in synchronization with the <see cref="T:Microsoft.Practices.Prism.Regions.IRegion"/>.
-    /// This behaviour also makes sure that, if you activate a view in a region, the SelectedItem is set. 
-    /// If you set the SelectedItem then this behaviour will also call Activate on the selected items.
+    /// This behavior also makes sure that, if you activate a view in a region, the SelectedItem is set. 
+    /// If you set the SelectedItem then this behavior will also call Activate on the selected items.
     /// <remarks>
     /// When calling Activate on a view, you can only select a single active view at a time. 
     /// </remarks>
@@ -21,7 +21,7 @@ namespace CallWall.PrismExtensions
     public class AccordionItemsSourceSyncBehavior : RegionBehavior, IHostAwareRegionBehavior
     {
         /// <summary>
-        /// Name that identifies the AccordionItemsSourceSyncBehavior behaviour in a collection of RegionsBehaviors.
+        /// Name that identifies the AccordionItemsSourceSyncBehavior behavior in a collection of RegionsBehaviors.
         /// </summary>
         public static readonly string BehaviorKey = "AccordionItemsSourceSyncBehavior";
         private bool _updatingActiveViewsInHostControlSelectionChanged;
@@ -36,7 +36,7 @@ namespace CallWall.PrismExtensions
         /// </summary>
         /// <value> A <see cref="T:System.Windows.DependencyObject"/> that the <see cref="T:Microsoft.Practices.Prism.Regions.IRegion"/> is attached to. </value>
         /// <remarks>
-        /// For this behaviour, the host control must always be a <see cref="T:System.Windows.Controls.Accordion"/> or an inherited class.
+        /// For this behavior, the host control must always be a <see cref="T:System.Windows.Controls.Accordion"/> or an inherited class.
         /// </remarks>
         public DependencyObject HostControl
         {
