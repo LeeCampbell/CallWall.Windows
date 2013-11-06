@@ -21,7 +21,6 @@ namespace CallWall.ProfileDashboard.Communication
                     return char.ConvertFromUtf32(0xE134);
                 case MessageType.Sms:
                     return char.ConvertFromUtf32(0xE15F);   //return "SMS";
-                    break;
                 //case PhoneCall 0xE13A
                 //Contact card 0xE181
                 //Map 0xE1C4

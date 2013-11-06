@@ -121,7 +121,6 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="ImageResources.cs" />
-    <Compile Include="Images\ActionImages.cs" />
     <Compile Include="LocalStoreKeys.cs" />
     <Compile Include="ProfileDashboard\Calendar\CalendarEventBackgroundConverter.cs" />
     <Compile Include="ProfileDashboard\Calendar\CalendarEventOpacityConverter.cs" />
@@ -302,12 +301,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Actions\Inbound_27x27.png" />
-    <Resource Include="Images\Actions\IncomingCall_60x60.png" />
-    <Resource Include="Images\Actions\MissedCall_60x60.png" />
-    <Resource Include="Images\Actions\Outbound_27x27.png" />
-    <Resource Include="Images\Actions\OutgoingCall_60x60.png" />
-    <Resource Include="Images\Actions\RightArrow_32x32.png" />
     <Resource Include="Images\Birthday_64x64.png" />
     <Resource Include="Images\CallWallLogo.png" />
     <Resource Include="Images\Settings_40x40.png" />
