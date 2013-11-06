@@ -26,31 +26,28 @@ namespace CallWall.Google
             _container.RegisterTypeAsSingleton<Authorization.IOAuthUriFactory, Authorization.OAuthUriFactory>();
             _container.RegisterTypeAsSingleton<Authorization.ISessionFactory, Authorization.SessionFactory>();
             _container.RegisterTypeAsSingleton<Authorization.IGoogleOAuthService, Authorization.GoogleOAuthService>();
-#if FAKE
-            _container.RegisterTypeAsSingleton<Authorization.IGoogleAuthorization, Authorization.FakeGoogleAuthorization>();
-#else
             _container.RegisterTypeAsSingleton<Authorization.IGoogleAuthorization, Authorization.GoogleAuthorization>();
-#endif
-            _container.RegisterTypeAsSingleton<Authorization.Login.IGoogleLoginView, Authorization.Login.GoogleLoginView>();
-            _container.RegisterTypeAsSingleton<Authorization.Login.ILoginController, Authorization.Login.LoginController>();
+            _container.RegisterTypeAsSingleton<IGoogleLoginView, GoogleLoginView>();
+            _container.RegisterTypeAsSingleton<ILoginController, LoginController>();
 
             _container.RegisterTypeAsSingleton<AccountConfiguration.IGoogleAccountSetupView, AccountConfiguration.GoogleAccountSetupView>();
             _container.RegisterTypeAsSingleton<AccountConfiguration.IGoogleAccountSetupViewModel, AccountConfiguration.GoogleAccountSetupViewModel>();
 
-#if !FAKE
+
             //Contacts
             _container.RegisterTypeAsTransient<IGoogleContactProfileTranslator, GoogleContactProfileTranslator>();
             _container.RegisterCompositeAsSingleton<IContactQueryProvider, IGoogleContactQueryProvider, GoogleContactQueryProvider>();
-#endif
 
-#if !FAKE
             //Mail
             _container.RegisterCompositeAsSingleton<ICommunicationQueryProvider, Providers.Gmail.GmailCommunicationQueryProvider>();
             _container.RegisterTypeAsTransient<Providers.Gmail.Imap.IImapClient, Providers.Gmail.Imap.ImapClient>();
-#endif
-            //Talk
-            //Images??
-            //Calendar
+
+            //TODO : Google Calendar
+            //TODO : Talk --> (Hangouts / Google+ posts)
+            //TODO : Picassa --> (Google+ Photos)
+            //TODO : Youtube
+            //TODO : +1s
+            
 
             var loginController = _loginControllerFactory();
             loginController.Start();

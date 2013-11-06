@@ -1,13 +1,14 @@
 ﻿#if FAKE
 using CallWall.FakeProvider;
+#else
+using CallWall.Google;
+using CallWall.Windows.Connectivity;
 #endif
 using System.Linq;
 using System.Text;
 using CallWall.Contract;
-using CallWall.Google;
 using CallWall.Logging;
 using CallWall.PrismExtensions;
-using CallWall.Windows.Connectivity;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.UnityExtensions;
 using Microsoft.Practices.ServiceLocation;
@@ -51,13 +52,30 @@ namespace CallWall
             ModuleCatalog.Define<Settings.SettingsModule>()
                          .DependsOn<Shell.ShellModule>()
                          .Add();
-            ModuleCatalog.Add<BluetoothModule>();
 
-            ModuleCatalog.Define<GoogleModule>()
-                         .DependsOn<HostModule>()
-                         .Add();
 #if FAKE
             ModuleCatalog.Add<FakeModule>();
+            ModuleCatalog.Define<AccountModules>()
+                .DependsOn<FakeModule>()
+                .Add();
+            ModuleCatalog.Define<ConnectivityModules>()
+                .DependsOn<FakeModule>()
+                .Add();
+#else
+            //TODO: Eventually this should move out to configuration that will be updated by Nuget packages. -LC
+            ModuleCatalog.Define<GoogleModule>()
+                        .DependsOn<HostModule>()
+                        .Add();
+
+            ModuleCatalog.Add<BluetoothModule>();
+
+
+            ModuleCatalog.Define<AccountModules>()
+                .DependsOn<GoogleModule>()
+                .Add();
+            ModuleCatalog.Define<ConnectivityModules>()
+                .DependsOn<BluetoothModule>()
+                .Add();
 #endif
 
             ModuleCatalog.Define<ProfileDashboard.DashboardModule>()
@@ -67,18 +85,14 @@ namespace CallWall
 
             ModuleCatalog.Define<Welcome.WelcomeModule>()
                          .DependsOn<Settings.SettingsModule>()
-                         .DependsOn<GoogleModule>()
-#if FAKE
-                         .DependsOn<FakeModule>()
-#endif
+                         .DependsOn<AccountModules>()
+                         .DependsOn<ConnectivityModules>()
                          .Add();
 
             ModuleCatalog.Define<Toolbar.ToolbarModule>()
                          .DependsOn<Settings.SettingsModule>()
-                         .DependsOn<GoogleModule>()
-#if FAKE
-                         .DependsOn<FakeModule>()
-#endif
+                         .DependsOn<AccountModules>()
+                         .DependsOn<ConnectivityModules>()
                          .Add();
 
         }
@@ -168,5 +182,30 @@ namespace CallWall
             _logger.Debug("Container disposed");
             _logger.Info("Application shutting down");
         }
+
+
+        // ReSharper disable ClassNeverInstantiated.Local
+        //  Classes are instantiated by the Prism Module catalog.
+
+        /// <summary>
+        /// Serves a single point for other modules to place a dependency on all Account Modules being loaded.
+        /// </summary>
+        private sealed class AccountModules : IModule
+        {
+            public void Initialize()
+            {
+            }
+        }
+
+        /// <summary>
+        /// Serves a single point for other modules to place a dependency on all Connectivity Modules being loaded.
+        /// </summary>
+        private sealed class ConnectivityModules : IModule
+        {
+            public void Initialize()
+            {
+            }
+        }
+        // ReSharper restore ClassNeverInstantiated.Local
     }
 }

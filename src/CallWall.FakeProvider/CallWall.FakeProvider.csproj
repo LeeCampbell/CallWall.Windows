@@ -100,6 +100,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountConfiguration\FacebookAccountConfiguration.cs" />
+    <Compile Include="AccountConfiguration\GithubAccountConfiguration.cs" />
+    <Compile Include="AccountConfiguration\GoogleAccountConfiguration.cs" />
+    <Compile Include="AccountConfiguration\LinkedInAccountConfiguration.cs" />
+    <Compile Include="AccountConfiguration\MicrosoftAccountConfiguration.cs" />
+    <Compile Include="AccountConfiguration\TwitterAccountConfiguration.cs" />
+    <Compile Include="AccountConfiguration\YahooAccountConfiguration.cs" />
     <Compile Include="Providers\FacebookPictureQueryProvider.cs" />
     <Compile Include="Providers\GmailCommunicationQueryProvider.cs" />
     <Compile Include="Providers\GoogleCalendarQueryProvider.cs" />
