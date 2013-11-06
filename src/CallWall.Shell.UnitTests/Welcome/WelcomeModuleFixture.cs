@@ -1,6 +1,5 @@
 ﻿using CallWall.Contract;
 using CallWall.Welcome;
-using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;
 
@@ -10,7 +9,7 @@ namespace CallWall.UnitTests.Welcome
     public abstract class Given_a_constructed_WelcomeModule
     {
         private WelcomeModule _welcomeModule;
-        private Mock<ITypeRegistry> _containerMock;
+        private Mock<ITypeRegistry> _typeRegistryMock;
         private Mock<IWelcomeController> _welcomeControllerMock;
 
         private Given_a_constructed_WelcomeModule()
@@ -19,9 +18,9 @@ namespace CallWall.UnitTests.Welcome
         [SetUp]
         public virtual void SetUp()
         {
-            _containerMock = new Mock<ITypeRegistry>();
+            _typeRegistryMock = new Mock<ITypeRegistry>();
             _welcomeControllerMock = new Mock<IWelcomeController>();
-            _welcomeModule = new WelcomeModule(_containerMock.Object, () => _welcomeControllerMock.Object);
+            _welcomeModule = new WelcomeModule(_typeRegistryMock.Object, () => _welcomeControllerMock.Object);
         }
 
         [TestFixture]
@@ -35,21 +34,21 @@ namespace CallWall.UnitTests.Welcome
             }
 
             [Test]
-            public void Should_register_WelcomeController_to_container()
+            public void Should_register_WelcomeController_as_transient()
             {
-                _containerMock.Verify(c => c.RegisterTypeAsTransient<IWelcomeController, WelcomeController>(), Times.Once());
+                _typeRegistryMock.Verify(c => c.RegisterTypeAsTransient<IWelcomeController, WelcomeController>(), Times.Once());
             }
 
             [Test]
-            public void Should_register_WelcomeView_to_container()
+            public void Should_register_WelcomeView_as_transient()
             {
-                _containerMock.Verify(c => c.RegisterTypeAsTransient<IWelcomeView, WelcomeView>(), Times.Once());
+                _typeRegistryMock.Verify(c => c.RegisterTypeAsTransient<IWelcomeView, WelcomeView>(), Times.Once());
             }
 
             [Test]
-            public void Should_register_WelcomeStep1View_to_container()
+            public void Should_register_WelcomeStep1View_as_transient()
             {
-                _containerMock.Verify(c => c.RegisterTypeAsTransient<IWelcomeStep1View, WelcomeStep1View>(), Times.Once());
+                _typeRegistryMock.Verify(c => c.RegisterTypeAsTransient<IWelcomeStep1View, WelcomeStep1View>(), Times.Once());
             }
 
             [Test]

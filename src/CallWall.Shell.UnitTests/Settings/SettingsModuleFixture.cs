@@ -1,11 +1,8 @@
-﻿using System.Linq;
-using CallWall.Contract;
+﻿using CallWall.Contract;
 using CallWall.Settings;
 using CallWall.Settings.Accounts;
 using CallWall.Settings.Connectivity;
 using CallWall.Settings.Demonstration;
-using CallWall.Testing;
-using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;
 
@@ -18,7 +15,7 @@ namespace CallWall.UnitTests.Settings
         #region Setup
 
         private SettingsModule _settingsModule;
-        private Mock<ITypeRegistry> _container;
+        private Mock<ITypeRegistry> _typeRegistryMock;
 
         private Given_a_constructed_SettingsModule()
         {
@@ -27,8 +24,8 @@ namespace CallWall.UnitTests.Settings
         [SetUp]
         public virtual void SetUp()
         {
-            _container = new Mock<ITypeRegistry>();
-            _settingsModule = new SettingsModule(_container.Object);
+            _typeRegistryMock = new Mock<ITypeRegistry>();
+            _settingsModule = new SettingsModule(_typeRegistryMock.Object);
         }
 
         #endregion
@@ -43,131 +40,49 @@ namespace CallWall.UnitTests.Settings
             }
 
             [Test]
-            public void Should_register_ConnectivitySettingsView_to_container()
+            public void Should_register_ConnectivitySettingsView_as_transient()
             {
-                //_container.RegisteredTypes
-                //    .Where(rt => rt.From == typeof(IConnectivitySettingsView))
-                //    .Where(rt => rt.To == typeof(ConnectivitySettingsView))
-                //    .Where(rt => rt.Name == null)
-                //    .Where(rt => rt.LifetimeManager is TransientLifetimeManager)
-                //    .Single();
-                _container.Verify(c => c.RegisterTypeAsTransient<IConnectivitySettingsView, ConnectivitySettingsView>(), Times.Once());
+                _typeRegistryMock.Verify(c => c.RegisterTypeAsTransient<IConnectivitySettingsView, ConnectivitySettingsView>(), Times.Once());
             }
             [Test]
-            public void Should_register_ConnectivitySettingsViewModel_to_container()
+            public void Should_register_ConnectivitySettingsViewModel_as_transient()
             {
-                //_container.RegisteredTypes
-                //    .Where(rt => rt.From == typeof(IConnectivitySettingsViewModel))
-                //    .Where(rt => rt.To == typeof(ConnectivitySettingsViewModel))
-                //    .Where(rt => rt.Name == null)
-                //    .Where(rt => rt.LifetimeManager is TransientLifetimeManager)
-                //    .Single();
-                _container.Verify(c => c.RegisterTypeAsTransient<IConnectivitySettingsViewModel, ConnectivitySettingsViewModel>(), Times.Once());
+                _typeRegistryMock.Verify(c => c.RegisterTypeAsTransient<IConnectivitySettingsViewModel, ConnectivitySettingsViewModel>(), Times.Once());
             }
             [Test]
-            public void Should_register_ConnectivitySettingsModel_to_container()
+            public void Should_register_ConnectivitySettingsModel_as_transient()
             {
-                //_container.RegisteredTypes
-                //    .Where(rt => rt.From == typeof(IConnectivitySettingsModel))
-                //    .Where(rt => rt.To == typeof(ConnectivitySettingsModel))
-                //    .Where(rt => rt.Name == null)
-                //    .Where(rt => rt.LifetimeManager is TransientLifetimeManager)
-                //    .Single();
-                _container.Verify(c => c.RegisterTypeAsTransient<IConnectivitySettingsModel, ConnectivitySettingsModel>(), Times.Once());
+                _typeRegistryMock.Verify(c => c.RegisterTypeAsTransient<IConnectivitySettingsModel, ConnectivitySettingsModel>(), Times.Once());
             }
 
             [Test]
-            public void Should_register_AccountSettingsView_to_container()
+            public void Should_register_AccountSettingsView_as_transient()
             {
-                //_container.RegisteredTypes
-                //    .Where(rt => rt.From == typeof(IAccountSettingsView))
-                //    .Where(rt => rt.To == typeof(AccountSettingsView))
-                //    .Where(rt => rt.Name == null)
-                //    .Where(rt => rt.LifetimeManager is TransientLifetimeManager)
-                //    .Single();
-                _container.Verify(c => c.RegisterTypeAsTransient<IAccountSettingsView, AccountSettingsView>(), Times.Once());
+                _typeRegistryMock.Verify(c => c.RegisterTypeAsTransient<IAccountSettingsView, AccountSettingsView>(), Times.Once());
             }
             [Test]
-            public void Should_register_AccountSettingsViewModel_to_container()
+            public void Should_register_AccountSettingsViewModel_as_transient()
             {
-                //_container.RegisteredTypes
-                //    .Where(rt => rt.From == typeof(IAccountSettingsViewModel))
-                //    .Where(rt => rt.To == typeof(AccountSettingsViewModel))
-                //    .Where(rt => rt.Name == null)
-                //    .Where(rt => rt.LifetimeManager is TransientLifetimeManager)
-                //    .Single();
-                _container.Verify(c => c.RegisterTypeAsTransient<IAccountSettingsViewModel, AccountSettingsViewModel>(), Times.Once());
+                _typeRegistryMock.Verify(c => c.RegisterTypeAsTransient<IAccountSettingsViewModel, AccountSettingsViewModel>(), Times.Once());
             }
             [Test]
-            public void Should_register_AccountSettingsModel_to_container()
+            public void Should_register_AccountSettingsModel_as_transient()
             {
-                //_container.RegisteredTypes
-                //    .Where(rt => rt.From == typeof(IAccountSettingsModel))
-                //    .Where(rt => rt.To == typeof(AccountSettingsModel))
-                //    .Where(rt => rt.Name == null)
-                //    .Where(rt => rt.LifetimeManager is TransientLifetimeManager)
-                //    .Single();
-                _container.Verify(c => c.RegisterTypeAsTransient<IAccountSettingsModel, AccountSettingsModel>(), Times.Once());
+                _typeRegistryMock.Verify(c => c.RegisterTypeAsTransient<IAccountSettingsModel, AccountSettingsModel>(), Times.Once());
             }
 
             [Test]
-            public void Should_register_DemoView_to_container()
+            public void Should_register_DemoView_as_transient()
             {
-                //_container.RegisteredTypes
-                //    .Where(rt => rt.From == typeof(IDemoView))
-                //    .Where(rt => rt.To == typeof(DemoView))
-                //    .Where(rt => rt.Name == null)
-                //    .Where(rt => rt.LifetimeManager is TransientLifetimeManager)
-                //    .Single();
-                _container.Verify(c => c.RegisterTypeAsTransient<IDemoView, DemoView>(), Times.Once());
+                _typeRegistryMock.Verify(c => c.RegisterTypeAsTransient<IDemoView, DemoView>(), Times.Once());
             }
 
-            /*
-                This is a strategy for registering a singleton but as two separate types. This maintains lazy instantiation.
-             
-             */
             [Test]
-            public void Should_register_DemoActivatedIdentityListener_to_container_as_IDemoProfileActivator()
+            public void Should_register_DemoActivatedIdentityListener_to_container_as_IDemoProfileActivator_and_IProfileActivator()
             {
-                //_container.RegisteredTypes
-                //    .Where(rt => rt.From == typeof(IDemoProfileActivator))
-                //    .Where(rt => rt.To == typeof(DemoActivatedIdentityListener))
-                //    .Where(rt => rt.Name == null)
-                //    .Where(rt => rt.LifetimeManager is ContainerControlledLifetimeManager)
-                //    .Single();
-                _container.Verify(c => c.RegisterCompositeAsSingleton<IProfileActivator, IDemoProfileActivator, DemoActivatedIdentityListener>(), Times.Once());
+                _typeRegistryMock.Verify(c => c.RegisterCompositeAsSingleton<IProfileActivator, IDemoProfileActivator, DemoActivatedIdentityListener>(), Times.Once());
             }
-            //[Test]
-            //public void Should_register_DemoActivatedIdentityListener_to_container_as_named_IProfileActivator()
-            //{
-            //    _container.RegisteredTypes
-            //        .Where(rt => rt.From == typeof(IProfileActivator))
-            //        .Where(rt => rt.To == typeof(DemoActivatedIdentityListener))
-            //        .Where(rt => rt.Name == "DemoActivatedIdentityListener")
-            //        .Where(rt => rt.LifetimeManager is ExternallyControlledLifetimeManager) //} HACK: A poor way of checking if the instance is registered
-            //        .Where(rt => rt.InjectionMembers.Single() is InjectionFactory)          //} to actually redirect to the registered IDemoActivatedIdentityListener instance/type.
-            //        .Single();
-            //}
-
-            //[Test]
-            //public void Should_register_same_instance_of_DemoActivatedIdentityListener_to_as_IActivatedIdentityListener_and_IDemoActivatedIdentityListener()
-            //{
-
-            //    var activatedInstance = _container.RegisteredInstances
-            //        .Where(rt => rt.Type == typeof(IActivatedIdentityListener))
-            //        .Where(rt => rt.Instance is DemoActivatedIdentityListener)
-            //        .Where(rt => rt.Name == null)
-            //        .Where(rt => rt.LifetimeManager is ContainerControlledLifetimeManager)
-            //        .Single();
-            //    var demoInstance = _container.RegisteredInstances
-            //        .Where(rt => rt.Type == typeof(IActivatedIdentityListener))
-            //        .Where(rt => rt.Instance is DemoActivatedIdentityListener)
-            //        .Where(rt => rt.Name == null)
-            //        .Where(rt => rt.LifetimeManager is ContainerControlledLifetimeManager)
-            //        .Single();
-            //    Assert.AreSame(activatedInstance.Instance, demoInstance.Instance);
-            //}
-
+            
             [Test]
             public void Should_register_for_some_event_to_show_the_settings_view()
             {
