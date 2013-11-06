@@ -3,7 +3,7 @@ using Microsoft.Practices.Unity;
 
 namespace CallWall
 {
-    class TypeRegistry : ITypeRegistry
+    internal sealed class TypeRegistry : ITypeRegistry
     {
         private readonly IUnityContainer _container;
 
