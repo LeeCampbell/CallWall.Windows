@@ -9,11 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Projects Include=".\src\CallWall\CallWall.csproj"/>
-    <Projects Include=".\src\CallWall.UnitTests\CallWall.UnitTests.csproj"/>
-    <Projects Include=".\src\CallWall.Core.UnitTests\CallWall.Core.UnitTests.csproj"/>
-    <Projects Include=".\src\CallWall.Shell.UnitTests\CallWall.Shell.UnitTests.csproj"/>
-    <Projects Include=".\src\CallWall.Google.UnitTests\CallWall.Google.UnitTests.csproj"/>
+    <Projects Include=".\src\CallWall.Windows\CallWall.Windows.csproj"/>
+    <Projects Include=".\src\CallWall.Windows.UnitTests\CallWall.Windows.UnitTests.csproj"/>
+    <Projects Include=".\src\CallWall.Windows.Core.UnitTests\CallWall.Windows.Core.UnitTests.csproj"/>
+    <Projects Include=".\src\CallWall.Windows.Shell.UnitTests\CallWall.Windows.Shell.UnitTests.csproj"/>
+    <Projects Include=".\src\CallWall.Windows.Google.UnitTests\CallWall.Windows.Google.UnitTests.csproj"/>
   </ItemGroup>
   
   <Import Project=".\tools\MSBuild.Community.Tasks.Targets" />
@@ -60,7 +60,7 @@
   </Target>
   
   <Target Name="Publish" DependsOnTargets="Build">
-	<MSBuild Projects=".\src\CallWall\CallWall.csproj"
+	<MSBuild Projects=".\src\CallWall.Windows\CallWall.Windows.csproj"
              Targets="Publish"
              Properties="Configuration=$(Configuration);ApplicationVersion=$(BuildVersion);PublisherName=Campbell Consultancy London Ltd;ProductName=CallWall" >
       <!--NOTE: PublishUrl property is ignore from command line. Will always be $(OutputDirectory)\app.publish\-->
