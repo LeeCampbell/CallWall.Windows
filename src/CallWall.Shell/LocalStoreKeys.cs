@@ -4,6 +4,5 @@ namespace CallWall
     {
         public static readonly string AccountsRequireSetup = @"CallWall.Settings.Accounts.AccountSettingsModel.RequiresSetup";
         public static readonly string ConnectivityRequireSetup = @"CallWall.Settings.Connectivity.ConnectivitySettingsModel.RequiresSetup";
-        public static readonly string BluetoothIsEnabled = @"CallWall.Settings.Bluetooth.IsEnabled";
     }
 }

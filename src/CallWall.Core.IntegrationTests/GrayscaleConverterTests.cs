@@ -1,8 +1,4 @@
-﻿using System.IO.Packaging;
-using System.Windows;
-using CallWall.Shell.Images;
-using NUnit.Framework;
-using System;
+﻿using NUnit.Framework;
 using System.Globalization;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;

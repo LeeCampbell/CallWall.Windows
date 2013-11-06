@@ -7,7 +7,7 @@ namespace CallWall.Settings
     {
         private readonly string _name;
         private readonly Uri _image;
-        private DelegateCommand _open;
+        private readonly DelegateCommand _open;
 
         public SubView(string name, Uri image, Action openView)
         {
