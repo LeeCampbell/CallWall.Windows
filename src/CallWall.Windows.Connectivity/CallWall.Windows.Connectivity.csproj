@@ -89,6 +89,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="BluetoothModule.cs" />
     <Compile Include="Bluetooth\BluetoothActivator.cs" />
     <Compile Include="Bluetooth\IBluetoothProfileActivator.cs" />

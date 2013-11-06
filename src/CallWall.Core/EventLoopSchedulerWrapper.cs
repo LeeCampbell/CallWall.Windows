@@ -54,7 +54,5 @@ namespace CallWall
         {
             _els.Dispose();
         }
-
-        
     }
 }

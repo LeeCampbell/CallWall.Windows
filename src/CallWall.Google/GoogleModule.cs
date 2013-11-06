@@ -46,7 +46,7 @@ namespace CallWall.Google
 #if !FAKE
             //Mail
             _container.RegisterCompositeAsSingleton<ICommunicationQueryProvider, Providers.Gmail.GmailCommunicationQueryProvider>();
-            _container.RegisterTypeAsSingleton<Providers.Gmail.Imap.IImapClient, Providers.Gmail.Imap.ImapClient>();
+            _container.RegisterTypeAsTransient<Providers.Gmail.Imap.IImapClient, Providers.Gmail.Imap.ImapClient>();
 #endif
             //Talk
             //Images??

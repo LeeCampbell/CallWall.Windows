@@ -41,6 +41,7 @@ namespace CallWall.Windows.Connectivity.Bluetooth
                 .Select(Translate)
                 .Publish();
 
+            //HACK: Avoid work in the ctor. Can be smart here using SelectMany on the IsEnabled + Connecting when ProfileActivated is subscribed to. -LC
             if (_bluetoothService.IsSupported && IsEnabled)
                 _connection.Disposable = _profileActivated.Connect();
         }
