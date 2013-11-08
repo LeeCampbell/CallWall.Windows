@@ -1,7 +1,6 @@
 ﻿#if FAKE
 using CallWall.Windows.FakeProvider;
 #else
-using CallWall.Windows.Google;
 using CallWall.Windows.Connectivity;
 #endif
 using System.Linq;
@@ -68,15 +67,12 @@ namespace CallWall
                 .Add();
 #else
             //TODO: Eventually this should move out to configuration that will be updated by Nuget packages. -LC
-            ModuleCatalog.Define<GoogleModule>()
-                        .DependsOn<HostModule>()
-                        .Add();
 
             ModuleCatalog.Add<BluetoothModule>();
 
 
             ModuleCatalog.Define<AccountModules>()
-                .DependsOn<GoogleModule>()
+                //.DependsOn<AccModulesGoHere>()
                 .Add();
             ModuleCatalog.Define<ConnectivityModules>()
                 .DependsOn<BluetoothModule>()
@@ -116,10 +112,10 @@ namespace CallWall
             baseMappings.RegisterMapping(typeof(System.Windows.Controls.Accordion), ServiceLocator.Current.GetInstance<AccordionRegionAdapter>());
 
 
-            var windowStyle = (Style)App.Current.FindResource("WindowRegionStyle");
+            var windowStyle = (Style)Application.Current.FindResource("WindowRegionStyle");
             RegionPopupBehaviors.RegisterNewWindowRegion(RegionNames.WindowRegion, windowStyle);
 
-            var popupStyle = (Style)App.Current.FindResource("PopupRegionStyle");
+            var popupStyle = (Style)Application.Current.FindResource("PopupRegionStyle");
             RegionPopupBehaviors.RegisterNewWindowRegion(RegionNames.PopupWindowRegion, popupStyle);
 
             return baseMappings;

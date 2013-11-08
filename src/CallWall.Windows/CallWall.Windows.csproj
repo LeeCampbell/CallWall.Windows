@@ -247,10 +247,6 @@
       <Project>{54A13F98-B269-4235-8F67-EABB712176A4}</Project>
       <Name>CallWall.Windows.FakeProvider</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CallWall.Windows.Google\CallWall.Windows.Google.csproj">
-      <Project>{62351821-7438-4898-987e-8debab0d66ee}</Project>
-      <Name>CallWall.Windows.Google</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CallWall.Windows.Shell\CallWall.Windows.Shell.csproj">
       <Project>{ce5e5740-c22a-49b2-99d6-63e01cd78f96}</Project>
       <Name>CallWall.Windows.Shell</Name>

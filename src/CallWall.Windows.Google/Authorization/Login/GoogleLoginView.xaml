@@ -1,7 +1,0 @@
-﻿<UserControl x:Class="CallWall.Windows.Google.Authorization.Login.GoogleLoginView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:controls="clr-namespace:CallWall.Windows.Google.Controls">
-    <controls:RequestGoogleAuthHost AuthorizationUri="{Binding AuthorizationUri}"
-                                    AuthorizationCode="{Binding AuthorizationCode}"/>
-</UserControl>
