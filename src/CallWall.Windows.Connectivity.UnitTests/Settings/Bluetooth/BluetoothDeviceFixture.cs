@@ -196,6 +196,7 @@ namespace CallWall.Windows.Connectivity.UnitTests.Settings.Bluetooth
             }
 
             //TODO: Possible non-deterministic test. Failed in build #0.1.112.0 with no changes before or after. -LC
+            //Exhibited on local run as well 08-Nov-2013T22:38 -LC
             [Test]
             public void Should_refresh_PairDeviceCommand_on_completion()
             {
