@@ -13,7 +13,7 @@
     <Projects Include=".\src\CallWall.Windows.UnitTests\CallWall.Windows.UnitTests.csproj"/>
     <Projects Include=".\src\CallWall.Windows.Core.UnitTests\CallWall.Windows.Core.UnitTests.csproj"/>
     <Projects Include=".\src\CallWall.Windows.Shell.UnitTests\CallWall.Windows.Shell.UnitTests.csproj"/>
-    <Projects Include=".\src\CallWall.Windows.Google.UnitTests\CallWall.Windows.Google.UnitTests.csproj"/>
+    <Projects Include=".\src\CallWall.Windows.Connectivity.UnitTests\CallWall.Windows.Connectivity.UnitTests.csproj"/>
   </ItemGroup>
   
   <Import Project=".\tools\MSBuild.Community.Tasks.Targets" />
